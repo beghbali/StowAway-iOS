@@ -21,6 +21,8 @@
 		68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
 		68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFED7188DDBD3009738A0 /* InfoPlist.strings */; };
 		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
+		68BAFEE5188DDC07009738A0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */; };
+		68BAFEE6188DDC07009738A0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,7 @@
 		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
 		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
+		68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */,
+				68BAFEE5188DDC07009738A0 /* FacebookSDK.framework in Frameworks */,
 				68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */,
 				68BAFEB0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
 			);
@@ -71,6 +75,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68BAFECF188DDBD3009738A0 /* XCTest.framework in Frameworks */,
+				68BAFEE6188DDC07009738A0 /* FacebookSDK.framework in Frameworks */,
 				68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */,
 				68BAFED0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
 			);
@@ -126,6 +131,7 @@
 		68BAFEB6188DDBD3009738A0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */,
 				68BAFEB7188DDBD3009738A0 /* StowAway-Info.plist */,
 				68BAFEB8188DDBD3009738A0 /* InfoPlist.strings */,
 				68BAFEBB188DDBD3009738A0 /* main.m */,
@@ -378,6 +384,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/francisfernandes/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
 				INFOPLIST_FILE = "StowAway/StowAway-Info.plist";
@@ -391,6 +401,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/francisfernandes/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
 				INFOPLIST_FILE = "StowAway/StowAway-Info.plist";
@@ -408,6 +422,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/francisfernandes/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
@@ -431,6 +446,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/francisfernandes/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
