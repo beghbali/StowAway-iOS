@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2A8D7DF3-C918-42C6-86C8-387D1D3BE187</string>
+	<key>IDESourceControlProjectName</key>
+	<string>StowAway</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6F13E55A-4E12-4E49-BB1C-AC2F8EE4B4EE</key>
+		<string>ssh://github.com/TrexMarketing/StowAway-iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>StowAway.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6F13E55A-4E12-4E49-BB1C-AC2F8EE4B4EE</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/TrexMarketing/StowAway-iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6F13E55A-4E12-4E49-BB1C-AC2F8EE4B4EE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6F13E55A-4E12-4E49-BB1C-AC2F8EE4B4EE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>StowAway</string>
+		</dict>
+	</array>
+</dict>
+</plist>
