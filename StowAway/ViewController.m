@@ -35,5 +35,19 @@
                             user:(id<FBGraphUser>)user {
     self.profilePictureView.profileID = user.id;
     self.nameLabel.text = user.name;
+
+    //Send Data to Endpoint to create user
+    NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@:%@@www.example.com/myapi/getdata", @"frank", @"12345"]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [request setURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error;
+    NSURLResponse *response;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    
 }
 @end
