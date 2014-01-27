@@ -15,7 +15,8 @@
 {
     [FBLoginView class];
     [FBProfilePictureView class];
-    // Override point for customization after application launch.
+        // Override point for customization after application launch.
+    
     return YES;
 }
 							

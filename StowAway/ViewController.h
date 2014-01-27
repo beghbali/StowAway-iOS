@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface ViewController : UIViewController <FBLoginViewDelegate>
-
+@interface ViewController : UIViewController <FBLoginViewDelegate> {
+    NSMutableData *_responseData;
+}
+@property (nonatomic, strong) FBSession *session;
 @end
