@@ -46,7 +46,8 @@
     self.nameLabel.text = user.name;
     
     /*Send User Data to API on the user TODO Should be made into an object!!!!*/
-    NSString *url =@"http://ec2-54-214-145-124.us-west-2.compute.amazonaws.com/api/v1/users/";
+    //NSString *url =@"http://ec2-54-214-145-124.us-west-2.compute.amazonaws.com/api/v1/users/";
+    NSString *url =@"http://api.getstowaway.com/api/v1/users/";
     
     // Like the post request I showed you before, I'm going to send the deviceId again, because that is generally useful for establishing
     
@@ -72,7 +73,7 @@
     
     NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData: options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
     
     if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
     /*End of Code for Adding User*/
