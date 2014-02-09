@@ -21,8 +21,7 @@
 		68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
 		68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFED7188DDBD3009738A0 /* InfoPlist.strings */; };
 		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
-		68BAFEE5188DDC07009738A0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */; };
-		68BAFEE6188DDC07009738A0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */; };
+		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +54,7 @@
 		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
 		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
-		68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */,
 				68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */,
-				68BAFEE5188DDC07009738A0 /* FacebookSDK.framework in Frameworks */,
 				68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */,
 				68BAFEB0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
 			);
@@ -75,7 +74,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				68BAFECF188DDBD3009738A0 /* XCTest.framework in Frameworks */,
-				68BAFEE6188DDC07009738A0 /* FacebookSDK.framework in Frameworks */,
 				68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */,
 				68BAFED0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
 			);
@@ -87,6 +85,7 @@
 		68BAFEA3188DDBD3009738A0 = {
 			isa = PBXGroup;
 			children = (
+				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFEB5188DDBD3009738A0 /* StowAway */,
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
@@ -131,7 +130,6 @@
 		68BAFEB6188DDBD3009738A0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				68BAFEE4188DDC07009738A0 /* FacebookSDK.framework */,
 				68BAFEB7188DDBD3009738A0 /* StowAway-Info.plist */,
 				68BAFEB8188DDBD3009738A0 /* InfoPlist.strings */,
 				68BAFEBB188DDBD3009738A0 /* main.m */,
@@ -157,6 +155,14 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		F4EB90E518A8345C00C57BF2 /* otherFrameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */,
+			);
+			path = otherFrameworks;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -383,8 +389,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/otherFrameworks/",
 					"$(inherited)",
-					/Users/francisfernandes/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
@@ -400,8 +406,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/otherFrameworks/",
 					"$(inherited)",
-					/Users/francisfernandes/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";

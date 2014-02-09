@@ -73,7 +73,7 @@
     
     NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData: options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+ //   NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData: optind:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
     
     if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
     /*End of Code for Adding User*/
