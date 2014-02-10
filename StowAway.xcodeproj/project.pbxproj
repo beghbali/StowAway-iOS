@@ -85,8 +85,8 @@
 		68BAFEA3188DDBD3009738A0 = {
 			isa = PBXGroup;
 			children = (
-				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFEB5188DDBD3009738A0 /* StowAway */,
+				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				68BAFEAD188DDBD3009738A0 /* Products */,

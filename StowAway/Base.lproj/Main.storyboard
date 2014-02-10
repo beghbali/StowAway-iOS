@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qe4-4s-UEE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qe4-4s-UEE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -28,38 +28,55 @@
                         <viewControllerLayoutGuide type="bottom" id="Fch-Fk-qud"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aXB-0Q-gBP" customClass="FBLoginView">
-                                <rect key="frame" x="42" y="346" width="237" height="86"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXB-0Q-gBP" customClass="FBLoginView">
+                                <rect key="frame" x="35" y="287" width="251" height="88"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PrF-mo-JcJ" customClass="FBProfilePictureView">
-                                <rect key="frame" x="112" y="136" width="75" height="97"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PrF-mo-JcJ" customClass="FBProfilePictureView">
+                                <rect key="frame" x="35" y="152" width="75" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Facebook Login" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6lu-5y-igF">
-                                <rect key="frame" x="112" y="82" width="124" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFc-yy-CbB">
+                                <rect key="frame" x="126" y="168" width="160" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="BTw-NL-Kvg"/>
+                                    <constraint firstAttribute="height" constant="21" id="map-vG-OUa"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aXB-0Q-gBP" firstAttribute="leading" secondItem="PrF-mo-JcJ" secondAttribute="leading" id="0wa-59-ENV"/>
+                            <constraint firstItem="aXB-0Q-gBP" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="1k1-Uj-4pY"/>
+                            <constraint firstItem="cFc-yy-CbB" firstAttribute="leading" secondItem="PrF-mo-JcJ" secondAttribute="trailing" constant="16" id="YBx-uO-voG"/>
+                            <constraint firstItem="PrF-mo-JcJ" firstAttribute="top" secondItem="7VX-I3-nc4" secondAttribute="bottom" constant="88" id="ewM-kF-M6d"/>
+                            <constraint firstItem="aXB-0Q-gBP" firstAttribute="top" secondItem="cFc-yy-CbB" secondAttribute="bottom" constant="98" id="jFv-Ku-2rG"/>
+                            <constraint firstItem="cFc-yy-CbB" firstAttribute="trailing" secondItem="aXB-0Q-gBP" secondAttribute="trailing" id="mwv-K8-lh1"/>
+                            <constraint firstItem="PrF-mo-JcJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="35" id="oPJ-ju-wFG"/>
+                            <constraint firstItem="aXB-0Q-gBP" firstAttribute="top" secondItem="PrF-mo-JcJ" secondAttribute="bottom" constant="39" id="sbj-z4-O4N"/>
+                            <constraint firstItem="Fch-Fk-qud" firstAttribute="top" secondItem="aXB-0Q-gBP" secondAttribute="bottom" constant="105" id="tnY-a0-bK9"/>
+                            <constraint firstItem="cFc-yy-CbB" firstAttribute="top" secondItem="7VX-I3-nc4" secondAttribute="bottom" constant="104" id="umA-Wr-tij"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hKn-HB-kDe"/>
                     <connections>
                         <outlet property="loginView" destination="aXB-0Q-gBP" id="PSp-cX-VlQ"/>
+                        <outlet property="nameLabel" destination="cFc-yy-CbB" id="3Dr-jG-Asz"/>
                         <outlet property="profilePictureView" destination="PrF-mo-JcJ" id="SRo-QP-fTq"/>
                         <segue destination="FZI-WL-nLp" kind="push" identifier="FBLoginToReg" id="ojm-M0-nu7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="256" y="-99"/>
+            <point key="canvasLocation" x="211" y="-99"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="T5s-3p-ytz">
@@ -70,7 +87,7 @@
                         <viewControllerLayoutGuide type="bottom" id="9cW-Bx-Ezl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="qVg-oz-hBd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Which Email Do you Use For RideSharing Reciepts?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
@@ -92,12 +109,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="627" y="-99"/>
+            <point key="canvasLocation" x="654" y="-99"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
 </document>
