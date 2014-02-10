@@ -30,11 +30,18 @@
 
     if (FBSession.activeSession.isOpen)
     {
-        // move to next page
-        [self performSegueWithIdentifier: @"FBLoginToReg" sender: self];
+        NSLog(@"fb: already logged in");
+
+        [self moveToEmailRegistration];
     } else {
-        NSLog(@"not logged in");
+        NSLog(@"fb: not logged in");
     }
+
+}
+
+-( void) moveToEmailRegistration
+{
+    [self performSegueWithIdentifier: @"FBLoginToReg" sender: self];
 
 }
 
@@ -47,9 +54,9 @@
 #pragma mark - FBLoginView Delegate methods
 
 // This method will be called when the user information has been fetched
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
-                            user:(id<FBGraphUser>)user
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
 {
+    //for the login UI
     self.profilePictureView.profileID = user.id;
     self.nameLabel.text = user.name;
     
@@ -101,6 +108,16 @@ curl -X POST -d '{ "provider":"facebook",
    /* status is obvious
     self.statusLabel.text = @"You're logged in as";
     */
+    NSLog(@"fb: just logged in");
+    [self moveToEmailRegistration];
+    
+}
+
+// Logged-out user experience
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
+    NSLog(@"fb: just logged out");
+    self.profilePictureView.profileID = nil;
+    self.nameLabel.text = @"";
 }
 
 // Handle possible errors that can occur during login
