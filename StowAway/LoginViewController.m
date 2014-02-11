@@ -6,42 +6,66 @@
 //  Copyright (c) 2014 Francis Fernandes. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "ReceiptEmailViewController.h"
 
-@interface ViewController ()
+@interface LoginViewController ()
 @property (strong, nonatomic) IBOutlet FBLoginView *loginView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
 @property (strong, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 //@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property BOOL sequeAlreadyDone;
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
 
+- (void) setFacebookLoginStatus:(BOOL)facebookLoginStatus
+{
+    NSLog(@"facebookLoginStatus %d", facebookLoginStatus);
+    self.navigationItem.rightBarButtonItem = facebookLoginStatus? self.nextBarButton: nil; //hide next button if not logged in
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+        NSLog(@"segue id: %@", segue.identifier);
+    
+    if ([segue.identifier isEqualToString:@"fbNextToReceipts"] || [segue.identifier isEqualToString:@"fbLoginToReceipt"]) {
+        if ([segue.destinationViewController class] == [ReceiptEmailViewController class]) {
+            ReceiptEmailViewController * receiptVC = segue.destinationViewController; //incase we need to setup some stuff - for autosuggestion of stowaway email address
+        }
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
+
+    self.facebookLoginStatus = NO;
     self.loginView.delegate = self;
     self.loginView.readPermissions = @[@"basic_info", @"email", @"user_likes"];
-
 
     if (FBSession.activeSession.isOpen)
     {
         NSLog(@"fb: already logged in");
-
+        self.facebookLoginStatus = YES;
         [self moveToEmailRegistration];
     } else {
         NSLog(@"fb: not logged in");
     }
-
 }
 
 -( void) moveToEmailRegistration
 {
-    [self performSegueWithIdentifier: @"FBLoginToReg" sender: self];
+    if (!self.sequeAlreadyDone) {
+        
+        self.sequeAlreadyDone = YES;
+        [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
+    }
+    else
+        NSLog(@"segue already done");
 
 }
 
@@ -50,6 +74,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 #pragma mark - FBLoginView Delegate methods
 
@@ -71,6 +97,7 @@
     NSString *provider = @"facebook";
     
     NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"http://graph.facebook.com/%@/picture?type=square\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\"}",user.first_name,user.last_name,user.id,user.location.name,user.username,fbAccessToken,fbAccessTokenExpirationDate];
+    NSLog(@"userdata:\n%@",userdata);
     
     NSString *post = [NSString stringWithFormat:@"{\"uid\":%@,\"provider\":\"%@\",\"user\":%@}", user.id, provider, userdata];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -109,6 +136,8 @@ curl -X POST -d '{ "provider":"facebook",
     self.statusLabel.text = @"You're logged in as";
     */
     NSLog(@"fb: just logged in");
+    self.facebookLoginStatus = YES;
+
     [self moveToEmailRegistration];
     
 }
@@ -118,6 +147,8 @@ curl -X POST -d '{ "provider":"facebook",
     NSLog(@"fb: just logged out");
     self.profilePictureView.profileID = nil;
     self.nameLabel.text = @"";
+    self.facebookLoginStatus = NO;
+    self.sequeAlreadyDone = NO;
 }
 
 // Handle possible errors that can occur during login

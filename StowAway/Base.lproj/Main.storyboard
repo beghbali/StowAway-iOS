@@ -17,12 +17,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQd-Dr-LSh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-162" y="-99"/>
+            <point key="canvasLocation" x="-480" y="-409"/>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller - Login-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7VX-I3-nc4"/>
                         <viewControllerLayoutGuide type="bottom" id="Fch-Fk-qud"/>
@@ -66,22 +66,29 @@
                             <constraint firstItem="cFc-yy-CbB" firstAttribute="top" secondItem="7VX-I3-nc4" secondAttribute="bottom" constant="104" id="umA-Wr-tij"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hKn-HB-kDe"/>
+                    <navigationItem key="navigationItem" title="Login" id="hKn-HB-kDe">
+                        <barButtonItem key="rightBarButtonItem" title="next" id="ccu-WD-W5t">
+                            <connections>
+                                <segue destination="FZI-WL-nLp" kind="push" identifier="fbNextToReceipts" id="lf2-sN-jec"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="loginView" destination="aXB-0Q-gBP" id="PSp-cX-VlQ"/>
                         <outlet property="nameLabel" destination="cFc-yy-CbB" id="3Dr-jG-Asz"/>
+                        <outlet property="nextBarButton" destination="ccu-WD-W5t" id="lgq-Ob-fIu"/>
                         <outlet property="profilePictureView" destination="PrF-mo-JcJ" id="SRo-QP-fTq"/>
-                        <segue destination="FZI-WL-nLp" kind="push" identifier="FBLoginToReg" id="ojm-M0-nu7"/>
+                        <segue destination="FZI-WL-nLp" kind="push" identifier="fbLoginToReceipt" id="ojm-M0-nu7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="211" y="-99"/>
+            <point key="canvasLocation" x="-68" y="-409"/>
         </scene>
-        <!--View Controller-->
+        <!--Receipt Email View Controller - Receipts-->
         <scene sceneID="T5s-3p-ytz">
             <objects>
-                <viewController storyboardIdentifier="Email" id="FZI-WL-nLp" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Email" id="FZI-WL-nLp" customClass="ReceiptEmailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fpj-Wb-PT3"/>
                         <viewControllerLayoutGuide type="bottom" id="9cW-Bx-Ezl"/>
@@ -90,26 +97,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Which Email Do you Use For RideSharing Reciepts?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
-                                <rect key="frame" x="38" y="115" width="232" height="125"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where do your UBER receipts go?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
+                                <rect key="frame" x="20" y="113" width="280" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
-                                <rect key="frame" x="38" y="210" width="226" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="johnappleseed@gmail.com" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
+                                <rect key="frame" x="20" y="201" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="bRe-nQ-afH"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="trailing" secondItem="3Kr-F5-29m" secondAttribute="trailing" id="22A-dJ-r99"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="top" secondItem="fpj-Wb-PT3" secondAttribute="bottom" constant="49" id="73k-g2-MKM"/>
+                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="249" id="CyF-ZB-3ip"/>
+                            <constraint firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" constant="20" symbolic="YES" id="atG-5I-FDK"/>
+                            <constraint firstItem="3Kr-F5-29m" firstAttribute="leading" secondItem="wKB-x6-bAU" secondAttribute="leading" id="ftf-bu-dp1"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="20" symbolic="YES" id="h2O-tT-mGH"/>
+                            <constraint firstItem="3Kr-F5-29m" firstAttribute="top" secondItem="wKB-x6-bAU" secondAttribute="bottom" constant="34" id="ial-a8-qbr"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jz6-rn-ygD"/>
+                    <navigationItem key="navigationItem" title="Receipts" id="jz6-rn-ygD"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="654" y="-99"/>
+            <point key="canvasLocation" x="492" y="-409"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -117,4 +136,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="ojm-M0-nu7"/>
+    </inferredMetricsTieBreakers>
 </document>
