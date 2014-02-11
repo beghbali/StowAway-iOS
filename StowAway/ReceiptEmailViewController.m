@@ -11,9 +11,12 @@
 
 @interface ReceiptEmailViewController ()
 
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UIButton *receiptsContinueButton;
 @end
 
 @implementation ReceiptEmailViewController
+
 
 -(void) viewDidDisappear:(BOOL)animated
 {
@@ -23,6 +26,14 @@
         loginVC.facebookLoginStatus = YES; //you can only reach receipts after login
     }
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSLog(@"email entered <%@>",self.emailTextField.text);
+    [self.emailTextField resignFirstResponder];
+    return YES;
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

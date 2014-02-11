@@ -98,37 +98,93 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where do your UBER receipts go?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
-                                <rect key="frame" x="20" y="113" width="280" height="54"/>
+                                <rect key="frame" x="20" y="68" width="280" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="johnappleseed@gmail.com" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
-                                <rect key="frame" x="20" y="201" width="280" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="johnappleseed@gmail.com" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
+                                <rect key="frame" x="20" y="156" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="bRe-nQ-afH"/>
+                                    <constraint firstAttribute="height" constant="30" id="NIk-Uo-fwo"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="FZI-WL-nLp" id="HAh-gt-4Kq"/>
+                                </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00E-pe-7If">
+                                <rect key="frame" x="10" y="194" width="277" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="53" id="8wc-41-Krl"/>
+                                </constraints>
+                                <state key="normal" title="Continue">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Gqh-qZ-Ggc" kind="push" identifier="continueReceipts" id="SiP-oV-2Zb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzh-ij-lWX">
+                                <rect key="frame" x="10" y="243" width="277" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Skip, let me take a look first...">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Gqh-qZ-Ggc" kind="push" identifier="skipReceipts" id="PR3-Ph-dJ9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="trailing" secondItem="3Kr-F5-29m" secondAttribute="trailing" id="22A-dJ-r99"/>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="top" secondItem="fpj-Wb-PT3" secondAttribute="bottom" constant="49" id="73k-g2-MKM"/>
-                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="249" id="CyF-ZB-3ip"/>
-                            <constraint firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" constant="20" symbolic="YES" id="atG-5I-FDK"/>
-                            <constraint firstItem="3Kr-F5-29m" firstAttribute="leading" secondItem="wKB-x6-bAU" secondAttribute="leading" id="ftf-bu-dp1"/>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="20" symbolic="YES" id="h2O-tT-mGH"/>
-                            <constraint firstItem="3Kr-F5-29m" firstAttribute="top" secondItem="wKB-x6-bAU" secondAttribute="bottom" constant="34" id="ial-a8-qbr"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="top" secondItem="fpj-Wb-PT3" secondAttribute="bottom" constant="4" id="1j1-gT-hDr"/>
+                            <constraint firstItem="3Kr-F5-29m" firstAttribute="top" secondItem="wKB-x6-bAU" secondAttribute="bottom" constant="34" id="22r-J5-bfx"/>
+                            <constraint firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" constant="20" symbolic="YES" id="4ti-XI-aeJ"/>
+                            <constraint firstAttribute="trailing" secondItem="00E-pe-7If" secondAttribute="trailing" constant="33" id="B2W-h1-LyX"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="10" id="JiC-s8-0Np"/>
+                            <constraint firstItem="Fzh-ij-lWX" firstAttribute="leading" secondItem="00E-pe-7If" secondAttribute="leading" id="Lhh-Fc-bO6"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="8" symbolic="YES" id="LyG-aS-SgH"/>
+                            <constraint firstItem="Fzh-ij-lWX" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="57" id="Mvp-mT-k4d"/>
+                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="Fzh-ij-lWX" secondAttribute="bottom" constant="184" id="O4V-QV-IRO"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="3Kr-F5-29m" secondAttribute="leading" id="gII-df-e1A"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="trailing" secondItem="Fzh-ij-lWX" secondAttribute="trailing" id="q7G-M3-mn9"/>
+                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="00E-pe-7If" secondAttribute="bottom" constant="233" id="vYv-kO-UbS"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="20" symbolic="YES" id="vwS-cC-Vq4"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="trailing" secondItem="3Kr-F5-29m" secondAttribute="trailing" id="wmh-NY-Nsu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Receipts" id="jz6-rn-ygD"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="3Kr-F5-29m" id="A1a-1Y-mCY"/>
+                        <outlet property="receiptsContinueButton" destination="00E-pe-7If" id="xsU-Nb-zOC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="492" y="-409"/>
+            <point key="canvasLocation" x="376" y="-409"/>
+        </scene>
+        <!--View Controller - Credit Card-->
+        <scene sceneID="rF1-fA-BHQ">
+            <objects>
+                <viewController id="Gqh-qZ-Ggc" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wD6-7p-ybq"/>
+                        <viewControllerLayoutGuide type="bottom" id="jYz-Ep-B6V"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bAi-pi-fv9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Credit Card" id="9RZ-XH-n63"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e3v-jh-alh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="785" y="-409"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -138,5 +194,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="ojm-M0-nu7"/>
+        <segue reference="SiP-oV-2Zb"/>
     </inferredMetricsTieBreakers>
 </document>
