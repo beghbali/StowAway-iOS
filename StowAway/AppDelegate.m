@@ -3,8 +3,9 @@
 //  StowAway
 //
 //  Created by Francis Fernandes on 1/20/14.
-//  Copyright (c) 2014 Francis Fernandes. All rights reserved.
+//  Copyright (c) 2014 StowAway. All rights reserved.
 //
+
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -13,9 +14,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"app launced");
     [FBLoginView class];
     [FBProfilePictureView class];
-        // Override point for customization after application launch.
+    
+    // Override point for customization after application launch.
     
     return YES;
 }
@@ -46,10 +49,7 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
     // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
     BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
