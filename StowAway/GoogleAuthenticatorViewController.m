@@ -60,6 +60,8 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     [gtmVC setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
     [self presentViewController:gtmVC animated:YES completion:nil];
 
+    //TODO:: fix the google auth view
+    
    // [self.navigationController pushViewController:viewController animated:YES];
 }
 
