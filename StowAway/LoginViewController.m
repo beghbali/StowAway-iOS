@@ -3,7 +3,7 @@
 //  StowAway
 //
 //  Created by Francis Fernandes on 1/20/14.
-//  Copyright (c) 2014 Francis Fernandes. All rights reserved.
+//  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
 #import "LoginViewController.h"
@@ -25,7 +25,7 @@
 - (void) setFacebookLoginStatus:(BOOL)facebookLoginStatus
 {
     NSLog(@"facebookLoginStatus %d", facebookLoginStatus);
-    self.navigationItem.rightBarButtonItem = facebookLoginStatus? self.nextBarButton: nil; //hide next button if not logged in
+    self.navigationItem.rightBarButtonItem.enabled = facebookLoginStatus; //hide next button if not logged in
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

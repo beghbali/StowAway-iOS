@@ -3,8 +3,9 @@
 //  StowAway
 //
 //  Created by Francis Fernandes on 1/20/14.
-//  Copyright (c) 2014 Francis Fernandes. All rights reserved.
+//  Copyright (c) 2014 StowAway. All rights reserved.
 //
+
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>

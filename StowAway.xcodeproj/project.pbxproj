@@ -21,8 +21,15 @@
 		68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
 		68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFED7188DDBD3009738A0 /* InfoPlist.strings */; };
 		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
+		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EA18AAF84000FD8FB9 /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = F47CB6EB18AAF84000FD8FB9 /* ReleaseNotes.txt */; };
+		F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */; };
+		F47CB71E18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB71D18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m */; };
+		F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
-		F4EB90E818A9EC5900C57BF2 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
 		F4EB914718AA113700C57BF2 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90EB18AA113600C57BF2 /* STPCard.m */; };
 		F4EB914818AA113700C57BF2 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90ED18AA113600C57BF2 /* STPToken.m */; };
 		F4EB914918AA113700C57BF2 /* STPView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90EF18AA113600C57BF2 /* STPView.m */; };
@@ -59,25 +66,11 @@
 		F4EB916818AA113700C57BF2 /* gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB911F18AA113600C57BF2 /* gradient@2x.png */; };
 		F4EB916918AA113700C57BF2 /* textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912018AA113600C57BF2 /* textfield.png */; };
 		F4EB916A18AA113700C57BF2 /* textfield@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912118AA113600C57BF2 /* textfield@2x.png */; };
-		F4EB916B18AA113700C57BF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB912518AA113600C57BF2 /* AppDelegate.m */; };
-		F4EB916C18AA113700C57BF2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912618AA113600C57BF2 /* Default-568h@2x.png */; };
-		F4EB916D18AA113700C57BF2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912718AA113600C57BF2 /* Default.png */; };
-		F4EB916E18AA113700C57BF2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912818AA113600C57BF2 /* Default@2x.png */; };
-		F4EB916F18AA113700C57BF2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912918AA113600C57BF2 /* InfoPlist.strings */; };
-		F4EB917018AA113700C57BF2 /* PaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912B18AA113600C57BF2 /* PaymentViewController.xib */; };
-		F4EB917118AA113700C57BF2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB912D18AA113600C57BF2 /* main.m */; };
-		F4EB917218AA113700C57BF2 /* PaymentKit Example-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EB912E18AA113600C57BF2 /* PaymentKit Example-Info.plist */; };
-		F4EB917318AA113700C57BF2 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB913118AA113600C57BF2 /* PaymentViewController.m */; };
-		F4EB917418AA113700C57BF2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB913318AA113600C57BF2 /* ViewController.m */; };
-		F4EB917518AA113700C57BF2 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4EB913418AA113600C57BF2 /* ViewController.xib */; };
-		F4EB917618AA113700C57BF2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4EB913918AA113700C57BF2 /* InfoPlist.strings */; };
-		F4EB917718AA113700C57BF2 /* PaymentKit Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EB913B18AA113700C57BF2 /* PaymentKit Test-Info.plist */; };
-		F4EB917818AA113700C57BF2 /* PKCardCVCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB913E18AA113700C57BF2 /* PKCardCVCTest.m */; };
-		F4EB917918AA113700C57BF2 /* PKCardExpiryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB914018AA113700C57BF2 /* PKCardExpiryTest.m */; };
-		F4EB917A18AA113700C57BF2 /* PKCardNumberTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB914218AA113700C57BF2 /* PKCardNumberTest.m */; };
-		F4EB917B18AA113700C57BF2 /* PKTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB914418AA113700C57BF2 /* PKTest.m */; };
 		F4EB917C18AA113700C57BF2 /* PaymentKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = F4EB914518AA113700C57BF2 /* PaymentKit.podspec */; };
 		F4EB917D18AA113700C57BF2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F4EB914618AA113700C57BF2 /* README.md */; };
+		F4EB918518AA11B700C57BF2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB918418AA11B700C57BF2 /* QuartzCore.framework */; };
+		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
+		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,20 +80,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 68BAFEAB188DDBD3009738A0;
 			remoteInfo = StowAway;
-		};
-		F4EB918018AA113700C57BF2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F4EB913518AA113600C57BF2 /* PaymentKit Example.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FA45AC6C16AE350D0003A41D;
-			remoteInfo = "PaymentKit Example";
-		};
-		F4EB918218AA113700C57BF2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F4EB913518AA113600C57BF2 /* PaymentKit Example.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FA6A2F8A16C2D6F400915AEB;
-			remoteInfo = "PaymentKit Test";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -124,6 +103,18 @@
 		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
 		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
+		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
+		F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
+		F47CB6E718AAF84000FD8FB9 /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
+		F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2Authentication.m; sourceTree = "<group>"; };
+		F47CB6E918AAF84000FD8FB9 /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2SignIn.h; sourceTree = "<group>"; };
+		F47CB6EA18AAF84000FD8FB9 /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2SignIn.m; sourceTree = "<group>"; };
+		F47CB6EB18AAF84000FD8FB9 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
+		F47CB6ED18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2ViewControllerTouch.h; sourceTree = "<group>"; };
+		F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
+		F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
+		F47CB71C18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticatorViewController.h; sourceTree = "<group>"; };
+		F47CB71D18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticatorViewController.m; sourceTree = "<group>"; };
 		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptEmailViewController.h; sourceTree = "<group>"; };
 		F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiptEmailViewController.m; sourceTree = "<group>"; };
@@ -178,35 +169,13 @@
 		F4EB911F18AA113600C57BF2 /* gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gradient@2x.png"; sourceTree = "<group>"; };
 		F4EB912018AA113600C57BF2 /* textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfield.png; sourceTree = "<group>"; };
 		F4EB912118AA113600C57BF2 /* textfield@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textfield@2x.png"; sourceTree = "<group>"; };
-		F4EB912418AA113600C57BF2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		F4EB912518AA113600C57BF2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F4EB912618AA113600C57BF2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		F4EB912718AA113600C57BF2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		F4EB912818AA113600C57BF2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		F4EB912A18AA113600C57BF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F4EB912C18AA113600C57BF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PaymentViewController.xib; sourceTree = "<group>"; };
-		F4EB912D18AA113600C57BF2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F4EB912E18AA113600C57BF2 /* PaymentKit Example-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PaymentKit Example-Info.plist"; sourceTree = "<group>"; };
-		F4EB912F18AA113600C57BF2 /* PaymentKit Example-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PaymentKit Example-Prefix.pch"; sourceTree = "<group>"; };
-		F4EB913018AA113600C57BF2 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
-		F4EB913118AA113600C57BF2 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
-		F4EB913218AA113600C57BF2 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F4EB913318AA113600C57BF2 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		F4EB913418AA113600C57BF2 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		F4EB913518AA113600C57BF2 /* PaymentKit Example.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "PaymentKit Example.xcodeproj"; sourceTree = "<group>"; };
-		F4EB913A18AA113700C57BF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F4EB913B18AA113700C57BF2 /* PaymentKit Test-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PaymentKit Test-Info.plist"; sourceTree = "<group>"; };
-		F4EB913C18AA113700C57BF2 /* PaymentKit Test-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PaymentKit Test-Prefix.pch"; sourceTree = "<group>"; };
-		F4EB913D18AA113700C57BF2 /* PKCardCVCTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKCardCVCTest.h; sourceTree = "<group>"; };
-		F4EB913E18AA113700C57BF2 /* PKCardCVCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKCardCVCTest.m; sourceTree = "<group>"; };
-		F4EB913F18AA113700C57BF2 /* PKCardExpiryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKCardExpiryTest.h; sourceTree = "<group>"; };
-		F4EB914018AA113700C57BF2 /* PKCardExpiryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKCardExpiryTest.m; sourceTree = "<group>"; };
-		F4EB914118AA113700C57BF2 /* PKCardNumberTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKCardNumberTest.h; sourceTree = "<group>"; };
-		F4EB914218AA113700C57BF2 /* PKCardNumberTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKCardNumberTest.m; sourceTree = "<group>"; };
-		F4EB914318AA113700C57BF2 /* PKTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKTest.h; sourceTree = "<group>"; };
-		F4EB914418AA113700C57BF2 /* PKTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKTest.m; sourceTree = "<group>"; };
 		F4EB914518AA113700C57BF2 /* PaymentKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PaymentKit.podspec; sourceTree = "<group>"; };
 		F4EB914618AA113700C57BF2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		F4EB918418AA11B700C57BF2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
+		F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
+		F4EB920818AAF5D800C57BF2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +183,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */,
+				F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */,
+				F4EB918518AA11B700C57BF2 /* QuartzCore.framework in Frameworks */,
 				F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */,
 				68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */,
 				68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */,
@@ -257,6 +229,9 @@
 		68BAFEAE188DDBD3009738A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */,
+				F4EB920818AAF5D800C57BF2 /* Security.framework */,
+				F4EB918418AA11B700C57BF2 /* QuartzCore.framework */,
 				68BAFEAF188DDBD3009738A0 /* Foundation.framework */,
 				68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */,
 				68BAFEB3188DDBD3009738A0 /* UIKit.framework */,
@@ -271,10 +246,14 @@
 				68BAFEBE188DDBD3009738A0 /* AppDelegate.h */,
 				68BAFEBF188DDBD3009738A0 /* AppDelegate.m */,
 				68BAFEC1188DDBD3009738A0 /* Main.storyboard */,
+				F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */,
+				F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */,
 				68BAFEC4188DDBD3009738A0 /* LoginViewController.h */,
 				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
 				F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */,
 				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
+				F47CB71C18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.h */,
+				F47CB71D18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m */,
 				68BAFEC7188DDBD3009738A0 /* Images.xcassets */,
 				68BAFEB6188DDBD3009738A0 /* Supporting Files */,
 			);
@@ -310,9 +289,51 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */ = {
+			isa = PBXGroup;
+			children = (
+				F47CB6BC18AAF84000FD8FB9 /* HTTPFetcher */,
+				F47CB6E318AAF84000FD8FB9 /* Source */,
+			);
+			path = "gtm-oauth2";
+			sourceTree = "<group>";
+		};
+		F47CB6BC18AAF84000FD8FB9 /* HTTPFetcher */ = {
+			isa = PBXGroup;
+			children = (
+				F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */,
+				F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */,
+			);
+			path = HTTPFetcher;
+			sourceTree = "<group>";
+		};
+		F47CB6E318AAF84000FD8FB9 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				F47CB6E718AAF84000FD8FB9 /* GTMOAuth2Authentication.h */,
+				F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */,
+				F47CB6E918AAF84000FD8FB9 /* GTMOAuth2SignIn.h */,
+				F47CB6EA18AAF84000FD8FB9 /* GTMOAuth2SignIn.m */,
+				F47CB6EB18AAF84000FD8FB9 /* ReleaseNotes.txt */,
+				F47CB6EC18AAF84000FD8FB9 /* Touch */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		F47CB6EC18AAF84000FD8FB9 /* Touch */ = {
+			isa = PBXGroup;
+			children = (
+				F47CB6ED18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.h */,
+				F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */,
+				F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */,
+			);
+			path = Touch;
+			sourceTree = "<group>";
+		};
 		F4EB90E518A8345C00C57BF2 /* otherFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */,
 				F4EB90E918AA113600C57BF2 /* Stripe */,
 				F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */,
 			);
@@ -352,7 +373,6 @@
 				F4EB90F718AA113600C57BF2 /* .gitignore */,
 				F4EB90F818AA113600C57BF2 /* LICENSE */,
 				F4EB90F918AA113600C57BF2 /* PaymentKit */,
-				F4EB912218AA113600C57BF2 /* PaymentKit Example */,
 				F4EB914518AA113700C57BF2 /* PaymentKit.podspec */,
 				F4EB914618AA113700C57BF2 /* README.md */,
 			);
@@ -420,65 +440,6 @@
 			path = Cards;
 			sourceTree = "<group>";
 		};
-		F4EB912218AA113600C57BF2 /* PaymentKit Example */ = {
-			isa = PBXGroup;
-			children = (
-				F4EB912318AA113600C57BF2 /* PaymentKit Example */,
-				F4EB913518AA113600C57BF2 /* PaymentKit Example.xcodeproj */,
-				F4EB913818AA113700C57BF2 /* PaymentKit Test */,
-			);
-			path = "PaymentKit Example";
-			sourceTree = "<group>";
-		};
-		F4EB912318AA113600C57BF2 /* PaymentKit Example */ = {
-			isa = PBXGroup;
-			children = (
-				F4EB912418AA113600C57BF2 /* AppDelegate.h */,
-				F4EB912518AA113600C57BF2 /* AppDelegate.m */,
-				F4EB912618AA113600C57BF2 /* Default-568h@2x.png */,
-				F4EB912718AA113600C57BF2 /* Default.png */,
-				F4EB912818AA113600C57BF2 /* Default@2x.png */,
-				F4EB912918AA113600C57BF2 /* InfoPlist.strings */,
-				F4EB912B18AA113600C57BF2 /* PaymentViewController.xib */,
-				F4EB912D18AA113600C57BF2 /* main.m */,
-				F4EB912E18AA113600C57BF2 /* PaymentKit Example-Info.plist */,
-				F4EB912F18AA113600C57BF2 /* PaymentKit Example-Prefix.pch */,
-				F4EB913018AA113600C57BF2 /* PaymentViewController.h */,
-				F4EB913118AA113600C57BF2 /* PaymentViewController.m */,
-				F4EB913218AA113600C57BF2 /* ViewController.h */,
-				F4EB913318AA113600C57BF2 /* ViewController.m */,
-				F4EB913418AA113600C57BF2 /* ViewController.xib */,
-			);
-			path = "PaymentKit Example";
-			sourceTree = "<group>";
-		};
-		F4EB913618AA113600C57BF2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F4EB918118AA113700C57BF2 /* PaymentKit Example.app */,
-				F4EB918318AA113700C57BF2 /* PaymentKit Test.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F4EB913818AA113700C57BF2 /* PaymentKit Test */ = {
-			isa = PBXGroup;
-			children = (
-				F4EB913918AA113700C57BF2 /* InfoPlist.strings */,
-				F4EB913B18AA113700C57BF2 /* PaymentKit Test-Info.plist */,
-				F4EB913C18AA113700C57BF2 /* PaymentKit Test-Prefix.pch */,
-				F4EB913D18AA113700C57BF2 /* PKCardCVCTest.h */,
-				F4EB913E18AA113700C57BF2 /* PKCardCVCTest.m */,
-				F4EB913F18AA113700C57BF2 /* PKCardExpiryTest.h */,
-				F4EB914018AA113700C57BF2 /* PKCardExpiryTest.m */,
-				F4EB914118AA113700C57BF2 /* PKCardNumberTest.h */,
-				F4EB914218AA113700C57BF2 /* PKCardNumberTest.m */,
-				F4EB914318AA113700C57BF2 /* PKTest.h */,
-				F4EB914418AA113700C57BF2 /* PKTest.m */,
-			);
-			path = "PaymentKit Test";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -524,7 +485,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = "Francis Fernandes";
+				ORGANIZATIONNAME = StowAway;
 				TargetAttributes = {
 					68BAFECC188DDBD3009738A0 = {
 						TestTargetID = 68BAFEAB188DDBD3009738A0;
@@ -542,12 +503,6 @@
 			mainGroup = 68BAFEA3188DDBD3009738A0;
 			productRefGroup = 68BAFEAD188DDBD3009738A0 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F4EB913618AA113600C57BF2 /* Products */;
-					ProjectRef = F4EB913518AA113600C57BF2 /* PaymentKit Example.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				68BAFEAB188DDBD3009738A0 /* StowAway */,
@@ -556,23 +511,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		F4EB918118AA113700C57BF2 /* PaymentKit Example.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "PaymentKit Example.app";
-			remoteRef = F4EB918018AA113700C57BF2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F4EB918318AA113700C57BF2 /* PaymentKit Test.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "PaymentKit Test.octest";
-			remoteRef = F4EB918218AA113700C57BF2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		68BAFEAA188DDBD3009738A0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -580,10 +518,9 @@
 			files = (
 				F4EB916618AA113700C57BF2 /* visa.png in Resources */,
 				F4EB915A18AA113700C57BF2 /* cvc.png in Resources */,
-				F4EB917218AA113700C57BF2 /* PaymentKit Example-Info.plist in Resources */,
+				F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */,
 				F4EB916818AA113700C57BF2 /* gradient@2x.png in Resources */,
 				F4EB914C18AA113700C57BF2 /* .gitignore in Resources */,
-				F4EB917618AA113700C57BF2 /* InfoPlist.strings in Resources */,
 				F4EB915E18AA113700C57BF2 /* discover.png in Resources */,
 				F4EB915C18AA113700C57BF2 /* diners.png in Resources */,
 				F4EB917C18AA113700C57BF2 /* PaymentKit.podspec in Resources */,
@@ -592,18 +529,12 @@
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
 				F4EB915818AA113700C57BF2 /* cvc-amex.png in Resources */,
 				F4EB916918AA113700C57BF2 /* textfield.png in Resources */,
-				F4EB916D18AA113700C57BF2 /* Default.png in Resources */,
-				F4EB916C18AA113700C57BF2 /* Default-568h@2x.png in Resources */,
-				F4EB917018AA113700C57BF2 /* PaymentViewController.xib in Resources */,
-				F4EB917718AA113700C57BF2 /* PaymentKit Test-Info.plist in Resources */,
 				F4EB916518AA113700C57BF2 /* placeholder@2x.png in Resources */,
 				F4EB915618AA113700C57BF2 /* amex.png in Resources */,
 				F4EB916018AA113700C57BF2 /* jcb.png in Resources */,
 				F4EB916A18AA113700C57BF2 /* textfield@2x.png in Resources */,
 				F4EB915B18AA113700C57BF2 /* cvc@2x.png in Resources */,
 				F4EB915918AA113700C57BF2 /* cvc-amex@2x.png in Resources */,
-				F4EB916F18AA113700C57BF2 /* InfoPlist.strings in Resources */,
-				F4EB917518AA113700C57BF2 /* ViewController.xib in Resources */,
 				F4EB916118AA113700C57BF2 /* jcb@2x.png in Resources */,
 				F4EB916418AA113700C57BF2 /* placeholder.png in Resources */,
 				F4EB916718AA113700C57BF2 /* visa@2x.png in Resources */,
@@ -612,7 +543,7 @@
 				68BAFEBA188DDBD3009738A0 /* InfoPlist.strings in Resources */,
 				F4EB916218AA113700C57BF2 /* mastercard.png in Resources */,
 				F4EB916318AA113700C57BF2 /* mastercard@2x.png in Resources */,
-				F4EB916E18AA113700C57BF2 /* Default@2x.png in Resources */,
+				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
 				68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */,
 				F4EB914D18AA113700C57BF2 /* LICENSE in Resources */,
 			);
@@ -633,31 +564,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4EB917418AA113700C57BF2 /* ViewController.m in Sources */,
 				F4EB914F18AA113700C57BF2 /* PKCard.m in Sources */,
 				F4EB915518AA113700C57BF2 /* PKView.m in Sources */,
-				F4EB916B18AA113700C57BF2 /* AppDelegate.m in Sources */,
-				F4EB917318AA113700C57BF2 /* PaymentViewController.m in Sources */,
 				F4EB915118AA113700C57BF2 /* PKCardExpiry.m in Sources */,
-				F4EB917918AA113700C57BF2 /* PKCardExpiryTest.m in Sources */,
+				F47CB71E18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m in Sources */,
+				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
 				F4EB914718AA113700C57BF2 /* STPCard.m in Sources */,
 				68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */,
+				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F4EB914A18AA113700C57BF2 /* Stripe.m in Sources */,
+				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
 				F4EB914E18AA113700C57BF2 /* PKAddressZip.m in Sources */,
-				F4EB917118AA113700C57BF2 /* main.m in Sources */,
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
 				F4EB915418AA113700C57BF2 /* PKUSAddressZip.m in Sources */,
 				F4EB914918AA113700C57BF2 /* STPView.m in Sources */,
 				F4EB915318AA113700C57BF2 /* PKTextField.m in Sources */,
+				F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */,
+				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,
 				F4EB914818AA113700C57BF2 /* STPToken.m in Sources */,
-				F4EB90E818A9EC5900C57BF2 /* ReceiptEmailViewController.m in Sources */,
 				F4EB914B18AA113700C57BF2 /* StripeError.m in Sources */,
-				F4EB917B18AA113700C57BF2 /* PKTest.m in Sources */,
-				F4EB917A18AA113700C57BF2 /* PKCardNumberTest.m in Sources */,
 				68BAFEBC188DDBD3009738A0 /* main.m in Sources */,
 				F4EB915018AA113700C57BF2 /* PKCardCVC.m in Sources */,
 				F4EB915218AA113700C57BF2 /* PKCardNumber.m in Sources */,
-				F4EB917818AA113700C57BF2 /* PKCardCVCTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,30 +628,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				68BAFED8188DDBD3009738A0 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		F4EB912918AA113600C57BF2 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4EB912A18AA113600C57BF2 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		F4EB912B18AA113600C57BF2 /* PaymentViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4EB912C18AA113600C57BF2 /* en */,
-			);
-			name = PaymentViewController.xib;
-			sourceTree = "<group>";
-		};
-		F4EB913918AA113700C57BF2 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4EB913A18AA113700C57BF2 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
