@@ -383,8 +383,23 @@ static GTMOAuth2Keychain* gGTMOAuth2DefaultKeychain = nil;
 
 - (void)viewDidLoad {
   [self setUpNavigation];
+    [self.navigationController.navigationBar setTitleTextAttributes:@   {NSForegroundColorAttributeName : [UIColor blueColor]}];
+    self.navigationController.navigationBar.translucent = NO;
+    
+    UINavigationBar *naviBarObj = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, 63)];
+    [self.view addSubview:naviBarObj];
+    
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Cancel", nil)] style:UIBarButtonItemStyleBordered target:self
+                                                                 action:@selector(cancelGdriveSignIn:)];
+    UINavigationItem *navigItem = [[UINavigationItem alloc] initWithTitle:@"Google Authentication"];
+    navigItem.rightBarButtonItem = cancelItem;
+    naviBarObj.items = [NSArray arrayWithObjects: navigItem,nil];
 }
 
+-(void)cancelGdriveSignIn:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^(void){}];
+}
 - (void)setUpNavigation {
   rightBarButtonItem_.customView = navButtonsView_;
   self.navigationItem.rightBarButtonItem = rightBarButtonItem_;
