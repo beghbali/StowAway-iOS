@@ -110,14 +110,53 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
     
-    NSURLResponse *response;
-    NSError *error;
+   // NSURLResponse *response;
+    //NSError *error;
     
-    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession * session = [NSURLSession sessionWithConfiguration:config];
+
+    /*
+     
+     sessionConfiguration.HTTPAdditionalHeaders = @{
+     @"api-key"       : @"API_KEY",
+     };
+
+     */
+    NSURLSessionDataTask *postDataTask = [session
+                                          dataTaskWithRequest:request
+                                            completionHandler:^(NSData *jsonData,
+                                                                NSURLResponse *response,
+                                                                NSError *error)
+    {
+
+   /* NSURLSessionUploadTask *uploadTask = [session
+                                          uploadTaskWithRequest:request
+                                          fromData:nil
+                                          completionHandler:^(NSData *jsonData,
+                                                              NSURLResponse *response,
+                                                              NSError *error)
+    {
+    */
+        NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+        
+        NSLog(@"httpResp.statusCode %d, error %@",httpResp.statusCode , error );
+
+        if (!error && httpResp.statusCode == 201)   //201=post successful
+        {
+            
+            NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
+            
+            NSLog(@"results: %@, error %@", results, error);
+        } else {
+            NSLog(@"ERROR !!" );
+        }
+    }];
     
- //   NSDictionary *results = jsonData ? [NSJSONSerialization JSONObjectWithData:jsonData: optind:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    [postDataTask resume];
+   // NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
+    
     /*End of Code for Adding User*/
     
     /*  Example for JSON data
