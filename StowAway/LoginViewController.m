@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
 @property (strong, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property BOOL segueAlreadyDone;
 @property BOOL gotLogInUserInfo;
 @end
 
@@ -37,12 +36,7 @@
 
 -( void) moveToEmailRegistration
 {
-    if (!self.segueAlreadyDone) {
-        self.segueAlreadyDone = YES;
-        [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
-    }
-    else
-        NSLog(@"segue already done");
+       [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
 }
 
 
@@ -127,7 +121,6 @@
     self.profilePictureView.profileID = nil;
     self.nameLabel.text = @"";
     self.facebookLoginStatus = NO;
-    self.segueAlreadyDone = NO;
 }
 
 // Handle possible errors that can occur during login
