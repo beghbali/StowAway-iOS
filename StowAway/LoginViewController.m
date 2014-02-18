@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "ReceiptEmailViewController.h"
 #import "StowawayServerCommunicator.h"
+#import "StowawayConstants.h"
 
 @interface LoginViewController () <StowawayServerCommunicatorDelegate>
 
@@ -25,6 +26,34 @@
 - (void)gotServerResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    
+    id nsNullObj = (id)[NSNull null];
+    //write user data to userdefaults
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+
+    NSString * userEmail = [data objectForKey:kUserEmail];
+    if ( userEmail != nsNullObj ) [standardDefaults setObject: userEmail          forKey:kUserEmail];
+    
+    NSString * userEmailProvider = [data objectForKey:kUserEmailProvider];
+    if ( userEmailProvider != nsNullObj ) [standardDefaults setObject: userEmailProvider  forKey:kUserEmailProvider];
+
+    NSString * fbId = [data objectForKey:kFbId];
+    if ( fbId != nsNullObj ) [standardDefaults setObject: fbId               forKey:kFbId];
+    
+    NSString * publicId = [data objectForKey:kPublicId];
+    if ( publicId != nsNullObj ) [standardDefaults setObject: publicId           forKey:kPublicId];
+    
+    NSString * firstName = [data objectForKey:kFirstName];
+    if ( firstName != nsNullObj ) [standardDefaults setObject: firstName          forKey:kFirstName];
+    
+    NSString * lastName = [data objectForKey:kLastName];
+    if ( lastName != nsNullObj ) [standardDefaults setObject: lastName           forKey:kLastName];
+    
+    NSString * stowawayEmail = [data objectForKey:kStowawayEmail];
+    if ( stowawayEmail != nsNullObj ) [standardDefaults setObject: stowawayEmail      forKey:kStowawayEmail];
+    
+    [standardDefaults synchronize];
+     
     [self moveToEmailRegistration];
 }
 
