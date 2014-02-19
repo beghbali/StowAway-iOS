@@ -127,6 +127,8 @@
     NSString *fbAccessToken = [[[FBSession activeSession] accessTokenData] accessToken];
     NSString *provider = @"facebook";
     NSString * fbImageURL = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", user.id];
+   
+#warning fixIt - blocking the main Q
     self.fbImage = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString: fbImageURL]]];
 
     NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"%@\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\"}",

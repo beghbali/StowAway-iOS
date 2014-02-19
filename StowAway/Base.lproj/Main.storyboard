@@ -217,10 +217,10 @@
             </objects>
             <point key="canvasLocation" x="272" y="-789"/>
         </scene>
-        <!--Payment View Controller - Payment-->
+        <!--View Controller - Payment-->
         <scene sceneID="rF1-fA-BHQ">
             <objects>
-                <viewController id="Gqh-qZ-Ggc" customClass="PaymentViewController" sceneMemberID="viewController">
+                <viewController id="Gqh-qZ-Ggc" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wD6-7p-ybq"/>
                         <viewControllerLayoutGuide type="bottom" id="jYz-Ep-B6V"/>

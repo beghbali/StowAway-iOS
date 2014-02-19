@@ -8,8 +8,9 @@
 
 #import "ReceiptEmailViewController.h"
 #import "LoginViewController.h"
+#import "GoogleAuthenticator.h"
 
-@interface ReceiptEmailViewController () <UITextFieldDelegate>
+@interface ReceiptEmailViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate>
 
 @property (strong, nonatomic)  NSString * email;
 @property (strong, nonatomic)  NSString * emailProvider;
@@ -173,8 +174,18 @@
     }
 }
 
+- (void)googleAuthenticatorResult: (NSError *)error
+{
+    NSLog(@"%s::: error %@", __func__, error);
+}
+
 
 - (IBAction)authenticateWithGoogle:(UIButton *)sender {
+    
+    GoogleAuthenticator * googleAuthenticator = [[GoogleAuthenticator alloc]init];
+    googleAuthenticator.googleAuthDelegate = self;
+    
+    [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
 }
 
 

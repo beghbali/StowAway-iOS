@@ -21,6 +21,7 @@
 		68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
 		68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFED7188DDBD3009738A0 /* InfoPlist.strings */; };
 		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
+		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -105,6 +106,8 @@
 		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
 		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
+		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
+		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
 		F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayServerCommunicator.h; sourceTree = "<group>"; };
 		F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayServerCommunicator.m; sourceTree = "<group>"; };
 		F451B6C518B3333400CF59BA /* StowawayConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayConstants.h; sourceTree = "<group>"; };
@@ -254,14 +257,16 @@
 				68BAFEC1188DDBD3009738A0 /* Main.storyboard */,
 				F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */,
 				F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */,
+				F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */,
+				F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */,
 				68BAFEC4188DDBD3009738A0 /* LoginViewController.h */,
 				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
-				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
-				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
 				F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */,
 				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
 				F47CB71C18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.h */,
 				F47CB71D18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m */,
+				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
+				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
 				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
 				F451B6C618B3333400CF59BA /* StowawayConstants.m */,
 				68BAFEC7188DDBD3009738A0 /* Images.xcassets */,
@@ -577,6 +582,7 @@
 				F4EB914F18AA113700C57BF2 /* PKCard.m in Sources */,
 				F4EB915518AA113700C57BF2 /* PKView.m in Sources */,
 				F4EB915118AA113700C57BF2 /* PKCardExpiry.m in Sources */,
+				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
 				F47CB71E18AAFBE300FD8FB9 /* GoogleAuthenticatorViewController.m in Sources */,
 				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
 				F4EB914718AA113700C57BF2 /* STPCard.m in Sources */,
