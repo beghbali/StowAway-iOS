@@ -65,18 +65,19 @@
                                               
                                               NSLog(@"httpResp.statusCode %d, error %@",httpResp.statusCode , error );
                                               
-                                              if (!error  &&
-                                                  ([method isEqualToString: @"POST"] && (httpResp.statusCode == 201)))   //201=post successful
+                                              if (error ||
+                                                  ([method isEqualToString: @"POST"] && (httpResp.statusCode != 201)) ||
+                                                  ([method isEqualToString: @"PUT"] && (httpResp.statusCode != 200)) )   //201=post successful
                                               {
-                                                 
+                                                  NSLog(@"ERROR !!" );
+                                                  [self.sscDelegate gotServerResponse:nil error:error];
+                                                  
+                                              } else
+                                              {
                                                   NSDictionary *results = jsonData ?
                                                   [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
                                                   
                                                   [self.sscDelegate gotServerResponse:results error:error];
-                                                  
-                                              } else {
-                                                  NSLog(@"ERROR !!" );
-                                                  [self.sscDelegate gotServerResponse:nil error:error];
                                               }
                                           }];
     

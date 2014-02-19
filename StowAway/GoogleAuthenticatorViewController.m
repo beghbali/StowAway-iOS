@@ -34,6 +34,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 - (void)gotServerResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 
@@ -110,17 +113,17 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     {
         //SUCCESS - move to the next screen - ie credit card
       
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Success Authorizing with Google"
-                                                         message:[self.googleAuth accessToken]
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
+        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", self.stowawayPublicId];
         
-        [alert show];
+        NSString *userdata = [NSString stringWithFormat:@"{\"gmail_access_token\":\"%@\", \"gmail_refresh_token\":\"%@\"}",
+                              self.googleAuth.accessToken, self.googleAuth.refreshToken];
+        
+        
+        
+        StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+        sscommunicator.sscDelegate = self;
+        [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
     }
-
-    [self.navigationController popViewControllerAnimated:YES];
-
     
 }
 

@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property BOOL gotLogInUserInfo;
+@property UIImage * fbImage;
 @end
 
 @implementation LoginViewController
@@ -51,6 +52,12 @@
     
     NSString * stowawayEmail = [data objectForKey:kStowawayEmail];
     if ( stowawayEmail != nsNullObj ) [standardDefaults setObject: stowawayEmail      forKey:kStowawayEmail];
+    
+    /*
+    UIImage *contactImage = self.fbImage;
+    NSData *imageData = UIImageJPEGRepresentation(contactImage, 100);
+    [standardDefaults setObject:imageData forKey: @"fbImage"];
+    */
     
     [standardDefaults synchronize];
      
@@ -119,9 +126,11 @@
     NSDate *fbAccessTokenExpirationDate = [[[FBSession activeSession] accessTokenData] expirationDate];
     NSString *fbAccessToken = [[[FBSession activeSession] accessTokenData] accessToken];
     NSString *provider = @"facebook";
-    
-    NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"http://graph.facebook.com/%@/picture?type=square\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\"}",
-                          user.first_name, user.last_name, user.id, user.location.name, user.username, fbAccessToken, fbAccessTokenExpirationDate];
+    NSString * fbImageURL = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", user.id];
+    self.fbImage = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString: fbImageURL]]];
+
+    NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"%@\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\"}",
+                          user.first_name, user.last_name, fbImageURL, user.location.name, user.username, fbAccessToken, fbAccessTokenExpirationDate];
     
     NSString *post = [NSString stringWithFormat:@"{\"uid\":%@,\"provider\":\"%@\",\"user\":%@}", user.id, provider, userdata];
     
