@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "STPView.h"
 
-@interface PaymentViewController : UIViewController <STPViewDelegate>
+@interface PaymentViewController : UIViewController
 
-@property STPView* stripeView;
 
 @end

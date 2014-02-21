@@ -8,7 +8,6 @@
 
 #import "GoogleAuthenticator.h"
 
-#import "GoogleAuthenticatorViewController.h"
 #include "GTMOAuth2Authentication.h"
 #include "GTMOAuth2ViewControllerTouch.h"
 #include "GTMOAuth2SignIn.h"

@@ -408,6 +408,8 @@ finishedWithFetcher:(GTMHTTPFetcher *)fetcher
   }
   // tell the delegate that we did handle this request
   return YES;
+    
+#warning fixit the white window with copy code text should be dismissed
 }
 
 // entry point for the window controller to tell us when a new page title has

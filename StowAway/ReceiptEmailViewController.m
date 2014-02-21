@@ -30,6 +30,8 @@
 
 -(void) viewDidLoad
 {
+    [super viewDidLoad];
+    
     //hide labels, buttons and text view
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
@@ -42,6 +44,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+
     //auto bring up keyboard to enter email
     [self.emailTextField becomeFirstResponder];
     
@@ -92,9 +96,7 @@
     
     NSArray *components = [email componentsSeparatedByString: @"@"];
     
-    NSLog(@"%@",components);
     NSString *domain = [components objectAtIndex:1];
-    NSLog(@"%@ -- domain %@",components, domain);
     
     provider = [[domain componentsSeparatedByString:@"."] objectAtIndex:0];
     
@@ -151,8 +153,6 @@
 
 - (IBAction)mailProviderSelected:(UIButton *)sender
 {
-    NSLog(@" ******** selected %@ ******", sender);
-    
     if ([sender.titleLabel.text isEqualToString:@"Google"]) {
         NSLog(@"google selected");
         sender.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
