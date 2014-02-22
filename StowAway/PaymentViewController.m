@@ -24,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *expiryField;
 @property (weak, nonatomic) IBOutlet UITextField *cvvField;
 @property (weak, nonatomic) IBOutlet UITextField *zipField;
-
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneBarButton;
 
 @end
 
@@ -35,6 +35,8 @@ UITextRange * __previousCardNumberSelection;
 NSString * __previousExpiryTextFieldContent;
 UITextRange * __previousExpirySelection;
 NSError * error = Nil;
+
+char isReadyToSavePayment = 0;
 
 - (void)viewDidLoad
 {
@@ -47,7 +49,7 @@ NSError * error = Nil;
                forControlEvents:UIControlEventEditingChanged];
     
     self.stripeCard = [[STPCard alloc] init];
-
+    
 }
 
 
@@ -299,70 +301,111 @@ NSError * error = Nil;
     NSInteger year = 0;
     NSUInteger fakeCursor = 0;
 
-    if ( textField.text.length == 0 ) {
-        isTextFieldValueValid = NO;
-        goto updateTextBoxColor;
-    }
-    
     switch (textField.tag)
     {
             //NAME
         case 1:
-            self.stripeCard.name = textField.text;
+            if ( textField.text.length )
+            {
+                isReadyToSavePayment = isReadyToSavePayment | (1 << 0);
+                self.stripeCard.name = textField.text;
+            }
+            else
+            {
+                isTextFieldValueValid = NO;
+                isReadyToSavePayment = isReadyToSavePayment & ~(1 << 0);
+            }
             break;
             
             //CARD NUMBER
         case 2:
-            if (textField.text.length < 18)
+            if ( textField.text.length < 19 )
+            {
+                isReadyToSavePayment = isReadyToSavePayment & ~(1 << 1);
                 isTextFieldValueValid = NO;
+            }
             else
+            {
                 self.stripeCard.number = [self removeNonDigits:textField.text
                                             andPreserveCursorPosition:&fakeCursor];
+                isReadyToSavePayment = isReadyToSavePayment | (1 << 1);
+            }
             break;
             
             //EXPIRY
         case 3:
-            if ( [self isExpiryDateFieldValid:textField.text andExtractMonth:&month andYear:&year] )
+            if ( textField.text.length && [self isExpiryDateFieldValid:textField.text andExtractMonth:&month andYear:&year] )
             {
+                isReadyToSavePayment = isReadyToSavePayment | (1 << 2);
                 self.stripeCard.expMonth = month;
                 self.stripeCard.expYear = year;
             }
             else
+            {
+                isReadyToSavePayment = isReadyToSavePayment & ~(1 << 2);
                 isTextFieldValueValid = NO;
+            }
             break;
             
             //CVC
         case 4:
             if ( ((textField.text.length < 4) && [self isAmexCard:self.stripeCard.number]) || (textField.text.length < 3) )
+            {
                 isTextFieldValueValid = NO;
+                isReadyToSavePayment = isReadyToSavePayment & ~(1 << 3);
+            }
             else
+            {
                 self.stripeCard.cvc = textField.text;
-
+                isReadyToSavePayment = isReadyToSavePayment | (1 << 3);
+            }
             break;
             
             //ZIP
         case 5:
             if ( textField.text.length < 5 )
+            {
                 isTextFieldValueValid = NO;
+                isReadyToSavePayment = isReadyToSavePayment & ~(1 << 4);
+            }
             else
+            {
                 self.stripeCard.addressZip = textField.text;
-          
+                isReadyToSavePayment = isReadyToSavePayment | (1 << 4);
+            }
             break;
             
         default:
             break;
     }
     
-updateTextBoxColor:
-    NSLog(@"[textFieldDidEndEditing] tag %d, %@, isTextFieldValueValid %d", textField.tag, textField.text, isTextFieldValueValid);
+    NSLog(@"[textFieldDidEndEditing] tag %d, %@, isTextFieldValueValid %d, isReadyToSavePayment 0x%x", textField.tag, textField.text, isTextFieldValueValid, isReadyToSavePayment);
 
     textField.layer.borderWidth = 1.0f;
 
     if ( isTextFieldValueValid )
+    {
         textField.layer.borderColor = [[UIColor greenColor] CGColor];
+        isTextFieldValueValid++;
+    }
     else
+    {
         textField.layer.borderColor = [[UIColor redColor] CGColor];
+        isTextFieldValueValid ? isTextFieldValueValid-- : isTextFieldValueValid;
+    }
     
+    if ( isReadyToSavePayment == (1<<5)-1 )
+        self.saveButton.enabled = YES;
+    else
+        self.saveButton.enabled = NO;
+    
+}
+
+
+- (IBAction)doneBarButtonTapped:(UIBarButtonItem *)sender
+{
+    //hide keyboard
+    [self.view endEditing:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -376,6 +419,48 @@ updateTextBoxColor:
     return YES;
 }
 
+-(void)keyboardWillShow:(NSNotification *)aNotification
+{
+    self.doneBarButton.enabled = YES;
+}
+
+
+-(void)keyboardWillHide:(NSNotification *)aNotification
+{
+    self.doneBarButton.enabled = NO;
+    
+}
+
+-(void) viewWillAppear: (BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self
+           selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    [nc addObserver:self
+           selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
+    
+    [self.nameField becomeFirstResponder];
+}
+
+- (void) viewWillDisappear: (BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self
+                  name:UIKeyboardWillShowNotification
+                object:nil];
+    [nc removeObserver:self
+                  name:UIKeyboardWillHideNotification
+                object:nil];
+}
+
 - (IBAction)saveButtonTapped:(UIButton *)sender
 {
     self.stripeCard.name = self.nameField.text;
@@ -384,13 +469,6 @@ updateTextBoxColor:
 }
 
 
--(void) setCard
-{
-    STPCard *card = [[STPCard alloc] init];
-    card.number = @"4242424242424242";
-    card.expMonth = 12;
-    card.expYear = 2020;
-}
 
 
 @end

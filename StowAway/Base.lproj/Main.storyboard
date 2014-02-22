@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Gqh-qZ-Ggc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qe4-4s-UEE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -229,7 +229,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Link Credit Card that you will use to pay for the shared rides" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="r4l-AW-ESE">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit Card that you will use to pay for the shared rides" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="r4l-AW-ESE">
                                 <rect key="frame" x="20" y="74" width="280" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -239,7 +239,7 @@
                                 <rect key="frame" x="20" y="142" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Evv-qH-Np5"/>
+                                    <constraint firstAttribute="height" constant="30" id="gJR-CE-2hm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" keyboardType="namePhonePad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -251,7 +251,7 @@
                                 <rect key="frame" x="20" y="180" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="IPS-L8-IAs"/>
+                                    <constraint firstAttribute="height" constant="30" id="jAG-t9-hrD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -263,8 +263,8 @@
                                 <rect key="frame" x="20" y="218" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="bQe-tk-XN8"/>
-                                    <constraint firstAttribute="width" constant="66" id="uQ5-Dd-RbG"/>
+                                    <constraint firstAttribute="height" constant="30" id="P0v-i5-dek"/>
+                                    <constraint firstAttribute="width" constant="66" id="u0h-qB-ip5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -276,7 +276,7 @@
                                 <rect key="frame" x="112" y="218" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="66" id="L8G-26-CKo"/>
+                                    <constraint firstAttribute="width" constant="66" id="pj3-LW-lek"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -293,9 +293,14 @@
                                     <outlet property="delegate" destination="Gqh-qZ-Ggc" id="ERB-Be-GGe"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOm-3h-qW0">
-                                <rect key="frame" x="128" y="389" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOm-3h-qW0">
+                                <rect key="frame" x="102" y="338" width="87" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="9Tq-aG-jaz"/>
+                                    <constraint firstAttribute="width" constant="87" id="z4c-p6-Zpm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <state key="normal" title="Save">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -306,31 +311,38 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jYz-Ep-B6V" firstAttribute="top" secondItem="WOm-3h-qW0" secondAttribute="bottom" constant="61" id="0Ec-rA-vtv"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="leading" secondItem="1t6-SR-bJq" secondAttribute="leading" id="3A4-oN-JCN"/>
-                            <constraint firstItem="jui-uf-3g3" firstAttribute="leading" secondItem="5hg-3C-t2E" secondAttribute="trailing" constant="25" id="6Gl-8Z-lux"/>
-                            <constraint firstItem="jui-uf-3g3" firstAttribute="baseline" secondItem="5hg-3C-t2E" secondAttribute="baseline" id="9qd-bu-sBh"/>
-                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="leading" secondItem="1t6-SR-bJq" secondAttribute="leading" id="AgO-q3-2Rs"/>
-                            <constraint firstItem="xqm-FW-WYl" firstAttribute="baseline" secondItem="5hg-3C-t2E" secondAttribute="baseline" id="BnO-10-11c"/>
-                            <constraint firstItem="1t6-SR-bJq" firstAttribute="trailing" secondItem="ljf-ZJ-HR7" secondAttribute="trailing" id="G9M-bX-Q75"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="top" secondItem="wD6-7p-ybq" secondAttribute="bottom" constant="10" id="HnA-fo-5op"/>
-                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="top" secondItem="1t6-SR-bJq" secondAttribute="bottom" constant="8" symbolic="YES" id="J9x-JV-uoX"/>
-                            <constraint firstItem="jYz-Ep-B6V" firstAttribute="top" secondItem="xqm-FW-WYl" secondAttribute="bottom" constant="232" id="RRK-Kb-n0b"/>
-                            <constraint firstItem="xqm-FW-WYl" firstAttribute="top" secondItem="ljf-ZJ-HR7" secondAttribute="bottom" constant="8" symbolic="YES" id="UsW-Uv-qRu"/>
-                            <constraint firstItem="5hg-3C-t2E" firstAttribute="centerX" secondItem="WOm-3h-qW0" secondAttribute="centerX" id="VyY-PA-fE6"/>
-                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="trailing" secondItem="jui-uf-3g3" secondAttribute="trailing" id="d0Q-8y-UD8"/>
-                            <constraint firstAttribute="trailing" secondItem="r4l-AW-ESE" secondAttribute="trailing" constant="20" symbolic="YES" id="dhn-Lo-sOx"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="eug-FJ-OyZ"/>
-                            <constraint firstItem="1t6-SR-bJq" firstAttribute="top" secondItem="r4l-AW-ESE" secondAttribute="bottom" constant="8" symbolic="YES" id="h3w-Kt-NRN"/>
-                            <constraint firstItem="xqm-FW-WYl" firstAttribute="leading" secondItem="ljf-ZJ-HR7" secondAttribute="leading" id="jpH-PX-okm"/>
-                            <constraint firstItem="5hg-3C-t2E" firstAttribute="leading" secondItem="xqm-FW-WYl" secondAttribute="trailing" constant="26" id="ple-lt-k0b"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" constant="20" symbolic="YES" id="zyR-3o-PQe"/>
+                            <constraint firstItem="xqm-FW-WYl" firstAttribute="leading" secondItem="ljf-ZJ-HR7" secondAttribute="leading" id="6zE-hy-Ldr"/>
+                            <constraint firstItem="xqm-FW-WYl" firstAttribute="top" secondItem="ljf-ZJ-HR7" secondAttribute="bottom" constant="8" symbolic="YES" id="AJa-wG-jRf"/>
+                            <constraint firstItem="jYz-Ep-B6V" firstAttribute="top" secondItem="xqm-FW-WYl" secondAttribute="bottom" constant="232" id="DKt-Q0-u57"/>
+                            <constraint firstItem="1t6-SR-bJq" firstAttribute="top" secondItem="r4l-AW-ESE" secondAttribute="bottom" constant="8" symbolic="YES" id="ETa-kd-hI9"/>
+                            <constraint firstAttribute="trailing" secondItem="r4l-AW-ESE" secondAttribute="trailing" constant="20" symbolic="YES" id="HzU-Zo-4xx"/>
+                            <constraint firstItem="1t6-SR-bJq" firstAttribute="leading" secondItem="r4l-AW-ESE" secondAttribute="leading" id="Ilg-4D-ec9"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="top" secondItem="1t6-SR-bJq" secondAttribute="bottom" constant="8" symbolic="YES" id="R6p-wX-F0Q"/>
+                            <constraint firstItem="5hg-3C-t2E" firstAttribute="leading" secondItem="xqm-FW-WYl" secondAttribute="trailing" constant="26" id="RvG-gC-v6Q"/>
+                            <constraint firstItem="1t6-SR-bJq" firstAttribute="leading" secondItem="ljf-ZJ-HR7" secondAttribute="leading" id="UQJ-qb-D1q"/>
+                            <constraint firstItem="r4l-AW-ESE" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" constant="20" symbolic="YES" id="WAL-12-69v"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="leading" secondItem="5hg-3C-t2E" secondAttribute="trailing" constant="25" id="WS5-5x-bCy"/>
+                            <constraint firstItem="r4l-AW-ESE" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="XHY-yR-Mr2"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="ZpJ-9g-jf4"/>
+                            <constraint firstItem="WOm-3h-qW0" firstAttribute="centerX" secondItem="5hg-3C-t2E" secondAttribute="centerX" id="aNF-gK-OqY"/>
+                            <constraint firstItem="5hg-3C-t2E" firstAttribute="baseline" secondItem="xqm-FW-WYl" secondAttribute="baseline" id="eUZ-oG-1sC"/>
+                            <constraint firstItem="r4l-AW-ESE" firstAttribute="top" secondItem="wD6-7p-ybq" secondAttribute="bottom" constant="10" id="hGw-Om-4m9"/>
+                            <constraint firstItem="WOm-3h-qW0" firstAttribute="top" secondItem="5hg-3C-t2E" secondAttribute="bottom" constant="90" id="mYb-3n-1IF"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="baseline" secondItem="5hg-3C-t2E" secondAttribute="baseline" id="oUS-Tq-LUz"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="trailing" secondItem="ljf-ZJ-HR7" secondAttribute="trailing" id="pPB-FZ-0dy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Payment" id="9RZ-XH-n63"/>
+                    <navigationItem key="navigationItem" title="Payment" id="9RZ-XH-n63">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Done" id="m8A-sJ-Bau">
+                            <connections>
+                                <action selector="doneBarButtonTapped:" destination="Gqh-qZ-Ggc" id="HT4-Q8-stD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="cardNumberField" destination="ljf-ZJ-HR7" id="Pr3-M8-rU7"/>
                         <outlet property="cvvField" destination="5hg-3C-t2E" id="NG3-Jh-7nw"/>
+                        <outlet property="doneBarButton" destination="m8A-sJ-Bau" id="HWw-Th-XQT"/>
                         <outlet property="expiryField" destination="xqm-FW-WYl" id="kgg-iX-x2h"/>
                         <outlet property="nameField" destination="1t6-SR-bJq" id="KoN-5p-ndd"/>
                         <outlet property="saveButton" destination="WOm-3h-qW0" id="hu0-Eb-ReD"/>
