@@ -8,12 +8,13 @@
 
 #import "PaymentViewController.h"
 #import "Stripe.h"
+#import "StowawayServerCommunicator.h"
 
 //pk_test_6pRNASCoBOKtIshFeQd4XMUh
 #define STRIPE_TEST_PUBLIC_KEY @"your_test_publishable_api_key"
 #define STRIPE_TEST_POST_URL
 
-@interface PaymentViewController() <UITextFieldDelegate>
+@interface PaymentViewController() <UITextFieldDelegate, StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic) STPCard* stripeCard;
 
@@ -51,6 +52,7 @@ char isReadyToSavePayment = 0;
     self.stripeCard = [[STPCard alloc] init];
     
 }
+
 
 
 /*

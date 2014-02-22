@@ -43,7 +43,7 @@
 
     NSURLSession *session =   [NSURLSession sessionWithConfiguration:sessionConfiguration
                                                             delegate:self
-                                                       delegateQueue: [NSOperationQueue mainQueue]];
+                                                       delegateQueue: nil];
 
     
     /*
@@ -72,14 +72,16 @@
                                                   ([method isEqualToString: @"PUT"] && (httpResp.statusCode != 200)) )   //201=post successful
                                               {
                                                   NSLog(@"ERROR !!" );
-                                                  [self.sscDelegate gotServerResponse:nil error:error];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      [self.sscDelegate gotServerResponse:nil error:error];});
                                                   
                                               } else
                                               {
                                                   NSDictionary *results = jsonData ?
                                                   [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
                                                   
-                                                  [self.sscDelegate gotServerResponse:results error:error];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      [self.sscDelegate gotServerResponse:results error:error];});
                                               }
                                           }];
     
