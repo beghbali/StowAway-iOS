@@ -24,7 +24,7 @@
 
 @implementation LoginViewController
 
-- (void)gotServerResponse:(NSDictionary *)data error:(NSError *)sError;
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
     

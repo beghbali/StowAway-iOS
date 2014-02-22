@@ -9,9 +9,10 @@
 #import "PaymentViewController.h"
 #import "Stripe.h"
 #import "StowawayServerCommunicator.h"
+#import "StowawayConstants.h"
 
 //pk_test_6pRNASCoBOKtIshFeQd4XMUh
-#define STRIPE_TEST_PUBLIC_KEY @"your_test_publishable_api_key"
+#define STRIPE_TEST_PUBLIC_KEY @"pk_test_6pRNASCoBOKtIshFeQd4XMUh"
 #define STRIPE_TEST_POST_URL
 
 @interface PaymentViewController() <UITextFieldDelegate, StowawayServerCommunicatorDelegate>
@@ -463,13 +464,56 @@ char isReadyToSavePayment = 0;
                 object:nil];
 }
 
-- (IBAction)saveButtonTapped:(UIButton *)sender
+- (void)handleError:(NSError *)error
 {
-    self.stripeCard.name = self.nameField.text;
-    
-    NSLog(@"CARD:: %@, %@, %d %d, %@, %@", self.stripeCard.name, self.stripeCard.number, self.stripeCard.expMonth, self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip);
+    NSLog(@"Received error %@", error);
+
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Oops.."
+                                                      message:[error localizedDescription]
+                                                     delegate:nil
+                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                            otherButtonTitles:nil];
+    [message show];
 }
 
+- (void)handleToken:(STPToken *)token
+{
+    NSLog(@"Received token %@", token.tokenId);
+    
+    NSString * stowawayPublicId = [[NSUserDefaults standardUserDefaults] objectForKey:kPublicId];
+    NSLog(@"\n** %s %@: %@**\n", __PRETTY_FUNCTION__, kPublicId, stowawayPublicId);
+    
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", stowawayPublicId];
+    
+    NSString *userdata = [NSString stringWithFormat:@"{\"stripe_token\":\"%@\"}", token.tokenId];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
+}
+
+- (IBAction)saveButtonTapped:(UIButton *)sender
+{
+    NSLog(@"CARD:: %@, %@, %d %d, %@, %@", self.stripeCard.name, self.stripeCard.number, self.stripeCard.expMonth, self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip);
+ 
+    [Stripe createTokenWithCard:self.stripeCard
+                 publishableKey: STRIPE_TEST_PUBLIC_KEY
+                     completion:^(STPToken *token, NSError *error) {
+                         if (error) {
+                             [self handleError:error];
+                         } else {
+                             [self handleToken:token]; // Hooray!
+                         }
+                     }];
+}
+
+
+
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
+{
+    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    
+}
 
 
 

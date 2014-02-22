@@ -10,7 +10,7 @@
 
 @protocol StowawayServerCommunicatorDelegate <NSObject>
 
-- (void)gotServerResponse:(NSDictionary *)data error:(NSError *)error;
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)error;
 
 @end
 

@@ -73,7 +73,7 @@
                                               {
                                                   NSLog(@"ERROR !!" );
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      [self.sscDelegate gotServerResponse:nil error:error];});
+                                                      [self.sscDelegate stowawayServerCommunicatorResponse:nil error:error];});
                                                   
                                               } else
                                               {
@@ -81,7 +81,7 @@
                                                   [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
                                                   
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      [self.sscDelegate gotServerResponse:results error:error];});
+                                                      [self.sscDelegate stowawayServerCommunicatorResponse:results error:error];});
                                               }
                                           }];
     

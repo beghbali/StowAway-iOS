@@ -155,7 +155,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
 }
 
-- (void)gotServerResponse:(NSDictionary *)data error:(NSError *)sError;
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
     
