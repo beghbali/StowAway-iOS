@@ -11,8 +11,13 @@
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
 
-//pk_test_6pRNASCoBOKtIshFeQd4XMUh
-#define STRIPE_TEST_PUBLIC_KEY @"pk_test_6pRNASCoBOKtIshFeQd4XMUh"
+/*
+
+Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
+  @"pk_test_6pRNASCoBOKtIshFeQd4XMUh"
+*/
+
+#define STRIPE_TEST_PUBLIC_KEY @"pk_test_RKqdkvUwBndT8tf7t65ft2TV"
 #define STRIPE_TEST_POST_URL
 
 @interface PaymentViewController() <UITextFieldDelegate, StowawayServerCommunicatorDelegate>

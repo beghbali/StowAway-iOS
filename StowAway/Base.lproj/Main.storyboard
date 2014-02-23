@@ -97,17 +97,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where do your UBER receipts go?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
-                                <rect key="frame" x="20" y="68" width="280" height="54"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Where do your UBER receipts go?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="wKB-x6-bAU">
+                                <rect key="frame" x="20" y="63" width="280" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="YCU-Wf-JYF"/>
+                                    <constraint firstAttribute="height" constant="54" id="9LZ-9k-umD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="pirate@gmail.com" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
-                                <rect key="frame" x="19" y="145" width="280" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="pirate@gmail.com" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3Kr-F5-29m">
+                                <rect key="frame" x="21" y="125" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -115,9 +115,13 @@
                                     <outlet property="delegate" destination="FZI-WL-nLp" id="HAh-gt-4Kq"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00E-pe-7If">
-                                <rect key="frame" x="22" y="415" width="277" height="53"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00E-pe-7If">
+                                <rect key="frame" x="46" y="252" width="213" height="53"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="53" id="uV6-8f-xRJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Authenticate with Google">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -126,41 +130,36 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2o-fV-4Ko">
-                                <rect key="frame" x="56" y="227" width="72" height="30"/>
+                                <rect key="frame" x="46" y="220" width="72" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="XCA-eR-SUM"/>
+                                </constraints>
                                 <state key="normal" title="Google"/>
                                 <connections>
                                     <action selector="mailProviderSelected:" destination="FZI-WL-nLp" eventType="touchUpInside" id="wwc-4h-jdg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldK-sc-fCc">
-                                <rect key="frame" x="195" y="227" width="64" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldK-sc-fCc">
+                                <rect key="frame" x="195" y="220" width="64" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="Fm1-or-KH2"/>
-                                </constraints>
                                 <state key="normal" title="Other"/>
                                 <connections>
                                     <action selector="mailProviderSelected:" destination="FZI-WL-nLp" eventType="touchUpInside" id="eLf-lo-8vN"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick your mail service provider ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jzU-wQ-GeV">
-                                <rect key="frame" x="21" y="183" width="279" height="51"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Pick your mail service provider ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jzU-wQ-GeV">
+                                <rect key="frame" x="22" y="179" width="279" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="iGc-AZ-f8z"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="14Q-iY-2Oa">
-                                <rect key="frame" x="25" y="274" width="270" height="133"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">For stowaway to read your uber receipts, you will need to set your email in ubers account settings to pirate@stowaway.com                             Dont worry, we will ensure that you also get uber receipts at pirate@yourdomain.com.</string>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ja2-5M-48S">
-                                <rect key="frame" x="101" y="421" width="113" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ja2-5M-48S">
+                                <rect key="frame" x="95" y="370" width="113" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Got It...aye aye !">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -169,34 +168,52 @@
                                     <segue destination="Gqh-qZ-Ggc" kind="push" identifier="go to payment" id="Sys-CD-7Ga"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To read uber receipts, you will need to set your email in ubers account settings to pirate@stowaway.com" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="281" translatesAutoresizingMaskIntoConstraints="NO" id="JtQ-3V-xff">
+                                <rect key="frame" x="20" y="298" width="281" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="Ep0-xv-Awc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Don't worry... you will also get uber receipts at pirate@yourdomain.com" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="281" translatesAutoresizingMaskIntoConstraints="NO" id="fj8-jl-bwF">
+                                <rect key="frame" x="22" y="420" width="281" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="JQW-43-E1M"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="00E-pe-7If" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="22" id="0PN-ra-Dly"/>
-                            <constraint firstItem="14Q-iY-2Oa" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="25" id="1cQ-e6-1Nh"/>
-                            <constraint firstItem="14Q-iY-2Oa" firstAttribute="top" secondItem="h2o-fV-4Ko" secondAttribute="bottom" constant="17" id="A3Z-X4-KpO"/>
-                            <constraint firstItem="00E-pe-7If" firstAttribute="top" secondItem="14Q-iY-2Oa" secondAttribute="bottom" constant="8" symbolic="YES" id="BFB-5S-C0n"/>
-                            <constraint firstItem="ja2-5M-48S" firstAttribute="top" secondItem="14Q-iY-2Oa" secondAttribute="bottom" constant="14" id="CpP-Mp-lg2"/>
-                            <constraint firstItem="14Q-iY-2Oa" firstAttribute="centerX" secondItem="00E-pe-7If" secondAttribute="centerX" id="DP5-QZ-asm"/>
-                            <constraint firstItem="3Kr-F5-29m" firstAttribute="trailing" secondItem="00E-pe-7If" secondAttribute="trailing" id="ESC-xL-YIV"/>
-                            <constraint firstItem="h2o-fV-4Ko" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="52" id="Nvb-nb-n9B"/>
-                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" id="YoS-kE-gT3"/>
-                            <constraint firstItem="h2o-fV-4Ko" firstAttribute="baseline" secondItem="ldK-sc-fCc" secondAttribute="baseline" id="ZQ2-uj-63X"/>
-                            <constraint firstItem="14Q-iY-2Oa" firstAttribute="centerX" secondItem="jzU-wQ-GeV" secondAttribute="centerX" id="aFZ-qa-U79"/>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="centerX" secondItem="jzU-wQ-GeV" secondAttribute="centerX" id="bx8-48-Hlv"/>
-                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="8" symbolic="YES" id="cat-Hl-x3N"/>
-                            <constraint firstItem="h2o-fV-4Ko" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="56" id="cpS-60-OB8"/>
-                            <constraint firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" constant="20" symbolic="YES" id="f0T-Jr-khM"/>
-                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="00E-pe-7If" secondAttribute="bottom" constant="12" id="gYc-Fr-1fM"/>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="20" symbolic="YES" id="hkr-wY-Gib"/>
-                            <constraint firstAttribute="trailing" secondItem="ldK-sc-fCc" secondAttribute="trailing" constant="61" id="iUd-aH-rtA"/>
-                            <constraint firstItem="3Kr-F5-29m" firstAttribute="top" secondItem="wKB-x6-bAU" secondAttribute="bottom" constant="23" id="ipL-J9-ZSS"/>
-                            <constraint firstItem="14Q-iY-2Oa" firstAttribute="top" secondItem="jzU-wQ-GeV" secondAttribute="bottom" constant="40" id="laN-jb-XWm"/>
-                            <constraint firstItem="3Kr-F5-29m" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="19" id="oEj-Df-1XD"/>
-                            <constraint firstItem="ldK-sc-fCc" firstAttribute="leading" secondItem="h2o-fV-4Ko" secondAttribute="trailing" constant="67" id="tV7-is-iMv"/>
-                            <constraint firstItem="wKB-x6-bAU" firstAttribute="top" secondItem="fpj-Wb-PT3" secondAttribute="bottom" constant="4" id="tVQ-Uq-mF2"/>
-                            <constraint firstItem="9cW-Bx-Ezl" firstAttribute="top" secondItem="ja2-5M-48S" secondAttribute="bottom" constant="29" id="uc2-xa-Blo"/>
-                            <constraint firstItem="ja2-5M-48S" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="101" id="ysQ-n7-QOl"/>
+                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="centerX" secondItem="3Kr-F5-29m" secondAttribute="centerX" id="06c-Ll-BZm"/>
+                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="trailing" secondItem="3Kr-F5-29m" secondAttribute="trailing" id="13c-y5-OCA"/>
+                            <constraint firstItem="ldK-sc-fCc" firstAttribute="leading" secondItem="h2o-fV-4Ko" secondAttribute="trailing" constant="77" id="1Uc-d7-LyN"/>
+                            <constraint firstItem="fj8-jl-bwF" firstAttribute="leading" secondItem="jzU-wQ-GeV" secondAttribute="leading" id="21O-P9-kUn"/>
+                            <constraint firstAttribute="trailing" secondItem="3Kr-F5-29m" secondAttribute="trailing" constant="19" id="BCF-zB-IGr"/>
+                            <constraint firstItem="h2o-fV-4Ko" firstAttribute="leading" secondItem="00E-pe-7If" secondAttribute="leading" id="COU-xd-aNK"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="centerX" secondItem="ja2-5M-48S" secondAttribute="centerX" constant="1" id="Ccb-7I-2Yf"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="top" secondItem="qVg-oz-hBd" secondAttribute="top" constant="63" id="NQj-Wb-tID"/>
+                            <constraint firstItem="JtQ-3V-xff" firstAttribute="leading" secondItem="wKB-x6-bAU" secondAttribute="leading" id="P1o-sQ-VJt"/>
+                            <constraint firstItem="wKB-x6-bAU" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="20" symbolic="YES" id="Rje-Vi-cvT"/>
+                            <constraint firstItem="ldK-sc-fCc" firstAttribute="baseline" secondItem="h2o-fV-4Ko" secondAttribute="baseline" id="de1-W9-nyn"/>
+                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="22" id="ePt-Rm-qI3"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="leading" secondItem="qVg-oz-hBd" secondAttribute="leading" constant="46" id="gfR-k9-lvE"/>
+                            <constraint firstItem="jzU-wQ-GeV" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="24" id="h0r-zh-PZx"/>
+                            <constraint firstItem="00E-pe-7If" firstAttribute="top" secondItem="ldK-sc-fCc" secondAttribute="bottom" constant="2" id="iSW-Up-jLY"/>
+                            <constraint firstItem="3Kr-F5-29m" firstAttribute="top" secondItem="wKB-x6-bAU" secondAttribute="bottom" constant="8" symbolic="YES" id="mYd-FZ-ujj"/>
+                            <constraint firstItem="h2o-fV-4Ko" firstAttribute="top" secondItem="3Kr-F5-29m" secondAttribute="bottom" constant="65" id="oQA-xt-6Xj"/>
+                            <constraint firstAttribute="trailing" secondItem="wKB-x6-bAU" secondAttribute="trailing" constant="20" symbolic="YES" id="oU7-fq-a0h"/>
+                            <constraint firstItem="ldK-sc-fCc" firstAttribute="trailing" secondItem="00E-pe-7If" secondAttribute="trailing" id="uH0-mY-MQq"/>
+                            <constraint firstAttribute="trailing" secondItem="00E-pe-7If" secondAttribute="trailing" constant="61" id="ucx-nF-TZb"/>
+                            <constraint firstItem="ja2-5M-48S" firstAttribute="top" secondItem="JtQ-3V-xff" secondAttribute="bottom" constant="8" symbolic="YES" id="vH7-z4-dSI"/>
+                            <constraint firstItem="ja2-5M-48S" firstAttribute="top" secondItem="00E-pe-7If" secondAttribute="bottom" constant="65" id="wWL-a1-qq5"/>
+                            <constraint firstAttribute="trailing" secondItem="fj8-jl-bwF" secondAttribute="trailing" constant="17" id="yMi-Km-za6"/>
+                            <constraint firstAttribute="bottom" secondItem="fj8-jl-bwF" secondAttribute="bottom" constant="20" symbolic="YES" id="zml-g2-Z6h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Link Receipts" id="jz6-rn-ygD">
@@ -210,7 +227,8 @@
                         <outlet property="gotItButton" destination="ja2-5M-48S" id="koZ-JW-BNp"/>
                         <outlet property="nextBarButton" destination="WSa-bJ-nYR" id="Dt0-Zs-8T7"/>
                         <outlet property="otherMailProviderButton" destination="ldK-sc-fCc" id="0iP-pK-Kpc"/>
-                        <outlet property="showStowawayEmailtextView" destination="14Q-iY-2Oa" id="3tw-cN-X0w"/>
+                        <outlet property="stowawayEmailFooterLabel" destination="fj8-jl-bwF" id="iih-JT-5cp"/>
+                        <outlet property="stowawayEmailUberChangeLabel" destination="JtQ-3V-xff" id="GGj-Gf-J3g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>

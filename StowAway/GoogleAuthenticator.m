@@ -23,7 +23,6 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
 @property (strong, nonatomic)   GTMOAuth2Authentication * googleAuth;
 @property (strong, nonatomic)   GTMOAuth2ViewControllerTouch * gtmVC;
-@property (strong, nonatomic)   NSString * email;
 @property ReceiptEmailViewController * receiptVC;
 
 - (void) authWithGoogleReturnedWithError: (NSError *)error;
@@ -45,7 +44,8 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     {
         self.googleAuth = authFromKeychain;
         NSLog(@"got google auth in keychain already for %@, auth expires on %@", self.googleAuth.userEmail, self.googleAuth.expirationDate);
-        
+
+#warning TODO: revisit this check , it should never happen
         if ( ![self.email isEqualToString:self.googleAuth.userEmail]) {
             NSLog(@"auth is not for the user email provided");
             return NO;
@@ -68,6 +68,10 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
     if ( [self isGoogleAuthInKeychain]) {
         NSLog(@"in keychain, lets move to payments...");
+
+        //return without showing signin view
+        [self.googleAuthDelegate googleAuthenticatorResult:nil];
+        return error;
     }
     
     //show user google sign-in view
@@ -91,12 +95,17 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
     // Prepare to display the authenticator view
     
+#warning TODO: to make it pretty auth can be initiated by sotwaway server, app gives email and password to the server and server talks to google
+//https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+    
     self.gtmVC = [[GTMOAuth2ViewControllerTouch alloc] initWithAuthentication:googleAuth
                                                              authorizationURL:[GTMOAuth2SignIn googleAuthorizationURL]
                                                              keychainItemName:kKeychainItemName
                                                                      delegate:self
                                                              finishedSelector:@selector(viewController:finishedWithAuth:error:)];
     
+#warning TODO: prefill email field
+//https://groups.google.com/forum/#!msg/gtm-oauth2/5N_xjq8VAzI/8yHe-WTxGwMJ
     
     //present it modally
     [self.gtmVC setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
@@ -142,8 +151,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", stowawayPublicId];
         
-        NSString *userdata = [NSString stringWithFormat:@"{\"gmail_access_token\":\"%@\", \"gmail_refresh_token\":\"%@\"}",
-                              self.googleAuth.accessToken, self.googleAuth.refreshToken];
+        NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
+                              kUserEmail, self.email, kUserEmailProvider, self.emailProvider,
+                              kGmailAccessToken, self.googleAuth.accessToken, kGmailRefreshToken, self.googleAuth.refreshToken];
         
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];

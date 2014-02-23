@@ -15,4 +15,6 @@ NSString *const kFirstName          = @"first_name";
 NSString *const kLastName           = @"last_name";
 NSString *const kPublicId           = @"public_id";
 NSString *const kFbId               = @"uid";
+NSString *const kGmailAccessToken   = @"gmail_access_token";
+NSString *const kGmailRefreshToken  = @"gmail_refresh_token";
 NSString *const kStowawayEmail      = @"stowaway_email";

@@ -17,6 +17,9 @@
 
 @interface GoogleAuthenticator : NSObject
 
+@property (strong, nonatomic)   NSString * email;
+@property (strong, nonatomic)   NSString * emailProvider;
+
 @property (nonatomic, weak) id<GoogleAuthenticatorDelegate> googleAuthDelegate;
 
 - (NSError *)authenticateWithGoogle: (ReceiptEmailViewController *) receiptVC ForEmail:(NSString *)email;

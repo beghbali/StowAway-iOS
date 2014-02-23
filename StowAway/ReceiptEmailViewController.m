@@ -19,10 +19,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *askMailProviderLabel;
 @property (weak, nonatomic) IBOutlet UIButton *googleMailProviderButton;
 @property (weak, nonatomic) IBOutlet UIButton *otherMailProviderButton;
-@property (weak, nonatomic) IBOutlet UITextView *showStowawayEmailtextView;
 @property (weak, nonatomic) IBOutlet UIButton *authenticateWithGoogleButton;
 @property (weak, nonatomic) IBOutlet UIButton *gotItButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
+@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailUberChangeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
 
 @end
 
@@ -36,7 +37,8 @@
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
-    self.showStowawayEmailtextView.hidden = YES;
+    self.stowawayEmailUberChangeLabel.hidden = YES;
+    self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
     self.nextBarButton.enabled = NO;
@@ -53,10 +55,14 @@
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
-    self.showStowawayEmailtextView.hidden = YES;
+    self.stowawayEmailUberChangeLabel.hidden = YES;
+    self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
     self.nextBarButton.enabled = NO;
+    
+    self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+    self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
 }
 
 // to check what the user is writting -- show red/green text box
@@ -128,7 +134,8 @@
         self.askMailProviderLabel.hidden = YES;
         self.googleMailProviderButton.hidden = YES;
         self.otherMailProviderButton.hidden = YES;
-        self.showStowawayEmailtextView.hidden = YES;
+        self.stowawayEmailUberChangeLabel.hidden = YES;
+        self.stowawayEmailFooterLabel.hidden = YES;
         self.authenticateWithGoogleButton.hidden = NO;
         self.gotItButton.hidden = YES;
     } else
@@ -139,7 +146,8 @@
         self.googleMailProviderButton.hidden = NO;
         self.otherMailProviderButton.hidden = NO;
         
-        self.showStowawayEmailtextView.hidden = YES;
+        self.stowawayEmailUberChangeLabel.hidden = YES;
+        self.stowawayEmailFooterLabel.hidden = YES;
         
         self.authenticateWithGoogleButton.hidden = YES;
         
@@ -159,7 +167,8 @@
         self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         self.authenticateWithGoogleButton.hidden = NO;
         
-        self.showStowawayEmailtextView.hidden = YES;
+        self.stowawayEmailUberChangeLabel.hidden = YES;
+        self.stowawayEmailFooterLabel.hidden = YES;
         self.gotItButton.hidden = YES;
     } else
     {
@@ -168,7 +177,8 @@
         self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         self.authenticateWithGoogleButton.hidden = YES;
         
-        self.showStowawayEmailtextView.hidden = NO;
+        self.stowawayEmailUberChangeLabel.hidden = NO;
+        self.stowawayEmailFooterLabel.hidden = NO;
         self.gotItButton.hidden = NO;
 
     }
@@ -177,6 +187,9 @@
 - (void)googleAuthenticatorResult: (NSError *)error
 {
     NSLog(@"%s::: error %@", __func__, error);
+    if ( !error ) {
+        [self performSegueWithIdentifier: @"go to payment" sender: self];
+    }
 }
 
 
@@ -184,7 +197,10 @@
     
     GoogleAuthenticator * googleAuthenticator = [[GoogleAuthenticator alloc]init];
     googleAuthenticator.googleAuthDelegate = self;
+    googleAuthenticator.email = self.email;
+    googleAuthenticator.emailProvider = self.emailProvider;
     
+    //show gtm view
     [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
 }
 

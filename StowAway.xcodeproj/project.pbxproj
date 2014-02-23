@@ -24,7 +24,6 @@
 		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F4266D9E18B5A87900A46BB1 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4118B5A87900A46BB1 /* STPCard.m */; };
 		F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4318B5A87900A46BB1 /* STPToken.m */; };
-		F4266DA018B5A87900A46BB1 /* STPView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4518B5A87900A46BB1 /* STPView.m */; };
 		F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4818B5A87900A46BB1 /* Stripe.m */; };
 		F4266DA218B5A87900A46BB1 /* StripeError.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4A18B5A87900A46BB1 /* StripeError.m */; };
 		F4266DA318B5A87900A46BB1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F4266D4D18B5A87900A46BB1 /* .gitignore */; };
@@ -36,7 +35,6 @@
 		F4266DA918B5A87900A46BB1 /* PKCardNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D5918B5A87900A46BB1 /* PKCardNumber.m */; };
 		F4266DAA18B5A87900A46BB1 /* PKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D5C18B5A87900A46BB1 /* PKTextField.m */; };
 		F4266DAB18B5A87900A46BB1 /* PKUSAddressZip.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D5E18B5A87900A46BB1 /* PKUSAddressZip.m */; };
-		F4266DAC18B5A87900A46BB1 /* PKView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D6018B5A87900A46BB1 /* PKView.m */; };
 		F4266DAD18B5A87900A46BB1 /* amex.png in Resources */ = {isa = PBXBuildFile; fileRef = F4266D6318B5A87900A46BB1 /* amex.png */; };
 		F4266DAE18B5A87900A46BB1 /* amex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4266D6418B5A87900A46BB1 /* amex@2x.png */; };
 		F4266DAF18B5A87900A46BB1 /* cvc-amex.png in Resources */ = {isa = PBXBuildFile; fileRef = F4266D6518B5A87900A46BB1 /* cvc-amex.png */; };
@@ -71,6 +69,7 @@
 		F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */; };
 		F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
+		F4CB1F5518B999D000A404D0 /* PKView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D6018B5A87900A46BB1 /* PKView.m */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB918518AA11B700C57BF2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB918418AA11B700C57BF2 /* QuartzCore.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
@@ -579,7 +578,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4266DA018B5A87900A46BB1 /* STPView.m in Sources */,
 				F4266DA918B5A87900A46BB1 /* PKCardNumber.m in Sources */,
 				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
 				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
@@ -593,8 +591,8 @@
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
 				F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */,
 				F4266DDC18B5C00300A46BB1 /* PaymentViewController.m in Sources */,
+				F4CB1F5518B999D000A404D0 /* PKView.m in Sources */,
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
-				F4266DAC18B5A87900A46BB1 /* PKView.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F4266DA618B5A87900A46BB1 /* PKCard.m in Sources */,
 				F4266DA718B5A87900A46BB1 /* PKCardCVC.m in Sources */,
