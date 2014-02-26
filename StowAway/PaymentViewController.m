@@ -495,6 +495,10 @@ char isReadyToSavePayment = 0;
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
+    
+    //move to terms view
+    [self performSegueWithIdentifier: @"go to terms" sender: self];
+
 }
 
 - (IBAction)saveButtonTapped:(UIButton *)sender
@@ -517,6 +521,8 @@ char isReadyToSavePayment = 0;
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    
+#warning todo: if it failed send credit card info again
     
 }
 
