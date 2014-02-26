@@ -466,15 +466,6 @@
                                     <action selector="actionButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="H0y-dp-F08"/>
                                 </connections>
                             </button>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="uWz-FZ-wjc">
-                                <rect key="frame" x="0.0" y="51" width="320" height="348"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="gzB-dY-rge" id="xKf-wZ-NlF"/>
-                                    <outlet property="delegate" destination="gzB-dY-rge" id="AtS-CD-GTS"/>
-                                </connections>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -496,7 +487,6 @@
                         <outlet property="mapView" destination="RED-KU-XOZ" id="PHN-mu-M3h"/>
                         <outlet property="searchBar" destination="bxD-02-fZW" id="hK3-hl-X0J"/>
                         <outlet property="searchDisplayController" destination="SXn-6u-W8v" id="pyK-yi-Hd7"/>
-                        <outlet property="tableView" destination="uWz-FZ-wjc" id="hpl-0D-4PN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2b-pk-H4i" userLabel="First Responder" sceneMemberID="firstResponder"/>

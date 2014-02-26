@@ -13,13 +13,11 @@
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
 #define MAP_VIEW_REGION_DISTANCE (SHOW_MILES_OF_MAP_VIEW * METERS_PER_MILE)
-@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
 @property (nonatomic) CLLocationCoordinate2D userLocation;
@@ -40,6 +38,10 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.searchDisplayController.delegate = self;// = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchDisplayController.searchResultsDataSource = self;
+    self.searchDisplayController.searchResultsDelegate = self;
     
     self.places = [NSMutableArray arrayWithCapacity: 1];
     
@@ -77,8 +79,11 @@ static NSString *kCellIdentifier = @"cellIdentifier";
     
     NSLog(@"cellForRow [%d] %@", indexPath.row, mapItem);
     
-    if (!cell)
+    if (!cell) {
         cell = [[UITableViewCell alloc]init];
+        NSLog(@"create cell");
+    }
+
     
     cell.textLabel.text = mapItem.name;
 
@@ -89,16 +94,22 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"%s", __func__);
-    [self.tableView setHidden:YES];
     // pass the new bounding region to the map destination view controller
     //    self.mapView .boundingRegion = self.boundingRegion;
     
     // pass the individual place to our map destination view controller
-    NSIndexPath *selectedItem = [self.tableView indexPathForSelectedRow];
+    NSIndexPath *selectedItem = [tableView indexPathForSelectedRow];
     NSLog(@"index path row %d, selectedItem %@", indexPath.row, selectedItem);
     //  self.mapView.mapItemList = [NSArray arrayWithObject:[self.places objectAtIndex:selectedItem.row]];
     
     //[self.detailSegue perform];
+    
+    [self.searchDisplayController setActive:NO animated:YES];
+    
+    self.searchBar.text = ((MKMapItem *)[self.places objectAtIndex:indexPath.row]).name;
+    
+    self.actionButton.enabled = YES;
+
 }
 
 
@@ -108,7 +119,6 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
     NSLog(@"%s", __func__);
-    [self.tableView setHidden:YES];
     
     [searchBar resignFirstResponder];
 }
@@ -116,14 +126,12 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     NSLog(@"%s", __func__);
-    [self.tableView setHidden:NO];
     [searchBar setShowsCancelButton:YES animated:YES];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     NSLog(@"%s", __func__);
-    [self.tableView setHidden:YES];
 
     [searchBar setShowsCancelButton:NO animated:YES];
 }
@@ -147,7 +155,7 @@ static NSString *kCellIdentifier = @"cellIdentifier";
         {
             [self.places addObjectsFromArray: [response mapItems]];
             
-            [self.tableView reloadData];
+            [self.searchDisplayController.searchResultsTableView reloadData];
         }
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     };
