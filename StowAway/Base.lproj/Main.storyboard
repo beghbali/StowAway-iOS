@@ -396,7 +396,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="gzB-dY-rge" kind="push" id="i0A-c6-vzI"/>
+                                    <segue destination="gzB-dY-rge" kind="push" id="aUD-nT-D4A"/>
                                 </connections>
                             </button>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" paginationMode="topToBottom" translatesAutoresizingMaskIntoConstraints="NO" id="ICA-Ci-UiK">
@@ -440,63 +440,86 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RED-KU-XOZ">
-                                <rect key="frame" x="0.0" y="51" width="320" height="517"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RED-KU-XOZ">
+                                <rect key="frame" x="0.0" y="117" width="320" height="451"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="gzB-dY-rge" id="cVN-PG-0e6"/>
+                                </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" misplaced="YES" searchBarStyle="minimal" placeholder="Enter Pick Up Location" translatesAutoresizingMaskIntoConstraints="NO" id="bxD-02-fZW">
-                                <rect key="frame" x="8" y="16" width="260" height="44"/>
+                            <searchBar contentMode="redraw" restorationIdentifier="pickUpSearchBar" searchBarStyle="minimal" placeholder="Enter Pick Up Location" translatesAutoresizingMaskIntoConstraints="NO" id="bxD-02-fZW" userLabel="pickUpSearchBar">
+                                <rect key="frame" x="24" y="18" width="260" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="gzB-dY-rge" id="m7G-gc-iV9"/>
                                 </connections>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94G-id-CDL">
-                                <rect key="frame" x="263" y="23" width="47" height="30"/>
+                            <searchBar contentMode="redraw" restorationIdentifier="dropOffSearchBar" searchBarStyle="minimal" placeholder="Enter Drop Off Location" translatesAutoresizingMaskIntoConstraints="NO" id="OVl-W9-bgZ" userLabel="dropOffSearchBar">
+                                <rect key="frame" x="24" y="51" width="260" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="gzB-dY-rge" id="6QT-DA-c6F"/>
+                                </connections>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEi-k0-yGT">
+                                <rect key="frame" x="122" y="95" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="47" id="RTG-JB-djh"/>
+                                    <constraint firstAttribute="width" constant="77" id="ckC-ys-NKi"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <state key="normal" title="Drop-Off">
+                                <state key="normal" title="Find Crew">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="actionButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="H0y-dp-F08"/>
+                                    <action selector="findCrewButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="C3A-cm-fgE"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1ps-7k-reJ" firstAttribute="top" secondItem="94G-id-CDL" secondAttribute="bottom" constant="515" id="98h-j9-1iA"/>
-                            <constraint firstAttribute="bottom" secondItem="RED-KU-XOZ" secondAttribute="bottom" id="A2Q-PN-NDj"/>
-                            <constraint firstItem="RED-KU-XOZ" firstAttribute="leading" secondItem="VJT-lO-FNI" secondAttribute="leading" id="CXF-bU-CFy"/>
-                            <constraint firstItem="94G-id-CDL" firstAttribute="centerY" secondItem="bxD-02-fZW" secondAttribute="centerY" id="Cuf-ru-Occ"/>
-                            <constraint firstAttribute="trailing" secondItem="bxD-02-fZW" secondAttribute="trailing" constant="52" id="Gxc-Jc-O1n"/>
-                            <constraint firstItem="94G-id-CDL" firstAttribute="top" secondItem="IqP-mX-llD" secondAttribute="bottom" constant="3" id="P6p-SI-XsA"/>
-                            <constraint firstItem="bxD-02-fZW" firstAttribute="leading" secondItem="VJT-lO-FNI" secondAttribute="leading" constant="8" id="cXT-I6-TSe"/>
-                            <constraint firstAttribute="trailing" secondItem="RED-KU-XOZ" secondAttribute="trailing" id="ten-G6-XaN"/>
-                            <constraint firstAttribute="trailing" secondItem="94G-id-CDL" secondAttribute="trailing" constant="10" id="vCE-ox-1CG"/>
-                            <constraint firstItem="RED-KU-XOZ" firstAttribute="top" secondItem="IqP-mX-llD" secondAttribute="bottom" constant="31" id="z0U-uB-H20"/>
+                            <constraint firstItem="RED-KU-XOZ" firstAttribute="top" secondItem="OVl-W9-bgZ" secondAttribute="bottom" constant="22" id="1Vo-l4-6Ku"/>
+                            <constraint firstItem="RED-KU-XOZ" firstAttribute="centerX" secondItem="WEi-k0-yGT" secondAttribute="centerX" id="AsL-Q2-Ui5"/>
+                            <constraint firstItem="OVl-W9-bgZ" firstAttribute="top" secondItem="IqP-mX-llD" secondAttribute="bottom" constant="31" id="CVN-EQ-prw"/>
+                            <constraint firstAttribute="trailing" secondItem="RED-KU-XOZ" secondAttribute="trailing" id="IEd-ZO-3a9"/>
+                            <constraint firstItem="RED-KU-XOZ" firstAttribute="leading" secondItem="VJT-lO-FNI" secondAttribute="leading" id="JPg-Ih-aCK"/>
+                            <constraint firstItem="OVl-W9-bgZ" firstAttribute="trailing" secondItem="bxD-02-fZW" secondAttribute="trailing" id="QUy-ZS-fIo"/>
+                            <constraint firstItem="WEi-k0-yGT" firstAttribute="top" secondItem="OVl-W9-bgZ" secondAttribute="bottom" id="ZS7-r6-vaI"/>
+                            <constraint firstItem="bxD-02-fZW" firstAttribute="leading" secondItem="OVl-W9-bgZ" secondAttribute="leading" id="aQQ-gs-gan"/>
+                            <constraint firstAttribute="bottom" secondItem="RED-KU-XOZ" secondAttribute="bottom" id="eUG-hv-ssv"/>
+                            <constraint firstItem="WEi-k0-yGT" firstAttribute="top" secondItem="bxD-02-fZW" secondAttribute="bottom" constant="33" id="ptV-hi-Pt3"/>
+                            <constraint firstAttribute="trailing" secondItem="bxD-02-fZW" secondAttribute="trailing" constant="36" id="wN2-Px-N5H"/>
+                            <constraint firstItem="bxD-02-fZW" firstAttribute="leading" secondItem="VJT-lO-FNI" secondAttribute="leading" constant="24" id="zeh-L6-00t"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Stowaway" id="Pcw-6q-lgL"/>
                     <connections>
-                        <outlet property="actionButton" destination="94G-id-CDL" id="7h3-2X-8NA"/>
+                        <outlet property="dropOffSearchBar" destination="OVl-W9-bgZ" id="665-jO-bWV"/>
+                        <outlet property="dropOffSearchDisplayController" destination="Hec-aF-RnK" id="Vwz-VS-frZ"/>
+                        <outlet property="findCrewButton" destination="WEi-k0-yGT" id="7dm-js-WiR"/>
                         <outlet property="mapView" destination="RED-KU-XOZ" id="PHN-mu-M3h"/>
-                        <outlet property="searchBar" destination="bxD-02-fZW" id="hK3-hl-X0J"/>
-                        <outlet property="searchDisplayController" destination="SXn-6u-W8v" id="pyK-yi-Hd7"/>
+                        <outlet property="pickUpSearchBar" destination="bxD-02-fZW" id="ycz-fk-c4u"/>
+                        <outlet property="pickUpSearchDisplayController" destination="SXn-6u-W8v" id="3Ke-UC-f7g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2b-pk-H4i" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="SXn-6u-W8v">
+                <searchDisplayController id="SXn-6u-W8v" userLabel="pickUpSearchDisplayController">
                     <connections>
-                        <outlet property="delegate" destination="gzB-dY-rge" id="5Tr-MA-QAh"/>
-                        <outlet property="searchBar" destination="bxD-02-fZW" id="Nv4-xF-lOX"/>
+                        <outlet property="delegate" destination="gzB-dY-rge" id="Znh-po-q10"/>
+                        <outlet property="searchBar" destination="bxD-02-fZW" id="YB5-xS-gsP"/>
                         <outlet property="searchContentsController" destination="gzB-dY-rge" id="F1h-ua-Xwf"/>
-                        <outlet property="searchResultsDataSource" destination="gzB-dY-rge" id="yw9-6H-C1k"/>
-                        <outlet property="searchResultsDelegate" destination="gzB-dY-rge" id="bUr-Ur-wr1"/>
+                        <outlet property="searchResultsDataSource" destination="gzB-dY-rge" id="MQs-Ow-UuD"/>
+                        <outlet property="searchResultsDelegate" destination="gzB-dY-rge" id="SB2-bU-b87"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="Hec-aF-RnK" userLabel="dropOffSearchDisplayController">
+                    <connections>
+                        <outlet property="delegate" destination="gzB-dY-rge" id="lSo-bZ-3th"/>
+                        <outlet property="searchBar" destination="OVl-W9-bgZ" id="fEh-q9-PuR"/>
+                        <outlet property="searchContentsController" destination="gzB-dY-rge" id="Naj-Mw-DEL"/>
+                        <outlet property="searchResultsDataSource" destination="gzB-dY-rge" id="Nku-ZJ-LLo"/>
+                        <outlet property="searchResultsDelegate" destination="gzB-dY-rge" id="dh9-Ib-yeJ"/>
                     </connections>
                 </searchDisplayController>
             </objects>

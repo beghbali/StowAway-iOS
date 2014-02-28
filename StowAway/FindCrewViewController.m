@@ -13,37 +13,50 @@
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
 #define MAP_VIEW_REGION_DISTANCE (SHOW_MILES_OF_MAP_VIEW * METERS_PER_MILE)
-@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
+
+static NSString *kCellIdentifier = @"cellIdentifier";
+static NSString *kAnnotationIdentifier = @"annotationIdentifier";
+
+
+@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate> /*, UITableViewDelegate, UITableViewDataSource*/
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet UIButton *actionButton;
+@property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
+@property (weak, nonatomic) IBOutlet UISearchBar *dropOffSearchBar;
+@property (weak, nonatomic) IBOutlet UIButton *findCrewButton;
+
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
 @property (nonatomic) CLLocationCoordinate2D userLocation;
 
 @property (nonatomic, strong) MKLocalSearch *localSearch;
 
-@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *places;
+// MARK: Future: remember previosuly entered places - store it on device
+@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
+@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *dropOffPlaces;
 
-@property (nonatomic, assign) MKCoordinateRegion boundingRegion;
+@property (nonatomic, strong) MKMapItem * pickUpMapItem;
+@property (nonatomic, strong) MKMapItem * dropOffMapItem;
 
+@property (nonatomic, strong) MKPointAnnotation * pickUpAnnotation;
+@property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
+
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
+
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 @end
 
-static NSString *kCellIdentifier = @"cellIdentifier";
 
 @implementation FindCrewViewController
 
+int locationInputCount = 0;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.searchDisplayController.delegate = self;// = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    self.searchDisplayController.searchResultsDataSource = self;
-    self.searchDisplayController.searchResultsDelegate = self;
-    
-    self.places = [NSMutableArray arrayWithCapacity: 1];
+
+    self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
+    self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
     
     self.navigationController.navigationBarHidden = YES;
 
@@ -52,8 +65,7 @@ static NSString *kCellIdentifier = @"cellIdentifier";
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = @"Current Location";
-    [self.places insertObject: currentLoc atIndex:0];
-    NSLog(@"count places: %d, %@, %@", [self.places count], self.places,  [MKMapItem mapItemForCurrentLocation]);
+    [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -61,54 +73,120 @@ static NSString *kCellIdentifier = @"cellIdentifier";
     [self isLocationEnabled];
     
     [self updateMapsViewArea];
+    
+    self.findCrewButton.enabled = NO;
+
 }
 
 #pragma mark - UITableView delegate methods
 
+-(BOOL) isPickUpTableView:(UITableView *)tableView
+{
+    return (self.pickUpSearchDisplayController.searchResultsTableView == tableView);
+}
+
+-(NSArray *) getPlacesForTableView:(UITableView *)tableView
+{
+    NSArray * places = nil;
+    
+    if ( [self isPickUpTableView: tableView] )
+    {
+        NSLog(@"PICK-UP tableview");
+        places = self.pickUpPlaces;
+    }
+    else
+    {
+        NSLog(@"DROP-OFF tableview");
+        places = self.dropOffPlaces;
+    }
+
+    return places;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"#of rows: %d", [self.places count]);
-	return [self.places count];
+    NSLog(@"# of rows");
+    return [self getPlacesForTableView:tableView].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     
-    MKMapItem *mapItem = [self.places objectAtIndex:indexPath.row];
+    MKMapItem *mapItem = [[self getPlacesForTableView:tableView] objectAtIndex:indexPath.row];
     
-    NSLog(@"cellForRow [%d] %@", indexPath.row, mapItem);
+    NSLog(@"cellForRow [%d] %@", indexPath.row, mapItem.name);
     
     if (!cell) {
         cell = [[UITableViewCell alloc]init];
         NSLog(@"create cell");
     }
-
     
     cell.textLabel.text = mapItem.name;
 
 	return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%s", __func__);
-    // pass the new bounding region to the map destination view controller
-    //    self.mapView .boundingRegion = self.boundingRegion;
-    
     // pass the individual place to our map destination view controller
     NSIndexPath *selectedItem = [tableView indexPathForSelectedRow];
-    NSLog(@"index path row %d, selectedItem %@", indexPath.row, selectedItem);
-    //  self.mapView.mapItemList = [NSArray arrayWithObject:[self.places objectAtIndex:selectedItem.row]];
+    NSLog(@"selected index path row %d, selectedItem %@", indexPath.row, selectedItem);
     
-    //[self.detailSegue perform];
-    
-    [self.searchDisplayController setActive:NO animated:YES];
-    
-    self.searchBar.text = ((MKMapItem *)[self.places objectAtIndex:indexPath.row]).name;
-    
-    self.actionButton.enabled = YES;
+    if ( [self isPickUpTableView:tableView] )
+    {
+        //dismiss search results now
+        [self.pickUpSearchDisplayController setActive:NO animated:YES];
+
+        self.pickUpMapItem = (MKMapItem *)[self.pickUpPlaces objectAtIndex:indexPath.row];
+        self.pickUpSearchBar.text = self.pickUpMapItem.name;
+        
+        if ( !self.pickUpAnnotation )
+        {
+            self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
+            self.pickUpAnnotation.subtitle = @"pick up location";
+        }
+        
+        if ( self.pickUpMapItem.isCurrentLocation ) {
+            NSLog(@"map item is current loc, update lat long manually");
+            self.pickUpAnnotation.coordinate = self.userLocation;
+        } else
+        {
+            [self.locationManager stopUpdatingLocation];
+            self.pickUpAnnotation.coordinate = self.pickUpMapItem.placemark.coordinate;
+        }
+        
+        self.pickUpAnnotation.title = self.pickUpSearchBar.text;
+
+        [self.mapView addAnnotation:self.pickUpAnnotation];
+        
+        
+        NSLog(@"pick up location lat %f long %f", self.pickUpAnnotation.coordinate.latitude, self.pickUpAnnotation.coordinate.longitude);
+        locationInputCount++;
+    } else
+    {
+        [self.dropOffSearchDisplayController setActive:NO animated:YES];
+        
+        self.dropOffMapItem = (MKMapItem *)[self.dropOffPlaces objectAtIndex:indexPath.row];
+        self.dropOffSearchBar.text = self.dropOffMapItem.name;
+        
+        if ( !self.dropOffAnnotation )
+        {
+            self.dropOffAnnotation = [[MKPointAnnotation alloc]init];
+            self.dropOffAnnotation.subtitle = @"drop off location";
+        }
+
+        self.dropOffAnnotation.coordinate = self.dropOffMapItem.placemark.coordinate;
+        self.dropOffAnnotation.title = self.dropOffSearchBar.text;
+
+        [self.mapView addAnnotation:self.dropOffAnnotation];
+        
+        NSLog(@"drop off location lat %f long %f", self.dropOffAnnotation.coordinate.latitude, self.dropOffAnnotation.coordinate.longitude);
+        locationInputCount++;
+    }
+
+    if (locationInputCount > 1)
+        self.findCrewButton.enabled = YES;
 
 }
 
@@ -118,29 +196,59 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
-    NSLog(@"%s", __func__);
-    
+    locationInputCount = 2;
     [searchBar resignFirstResponder];
+    NSLog(@"CANCEL:: pickup %@, dropoff %@", self.pickUpSearchBar.text, self.dropOffSearchBar.text);
+    
+    if ([self.pickUpSearchBar.text isEqualToString:@""]) {
+        NSLog(@"no pickup, grey out find");
+        self.findCrewButton.enabled = NO;
+        locationInputCount--;
+    }
+    if ([self.dropOffSearchBar.text isEqualToString:@""]) {
+        NSLog(@"no dropoff, grey out find");
+        self.findCrewButton.enabled = NO;
+        locationInputCount--;
+    }
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    //show current location as soon as user taps it
+    // TODO: show current location
     NSLog(@"%s", __func__);
+    if ( searchBar == self.pickUpSearchBar ) {
+        NSLog(@"reload table");
+        [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
+    }
+    
     [searchBar setShowsCancelButton:YES animated:YES];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"%s", __func__);
-
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
-- (void)startSearch:(NSString *)searchString
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    NSLog(@"%s", __func__);
+    
+    [searchBar resignFirstResponder];
+    
+    [self startSearch:searchBar];
+}
+
+- (void)startSearch:(UISearchBar *)searchBar
+{
+    NSString * searchString = searchBar.text;
+    
     MKLocalSearchCompletionHandler completionHandler = ^(MKLocalSearchResponse *response, NSError *error)
     {
-        NSLog(@"****** SEARCH RETURNED ***** error %@, response %@", error, response);
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+        NSLog(@"SEARCH: error %@, response %@", error, response);
         if (error != nil)
         {
             NSString *errorStr = [[error userInfo] valueForKey:NSLocalizedDescriptionKey];
@@ -153,15 +261,22 @@ static NSString *kCellIdentifier = @"cellIdentifier";
         }
         else
         {
-            [self.places addObjectsFromArray: [response mapItems]];
-            
-            [self.searchDisplayController.searchResultsTableView reloadData];
+            if ( searchBar == self.pickUpSearchBar)
+            {
+                NSLog(@"pick-up search result update");
+                [self.pickUpPlaces addObjectsFromArray: response.mapItems];
+                [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
+            } else
+            {
+                NSLog(@"drop-off search result update");
+                [self.dropOffPlaces addObjectsFromArray: response.mapItems];
+                NSLog(@"count %d", self.dropOffPlaces.count);
+                [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
+            }
         }
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     };
-
     
-    NSLog(@"start serach:: %@, searching %d", searchString, self.localSearch.searching);
+    NSLog(@"search: <%@>, searching %d", searchString, self.localSearch.searching);
     
     if (self.localSearch.searching)
         [self.localSearch cancel];
@@ -176,19 +291,45 @@ static NSString *kCellIdentifier = @"cellIdentifier";
     self.localSearch = [[MKLocalSearch alloc] initWithRequest:request];
     
     [self.localSearch startWithCompletionHandler:completionHandler];
-    NSLog(@" searching for <%@>", searchString);
+    NSLog(@" searching ....");
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+#pragma mark - MKMapViewDelegate methods
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    NSLog(@"%s", __func__);
+    MKPointAnnotation *resultPin = [[MKPointAnnotation alloc] init];
+    MKPinAnnotationView *result = [[MKPinAnnotationView alloc] initWithAnnotation:resultPin reuseIdentifier:kAnnotationIdentifier];
+
+    result.animatesDrop = YES;
     
-    [searchBar resignFirstResponder];
+    NSLog(@"%s, %@", __func__, annotation.subtitle);
+
+    if ([annotation.subtitle isEqualToString:@"drop off location"])
+    {
+        result.pinColor = MKPinAnnotationColorGreen;
+        [resultPin setCoordinate:self.dropOffAnnotation.coordinate];
+        resultPin.title = self.dropOffAnnotation.title;
+        resultPin.subtitle = self.dropOffAnnotation.subtitle;
+
+        return result;
+    }
     
-    [self startSearch:searchBar.text];
+    if ([annotation.subtitle isEqualToString:@"pick up location"])
+    {
+        //TODO: use latest coordinates if current location
+        result.pinColor = MKPinAnnotationColorRed;
+        [resultPin setCoordinate:self.pickUpAnnotation.coordinate];
+        resultPin.title = self.pickUpAnnotation.title;
+        resultPin.subtitle = self.pickUpAnnotation.subtitle;
+        
+        return result;
+    }
+
+    
+    return nil;
 }
 
 
@@ -206,7 +347,7 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 
 - (void) updateMapsViewArea
 {
-    NSLog(@"%s", __func__);
+    //NSLog(@"%s", __func__);
     MKCoordinateRegion viewRegion = [self getVisibleMapRegionForUserLocation];
     
     [self.mapView setRegion:viewRegion animated:YES];
@@ -214,13 +355,11 @@ static NSString *kCellIdentifier = @"cellIdentifier";
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"loc update - %@", locations);
+   // NSLog(@"loc update - %@", locations);
     CLLocation * newLocation = [locations lastObject];
     
-    // remember for later the user's current location
+    // remember for later -  user's current location
     self.userLocation = newLocation.coordinate;
-    
-	[manager stopUpdatingLocation]; // we only want one update, to get current location
     
     [self updateMapsViewArea];
 }
@@ -289,10 +428,13 @@ static NSString *kCellIdentifier = @"cellIdentifier";
     return YES;
 }
 
-#pragma mark - action button
+#pragma mark - find crew
 
-- (IBAction)actionButtonTapped:(UIButton *)sender
+- (IBAction)findCrewButtonTapped:(UIButton *)sender
 {
     
+	[self.locationManager stopUpdatingLocation]; // we don't need to update user's current location at this point
+
 }
+
 @end
