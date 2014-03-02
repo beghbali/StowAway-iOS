@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qe4-4s-UEE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="yyB-R0-4Pt">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -396,7 +396,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="gzB-dY-rge" kind="push" id="aUD-nT-D4A"/>
+                                    <segue destination="yyB-R0-4Pt" kind="push" id="aUD-nT-D4A"/>
                                 </connections>
                             </button>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" paginationMode="topToBottom" translatesAutoresizingMaskIntoConstraints="NO" id="ICA-Ci-UiK">
@@ -440,14 +440,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RED-KU-XOZ">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RED-KU-XOZ">
                                 <rect key="frame" x="0.0" y="117" width="320" height="451"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="gzB-dY-rge" id="cVN-PG-0e6"/>
                                 </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" restorationIdentifier="pickUpSearchBar" searchBarStyle="minimal" placeholder="Enter Pick Up Location" translatesAutoresizingMaskIntoConstraints="NO" id="bxD-02-fZW" userLabel="pickUpSearchBar">
+                            <searchBar contentMode="redraw" misplaced="YES" restorationIdentifier="pickUpSearchBar" searchBarStyle="minimal" placeholder="Enter Pick Up Location" translatesAutoresizingMaskIntoConstraints="NO" id="bxD-02-fZW" userLabel="pickUpSearchBar">
                                 <rect key="frame" x="24" y="18" width="260" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -455,7 +455,7 @@
                                     <outlet property="delegate" destination="gzB-dY-rge" id="m7G-gc-iV9"/>
                                 </connections>
                             </searchBar>
-                            <searchBar contentMode="redraw" restorationIdentifier="dropOffSearchBar" searchBarStyle="minimal" placeholder="Enter Drop Off Location" translatesAutoresizingMaskIntoConstraints="NO" id="OVl-W9-bgZ" userLabel="dropOffSearchBar">
+                            <searchBar contentMode="redraw" misplaced="YES" restorationIdentifier="dropOffSearchBar" searchBarStyle="minimal" placeholder="Enter Drop Off Location" translatesAutoresizingMaskIntoConstraints="NO" id="OVl-W9-bgZ" userLabel="dropOffSearchBar">
                                 <rect key="frame" x="24" y="51" width="260" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -463,7 +463,7 @@
                                     <outlet property="delegate" destination="gzB-dY-rge" id="6QT-DA-c6F"/>
                                 </connections>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEi-k0-yGT">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEi-k0-yGT">
                                 <rect key="frame" x="122" y="95" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -522,6 +522,25 @@
                         <outlet property="searchResultsDelegate" destination="gzB-dY-rge" id="dh9-Ib-yeJ"/>
                     </connections>
                 </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="1869" y="-801"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="imo-7J-JSe">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yyB-R0-4Pt" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="4Wa-ms-fFv"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IER-yQ-guP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="gzB-dY-rge" kind="relationship" relationship="rootViewController" id="a5K-jG-LZN"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X8l-0v-Tum" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1343" y="-801"/>
         </scene>
