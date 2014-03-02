@@ -17,7 +17,6 @@
 static NSString *kCellIdentifier = @"cellIdentifier";
 static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
-
 @interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate> /*, UITableViewDelegate, UITableViewDataSource*/
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -159,7 +158,7 @@ int locationInputCount = 0;
         self.pickUpAnnotation.title = self.pickUpSearchBar.text;
 
         [self.mapView addAnnotation:self.pickUpAnnotation];
-        
+        [self.mapView selectAnnotation:self.pickUpAnnotation animated:YES];
         
         NSLog(@"pick up location lat %f long %f", self.pickUpAnnotation.coordinate.latitude, self.pickUpAnnotation.coordinate.longitude);
         locationInputCount++;
@@ -180,6 +179,7 @@ int locationInputCount = 0;
         self.dropOffAnnotation.title = self.dropOffSearchBar.text;
 
         [self.mapView addAnnotation:self.dropOffAnnotation];
+        [self.mapView selectAnnotation:self.dropOffAnnotation animated:YES];
         
         NSLog(@"drop off location lat %f long %f", self.dropOffAnnotation.coordinate.latitude, self.dropOffAnnotation.coordinate.longitude);
         locationInputCount++;
@@ -248,7 +248,7 @@ int locationInputCount = 0;
     {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-        NSLog(@"SEARCH: error %@, response %@", error, response);
+        NSLog(@"SEARCH returned: error %@", error);
         if (error != nil)
         {
             NSString *errorStr = [[error userInfo] valueForKey:NSLocalizedDescriptionKey];
@@ -300,30 +300,66 @@ int locationInputCount = 0;
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
+    NSLog(@"%s, %@ <%@>", __func__, annotation.subtitle, annotation.title);
+/*
+    // If it's the user location, just return nil.
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+    {
+        NSLog(@"its a user location");
+        return nil;
+    }
+    // Handle any custom annotations.
+    if ([annotation isKindOfClass:[MKPointAnnotation class]])
+    {
+        // Try to dequeue an existing pin view first.
+        MKAnnotationView *pinView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:kAnnotationIdentifier];
+        if (!pinView)
+        {
+            // If an existing pin view was not available, create one.
+            pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kAnnotationIdentifier];
+            pinView.canShowCallout = YES;
+
+            NSString * imageName = [annotation.subtitle isEqualToString:@"drop off location"]? @"dropOffCustomMapPinImage.png": @"pickUpCustomMapPinImage.png";
+            pinView.image = [UIImage imageNamed:imageName];
+        } else {
+            pinView.annotation = annotation;
+        }
+        return pinView;
+    }
+    
+    return nil;
+    
+*/
     MKPointAnnotation *resultPin = [[MKPointAnnotation alloc] init];
     MKPinAnnotationView *result = [[MKPinAnnotationView alloc] initWithAnnotation:resultPin reuseIdentifier:kAnnotationIdentifier];
 
     result.animatesDrop = YES;
-    
-    NSLog(@"%s, %@", __func__, annotation.subtitle);
+    result.canShowCallout = YES;
 
     if ([annotation.subtitle isEqualToString:@"drop off location"])
     {
-        result.pinColor = MKPinAnnotationColorGreen;
-        [resultPin setCoordinate:self.dropOffAnnotation.coordinate];
-        resultPin.title = self.dropOffAnnotation.title;
-        resultPin.subtitle = self.dropOffAnnotation.subtitle;
+        result.pinColor = MKPinAnnotationColorRed;
+        
+        //resultPin.coordinate = self.dropOffAnnotation.coordinate;
+       // resultPin.title = self.dropOffAnnotation.title;
+       // resultPin.subtitle = self.dropOffAnnotation.subtitle;
 
         return result;
     }
     
     if ([annotation.subtitle isEqualToString:@"pick up location"])
     {
-        //TODO: use latest coordinates if current location
-        result.pinColor = MKPinAnnotationColorRed;
-        [resultPin setCoordinate:self.pickUpAnnotation.coordinate];
-        resultPin.title = self.pickUpAnnotation.title;
-        resultPin.subtitle = self.pickUpAnnotation.subtitle;
+        result.pinColor = MKPinAnnotationColorGreen;
+        
+        if ( [annotation.title isEqualToString:@"Current Location"]) {
+            NSLog(@"use the latest user location");
+            resultPin.coordinate = self.userLocation;
+        }
+        //else
+          //  resultPin.coordinate = self.pickUpAnnotation.coordinate;
+        
+        //resultPin.title = self.pickUpAnnotation.title;
+        //resultPin.subtitle = self.pickUpAnnotation.subtitle;
         
         return result;
     }
@@ -367,7 +403,7 @@ int locationInputCount = 0;
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     // report any errors returned back from Location Services
-    NSLog(@"loc man failed - %@", error);
+    NSLog(@"loc manager failed - %@", error);
 }
 
 
