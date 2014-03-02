@@ -380,7 +380,7 @@ static GTMOAuth2Keychain* gGTMOAuth2DefaultKeychain = nil;
   }
 }
 
-
+#pragma stowaway customization
 - (void)viewDidLoad {
   [self setUpNavigation];
     [self.navigationController.navigationBar setTitleTextAttributes:@   {NSForegroundColorAttributeName : [UIColor blueColor]}];

@@ -479,7 +479,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="144" y="333" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="3616469E-AECF-49ED-A33E-3795C3374483" colorSpace="pattern"/>
+                                <color key="color" patternImage="B54B28B1-7E0E-404C-8CC3-228262974BD4" colorSpace="pattern"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -569,6 +569,9 @@
                                 <state key="normal" title="Cancel this ride">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="ddu-Zc-dJg" eventType="touchUpInside" id="uf6-EB-uLm"/>
+                                </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="5 MINUTES CAN SAVE YOU UPTO 75% ON YOUR UBER RIDE" translatesAutoresizingMaskIntoConstraints="NO" id="3YY-SX-J6h">
                                 <rect key="frame" x="20" y="417" width="280" height="50"/>
@@ -593,6 +596,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="Nvp-gI-qSz" id="hoo-PI-2Wn"/>
                         <outlet property="countDownTimer" destination="8cj-Ob-NP1" id="mGw-8H-AJH"/>
                     </connections>
                 </viewController>
@@ -621,7 +625,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="3616469E-AECF-49ED-A33E-3795C3374483" width="320" height="460">
+        <image name="B54B28B1-7E0E-404C-8CC3-228262974BD4" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

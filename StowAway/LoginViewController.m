@@ -131,8 +131,9 @@
 #warning fixIt - blocking the main Q
     self.fbImage = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString: fbImageURL]]];
 
-    NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"%@\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\"}",
-                          user.first_name, user.last_name, fbImageURL, user.location.name, user.username, fbAccessToken, fbAccessTokenExpirationDate];
+    NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"%@\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
+                          user.first_name, user.last_name, fbImageURL, user.location.name, user.username, fbAccessToken, fbAccessTokenExpirationDate,
+                          kDeviceType, @"ios", kDeviceToken, @"test device token"];
     
     NSString *post = [NSString stringWithFormat:@"{\"uid\":%@,\"provider\":\"%@\",\"user\":%@}", user.id, provider, userdata];
     

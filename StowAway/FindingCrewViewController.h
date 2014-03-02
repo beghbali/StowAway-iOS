@@ -10,4 +10,8 @@
 
 @interface FindingCrewViewController : UIViewController
 
+@property NSUInteger secondsToExpire;
+
+-(void) armUpCountdownTimer;
+
 @end

@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
+#import "FindingCrewViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
@@ -47,6 +48,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 
+@property NSUInteger secondsToExpire;
 @end
 
 
@@ -509,14 +511,33 @@ int locationInputCount = 0;
    
     [self.rideRequestActivityIndicator stopAnimating];
     
+//FIXME: remove this hack
+    self.secondsToExpire = 300;
+
     // pass the wait time to the next view
-    if ( !sError )
+    if (1|| sError == NULL )
     {
-        //set the wait time and any matches
+        self.secondsToExpire = 300;
         
+        NSLog(@"going to finding crew screen with %d seconds to expire", self.secondsToExpire);
         //segue to finding crew
+
+        [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
     }
 
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ( [segue.identifier isEqualToString:@"toFindingCrew"] )
+    {
+        //set the wait time and any matches
+        if ([segue.destinationViewController class] == [FindingCrewViewController class])
+        {
+            FindingCrewViewController * findingCrewVC = segue.destinationViewController;
+            findingCrewVC.secondsToExpire = self.secondsToExpire;
+        }
+    }
 }
 
 @end
