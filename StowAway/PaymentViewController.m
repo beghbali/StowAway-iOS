@@ -453,6 +453,7 @@ char isReadyToSavePayment = 0;
                name:UIKeyboardWillHideNotification
              object:nil];
     
+    //TODO: prefill the name with facebook name
     [self.nameField becomeFirstResponder];
 }
 
