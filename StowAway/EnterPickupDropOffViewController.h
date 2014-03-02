@@ -1,5 +1,5 @@
 //
-//  FindCrewViewController.h
+//  EnterPickupDropOffViewController.h
 //  StowAway
 //
 //  Created by Vin Pallen on 2/24/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FindCrewViewController : UIViewController
+@interface EnterPickupDropOffViewController : UIViewController
 
 @end

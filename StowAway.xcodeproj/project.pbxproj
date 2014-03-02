@@ -39,9 +39,11 @@
 		F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
 		F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */; };
 		F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F5918BC5BC300A404D0 /* MapKit.framework */; };
-		F4CB1F6018BC634A00A404D0 /* FindCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5F18BC634900A404D0 /* FindCrewViewController.m */; };
+		F4CB1F6018BC634A00A404D0 /* EnterPickupDropOffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */; };
 		F4CB1F6218BC759600A404D0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F6118BC759600A404D0 /* CoreLocation.framework */; };
 		F4CB1F6318BDAEA600A404D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB918418AA11B700C57BF2 /* QuartzCore.framework */; };
+		F4CB1F6618C31BF200A404D0 /* FindingCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F6518C31BF200A404D0 /* FindingCrewViewController.m */; };
+		F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F6818C3214500A404D0 /* CountdownTimer.m */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
 		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
@@ -106,9 +108,13 @@
 		F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndAgreementsViewController.h; sourceTree = "<group>"; };
 		F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndAgreementsViewController.m; sourceTree = "<group>"; };
 		F4CB1F5918BC5BC300A404D0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		F4CB1F5E18BC634900A404D0 /* FindCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindCrewViewController.h; sourceTree = "<group>"; };
-		F4CB1F5F18BC634900A404D0 /* FindCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindCrewViewController.m; sourceTree = "<group>"; };
+		F4CB1F5E18BC634900A404D0 /* EnterPickupDropOffViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterPickupDropOffViewController.h; sourceTree = "<group>"; };
+		F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPickupDropOffViewController.m; sourceTree = "<group>"; };
 		F4CB1F6118BC759600A404D0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F4CB1F6418C31BF200A404D0 /* FindingCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindingCrewViewController.h; sourceTree = "<group>"; };
+		F4CB1F6518C31BF200A404D0 /* FindingCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindingCrewViewController.m; sourceTree = "<group>"; };
+		F4CB1F6718C3214500A404D0 /* CountdownTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountdownTimer.h; sourceTree = "<group>"; };
+		F4CB1F6818C3214500A404D0 /* CountdownTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownTimer.m; sourceTree = "<group>"; };
 		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptEmailViewController.h; sourceTree = "<group>"; };
 		F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiptEmailViewController.m; sourceTree = "<group>"; };
@@ -193,8 +199,10 @@
 				68BAFEC1188DDBD3009738A0 /* Main.storyboard */,
 				F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */,
 				F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */,
-				F4CB1F5E18BC634900A404D0 /* FindCrewViewController.h */,
-				F4CB1F5F18BC634900A404D0 /* FindCrewViewController.m */,
+				F4CB1F5E18BC634900A404D0 /* EnterPickupDropOffViewController.h */,
+				F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */,
+				F4CB1F6418C31BF200A404D0 /* FindingCrewViewController.h */,
+				F4CB1F6518C31BF200A404D0 /* FindingCrewViewController.m */,
 				F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */,
 				F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */,
 				F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */,
@@ -205,6 +213,8 @@
 				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
 				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
 				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
+				F4CB1F6718C3214500A404D0 /* CountdownTimer.h */,
+				F4CB1F6818C3214500A404D0 /* CountdownTimer.m */,
 				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
 				F451B6C618B3333400CF59BA /* StowawayConstants.m */,
 				68BAFEC7188DDBD3009738A0 /* Images.xcassets */,
@@ -411,9 +421,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
+				F4CB1F6618C31BF200A404D0 /* FindingCrewViewController.m in Sources */,
 				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
 				F4266DA218B5A87900A46BB1 /* StripeError.m in Sources */,
-				F4CB1F6018BC634A00A404D0 /* FindCrewViewController.m in Sources */,
+				F4CB1F6018BC634A00A404D0 /* EnterPickupDropOffViewController.m in Sources */,
 				68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */,
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
@@ -422,6 +433,7 @@
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
 				F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */,
 				F4266DDC18B5C00300A46BB1 /* PaymentViewController.m in Sources */,
+				F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */,
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,

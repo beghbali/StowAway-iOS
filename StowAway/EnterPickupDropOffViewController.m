@@ -1,16 +1,17 @@
 //
-//  FindCrewViewController.m
+//  EnterPickupDropOffViewController.m
 //  StowAway
 //
 //  Created by Vin Pallen on 2/24/14.
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
-#import "FindCrewViewController.h"
+#import "EnterPickupDropOffViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
+
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
 #define MAP_VIEW_REGION_DISTANCE (SHOW_MILES_OF_MAP_VIEW * METERS_PER_MILE)
@@ -18,7 +19,7 @@
 static NSString *kCellIdentifier = @"cellIdentifier";
 static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
-@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, StowawayServerCommunicatorDelegate>
+@interface EnterPickupDropOffViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, StowawayServerCommunicatorDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
@@ -44,12 +45,12 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
 
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
-
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
+
 @end
 
 
-@implementation FindCrewViewController
+@implementation EnterPickupDropOffViewController
 
 int locationInputCount = 0;
 
@@ -57,7 +58,7 @@ int locationInputCount = 0;
 {
     [super viewDidLoad];
 
-    self.rideRequestActivityIndicator.hidden = YES;
+    [self.rideRequestActivityIndicator stopAnimating];
 
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
@@ -70,7 +71,7 @@ int locationInputCount = 0;
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = @"Current Location";
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
-    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -499,7 +500,6 @@ int locationInputCount = 0;
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:rideRequest ForURL:url usingHTTPMethod:@"POST"];
     
-    self.rideRequestActivityIndicator.hidden = NO;
     [self.rideRequestActivityIndicator startAnimating];
 }
 
@@ -507,10 +507,15 @@ int locationInputCount = 0;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
    
-    self.rideRequestActivityIndicator.hidden = YES;
     [self.rideRequestActivityIndicator stopAnimating];
     
     // pass the wait time to the next view
+    if ( !sError )
+    {
+        //set the wait time and any matches
+        
+        //segue to finding crew
+    }
 
 }
 
