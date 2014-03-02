@@ -9,7 +9,8 @@
 #import "FindCrewViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-
+#import "StowawayConstants.h"
+#import "StowawayServerCommunicator.h"
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
 #define MAP_VIEW_REGION_DISTANCE (SHOW_MILES_OF_MAP_VIEW * METERS_PER_MILE)
@@ -17,15 +18,17 @@
 static NSString *kCellIdentifier = @"cellIdentifier";
 static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
-@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate> /*, UITableViewDelegate, UITableViewDataSource*/
+@interface FindCrewViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, StowawayServerCommunicatorDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
 @property (weak, nonatomic) IBOutlet UISearchBar *dropOffSearchBar;
 @property (weak, nonatomic) IBOutlet UIButton *findCrewButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rideRequestActivityIndicator;
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
+@property BOOL isUsingCurrentLoc;
 @property (nonatomic) CLLocationCoordinate2D userLocation;
 
 @property (nonatomic, strong) MKLocalSearch *localSearch;
@@ -54,6 +57,8 @@ int locationInputCount = 0;
 {
     [super viewDidLoad];
 
+    self.rideRequestActivityIndicator.hidden = YES;
+
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
     
@@ -65,6 +70,7 @@ int locationInputCount = 0;
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = @"Current Location";
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,7 +144,6 @@ int locationInputCount = 0;
         [self.pickUpSearchDisplayController setActive:NO animated:YES];
 
         self.pickUpMapItem = (MKMapItem *)[self.pickUpPlaces objectAtIndex:indexPath.row];
-        self.pickUpSearchBar.text = self.pickUpMapItem.name;
         
         if ( !self.pickUpAnnotation )
         {
@@ -151,11 +156,12 @@ int locationInputCount = 0;
             self.pickUpAnnotation.coordinate = self.userLocation;
         } else
         {
-            [self.locationManager stopUpdatingLocation];
+            //TODO: stop loc updates and restart if user cancels current loc pick up
+           // [self.locationManager stopUpdatingLocation];
             self.pickUpAnnotation.coordinate = self.pickUpMapItem.placemark.coordinate;
         }
         
-        self.pickUpAnnotation.title = self.pickUpSearchBar.text;
+        self.pickUpAnnotation.title = self.pickUpSearchBar.text = self.pickUpMapItem.name;
 
         [self.mapView addAnnotation:self.pickUpAnnotation];
         [self.mapView selectAnnotation:self.pickUpAnnotation animated:YES];
@@ -167,7 +173,6 @@ int locationInputCount = 0;
         [self.dropOffSearchDisplayController setActive:NO animated:YES];
         
         self.dropOffMapItem = (MKMapItem *)[self.dropOffPlaces objectAtIndex:indexPath.row];
-        self.dropOffSearchBar.text = self.dropOffMapItem.name;
         
         if ( !self.dropOffAnnotation )
         {
@@ -176,7 +181,7 @@ int locationInputCount = 0;
         }
 
         self.dropOffAnnotation.coordinate = self.dropOffMapItem.placemark.coordinate;
-        self.dropOffAnnotation.title = self.dropOffSearchBar.text;
+        self.dropOffAnnotation.title = self.dropOffSearchBar.text = self.dropOffMapItem.name;
 
         [self.mapView addAnnotation:self.dropOffAnnotation];
         [self.mapView selectAnnotation:self.dropOffAnnotation animated:YES];
@@ -330,6 +335,8 @@ int locationInputCount = 0;
     return nil;
     
 */
+    //TODO: reuse kAnnotationIdentifier
+    
     MKPointAnnotation *resultPin = [[MKPointAnnotation alloc] init];
     MKPinAnnotationView *result = [[MKPinAnnotationView alloc] initWithAnnotation:resultPin reuseIdentifier:kAnnotationIdentifier];
 
@@ -354,6 +361,7 @@ int locationInputCount = 0;
         if ( [annotation.title isEqualToString:@"Current Location"]) {
             NSLog(@"use the latest user location");
             resultPin.coordinate = self.userLocation;
+            self.isUsingCurrentLoc = YES;
         }
         //else
           //  resultPin.coordinate = self.pickUpAnnotation.coordinate;
@@ -395,7 +403,8 @@ int locationInputCount = 0;
     CLLocation * newLocation = [locations lastObject];
     
     // remember for later -  user's current location
-    self.userLocation = newLocation.coordinate;
+    if( newLocation )
+        self.userLocation = newLocation.coordinate;
     
     [self updateMapsViewArea];
 }
@@ -468,8 +477,40 @@ int locationInputCount = 0;
 
 - (IBAction)findCrewButtonTapped:(UIButton *)sender
 {
-    
 	[self.locationManager stopUpdatingLocation]; // we don't need to update user's current location at this point
+    
+    //prepare the ride request query
+    
+    NSString * stowawayPublicId = [[NSUserDefaults standardUserDefaults] objectForKey:kPublicId];
+    
+    NSLog(@"\n** %s %@: %@**\n", __PRETTY_FUNCTION__, kPublicId, stowawayPublicId);
+    
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", stowawayPublicId];
+    
+    NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f}}",
+                             kPickUpAddress, self.pickUpAnnotation.title,
+                             kDropOffUpAddress, self.dropOffAnnotation.title,
+                             kPickUpLat, self.isUsingCurrentLoc? self.userLocation.latitude: self.pickUpAnnotation.coordinate.latitude,
+                             kPickUpLong, self.isUsingCurrentLoc? self.userLocation.longitude: self.pickUpAnnotation.coordinate.longitude,
+                             kDropOffLat, self.dropOffAnnotation.coordinate.latitude,
+                             kDropOffLong, self.dropOffAnnotation.coordinate.longitude];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:rideRequest ForURL:url usingHTTPMethod:@"POST"];
+    
+    self.rideRequestActivityIndicator.hidden = NO;
+    [self.rideRequestActivityIndicator startAnimating];
+}
+
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
+{
+    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+   
+    self.rideRequestActivityIndicator.hidden = YES;
+    [self.rideRequestActivityIndicator stopAnimating];
+    
+    // pass the wait time to the next view
 
 }
 

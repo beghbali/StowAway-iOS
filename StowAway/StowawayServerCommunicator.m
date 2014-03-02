@@ -71,9 +71,10 @@
                                                   ([method isEqualToString: @"POST"] && (httpResp.statusCode != 201)) ||
                                                   ([method isEqualToString: @"PUT"] && (httpResp.statusCode != 200)) )   //201=post successful
                                               {
-                                                  NSLog(@"ERROR !!" );
+                                                  NSLog(@"SSCommunicator: error !!" );
+                                                  NSError * sscError = [NSError errorWithDomain:@"http error" code:httpResp.statusCode userInfo:nil];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      [self.sscDelegate stowawayServerCommunicatorResponse:nil error:error];});
+                                                      [self.sscDelegate stowawayServerCommunicatorResponse:nil error:sscError];});
                                                   
                                               } else
                                               {

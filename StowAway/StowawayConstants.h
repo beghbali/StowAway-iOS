@@ -10,14 +10,28 @@
 
 extern NSString *const kPublicId;
 
+//link receipts
 extern NSString *const kUserEmail;
 extern NSString *const kUserEmailProvider;
+extern NSString *const kStowawayEmail;
 
+//gmail OAuth token
 extern NSString *const kGmailAccessToken;
 extern NSString *const kGmailRefreshToken;
 
+//FB login
 extern NSString *const kFirstName;
 extern NSString *const kLastName;
 extern NSString *const kFbId;
 
-extern NSString *const kStowawayEmail;
+//APNS
+extern NSString *const kDeviceType;
+extern NSString *const kDeviceToken;
+
+//ride request
+extern NSString *const kPickUpAddress;
+extern NSString *const kDropOffUpAddress;
+extern NSString *const kPickUpLat;
+extern NSString *const kPickUpLong;
+extern NSString *const kDropOffLat;
+extern NSString *const kDropOffLong;
