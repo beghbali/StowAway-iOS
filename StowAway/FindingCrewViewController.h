@@ -10,7 +10,11 @@
 
 @interface FindingCrewViewController : UIViewController
 
-@property NSUInteger secondsToExpire;
+@property NSUInteger secondsToExpire; //need this for showing the countdown timer
+@property NSUInteger rideRequestPublicId; // need this for deleting the ride request
+@property NSUInteger crewFbId_1;
+@property NSUInteger crewFbId_2;
+@property NSUInteger crewFbId_3;
 
 -(void) armUpCountdownTimer;
 

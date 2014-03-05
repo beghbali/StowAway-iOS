@@ -9,13 +9,13 @@
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
-
+#import "StowawayConstants.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    NSLog(@"app launched");
+    NSLog(@"app launched with launch options %@", launchOptions);
 
     // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
@@ -25,9 +25,49 @@
     [FBLoginView class];
     [FBProfilePictureView class];
     
-    // Override point for customization after application launch.
-    
     return YES;
+}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+	NSLog(@"Received notification: %@", userInfo);
+    
+    [self addMessageFromRemoteNotification:userInfo updateUI:YES];
+}
+
+//TODO: take action
+- (void)addMessageFromRemoteNotification:(NSDictionary*)userInfo updateUI:(BOOL)updateUI
+{
+    
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"My token is: %@, %@", deviceToken, deviceToken.description);
+    // add it to nsuserdefaults, so we can send it along with FB login info
+
+    if ( !deviceToken ) {
+        NSLog(@"null token.. ERROR !!!");
+        return;
+    }
+    
+    NSString *newToken = [deviceToken description];
+	newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+	newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSLog(@"new token %@", newToken);
+    
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if (standardDefaults)
+        [standardDefaults setObject:newToken forKey:kDeviceToken];
+    else
+        NSLog(@"null standardUserDefaults ..ERROR !!");
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -45,6 +85,8 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    //TODO: add code to check that notifcations are enabled otherwise prompt user to enable it
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -61,9 +103,7 @@
     
     // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
     BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
-    
-    // You can add your app-specific url handling code here if needed
-    
+        
     return wasHandled;
 }
 @end

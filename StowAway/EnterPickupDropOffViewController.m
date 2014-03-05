@@ -49,6 +49,11 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 
 @property NSUInteger secondsToExpire;
+@property NSUInteger rideRequestPublicId;
+@property NSUInteger crewFbId_1;
+@property NSUInteger crewFbId_2;
+@property NSUInteger crewFbId_3;
+
 @end
 
 
@@ -99,12 +104,10 @@ int locationInputCount = 0;
     
     if ( [self isPickUpTableView: tableView] )
     {
-        NSLog(@"PICK-UP tableview");
         places = self.pickUpPlaces;
     }
     else
     {
-        NSLog(@"DROP-OFF tableview");
         places = self.dropOffPlaces;
     }
 
@@ -113,7 +116,6 @@ int locationInputCount = 0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"# of rows");
     return [self getPlacesForTableView:tableView].count;
 }
 
@@ -123,11 +125,8 @@ int locationInputCount = 0;
     
     MKMapItem *mapItem = [[self getPlacesForTableView:tableView] objectAtIndex:indexPath.row];
     
-    NSLog(@"cellForRow [%d] %@", indexPath.row, mapItem.name);
-    
     if (!cell) {
         cell = [[UITableViewCell alloc]init];
-        NSLog(@"create cell");
     }
     
     cell.textLabel.text = mapItem.name;
@@ -224,7 +223,6 @@ int locationInputCount = 0;
 {
     //show current location as soon as user taps it
     // TODO: show current location
-    NSLog(@"%s", __func__);
     if ( searchBar == self.pickUpSearchBar ) {
         NSLog(@"reload table");
         [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
@@ -241,7 +239,6 @@ int locationInputCount = 0;
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"%s", __func__);
     
     [searchBar resignFirstResponder];
     
@@ -271,12 +268,10 @@ int locationInputCount = 0;
         {
             if ( searchBar == self.pickUpSearchBar)
             {
-                NSLog(@"pick-up search result update");
                 [self.pickUpPlaces addObjectsFromArray: response.mapItems];
                 [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
             } else
             {
-                NSLog(@"drop-off search result update");
                 [self.dropOffPlaces addObjectsFromArray: response.mapItems];
                 NSLog(@"count %d", self.dropOffPlaces.count);
                 [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
@@ -308,7 +303,6 @@ int locationInputCount = 0;
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    NSLog(@"%s, %@ <%@>", __func__, annotation.subtitle, annotation.title);
 /*
     // If it's the user location, just return nil.
     if ([annotation isKindOfClass:[MKUserLocation class]])
@@ -462,7 +456,7 @@ int locationInputCount = 0;
     
     if (causeStr != nil)
     {
-        NSString *alertMessage = [NSString stringWithFormat:@"You currently have location services disabled for this %@. Please refer to \"Settings\" app to turn on Location Services.", causeStr];
+        NSString *alertMessage = [NSString stringWithFormat:@"You currently have location services disabled for this %@. Please turn it on at \"Settings > Privacy > Location Services\"", causeStr];
         
         UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
                                                                         message:alertMessage
@@ -511,17 +505,21 @@ int locationInputCount = 0;
    
     [self.rideRequestActivityIndicator stopAnimating];
     
-//FIXME: remove this hack
-    self.secondsToExpire = 300;
-
     // pass the wait time to the next view
     if (1|| sError == NULL )
     {
-        self.secondsToExpire = 300;
-        
-        NSLog(@"going to finding crew screen with %d seconds to expire", self.secondsToExpire);
-        //segue to finding crew
+        //TODO: read from actual response
+        self.secondsToExpire = 90;
+        self.rideRequestPublicId = 0; // need this for deleting the ride request
+        self.crewFbId_1 = 0;
+        self.crewFbId_2 = 0;
+        self.crewFbId_3 = 0;
 
+        NSLog(@"going to finding crew screen with %d seconds to expire", self.secondsToExpire);
+        
+        //TODO: segue to meet crew if all matches found
+        
+        //segue to finding crew
         [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
     }
 
@@ -536,6 +534,10 @@ int locationInputCount = 0;
         {
             FindingCrewViewController * findingCrewVC = segue.destinationViewController;
             findingCrewVC.secondsToExpire = self.secondsToExpire;
+            findingCrewVC.rideRequestPublicId = self.rideRequestPublicId;
+            findingCrewVC.crewFbId_1 = self.crewFbId_1;
+            findingCrewVC.crewFbId_2 = self.crewFbId_2;
+            findingCrewVC.crewFbId_3 = self.crewFbId_3;
         }
     }
 }

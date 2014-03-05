@@ -23,6 +23,7 @@ extern NSString *const kGmailRefreshToken;
 extern NSString *const kFirstName;
 extern NSString *const kLastName;
 extern NSString *const kFbId;
+extern NSString *const kUserPublicId;
 
 //APNS
 extern NSString *const kDeviceType;
@@ -35,3 +36,4 @@ extern NSString *const kPickUpLat;
 extern NSString *const kPickUpLong;
 extern NSString *const kDropOffLat;
 extern NSString *const kDropOffLong;
+extern NSString *const kRidePublicId;
