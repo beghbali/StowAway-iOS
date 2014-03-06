@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
-#warning ToDo: create a network health monitor - which can inform the ui if there is no network connectivity
+//TODO: create a network health monitor - which can inform the ui if there is no network connectivity
 
 #import "StowawayServerCommunicator.h"
 #import <Security/Security.h>

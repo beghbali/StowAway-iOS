@@ -523,7 +523,7 @@ char isReadyToSavePayment = 0;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
     
-#warning todo: if it failed send credit card info again
+//TODO: if it failed send credit card info again
     
 }
 

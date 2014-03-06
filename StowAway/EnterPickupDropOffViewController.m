@@ -416,7 +416,7 @@ int locationInputCount = 0;
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     
-#warning todo: re-start loc services if needed
+//TODO: re-start loc services if needed
     
 }
 

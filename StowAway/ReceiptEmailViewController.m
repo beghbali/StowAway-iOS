@@ -9,8 +9,10 @@
 #import "ReceiptEmailViewController.h"
 #import "LoginViewController.h"
 #import "GoogleAuthenticator.h"
+#import "StowawayServerCommunicator.h"
+#import "StowawayConstants.h"
 
-@interface ReceiptEmailViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate>
+@interface ReceiptEmailViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate, StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic)  NSString * email;
 @property (strong, nonatomic)  NSString * emailProvider;
@@ -22,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *authenticateWithGoogleButton;
 @property (weak, nonatomic) IBOutlet UIButton *gotItButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
-@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailUberChangeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
+@property (weak, nonatomic) IBOutlet UITextView *changeUberEmailTextView;
 
 @end
 
@@ -32,12 +34,14 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
+  
+    //TODO: encapsulate the buttons appearence and hiding into a function
     
     //hide labels, buttons and text view
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
-    self.stowawayEmailUberChangeLabel.hidden = YES;
+    self.changeUberEmailTextView.hidden = YES;
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
@@ -55,7 +59,7 @@
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
-    self.stowawayEmailUberChangeLabel.hidden = YES;
+    self.changeUberEmailTextView.hidden = YES;
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
@@ -134,9 +138,12 @@
         self.askMailProviderLabel.hidden = YES;
         self.googleMailProviderButton.hidden = YES;
         self.otherMailProviderButton.hidden = YES;
-        self.stowawayEmailUberChangeLabel.hidden = YES;
+        
+        self.changeUberEmailTextView.hidden = YES;
         self.stowawayEmailFooterLabel.hidden = YES;
+        
         self.authenticateWithGoogleButton.hidden = NO;
+        
         self.gotItButton.hidden = YES;
     } else
     {
@@ -146,7 +153,7 @@
         self.googleMailProviderButton.hidden = NO;
         self.otherMailProviderButton.hidden = NO;
         
-        self.stowawayEmailUberChangeLabel.hidden = YES;
+        self.changeUberEmailTextView.hidden = YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
         self.authenticateWithGoogleButton.hidden = YES;
@@ -158,6 +165,16 @@
     return YES;
 }
 
+-(void)setOtherMailTexts
+{
+    //TODO: changing this to textview would be better ?
+    NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
+    self.changeUberEmailTextView.text = [NSString stringWithFormat:
+                                              @"To read uber receipts, you will need to set your email in ubers account settings to %@", stowawayEmail];
+
+    self.stowawayEmailFooterLabel.text = [NSString stringWithFormat:
+                                              @"Don't worry... you will also get uber receipts at %@", self.email];
+}
 
 - (IBAction)mailProviderSelected:(UIButton *)sender
 {
@@ -167,17 +184,18 @@
         self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         self.authenticateWithGoogleButton.hidden = NO;
         
-        self.stowawayEmailUberChangeLabel.hidden = YES;
+        self.changeUberEmailTextView.hidden = YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         self.gotItButton.hidden = YES;
     } else
     {
         NSLog(@"other selected");
+        [self setOtherMailTexts];
         sender.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
         self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         self.authenticateWithGoogleButton.hidden = YES;
         
-        self.stowawayEmailUberChangeLabel.hidden = NO;
+        self.changeUberEmailTextView.hidden = NO;
         self.stowawayEmailFooterLabel.hidden = NO;
         self.gotItButton.hidden = NO;
 
@@ -204,6 +222,32 @@
     [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
 }
 
+- (IBAction)confirmedOtherEmailButtonTapped:(UIButton *)sender
+{
+    //send the other email to server
+    //SUCCESS - move to the next screen - ie credit card
+    NSString * stowawayPublicId = [[NSUserDefaults standardUserDefaults] objectForKey:kPublicId];
+    NSLog(@"\n** %s %@: %@**\n", __PRETTY_FUNCTION__, kPublicId, stowawayPublicId);
+    
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", stowawayPublicId];
+    
+    NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\"}",
+                                                      kUserEmail, self.email,
+                                                      kUserEmailProvider, self.emailProvider];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
+
+    // segue to payment screen
+    [self performSegueWithIdentifier: @"go to payment" sender: self];
+}
+
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
+{
+    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    
+}
 
 
 -(void) viewDidDisappear:(BOOL)animated
