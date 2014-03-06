@@ -43,7 +43,7 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"My token is: %@, %@", deviceToken, deviceToken.description);
+	NSLog(@"My token is: %@",deviceToken.description);
     // add it to nsuserdefaults, so we can send it along with FB login info
 
     if ( !deviceToken ) {
@@ -55,7 +55,7 @@
 	newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
 	newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    NSLog(@"new token %@", newToken);
+    NSLog(@"parsed token %@", newToken);
     
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     

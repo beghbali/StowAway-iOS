@@ -29,6 +29,7 @@
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
     
     id nsNullObj = (id)[NSNull null];
+    
     //write user data to userdefaults
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
 
@@ -128,12 +129,16 @@
     NSString *provider = @"facebook";
     NSString * fbImageURL = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=square", user.id];
    
-#warning fixIt - blocking the main Q
+    //read device token from userdefaults
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    NSString * deviceToken = [standardDefaults objectForKey:kDeviceToken];
+    
+//TODO: FIXIT fixIt - blocking the main Q
     self.fbImage = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString: fbImageURL]]];
 
     NSString *userdata = [NSString stringWithFormat:@"{\"first_name\":\"%@\", \"last_name\":\"%@\", \"image_url\":\"%@\", \"location\":\"%@\", \"profile_url\":\"https://www.facebook.com/%@\",\"token\":\"%@\",\"expires_at\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
                           user.first_name, user.last_name, fbImageURL, user.location.name, user.username, fbAccessToken, fbAccessTokenExpirationDate,
-                          kDeviceType, @"ios", kDeviceToken, @"test device token"];
+                          kDeviceType, @"ios", kDeviceToken, deviceToken];
     
     NSString *post = [NSString stringWithFormat:@"{\"uid\":%@,\"provider\":\"%@\",\"user\":%@}", user.id, provider, userdata];
     
