@@ -16,6 +16,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView2;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView3;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel2;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
 @property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages;
 
@@ -137,6 +140,67 @@
     
     
 }
+
+#pragma process ride response
+/*
+ push notification for a ride match(this is the match):
+ {"location_channel"=>"447fffe534a9cd816332", "public_id"=>7384424, :requests=>[{"status"=>"matched", "designation"=>nil, "public_id"=>1200365, "requested_at"=>1394082222, :user_public_id=>3275123, :uid=>"3374"}]
+ 
+ push notification for a fulfilled ride:
+ 
+ {"location_channel"=>"447fffe534a9cd816332", "public_id"=>7384424, :requests=>[{"status"=>"fulfilled", "designation"=>nil, "public_id"=>1200365, "requested_at"=>1394082222, :user_public_id=>3275123, :uid=>"3374"}]
+ */
+
+// run this function on a background thread
+-(void)setCrewImageAndName:(NSUInteger)crewPostion withFbUID:(NSString *)fbUID
+{
+    NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
+    NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/profile", fbUID]];
+   
+    NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
+    UIImage *profilePic = [[UIImage alloc] initWithData:profilePicData] ;
+
+    NSData *firstNameData = [NSData dataWithContentsOfURL:firstNameURL];
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:firstNameData
+                          
+                          options:kNilOptions
+                          error:&error];
+    
+    NSString * fbName = [[[json objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
+
+    switch (crewPostion)
+    {
+        case 1:
+
+            [self stopAnimatingImage:self.imageView1];
+            self.imageView1.image   = profilePic;
+            self.nameLabel1.text    = fbName;
+
+            break;
+            
+        case 2:
+            
+            [self stopAnimatingImage:self.imageView2];
+            self.imageView2.image   = profilePic;
+            self.nameLabel2.text    = fbName;
+            
+            break;
+            
+        case 3:
+            
+            [self stopAnimatingImage:self.imageView1];
+            self.imageView3.image   = profilePic;
+            self.nameLabel3.text    = fbName;
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
 
 #pragma alert delegates
 -(void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex

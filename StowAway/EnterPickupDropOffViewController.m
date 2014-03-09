@@ -273,7 +273,6 @@ int locationInputCount = 0;
             } else
             {
                 [self.dropOffPlaces addObjectsFromArray: response.mapItems];
-                NSLog(@"count %d", self.dropOffPlaces.count);
                 [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
             }
         }
