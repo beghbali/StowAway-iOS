@@ -48,11 +48,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 
-@property NSUInteger secondsToExpire;
-@property NSUInteger rideRequestPublicId;
-@property NSUInteger crewFbId_1;
-@property NSUInteger crewFbId_2;
-@property NSUInteger crewFbId_3;
+@property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
 @end
 
@@ -477,11 +473,9 @@ int locationInputCount = 0;
     
     //prepare the ride request query
     
-    NSString * stowawayPublicId = [[NSUserDefaults standardUserDefaults] objectForKey:kPublicId];
-    
-    NSLog(@"\n** %s %@: %@**\n", __PRETTY_FUNCTION__, kPublicId, stowawayPublicId);
-    
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", stowawayPublicId];
+    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+        
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", publicUserId];
     
     NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f}}",
                              kPickUpAddress, self.pickUpAnnotation.title,
@@ -504,39 +498,24 @@ int locationInputCount = 0;
    
     [self.rideRequestActivityIndicator stopAnimating];
     
-    // pass the wait time to the next view
-    if (1|| sError == NULL )
+    // set data to processed in the next view
+    if ( sError == NULL )
     {
-        //TODO: read from actual response
-        self.secondsToExpire = 90;
-        self.rideRequestPublicId = 0; // need this for deleting the ride request
-        self.crewFbId_1 = 0;
-        self.crewFbId_2 = 0;
-        self.crewFbId_3 = 0;
-
-        NSLog(@"going to finding crew screen with %d seconds to expire", self.secondsToExpire);
-        
-        //TODO: segue to meet crew if all matches found
-        
+        self.rideRequestResponse = data;
+     
         //segue to finding crew
         [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
     }
-
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ( [segue.identifier isEqualToString:@"toFindingCrew"] )
     {
-        //set the wait time and any matches
         if ([segue.destinationViewController class] == [FindingCrewViewController class])
         {
             FindingCrewViewController * findingCrewVC = segue.destinationViewController;
-            findingCrewVC.secondsToExpire = self.secondsToExpire;
-            findingCrewVC.rideRequestPublicId = self.rideRequestPublicId;
-            findingCrewVC.crewFbId_1 = self.crewFbId_1;
-            findingCrewVC.crewFbId_2 = self.crewFbId_2;
-            findingCrewVC.crewFbId_3 = self.crewFbId_3;
+            findingCrewVC.rideRequestResponse = self.rideRequestResponse;
         }
     }
 }

@@ -35,6 +35,11 @@
     [self.countDownTimer fire];
 }
 
+-(void)setSecondsRemaining:(NSUInteger)seconds
+{
+    self.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:seconds];
+}
+
 -(void)updateClock:(NSTimer *)timer
 {
     NSDate *now = [NSDate date];

@@ -31,5 +31,29 @@ NSString *const kPickUpLat          = @"pickup_lat";
 NSString *const kPickUpLong         = @"pickup_lng";
 NSString *const kDropOffLat         = @"dropoff_lat";
 NSString *const kDropOffLong        = @"dropoff_lng";
-NSString *const kRidePublicId       = @"ride_public_id";
+NSString *const kRequestPublicId    = @"request_public_id";
+NSString *const kRequestedAt        = @"requested_at";
 
+//ride result
+NSString *const kRidePublicId           = @"ride_public_id";
+NSString *const kStatus                 = @"status";
+NSString *const KStatusFulfilled        = @"fulfilled";
+
+//crew member
+NSString *const kIsCaptain              = @"isCaptain";
+NSString *const kCrewFbImage            = @"crewFbImage";
+NSString *const kCrewFbName             = @"crewFbName";
+NSString *const kDesignation            = @"designation";
+NSString *const kDesignationCaptain     = @"captain";
+
+//meet the crew
+NSString *const kLocationChannel        = @"location_channel";
+NSString *const kSuggestedDropOffAddr   = @"suggested_dropoff_address";
+NSString *const kSuggestedPickUpAddr    = @"suggested_pickup_address";
+NSString *const kSuggestedDropOffLong   = @"suggested_dropoff_lng";
+NSString *const kSuggestedDropOffLat    = @"suggested_dropoff_lat";
+NSString *const kSuggestedPickUpLong    = @"suggested_pickup_lng";
+NSString *const kSuggestedPickUpLat     = @"suggested_pickup_lat";
+
+//countdown timer
+NSUInteger kCountdownTimerMaxSeconds    = 300; //5mins

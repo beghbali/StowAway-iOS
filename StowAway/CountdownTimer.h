@@ -24,5 +24,6 @@
 
 -(void)initializeWithSecondsRemaining:(NSUInteger)seconds ForLabel:(UILabel *)label;
 
+-(void)setSecondsRemaining:(NSUInteger)seconds;
 
 @end

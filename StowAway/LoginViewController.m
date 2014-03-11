@@ -43,7 +43,7 @@
     if ( fbId != nsNullObj ) [standardDefaults setObject: fbId               forKey:kFbId];
     
     NSString * publicId = [data objectForKey:kPublicId];
-    if ( publicId != nsNullObj ) [standardDefaults setObject: publicId           forKey:kPublicId];
+    if ( publicId != nsNullObj ) [standardDefaults setObject: publicId           forKey:kUserPublicId];
     
     NSString * firstName = [data objectForKey:kFirstName];
     if ( firstName != nsNullObj ) [standardDefaults setObject: firstName          forKey:kFirstName];

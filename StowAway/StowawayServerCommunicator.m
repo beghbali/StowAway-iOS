@@ -21,8 +21,7 @@
 {
     NSLog(@"sendServerRequest:: \n url: ## %@ ## \n bodyData: ## %@ ## \n method ## %@ ##", url, bodyString, method);
 
-
-    if ( !bodyString || !url || !method ) {
+    if (!url || !method ) {
         return NO;
     }
     
