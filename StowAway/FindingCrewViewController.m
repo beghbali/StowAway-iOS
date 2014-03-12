@@ -31,8 +31,10 @@
 //dictionary contains user_id, fb_id, picture, name, iscaptain
 @property (strong, nonatomic) NSMutableArray * /*of NSDictionary*/ crew; //index 0 being self and upto 3
 
+//my ID's - used for finalize ride and delete request
 @property (strong, nonatomic) NSString *rideID;
 @property (strong, nonatomic) NSString *userID;
+@property (strong, nonatomic) NSString *requestID;
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
@@ -89,10 +91,12 @@
     
     if ( !self.crew )
     { //this is the immediate ride request response
+        NSLog(@"process immediate ride req response");
         self.crew = [NSMutableArray arrayWithCapacity: 1];
         self.userID = [response objectForKey:kUserPublicId];
+        self.requestID = [response objectForKey:kPublicId];
         //parse the response to fill in SELF request_id, user_id
-        NSDictionary * dict = @{kRequestPublicId: [response objectForKey:kPublicId],
+        NSDictionary * dict = @{kRequestPublicId: self.requestID,
                                 kUserPublicId: self.userID};
         [self.crew insertObject:dict atIndex:0];
         
@@ -100,6 +104,7 @@
     }
     
     NSString * ride_id = [response objectForKey:kRidePublicId];
+    self.rideID = ride_id;
     NSLog(@"ride id %@", ride_id);
     
     if ( ride_id && (ride_id != nsNullObj) )
@@ -132,8 +137,8 @@
     
     NSArray * requests = [response objectForKey:@"requests"];
     
-    int countRequests = [requests count];
-    int countCrew = [self.crew count];
+    int countRequests = requests.count;
+    int countCrew = self.crew.count;
     
     //ADD NEW MEMBERS
     for ( int i = 0; i < countRequests; i++)
@@ -168,12 +173,12 @@
     NSLog(@"after add - %@", self.crew);
 
     //REMOVE STALE MEMBERS
-    for (int j = 0; j < [self.crew count]; j++)
+    for (int j = 0; j < self.crew.count; j++)
     {
         BOOL removeIt = YES;
         NSDictionary * crewMember = [self.crew objectAtIndex:j];
         
-        for (int i = 0; i < [dontRemoveCrewIndexList count]; i++)
+        for (int i = 0; i < dontRemoveCrewIndexList.count; i++)
         {
             if ( [[crewMember objectForKey:kUserPublicId] isEqualToString:[dontRemoveCrewIndexList objectAtIndex:i]] )
             {
@@ -260,6 +265,7 @@
 }
 
 #pragma mark countdown timer
+
 -(void) armUpCountdownTimer
 {
     self.cdt = [[CountdownTimer alloc] init];
@@ -277,6 +283,32 @@
     [self rideFindTimeExpired];
 }
 
+-(void)rideFindTimeExpired
+{
+    //check if there is atleast one match
+    if ( self.crew.count > 1)
+    {
+        // ask server for roles
+        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@/finalize", self.userID, self.rideID];
+        
+        StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+        sscommunicator.sscDelegate = self;
+        [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"PUT"];
+        
+        [self.getRideResultActivityIndicator startAnimating];
+        return;
+    }
+    
+    //if there are no matches, ask user if they want to wait more
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Matches Yet !"
+                                                    message:@"Do you want to wait a bit more ?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
+}
+
+
 #pragma mark ride cancel
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
@@ -292,37 +324,17 @@
 
 -(void)cancelRide
 {
-    //TODO: DELETE ride request
-    //cancel ride request using the ride request public id
-    /*URL = http://api.getstowaway.com/api/v1/users/2156610/requests/publicid
-     BODY = nil
-     METHOD = delete
-     */
+    //DELETE ride request
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.rideID];
     
-    //go back to enter drop off pick up
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];
+    
+    //go back to enter drop off pick up view
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
-
-#pragma mark find ride
-
--(void)rideFindTimeExpired
-{
-    //if there are no matches, ask user if they want to wait more
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Matches Yet !"
-                                                    message:@"Do you want to wait a bit more ?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"No"
-                                          otherButtonTitles:@"Yes", nil];
-    [alert show];
-    
-
-    //check if there is atleast one match,
-        //if so ask server for roles
-            //move to meet crew screen
-    
-    
-}
 
 #pragma mark update view
 
@@ -332,7 +344,7 @@
     //set the cd timer
     [self reCalculateCDTimer];
     
-    for (NSUInteger i = 1; i < [self.crew count]; i++)
+    for (NSUInteger i = 1; i < self.crew.count; i++)
         [self setCrewImageAndName:i withFbUID:[[self.crew objectAtIndex:i] objectForKey:kFbId]];
     
 }
@@ -342,7 +354,7 @@
     NSInteger rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] integerValue];
     NSInteger minRideRequestedAt = rideRequestedAt;
     
-    for (int i = 1; i < [self.crew count]; i++)
+    for (int i = 1; i < self.crew.count; i++)
     {
         NSInteger iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] integerValue];
         //compare self with the other crew members requested time, we want the minimum req time
@@ -410,6 +422,7 @@
 
 
 #pragma mark alert delegates
+
 -(void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"For alert %@, The %@ button was tapped.", theAlert.title, [theAlert buttonTitleAtIndex:buttonIndex]);
@@ -425,15 +438,10 @@
     {
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"No"])
             [self cancelRide];
+        else
+            [self armUpCountdownTimer]; //re-start the 5mins timer
     }
 
 }
 
-// to take care of user pressing home button on the alert
-
-- (void)alertViewCancel:(UIAlertView *)alertView
-{
-    //wait for another 5mins, if no matches
-    
-}
 @end
