@@ -210,8 +210,7 @@
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
         
-        //figure out who is the captain
-        
+//TODO: add some delay here, so that segue happens gradually, users should get to see the crew
         //go to "meet the crew" view
         [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
     } else
