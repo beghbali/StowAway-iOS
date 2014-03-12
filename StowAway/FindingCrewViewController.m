@@ -10,6 +10,7 @@
 #import "CountdownTimer.h"
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
+#import "MeetCrewViewController.h"
 
 @interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
@@ -220,18 +221,24 @@
     }
 }
 
-#pragma mark prepare segue
+#pragma mark prepare meetCrew view
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ( [segue.identifier isEqualToString:@"toMeetCrew"] )
     {
- /*       if ([segue.destinationViewController class] == [FindingCrewViewController class])
+        if ([segue.destinationViewController class] == [MeetCrewViewController class])
         {
-            FindingCrewViewController * findingCrewVC = segue.destinationViewController;
-            findingCrewVC.rideRequestResponse = self.rideRequestResponse;
+            MeetCrewViewController * meetCrewVC = segue.destinationViewController;
+            
+            meetCrewVC.userID   = self.userID;
+            meetCrewVC.rideID   = self.rideID;
+            meetCrewVC.requestID   = self.requestID;
+            meetCrewVC.crew     = self.crew;
+            meetCrewVC.locationChannel  = self.locationChannel;
+            meetCrewVC.suggestedLocations = self.suggestedLocations;
         }
-  */
+  
     }
 }
 
@@ -345,7 +352,12 @@
     [self reCalculateCDTimer];
     
     for (NSUInteger i = 1; i < self.crew.count; i++)
-        [self setCrewImageAndName:i withFbUID:[[self.crew objectAtIndex:i] objectForKey:kFbId]];
+    {
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
+            //Background Thread
+            [self setCrewImageAndName:i withFbUID:[[self.crew objectAtIndex:i] objectForKey:kFbId]];
+        });
+    }
     
 }
 
@@ -387,27 +399,36 @@
     switch (crewPostion)
     {
         case 1:
-
-            [self stopAnimatingImage:self.imageView1];
-            self.imageView1.image   = profilePic;
-            self.nameLabel1.text    = fbName;
-
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                //Run UI Updates
+                [self stopAnimatingImage:self.imageView1];
+                self.imageView1.image   = profilePic;
+                self.nameLabel1.text    = fbName;
+            });
+        }
             break;
             
         case 2:
-            
-            [self stopAnimatingImage:self.imageView2];
-            self.imageView2.image   = profilePic;
-            self.nameLabel2.text    = fbName;
-            
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                //Run UI Updates
+                [self stopAnimatingImage:self.imageView2];
+                self.imageView2.image   = profilePic;
+                self.nameLabel2.text    = fbName;
+            });
+        }
             break;
             
         case 3:
-            
-            [self stopAnimatingImage:self.imageView1];
-            self.imageView3.image   = profilePic;
-            self.nameLabel3.text    = fbName;
-            
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                //Run UI Updates
+                [self stopAnimatingImage:self.imageView3];
+                self.imageView3.image   = profilePic;
+                self.nameLabel3.text    = fbName;
+            });
+        }
             break;
             
         default:
