@@ -29,6 +29,26 @@
 
 @implementation MeetCrewViewController
 
+- (IBAction)requestUberButtonTapped:(UIButton *)sender
+{
+    NSString *stringURL = @"uber://";
+    NSURL *url = [NSURL URLWithString:stringURL];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        NSLog(@"uber installed, launch");
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else {
+        NSLog(@"not installed, open app store");
+        
+        NSString *stringURL = @"https://appsto.re/us/4hz-v.i";
+        NSURL *url = [NSURL URLWithString:stringURL];
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    
+    self.requestUberButton.titleLabel.textColor = [UIColor grayColor];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
