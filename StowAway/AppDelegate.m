@@ -17,9 +17,19 @@
     
     NSLog(@"app launched with launch options %@", launchOptions);
 
+    if (launchOptions != nil)
+	{
+		NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+		if (dictionary != nil)
+		{
+			NSLog(@"Launched from push notification: %@", dictionary);
+			[self processStowawayPushNotification:dictionary];
+		}
+	}
+    
     // Let the device know we want to receive push notifications
-	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //facebook login
     [FBLoginView class];
@@ -32,12 +42,17 @@
 {
 	NSLog(@"Received notification: %@", userInfo);
     
-    [self addMessageFromRemoteNotification:userInfo updateUI:YES];
+    [self processStowawayPushNotification:userInfo];
 }
 
-//TODO: take action
-- (void)addMessageFromRemoteNotification:(NSDictionary*)userInfo updateUI:(BOOL)updateUI
+- (void)processStowawayPushNotification:(NSDictionary*)pushMsg
 {
+    NSLog(@"process push: %@", pushMsg);
+    
+    //based on aps alert msg string, we need to launch into the app at appropriate view
+    
+    NSString *alertValue = [[pushMsg valueForKey:@"aps"] valueForKey:@"alert"];
+
     
 }
 
@@ -59,6 +74,7 @@
     
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
+    //TODO: update the server with device token everytime
     if (standardDefaults)
         [standardDefaults setObject:newToken forKey:kDeviceToken];
     else
