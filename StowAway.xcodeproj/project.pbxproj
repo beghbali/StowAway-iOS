@@ -65,6 +65,7 @@
 		F4CB1FA518C7F25100A404D0 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4CB1FA118C7F25100A404D0 /* README.txt */; };
 		F4CB1FA718C7F35C00A404D0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */; };
 		F4CB1FA918C7F4BA00A404D0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */; };
+		F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4D65A5618D547A200FAF3D0 /* LICENCE.txt */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
 		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
@@ -175,6 +176,9 @@
 		F4CB1FA118C7F25100A404D0 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		F4D65A5618D547A200FAF3D0 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
+		F4D65A5718D547A200FAF3D0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F4D65A5818D547A200FAF3D0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptEmailViewController.h; sourceTree = "<group>"; };
 		F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiptEmailViewController.m; sourceTree = "<group>"; };
@@ -435,9 +439,20 @@
 			path = headers;
 			sourceTree = "<group>";
 		};
+		F4D65A5518D547A200FAF3D0 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				F4D65A5618D547A200FAF3D0 /* LICENCE.txt */,
+				F4D65A5718D547A200FAF3D0 /* Reachability.h */,
+				F4D65A5818D547A200FAF3D0 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		F4EB90E518A8345C00C57BF2 /* otherFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4D65A5518D547A200FAF3D0 /* Reachability */,
 				F4CB1F8B18C7F25100A404D0 /* libPusher */,
 				F4266D3F18B5A87800A46BB1 /* Stripe */,
 				F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */,
@@ -537,6 +552,7 @@
 				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
 				F4CB1F7D18C5996A00A404D0 /* win_11.png in Resources */,
 				F4266DD518B5A87900A46BB1 /* VERSION in Resources */,
+				F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */,
 				F4CB1F7E18C5996A00A404D0 /* win_12.png in Resources */,
 				F4CB1F8218C5996A00A404D0 /* win_16.png in Resources */,
 				F4CB1F8118C5996A00A404D0 /* win_15.png in Resources */,

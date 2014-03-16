@@ -63,3 +63,11 @@ extern NSString *const kSuggestedPickUpLat;
 
 //countdown timer
 extern NSUInteger kCountdownTimerMaxSeconds;
+
+//Pusher
+extern NSString *const kPusherApiKey;
+extern NSString *const kPusherCrewLocationEvent;
+
+
+
+
