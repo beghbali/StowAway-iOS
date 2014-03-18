@@ -66,6 +66,7 @@
 		F4CB1FA718C7F35C00A404D0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */; };
 		F4CB1FA918C7F4BA00A404D0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */; };
 		F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4D65A5618D547A200FAF3D0 /* LICENCE.txt */; };
+		F4D65A5D18D805DE00FAF3D0 /* MeetCrewMapViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
 		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
@@ -179,6 +180,8 @@
 		F4D65A5618D547A200FAF3D0 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
 		F4D65A5718D547A200FAF3D0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F4D65A5818D547A200FAF3D0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		F4D65A5B18D805DE00FAF3D0 /* MeetCrewMapViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewMapViewManager.h; sourceTree = "<group>"; };
+		F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewMapViewManager.m; sourceTree = "<group>"; };
 		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptEmailViewController.h; sourceTree = "<group>"; };
 		F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiptEmailViewController.m; sourceTree = "<group>"; };
@@ -285,6 +288,8 @@
 				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
 				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
 				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
+				F4D65A5B18D805DE00FAF3D0 /* MeetCrewMapViewManager.h */,
+				F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */,
 				F4CB1F6718C3214500A404D0 /* CountdownTimer.h */,
 				F4CB1F6818C3214500A404D0 /* CountdownTimer.m */,
 				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
@@ -583,6 +588,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
+				F4D65A5D18D805DE00FAF3D0 /* MeetCrewMapViewManager.m in Sources */,
 				F4CB1F6618C31BF200A404D0 /* FindingCrewViewController.m in Sources */,
 				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
 				F4266DA218B5A87900A46BB1 /* StripeError.m in Sources */,

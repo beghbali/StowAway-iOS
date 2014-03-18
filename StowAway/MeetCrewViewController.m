@@ -18,7 +18,8 @@
 #import "PTPusherConnection.h"
 
 
-@interface MeetCrewViewController () <PTPusherDelegate, StowawayServerCommunicatorDelegate>
+@interface MeetCrewViewController ()
+<PTPusherDelegate, StowawayServerCommunicatorDelegate, CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
@@ -32,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+
 
 @property (strong, nonatomic) PTPusher * pusher;
 
