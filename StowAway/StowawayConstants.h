@@ -60,6 +60,7 @@ extern NSString *const kSuggestedDropOffLong;
 extern NSString *const kSuggestedDropOffLat;
 extern NSString *const kSuggestedPickUpLong;
 extern NSString *const kSuggestedPickUpLat;
+extern NSString *const kMKPointAnnotation;
 
 //countdown timer
 extern NSUInteger kCountdownTimerMaxSeconds;
