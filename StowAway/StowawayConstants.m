@@ -61,4 +61,4 @@ NSUInteger kCountdownTimerMaxSeconds    = 300; //5mins
 
 //Pusher
 NSString *const kPusherApiKey               = @"403b5fc6f392db2fe167";
-NSString *const kPusherCrewLocationEvent    = @"meet your crew";
+NSString *const kPusherCrewLocationEvent    = @"location_update";

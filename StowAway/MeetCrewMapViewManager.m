@@ -35,6 +35,7 @@
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
 @property (strong, nonatomic) NSString *userID;
+@property (strong, nonatomic) NSString *requestID;
 
 @end
 
@@ -48,6 +49,11 @@
     if ( !self.crew )
     {
         self.crew = [NSMutableArray arrayWithArray:newCrew];
+        
+        //get self user id
+        self.requestID = [[newCrew objectAtIndex:0]objectForKey:kRequestPublicId];
+        self.userID = [[newCrew objectAtIndex:0]objectForKey:kUserPublicId];
+        
         return;
     }
     
@@ -92,9 +98,6 @@
      withSuggestedLocations:(NSDictionary *)suggestedLocations
            andPusherChannel:(NSString *)locationChannel
 {
-    //get self user id
-    self.userID = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-
     //set class properties
     self.mapView = mapView;
     self.mapView.delegate = self;
@@ -236,7 +239,8 @@
     
     NSDictionary * locationUpdate = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
                                       @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
-                                      kUserPublicId: self.userID};
+                                      kUserPublicId: self.userID,
+                                      kRequestPublicId: self.requestID};
     
     [connection send:locationUpdate];
 }
@@ -247,11 +251,12 @@
     self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
     
     //TODO: authorise for private channel
-    //self.client.authorizationURL = [NSURL URLWithString:@"http://api.getstowaway.com/api/v1/authorize"];
+    //self.client.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
     
     [self.pusher connect];
     
     //subscribe to location channel created by server
+    //TODO: use subscribeToPresenceChannelNamed
     PTPusherChannel *channel = [self.pusher subscribeToChannelNamed:self.locationChannel];
     
     [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
@@ -267,7 +272,7 @@
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withRequest:(NSMutableURLRequest *)request
 {
     //TODO: fill in right credentials
-    [request setValue:@"some-authentication-token" forHTTPHeaderField:@"X-MyCustom-AuthTokenHeader"];
+    [request setValue:@"afbadb4ff8485c0adcba486b4ca90cc4" forHTTPHeaderField:@"X-MyCustom-AuthTokenHeader"];
 }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
