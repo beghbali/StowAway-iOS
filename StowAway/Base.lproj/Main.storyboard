@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="yyB-R0-4Pt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Qe4-4s-UEE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -392,7 +392,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="yyB-R0-4Pt" kind="push" id="aUD-nT-D4A"/>
+                                    <segue destination="gzB-dY-rge" kind="modal" id="dej-H5-JnW"/>
                                 </connections>
                             </button>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" paginationMode="topToBottom" translatesAutoresizingMaskIntoConstraints="NO" id="ICA-Ci-UiK">
@@ -475,7 +475,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="144" y="333" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="44248BFD-2D34-4B61-A7DE-50B1C72943D5" colorSpace="pattern"/>
+                                <color key="color" patternImage="F3A4EAF2-9EC0-4B37-BCA8-06CA51D16F7E" colorSpace="pattern"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -526,7 +526,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1869" y="-801"/>
+            <point key="canvasLocation" x="1317" y="-798"/>
         </scene>
         <!--Finding Crew View Controller-->
         <scene sceneID="3uT-tg-mP0">
@@ -613,7 +613,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="30" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="ACE3DAE1-A652-4CC0-A27F-E47D20A6F7E7" colorSpace="pattern"/>
+                                <color key="color" patternImage="A84295D6-F1D1-4A06-82A8-F39F1614B3BD" colorSpace="pattern"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -633,7 +633,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCa-ol-41Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2270" y="-798"/>
+            <point key="canvasLocation" x="1718" y="-795"/>
         </scene>
         <!--Meet Crew View Controller - Meet Your Crew-->
         <scene sceneID="uD3-8c-8Uz">
@@ -808,30 +808,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DTG-KP-TIw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2706" y="-798"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="imo-7J-JSe">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yyB-R0-4Pt" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="4Wa-ms-fFv"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IER-yQ-guP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="gzB-dY-rge" kind="relationship" relationship="rootViewController" id="a5K-jG-LZN"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X8l-0v-Tum" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1343" y="-801"/>
+            <point key="canvasLocation" x="2154" y="-795"/>
         </scene>
     </scenes>
     <resources>
-        <image name="44248BFD-2D34-4B61-A7DE-50B1C72943D5" width="320" height="460">
+        <image name="A84295D6-F1D1-4A06-82A8-F39F1614B3BD" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -10718,7 +10699,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="ACE3DAE1-A652-4CC0-A27F-E47D20A6F7E7" width="320" height="460">
+        <image name="F3A4EAF2-9EC0-4B37-BCA8-06CA51D16F7E" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
