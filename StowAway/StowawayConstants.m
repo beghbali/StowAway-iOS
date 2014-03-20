@@ -55,6 +55,7 @@ NSString *const kSuggestedDropOffLat    = @"suggested_dropoff_lat";
 NSString *const kSuggestedPickUpLong    = @"suggested_pickup_lng";
 NSString *const kSuggestedPickUpLat     = @"suggested_pickup_lat";
 NSString *const kMKPointAnnotation      = @"mapPoint";
+NSString *const kIsRideFinalized        = @"isRideFinalized";
 
 //countdown timer
 NSUInteger kCountdownTimerMaxSeconds    = 300; //5mins

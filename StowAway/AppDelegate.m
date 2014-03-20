@@ -10,6 +10,9 @@
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "StowawayConstants.h"
+#import "FindingCrewViewController.h"
+#import "MeetCrewViewController.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -23,7 +26,7 @@
 		if (dictionary != nil)
 		{
 			NSLog(@"Launched from push notification: %@", dictionary);
-			[self processStowawayPushNotification:dictionary];
+			[self processStowawayPushNotification:dictionary isAppRunning:NO];
 		}
 	}
     
@@ -42,18 +45,46 @@
 {
 	NSLog(@"Received notification: %@", userInfo);
     
-    [self processStowawayPushNotification:userInfo];
+    [self processStowawayPushNotification:userInfo isAppRunning:YES];
 }
 
-- (void)processStowawayPushNotification:(NSDictionary*)pushMsg
+- (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
-    NSLog(@"process push: %@", pushMsg);
+    NSLog(@"isAppRunning %d, process push: %@", pushMsg, isAppRunning);
     
-    //based on aps alert msg string, we need to launch into the app at appropriate view
+    //NSString *status = [pushMsg valueForKey:kStatus];
+    NSString *ride_id = [pushMsg valueForKey:kRidePublicId];
     
-    NSString *alertValue = [[pushMsg valueForKey:@"aps"] valueForKey:@"alert"];
+    BOOL isRideFinalized = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
 
-    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+
+    //we have a update while finding crew
+    if ( !isRideFinalized )
+    {
+        //prepare find crew view to be launched
+        NSLog(@" **** prepare find crew view to be launched **** ");
+        
+        FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
+                                                                                 instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
+
+        NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+
+        NSDictionary * fakeRideRequestResponse = @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
+        
+        findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
+        [self.window.rootViewController presentViewController:findingCrewVC animated:YES completion:NULL];
+        
+    } else
+    {
+        //we have a update while crew is meeting
+        NSLog(@"**** we have a update while crew is meeting ***");
+        MeetCrewViewController *meetCrewVC = (MeetCrewViewController *)[mainStoryboard
+                                                                        instantiateViewControllerWithIdentifier:@"MeetCrewViewController"];
+        [self.window.rootViewController presentViewController:meetCrewVC animated:YES completion:NULL];
+
+
+    }
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -76,7 +107,10 @@
     
     //TODO: update the server with device token everytime
     if (standardDefaults)
+    {
         [standardDefaults setObject:newToken forKey:kDeviceToken];
+        [standardDefaults synchronize];
+    }
     else
         NSLog(@"null standardUserDefaults ..ERROR !!");
 }

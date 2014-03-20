@@ -60,6 +60,10 @@ int locationInputCount = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self.rideRequestActivityIndicator stopAnimating];
 

@@ -117,6 +117,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    //remember that ride has been finalized, to be used if app gets killed and relaunched
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
     self.meetCrewMapViewManager.crew = self.crew;
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];

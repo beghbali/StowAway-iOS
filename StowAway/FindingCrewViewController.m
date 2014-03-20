@@ -29,8 +29,8 @@
 
 @property (strong, nonatomic) CountdownTimer * cdt;
 
-//dictionary contains user_id, fb_id, picture, name, iscaptain
-@property (strong, nonatomic) NSMutableArray * /*of NSDictionary*/ crew; //index 0 being self and upto 3
+//dictionary contains user_id, fb_id, picture, name, iscaptain, requestedAt time, request_id
+@property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
 //my ID's - used for finalize ride and delete request
 @property (strong, nonatomic) NSString *rideID;
@@ -88,7 +88,6 @@
     NSLog(@"processRideRequestResponse:: %@", response);
     
     id nsNullObj = (id)[NSNull null];
-    NSUInteger requestedTime = 0;
     
     if ( !self.crew )
     { //this is the immediate ride request response
@@ -99,9 +98,8 @@
         //parse the response to fill in SELF request_id, user_id
         NSDictionary * dict = @{kRequestPublicId: self.requestID,
                                 kUserPublicId: self.userID};
-        [self.crew insertObject:dict atIndex:0];
-        
-        requestedTime = [[response objectForKey:kRequestedAt] integerValue]; //needed for calculating the countdown timer value
+        NSMutableDictionary * mutableDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+        [self.crew insertObject:mutableDict atIndex:0];
     }
     
     NSString * ride_id = [response objectForKey:kRidePublicId];
@@ -149,11 +147,20 @@
         
         for (int j = 0; j < countCrew; j++)
         {
-            NSDictionary * crewMember = [self.crew objectAtIndex:j];
+            NSMutableDictionary * crewMember = [self.crew objectAtIndex:j];
         
             if ( [[crewMember objectForKey:kUserPublicId] isEqualToString:[request objectForKey:kUserPublicId]] )
             {
                 [dontRemoveCrewIndexList addObject:[crewMember objectForKey:kUserPublicId]];
+                
+                //update  - as this might be after a getting launched from push, also designation might have changed
+                [crewMember setObject:[request objectForKey:kRequestedAt] forKey: kRequestedAt];
+                
+                BOOL isCaptain = [[request objectForKey:kDesignation] isEqualToString:kDesignationCaptain];
+                [crewMember setObject:[NSNumber numberWithBool:isCaptain] forKey: kIsCaptain];
+                
+                [crewMember setObject:[request objectForKey:kRequestPublicId] forKey: kRequestPublicId];
+
                 alreadyExistsInCrew = YES;
                 break;  // already exists
             }
@@ -164,10 +171,11 @@
             
         //new memmber, add this to crew
         BOOL isCaptain = [[request objectForKey:kDesignation] isEqualToString:kDesignationCaptain];
-        NSDictionary * dict = @{kFbId: [request objectForKey:kFbId],
-                                kUserPublicId: [request objectForKey:kUserPublicId],
-                                kRequestedAt: [request objectForKey:kRequestedAt],
-                                kIsCaptain: [NSNumber numberWithBool:isCaptain]};
+        NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:
+                                    @{kFbId: [request objectForKey:kFbId],
+                                    kUserPublicId: [request objectForKey:kUserPublicId],
+                                    kRequestedAt: [request objectForKey:kRequestedAt],
+                                    kIsCaptain: [NSNumber numberWithBool:isCaptain]}];
    
         [self.crew addObject:dict];
     }
@@ -237,7 +245,6 @@
             meetCrewVC.locationChannel  = self.locationChannel;
             meetCrewVC.suggestedLocations = self.suggestedLocations;
         }
-  
     }
 }
 
@@ -346,6 +353,8 @@
 
 -(void)updateCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
+    
+    NSLog(@"update crew view %@", self.crew);
     
     //set the cd timer
     [self reCalculateCDTimer];
