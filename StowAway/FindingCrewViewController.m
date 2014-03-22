@@ -184,7 +184,7 @@
                 [crewMember setObject:[request objectForKey:kRequestedAt] forKey: kRequestedAt];
                 
                 NSString * designation = [request objectForKey:kDesignation];
-                if ( designation && [designation isEqualToString:kDesignationCaptain] )
+                if ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] )
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCaptain];
                 else
                     [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCaptain];
@@ -200,7 +200,9 @@
             continue;
             
         //new member, add this to crew
-        BOOL isCaptain = [[request objectForKey:kDesignation] isEqualToString:kDesignationCaptain];
+        NSString * designation = [request objectForKey:kDesignation];
+
+        BOOL isCaptain = ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] );
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:
                                     @{kFbId: [request objectForKey:kFbId],
                                     kUserPublicId: [request objectForKey:kUserPublicId],

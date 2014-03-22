@@ -61,15 +61,15 @@
     for ( int i = 1; i < self.crew.count ; i++ )
     {
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
-        NSString * existingUserId = [crewMember objectForKey:kUserPublicId];
+        NSNumber * existingUserId = [crewMember objectForKey:kUserPublicId];
         BOOL found = NO;
         
         for ( int j = 1; j < newCrew.count; j++)
         {
             NSDictionary * newCrewMember = [newCrew objectAtIndex:j];
-            NSString * newUserId = [newCrewMember objectForKey:kUserPublicId];
+            NSNumber * newUserId = [newCrewMember objectForKey:kUserPublicId];
             
-            if ( [newUserId isEqualToString:existingUserId] ) {
+            if ( [newUserId compare:existingUserId] == NSOrderedSame ) {
                 found = YES;
                 break;
             }
@@ -191,14 +191,14 @@
 {
     NSDictionary * locationUpdate = event.data;
     
-    NSString * userID = [locationUpdate objectForKey:kUserPublicId];
+    NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
     
     //if one of the crew member id, match this one, update its location on the map
     for (int i = 1; i < self.crew.count; i++)
     {
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
-        NSString * crewId = [crewMember objectForKey:kUserPublicId];
-        if ( [crewId isEqualToString:userID])
+        NSNumber * crewId = [crewMember objectForKey:kUserPublicId];
+        if ( [crewId compare:userID] == NSOrderedSame )
         {
             CLLocationCoordinate2D newCoordinates = CLLocationCoordinate2DMake([[locationUpdate objectForKey:@"lat"] doubleValue] , [[locationUpdate objectForKey:@"long"]doubleValue]);
             
