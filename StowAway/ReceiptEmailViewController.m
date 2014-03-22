@@ -35,6 +35,12 @@
 {
     [super viewDidLoad];
   
+    BOOL isReceiptEmailDone = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isReceiptEmailDone"] boolValue];
+
+    if ( isReceiptEmailDone) {
+        NSLog(@"receipts email done... move to next view");
+        [self performSegueWithIdentifier: @"go to payment" sender: self];
+    }
     //TODO: encapsulate the buttons appearence and hiding into a function
     
     //hide labels, buttons and text view
@@ -205,7 +211,10 @@
 - (void)googleAuthenticatorResult: (NSError *)error
 {
     NSLog(@"%s::: error %@", __func__, error);
-    if ( !error ) {
+    if ( !error )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isReceiptEmailDone"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [self performSegueWithIdentifier: @"go to payment" sender: self];
     }
 }
@@ -238,6 +247,9 @@
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
 
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isReceiptEmailDone"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     // segue to payment screen
     [self performSegueWithIdentifier: @"go to payment" sender: self];
 }
@@ -251,10 +263,15 @@
 
 -(void) viewDidDisappear:(BOOL)animated
 {
-    if (self.isMovingFromParentViewController) {
+    if (self.isMovingFromParentViewController)
+    {
         NSLog(@"isMovingFromParentViewController");
-        LoginViewController *loginVC = (LoginViewController *)self.parentViewController; // get results out of vc, which I presented
-        loginVC.facebookLoginStatus = YES; //you can only reach receipts after login
+        
+        if ([self.parentViewController class] == [LoginViewController class])
+        {
+            LoginViewController *loginVC = (LoginViewController *)self.parentViewController; // get results out of vc, which I presented
+            loginVC.facebookLoginStatus = YES; //you can only reach receipts after login
+        }
     }
 }
 

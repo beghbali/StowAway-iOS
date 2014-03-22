@@ -49,6 +49,13 @@ char isReadyToSavePayment = 0;
 {
     [super viewDidLoad];
     
+    BOOL isPaymentOptionSaved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isPaymentOptionSaved"] boolValue];
+    
+    if ( isPaymentOptionSaved) {
+        NSLog(@"payment option already saved... move to next view");
+        [self performSegueWithIdentifier: @"go to terms" sender: self];
+    }
+    
     [self.cardNumberField addTarget: self action:@selector(reformatAsCardNumber:)
                    forControlEvents:UIControlEventEditingChanged];
     
@@ -387,8 +394,6 @@ char isReadyToSavePayment = 0;
             break;
     }
     
-    NSLog(@"[textFieldDidEndEditing] tag %d, %@, isTextFieldValueValid %d, isReadyToSavePayment 0x%x", textField.tag, textField.text, isTextFieldValueValid, isReadyToSavePayment);
-
     textField.layer.borderWidth = 1.0f;
 
     if ( isTextFieldValueValid )
@@ -496,6 +501,9 @@ char isReadyToSavePayment = 0;
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
     
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isPaymentOptionSaved"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     //move to terms view
     [self performSegueWithIdentifier: @"go to terms" sender: self];
 

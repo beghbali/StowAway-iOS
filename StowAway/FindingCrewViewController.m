@@ -48,7 +48,14 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewdidload");
+    NSLog(@"viewdidload - FC_vc %@", self);
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveRemoteNotification:)
+                                                 name:@"updateFindCrew"
+                                               object:nil];
+    
+    [self.getRideResultActivityIndicator stopAnimating];
 
     //process ride request reply from server -- also sets cd timer value
     [self processRideRequestResponse:self.rideRequestResponse];
@@ -56,6 +63,11 @@
     [self setupAnimation];
 }
 
+-(void)didReceiveRemoteNotification:(NSNotification *)notification
+{
+    NSLog(@"%s:  %@", __func__, notification);
+    [self processRideRequestResponse:notification.userInfo];
+}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -91,7 +103,7 @@
     
     if ( !self.crew )
     { //this is the immediate ride request response
-        NSLog(@"process immediate ride req response");
+        NSLog(@"process immediate ride req response, create crew array");
         self.crew = [NSMutableArray arrayWithCapacity: 1];
         self.userID = [response objectForKey:kUserPublicId];
         self.requestID = [response objectForKey:kPublicId];
@@ -104,11 +116,12 @@
     
     NSString * ride_id = [response objectForKey:kRidePublicId];
     self.rideID = ride_id;
-    NSLog(@"ride id %@", ride_id);
+    NSLog(@"request ride result for ride_id %@", ride_id);
     
     if ( ride_id && (ride_id != nsNullObj) )
     { // there is a match - get ride result
         
+        NSLog(@"there is a match - get ride result");
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, ride_id];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
@@ -116,10 +129,15 @@
         [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
         
         [self.getRideResultActivityIndicator startAnimating];
+        return;
     }
-    else
-    { // there is no match -  update the crew list
+    
+    // there is no match -  update the crew list
+    if (self.crew.count > 1)
+    {
         // this is possible when there was just one match, and that person canceled the ride
+        
+        NSLog(@"there was just one match, and that person canceled the ride");
         while ( self.crew.count > 1 )
             [self.crew removeLastObject];
         
@@ -132,12 +150,17 @@
 {
     NSLog(@"processRideResult:: %@", response);
 
-    NSMutableArray * dontRemoveCrewIndexList = [NSMutableArray arrayWithCapacity:2];;
+    NSLog(@"crew before processing: %@", self.crew);
+    
+    //array of user_public_id
+    NSMutableArray * dontRemoveCrewIndexList = [NSMutableArray arrayWithCapacity:2];
     
     NSArray * requests = [response objectForKey:@"requests"];
     
     int countRequests = requests.count;
     int countCrew = self.crew.count;
+    
+    NSLog(@"crew# %d, rideResult#%d", countCrew, countRequests);
     
     //ADD NEW MEMBERS
     for ( int i = 0; i < countRequests; i++)
@@ -145,21 +168,28 @@
         BOOL alreadyExistsInCrew = NO;
         NSDictionary * request = [requests objectAtIndex:i];
         
+        NSLog(@"processing <%d> request %@", i, request);
+        
         for (int j = 0; j < countCrew; j++)
         {
             NSMutableDictionary * crewMember = [self.crew objectAtIndex:j];
         
-            if ( [[crewMember objectForKey:kUserPublicId] isEqualToString:[request objectForKey:kUserPublicId]] )
+            NSLog(@"processing <%d> crewmember %@", j, crewMember);
+            
+            if ( [[crewMember objectForKey:kUserPublicId] compare:[request objectForKey:kUserPublicId]] == NSOrderedSame )
             {
                 [dontRemoveCrewIndexList addObject:[crewMember objectForKey:kUserPublicId]];
                 
                 //update  - as this might be after a getting launched from push, also designation might have changed
                 [crewMember setObject:[request objectForKey:kRequestedAt] forKey: kRequestedAt];
                 
-                BOOL isCaptain = [[request objectForKey:kDesignation] isEqualToString:kDesignationCaptain];
-                [crewMember setObject:[NSNumber numberWithBool:isCaptain] forKey: kIsCaptain];
-                
-                [crewMember setObject:[request objectForKey:kRequestPublicId] forKey: kRequestPublicId];
+                NSString * designation = [request objectForKey:kDesignation];
+                if ( designation && [designation isEqualToString:kDesignationCaptain] )
+                    [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCaptain];
+                else
+                    [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCaptain];
+
+                [crewMember setObject:[request objectForKey:kPublicId] forKey: kRequestPublicId];
 
                 alreadyExistsInCrew = YES;
                 break;  // already exists
@@ -169,7 +199,7 @@
         if (alreadyExistsInCrew)
             continue;
             
-        //new memmber, add this to crew
+        //new member, add this to crew
         BOOL isCaptain = [[request objectForKey:kDesignation] isEqualToString:kDesignationCaptain];
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:
                                     @{kFbId: [request objectForKey:kFbId],
@@ -177,6 +207,8 @@
                                     kRequestedAt: [request objectForKey:kRequestedAt],
                                     kIsCaptain: [NSNumber numberWithBool:isCaptain]}];
    
+        [dontRemoveCrewIndexList addObject:[request objectForKey:kUserPublicId]]; //add the new member to dont remove list
+        
         [self.crew addObject:dict];
     }
     NSLog(@"after add - %@", self.crew);
@@ -189,7 +221,7 @@
         
         for (int i = 0; i < dontRemoveCrewIndexList.count; i++)
         {
-            if ( [[crewMember objectForKey:kUserPublicId] isEqualToString:[dontRemoveCrewIndexList objectAtIndex:i]] )
+            if ( [[crewMember objectForKey:kUserPublicId] compare:[dontRemoveCrewIndexList objectAtIndex:i]] == NSOrderedSame )
             {
                 removeIt = NO;
                 break;
@@ -203,8 +235,11 @@
         [self.crew removeObjectAtIndex:j];
         j--;
     }
-    NSLog(@"after remove - %@", self.crew);
+    NSLog(@"after remove **FINAL** - %@", self.crew);
     
+    //update the view with updated crew and new cd time
+    [self updateCrewView];
+
     //save loc channel, suggested locn, if the ride is fulfilled
     if ([[response objectForKey:kStatus] isEqualToString:KStatusFulfilled])
     {
@@ -218,13 +253,8 @@
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
         
-//TODO: add some delay here, so that segue happens gradually, users should get to see the crew
         //go to "meet the crew" view
         [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
-    } else
-    {
-        //update the view with updated crew and new cd time
-        [self updateCrewView];
     }
 }
 
@@ -281,6 +311,7 @@
 
 -(void) armUpCountdownTimer
 {
+    NSLog(@"armUpCountdownTimer");
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
@@ -288,17 +319,12 @@
 
 - (void)countdownTimerExpired
 {
-    NSLog(@"%s", __func__);
-    [self stopAnimatingImage:self.imageView1];
-    [self stopAnimatingImage:self.imageView2];
-    [self stopAnimatingImage:self.imageView3];
+    NSLog(@"%s, crew <%d> %@", __func__, self.crew.count, self.crew);
+  //  [self stopAnimatingImage:self.imageView1];
+    //[self stopAnimatingImage:self.imageView2];
+    //[self stopAnimatingImage:self.imageView3];
 
-    [self rideFindTimeExpired];
-}
-
--(void)rideFindTimeExpired
-{
-    //check if there is atleast one match
+   //check if there is atleast one match
     if ( self.crew.count > 1)
     {
         // ask server for roles
@@ -309,6 +335,7 @@
         [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"PUT"];
         
         [self.getRideResultActivityIndicator startAnimating];
+        
         return;
     }
     
@@ -354,7 +381,7 @@
 -(void)updateCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew view %@", self.crew);
+    NSLog(@"update crew<%d> view %@", self.crew.count, self.crew);
     
     //set the cd timer
     [self reCalculateCDTimer];
@@ -365,6 +392,29 @@
             //Background Thread
             [self setCrewImageAndName:i withFbUID:[[self.crew objectAtIndex:i] objectForKey:kFbId]];
         });
+    }
+    
+    for (int i = self.crew.count; i < 4; i++)
+    {
+        switch (i) {
+            case 1:
+                NSLog(@"start animation on image1");
+                [self startAnimatingImage:self.imageView1];
+                break;
+                
+            case 2:
+                NSLog(@"start animation on image2");
+                [self startAnimatingImage:self.imageView2];
+                break;
+                
+            case 3:
+                NSLog(@"start animation on image3");
+                [self startAnimatingImage:self.imageView3];
+                break;
+
+            default:
+                break;
+        }
     }
     
 }

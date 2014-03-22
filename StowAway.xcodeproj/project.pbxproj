@@ -744,7 +744,7 @@
 				INFOPLIST_FILE = "StowAway/StowAway-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/vp/pirateProject/StowAway-iOS/otherFrameworks/libPusher",
+					"$(SRCROOT)/**",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -769,7 +769,7 @@
 				INFOPLIST_FILE = "StowAway/StowAway-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/vp/pirateProject/StowAway-iOS/otherFrameworks/libPusher",
+					"$(SRCROOT)/**",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";

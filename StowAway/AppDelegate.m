@@ -12,6 +12,8 @@
 #import "StowawayConstants.h"
 #import "FindingCrewViewController.h"
 #import "MeetCrewViewController.h"
+#import "EnterPickupDropOffViewController.h"
+
 
 @implementation AppDelegate
 
@@ -50,30 +52,65 @@
 
 - (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
-    NSLog(@"isAppRunning %d, process push: %@", pushMsg, isAppRunning);
+    NSLog(@"isAppRunning %d, process push: %@", isAppRunning, pushMsg);
     
-    //NSString *status = [pushMsg valueForKey:kStatus];
-    NSString *ride_id = [pushMsg valueForKey:kRidePublicId];
+    if ( [[[pushMsg objectForKey:@"aps"] objectForKey:@"alert"] isEqualToString:@"Will has joined the ride"]) {
+        NSLog(@"ignore.... for testing");
+        return;
+    }
     
+    NSString * status = [pushMsg valueForKey:kStatus];
+    NSString * ride_id = [pushMsg valueForKey:kPublicId];
+    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     BOOL isRideFinalized = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
 
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+    NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
+    
 
-    //we have a update while finding crew
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+
+    //we have a update while finding crew - that means new crew joined or someone dropped out
     if ( !isRideFinalized )
     {
         //prepare find crew view to be launched
         NSLog(@" **** prepare find crew view to be launched **** ");
+       
+        NSDictionary * fakeRideRequestResponse = nil;
+        if (ride_id && (ride_id != (id)[NSNull null]))
+            fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
+        else
+            fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
         
-        FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
-                                                                                 instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
-
-        NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-
-        NSDictionary * fakeRideRequestResponse = @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
+        NSLog(@"fake ride req: %@", fakeRideRequestResponse);
         
-        findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
-        [self.window.rootViewController presentViewController:findingCrewVC animated:YES completion:NULL];
+        if (isAppRunning)
+        {
+            NSLog(@" *** update FC vc");
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFindCrew"
+                                                                object:self
+                                                              userInfo:fakeRideRequestResponse];
+        } else
+        {
+            NSLog(@"launch app into FC view");
+            EnterPickupDropOffViewController *enterPickUpDropOffCrewVC = (EnterPickupDropOffViewController *)[mainStoryboard
+                                                                                     instantiateViewControllerWithIdentifier:@"EnterPickupDropOffViewController"];
+            NSLog(@"enterPickUpDropOffCrewVC %@", enterPickUpDropOffCrewVC);
+            
+            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
+                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
+
+            NSLog(@"findingCrewVC %@", findingCrewVC);
+
+           
+            findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
+            NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
+            
+           // self.window.rootViewController = enterPickUpDropOffCrewVC;
+           // [self.window.rootViewController presentViewController:enterPickUpDropOffCrewVC animated:NO completion:Nil];
+            //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
+             [self.window.rootViewController presentViewController:findingCrewVC animated:NO completion:Nil];
+        }
         
     } else
     {
