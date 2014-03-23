@@ -11,7 +11,6 @@
 @interface CountdownTimer ()
 
 @property   NSTimer *           countDownTimer;
-@property   NSDate *            countDownEndDate;
 @property   NSCalendar *        gregorianCalendar;
 @property   NSDateFormatter *   countDownDateFormatter;
 
@@ -35,10 +34,6 @@
     [self.countDownTimer fire];
 }
 
--(void)setSecondsRemaining:(NSUInteger)seconds
-{
-    self.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:seconds];
-}
 
 -(void)updateClock:(NSTimer *)timer
 {

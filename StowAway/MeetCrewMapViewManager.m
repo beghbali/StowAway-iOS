@@ -16,7 +16,7 @@
 #import "PTPusherErrors.h"
 #import "PTPusherConnection.h"
 
-@interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate>
+@interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate, PTPusherConnectionDelegate>
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 
@@ -34,17 +34,19 @@
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
-@property (strong, nonatomic) NSString *userID;
-@property (strong, nonatomic) NSString *requestID;
-
+@property (strong, nonatomic) NSNumber *userID;
+@property (strong, nonatomic) NSNumber *requestID;
+@property BOOL isConnected;
 @end
 
 
 @implementation MeetCrewMapViewManager
 
 //called anytime a stowaways gets updated
--(void)setCrew:(NSMutableArray *)newCrew
+-(void)initializeCrew:(NSMutableArray *)newCrew
 {
+    NSLog(@"%s: newcrew-- %@", __func__, newCrew);
+    
     //for the first time, just copy the crew
     if ( !self.crew )
     {
@@ -77,6 +79,7 @@
         
         if ( !found )
         {
+            NSLog(@"<i=%d> delete %@", i, crewMember);
             //delete this crew member and remove its annotation from map
             MKPointAnnotation * mapPoint = [crewMember objectForKey:kMKPointAnnotation];
             [self.mapView removeAnnotation:mapPoint];
@@ -136,7 +139,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"loc update - %@", locations);
+    NSLog(@"Meet crew: loc update - %@", locations);
     CLLocation * newLocation = [locations lastObject];
     [self sendDataToPusher:newLocation.coordinate];
 }
@@ -189,6 +192,7 @@
 
 - (void)handleCrewLocationUpdate:(PTPusherEvent *)event
 {
+        NSLog(@"%s, event %@", __func__, event);
     NSDictionary * locationUpdate = event.data;
     
     NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
@@ -236,7 +240,12 @@
 -(void)sendDataToPusher:(CLLocationCoordinate2D )locationCoordinates
 {
     PTPusherConnection * connection = self.pusher.connection;
-    
+    NSLog(@"sendDataToPusher:: pusher connection %@ ", connection);
+
+    if ( !self.isConnected ) {
+        NSLog(@"sendDataToPusher:: pusher %@ connection is not made yet, can't send", self.pusher);
+        return;
+    }
     NSDictionary * locationUpdate = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
                                       @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
                                       kUserPublicId: self.userID,
@@ -247,6 +256,7 @@
 
 -(void)startPusherUpdates
 {
+    NSLog(@"%s", __func__);
     //create pusher
     self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
     
@@ -264,6 +274,7 @@
 
 -(void)stopPusherUpdates
 {
+    NSLog(@"%s", __func__);
     PTPusherChannel *channel = [self.pusher channelNamed:self.locationChannel];
     [channel unsubscribe];
     
@@ -277,11 +288,22 @@
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
 {
+        NSLog(@"%s", __func__);
     [self handleDisconnectionWithError:error];
 }
 
+- (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection
+{
+    NSLog(@"connectionDidConnect:: pusher connection %@ ", connection);
+
+    self.isConnected = YES;
+}
+
+
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect
 {
+    NSLog(@"%s", __func__);
+    self.isConnected = NO;
     if (!willAttemptReconnect) {
         [self handleDisconnectionWithError:error];
     }
@@ -289,6 +311,7 @@
 
 - (void)handleDisconnectionWithError:(NSError *)error
 {
+    NSLog(@"%s", __func__);
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     
     if (error && [error.domain isEqualToString:PTPusherErrorDomain]) {

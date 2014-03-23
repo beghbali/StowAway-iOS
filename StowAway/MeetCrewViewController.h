@@ -11,7 +11,7 @@
 @interface MeetCrewViewController : UIViewController
 
 //dictionary contains user_id, fb_id, picture, name, iscaptain
-@property (strong, nonatomic) NSMutableArray * /*of NSDictionary*/ crew; //index 0 being self and upto 3
+@property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
 //my ID's - used for finalize ride and delete request
 @property (strong, nonatomic) NSString *rideID;

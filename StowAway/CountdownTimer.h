@@ -22,8 +22,10 @@
 
 @property (nonatomic, weak) id<CountdownTimerDelegate> cdTimerDelegate;
 
+@property (strong, nonatomic) NSDate * countDownEndDate;
+
+
 -(void)initializeWithSecondsRemaining:(NSUInteger)seconds ForLabel:(UILabel *)label;
 
--(void)setSecondsRemaining:(NSUInteger)seconds;
 
 @end

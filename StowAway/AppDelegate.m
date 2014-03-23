@@ -27,10 +27,18 @@
 		NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 		if (dictionary != nil)
 		{
-			NSLog(@"Launched from push notification: %@", dictionary);
+			NSLog(@"Launched from remote push notification: %@", dictionary);
 			[self processStowawayPushNotification:dictionary isAppRunning:NO];
 		}
+        
+        NSDictionary *local_dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+		if (local_dictionary != nil)
+		{
+			NSLog(@"Launched from local push notification: %@", local_dictionary);
+			[self processUILocalNotification:local_dictionary isAppRunning:NO];
+		}
 	}
+	
     
     // Let the device know we want to receive push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
@@ -43,12 +51,15 @@
     return YES;
 }
 
+#pragma mark remote notif
+
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
 	NSLog(@"Received notification: %@", userInfo);
     
     [self processStowawayPushNotification:userInfo isAppRunning:YES];
 }
+
 
 - (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
@@ -123,6 +134,23 @@
 
     }
 }
+
+#pragma mark local notif
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"local notif: %@", notification);
+    
+    [self processUILocalNotification:notification.userInfo isAppRunning:YES];
+
+}
+
+- (void)processUILocalNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
+{
+    NSLog(@"processUILocalNotification: %@, isAppRunning %d", pushMsg, isAppRunning);
+}
+
+#pragma mark device token apns
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {

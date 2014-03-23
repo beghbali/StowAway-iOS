@@ -11,12 +11,16 @@
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewMapViewManager.h"
+#import "CountdownTimer.h"
 
-@interface MeetCrewViewController () <StowawayServerCommunicatorDelegate>
+
+@interface MeetCrewViewController () <StowawayServerCommunicatorDelegate, CountdownTimerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
-@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
+@property (strong, nonatomic) CountdownTimer * cdt;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView2;
@@ -25,6 +29,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
+@property (weak, nonatomic) IBOutlet UILabel *designationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (strong, nonatomic) MeetCrewMapViewManager * meetCrewMapViewManager;
@@ -32,6 +39,96 @@
 @end
 
 @implementation MeetCrewViewController
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    
+    //remember that ride has been finalized, to be used if app gets killed and relaunched
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"MeetCrewViewController *** crew %@, mapView %@, suggLoc %@, locChannel %@ ****", self.crew, self.mapView, self.suggestedLocations, self.locationChannel);
+    
+    self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
+    self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
+    
+    //update the crew names and images and role
+    [self updateCrewInfoInView];
+    
+    self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
+    [self.meetCrewMapViewManager initializeCrew: self.crew];
+    [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];
+    
+    //    //outlets are loaded, now arm the timer, this is only set once
+    [self armUpCountdownTimer];
+
+}
+
+
+-(void)updateCrewInfoInView
+{
+    for (int i = 0; i < self.crew.count; i++)
+    {
+        NSDictionary * crewMember = [self.crew objectAtIndex:i];
+
+        if (i == 0 )
+        {
+            if ( [[crewMember objectForKey:kIsCaptain] boolValue])
+            {
+                self.designationLabel.text = @"You are a Captain !";
+                self.instructionsLabel.text = @"Please get to the pick up point and call Uberx";
+                self.requestUberButton.hidden = NO;
+            } else
+            {
+                self.designationLabel.text = @"You are a Stowaway !";
+                self.instructionsLabel.text = @"Please get to the pick up point and you don't have to call Uberx";
+                self.requestUberButton.hidden = YES;
+            }
+            
+            continue;
+        }
+        switch (i)
+        {
+            case 1:
+                self.nameLabel1.text = [crewMember objectForKey:kCrewFbName];
+                self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
+
+                break;
+            case 2:
+                self.nameLabel2.text = [crewMember objectForKey:kCrewFbName];
+                self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
+                
+                break;
+            case 3:
+                self.nameLabel3.text = [crewMember objectForKey:kCrewFbName];
+                self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
+                
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+#pragma mark countdown timer
+
+-(void) armUpCountdownTimer
+{
+    NSLog(@"armUpCountdownTimer");
+    self.cdt = [[CountdownTimer alloc] init];
+    self.cdt.cdTimerDelegate = self;
+    [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
+}
+
+- (void)countdownTimerExpired
+{
+    NSLog(@"%s", __func__);
+}
 
 #pragma mark cancel ride
 
@@ -104,33 +201,6 @@
     //process the result to update the crew
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    //remember that ride has been finalized, to be used if app gets killed and relaunched
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
-    self.meetCrewMapViewManager.crew = self.crew;
-    [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

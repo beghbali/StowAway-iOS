@@ -28,7 +28,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
-
+@property (strong, nonatomic) NSDate * timerExpiryDate;
+@property (strong, nonatomic) UILocalNotification *localNotification;
 //dictionary contains user_id, fb_id, picture, name, iscaptain, requestedAt time, request_id
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
@@ -79,7 +80,7 @@
     [self armUpCountdownTimer];
 
     //update the view - pics, names
-    [self updateCrewView];
+    [self updateFindingCrewView];
 }
 
 #pragma mark stowawayServer
@@ -119,7 +120,7 @@
     NSLog(@"request ride result for ride_id %@", ride_id);
     
     if ( ride_id && (ride_id != nsNullObj) )
-    { // there is a match - get ride result
+    { // there is a match - GET RIDE result
         
         NSLog(@"there is a match - get ride result");
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, ride_id];
@@ -132,20 +133,21 @@
         return;
     }
     
-    // there is no match -  update the crew list
+    // there is no match -  REMOVE the crew
     if (self.crew.count > 1)
     {
         // this is possible when there was just one match, and that person canceled the ride
-        
         NSLog(@"there was just one match, and that person canceled the ride");
         while ( self.crew.count > 1 )
             [self.crew removeLastObject];
         
-        [self updateCrewView];
+        [self updateFindingCrewView];
+        
+        [self cancelTimerExpiryNotificationSchedule];
     }
 }
 
-
+//either GET ride or FINALIZE ride result
 -(void)processRideResult:(NSDictionary *)response
 {
     NSLog(@"processRideResult:: %@", response);
@@ -160,7 +162,7 @@
     int countRequests = requests.count;
     int countCrew = self.crew.count;
     
-    NSLog(@"crew# %d, rideResult#%d", countCrew, countRequests);
+    NSLog(@"crew# %d, rideResult# %d", countCrew, countRequests);
     
     //ADD NEW MEMBERS
     for ( int i = 0; i < countRequests; i++)
@@ -168,13 +170,17 @@
         BOOL alreadyExistsInCrew = NO;
         NSDictionary * request = [requests objectAtIndex:i];
         
-        NSLog(@"processing <%d> request %@", i, request);
+        //latest designation
+        NSString * designation = [request objectForKey:kDesignation];
+        BOOL isCaptain = ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] );
+        
+        NSLog(@"processing <%d>request %@", i, request);
         
         for (int j = 0; j < countCrew; j++)
         {
             NSMutableDictionary * crewMember = [self.crew objectAtIndex:j];
         
-            NSLog(@"processing <%d> crewmember %@", j, crewMember);
+            NSLog(@"processing <%d>crewmember %@", j, crewMember);
             
             if ( [[crewMember objectForKey:kUserPublicId] compare:[request objectForKey:kUserPublicId]] == NSOrderedSame )
             {
@@ -183,11 +189,7 @@
                 //update  - as this might be after a getting launched from push, also designation might have changed
                 [crewMember setObject:[request objectForKey:kRequestedAt] forKey: kRequestedAt];
                 
-                NSString * designation = [request objectForKey:kDesignation];
-                if ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] )
-                    [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCaptain];
-                else
-                    [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCaptain];
+                [crewMember setObject:[NSNumber numberWithBool:isCaptain] forKey: kIsCaptain];
 
                 [crewMember setObject:[request objectForKey:kPublicId] forKey: kRequestPublicId];
 
@@ -199,15 +201,12 @@
         if (alreadyExistsInCrew)
             continue;
             
-        //new member, add this to crew
-        NSString * designation = [request objectForKey:kDesignation];
-
-        BOOL isCaptain = ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] );
+        //new member in ride response, add this to crew
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:
-                                    @{kFbId: [request objectForKey:kFbId],
-                                    kUserPublicId: [request objectForKey:kUserPublicId],
-                                    kRequestedAt: [request objectForKey:kRequestedAt],
-                                    kIsCaptain: [NSNumber numberWithBool:isCaptain]}];
+                                        @{kFbId: [request objectForKey:kFbId],
+                                        kUserPublicId: [request objectForKey:kUserPublicId],
+                                        kRequestedAt: [request objectForKey:kRequestedAt],
+                                        kIsCaptain: [NSNumber numberWithBool:isCaptain]}];
    
         [dontRemoveCrewIndexList addObject:[request objectForKey:kUserPublicId]]; //add the new member to dont remove list
         
@@ -239,12 +238,15 @@
     }
     NSLog(@"after remove **FINAL** - %@", self.crew);
     
-    //update the view with updated crew and new cd time
-    [self updateCrewView];
+    //UPDATE VIEW with updated crew and new cd time
+    [self updateFindingCrewView];
 
-    //save loc channel, suggested locn, if the ride is fulfilled
+    //save loc channel, suggested locn, if the ride is FULFILLED
     if ([[response objectForKey:kStatus] isEqualToString:KStatusFulfilled])
     {
+        //cancel timer expiry notif
+        [self cancelTimerExpiryNotificationSchedule];
+        
         // get suggested locn
         self.suggestedLocations = @{kSuggestedDropOffAddr: [response objectForKey:kSuggestedDropOffAddr],
                                     kSuggestedDropOffLong: [response objectForKey:kSuggestedDropOffLong],
@@ -257,6 +259,10 @@
         
         //go to "meet the crew" view
         [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
+    } else
+    {
+        // set UILOCALNOTIFICATION
+        [self setTimerExpiryNotification];
     }
 }
 
@@ -377,10 +383,40 @@
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
+#pragma mark timer expiry localnotification 
+- (void)setTimerExpiryNotification
+{
+    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.timerExpiryDate);
+    
+    if ( self.localNotification )
+    {
+        self.localNotification.fireDate = self.timerExpiryDate;
+        return;
+    }
+
+    self.localNotification = [[UILocalNotification alloc] init];
+    self.localNotification.fireDate = self.timerExpiryDate;
+    self.localNotification.alertBody = [NSString stringWithFormat:@"Prepare to meet your crew !!"];
+    self.localNotification.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
+}
+
+- (void)cancelTimerExpiryNotificationSchedule
+{
+    NSLog(@"%s:<self.localNotification %@>", __func__, self.localNotification);
+    
+    if ( !self.localNotification )
+        return;
+    
+    [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
+    self.localNotification = nil;
+}
+
 
 #pragma mark update view
 
--(void)updateCrewView
+//crew and timer
+-(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
     NSLog(@"update crew<%d> view %@", self.crew.count, self.crew);
@@ -423,18 +459,24 @@
 
 -(void)reCalculateCDTimer
 {
-    NSInteger rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] integerValue];
-    NSInteger minRideRequestedAt = rideRequestedAt;
+    double rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] doubleValue];
+    double minRideRequestedAt = rideRequestedAt;
     
     for (int i = 1; i < self.crew.count; i++)
     {
-        NSInteger iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] integerValue];
+        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] intValue];
         //compare self with the other crew members requested time, we want the minimum req time
         if ( iRideRequestedAt < minRideRequestedAt )
             minRideRequestedAt = iRideRequestedAt;
     }
+    
+    NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);
 
-    [self.cdt setSecondsRemaining:(kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt))];
+    self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
+    
+    self.cdt.countDownEndDate = self.timerExpiryDate;
+    
+    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.timerExpiryDate);
 }
 
 // run this function on a background thread
