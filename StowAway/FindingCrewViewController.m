@@ -323,6 +323,7 @@
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
+    self.timerExpiryDate = self.cdt.countDownEndDate;
 }
 
 - (void)countdownTimerExpired
@@ -419,7 +420,7 @@
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew<%d> view %@", self.crew.count, self.crew);
+    NSLog(@"update crew<count %d> view %@", self.crew.count, self.crew);
     
     //set the cd timer
     [self reCalculateCDTimer];
@@ -464,10 +465,17 @@
     
     for (int i = 1; i < self.crew.count; i++)
     {
-        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] intValue];
+        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] doubleValue];
+        NSLog(@"iRide_req_at %f, minRideReq %f, i%d", iRideRequestedAt, minRideRequestedAt, i);
         //compare self with the other crew members requested time, we want the minimum req time
         if ( iRideRequestedAt < minRideRequestedAt )
             minRideRequestedAt = iRideRequestedAt;
+    }
+    
+    if ( minRideRequestedAt == rideRequestedAt)
+    {
+        NSLog(@"%s: there was no ride requested before mine, so dont change CDT", __func__);
+        return;
     }
     
     NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);

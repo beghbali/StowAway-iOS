@@ -79,7 +79,7 @@
         {
             if ( [[crewMember objectForKey:kIsCaptain] boolValue])
             {
-                self.designationLabel.text = @"You are a Captain !";
+                self.designationLabel.text = @"You are the Captain !!";
                 self.instructionsLabel.text = @"Please get to the pick up point and call Uberx";
                 self.requestUberButton.hidden = NO;
             } else

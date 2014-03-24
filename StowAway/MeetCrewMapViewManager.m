@@ -16,7 +16,7 @@
 #import "PTPusherErrors.h"
 #import "PTPusherConnection.h"
 
-@interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate, PTPusherConnectionDelegate>
+@interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate>
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 
@@ -33,10 +33,12 @@
 @property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
+@property (strong, nonatomic) CLLocation * location;
 
 @property (strong, nonatomic) NSNumber *userID;
 @property (strong, nonatomic) NSNumber *requestID;
-@property BOOL isConnected;
+@property BOOL isPusherConnected;
+@property BOOL isLocationDisabled;
 @end
 
 
@@ -46,6 +48,7 @@
 -(void)initializeCrew:(NSMutableArray *)newCrew
 {
     NSLog(@"%s: newcrew-- %@", __func__, newCrew);
+    
     
     //for the first time, just copy the crew
     if ( !self.crew )
@@ -101,6 +104,10 @@
      withSuggestedLocations:(NSDictionary *)suggestedLocations
            andPusherChannel:(NSString *)locationChannel
 {
+    NSLog(@"%s",__func__);
+    //check loc is on
+    self.isLocationDisabled = ![self isLocationEnabled];
+
     //set class properties
     self.mapView = mapView;
     self.mapView.delegate = self;
@@ -123,6 +130,7 @@
 
 -(void) startLocationUpdates
 {
+    NSLog(@"%s",__func__);
     // start by locating user's current position
 	self.locationManager = [[CLLocationManager alloc] init];
 	self.locationManager.delegate = self;
@@ -133,7 +141,7 @@
 
 -(void) stopLocationUpdates
 {
-    // start by locating user's current position
+    NSLog(@"%s",__func__);
 	[self.locationManager stopUpdatingLocation];
 }
 
@@ -141,6 +149,16 @@
 {
     NSLog(@"Meet crew: loc update - %@", locations);
     CLLocation * newLocation = [locations lastObject];
+    
+    CLLocationDistance change = [self.location   distanceFromLocation:newLocation];
+    NSLog(@"prev loc %@, change %f", self.location, change);
+    
+    if ( self.location && (change < 1) ) {
+        NSLog(@"change is less than a meter, ignore");
+        return;
+    }
+    
+    self.location = newLocation;
     [self sendDataToPusher:newLocation.coordinate];
 }
 
@@ -152,13 +170,20 @@
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    //re-start loc services if needed
-    [self startLocationUpdates];
+    //TODO: re-start loc services if needed
+    NSLog(@"%s, status %d",__func__, status);
+    
+    if ( (status == kCLAuthorizationStatusAuthorized) && self.isLocationDisabled )
+        [self startLocationUpdates];
+    else
+        self.isLocationDisabled = ![self isLocationEnabled];    //this would prompt user
 }
 
 
 -(BOOL) isLocationEnabled
 {
+    NSLog(@"%s",__func__);
+    
     NSString *causeStr = nil;
     
     // check whether location services are enabled on the device
@@ -190,9 +215,53 @@
 
 #pragma mark Pusher
 
+-(void)startPusherUpdates
+{
+    NSLog(@"%s", __func__);
+    //create pusher
+    self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
+    
+    //TODO: authorise for private channel
+    //self.client.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
+    
+    self.isPusherConnected = NO;
+    
+    [self.pusher connect];
+    
+    //subscribe to location channel created by server
+    //TODO: use subscribeToPresenceChannelNamed
+    PTPusherChannel *channel = [self.pusher subscribeToChannelNamed:self.locationChannel];
+    
+    [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
+}
+
+-(void)stopPusherUpdates
+{
+    NSLog(@"%s", __func__);
+    PTPusherChannel *channel = [self.pusher channelNamed:self.locationChannel];
+    [channel unsubscribe];
+}
+
+-(void)sendDataToPusher:(CLLocationCoordinate2D )locationCoordinates
+{
+    PTPusherConnection * connection = self.pusher.connection;
+    NSLog(@"sendDataToPusher::connected=%d  (%f,%f) ", self.isPusherConnected, locationCoordinates.latitude, locationCoordinates.longitude);
+
+    if ( !self.isPusherConnected )
+        return;
+
+    NSDictionary * locationUpdate = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
+                                      @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
+                                      kUserPublicId: self.userID,
+                                      kRequestPublicId: self.requestID};
+    
+    [connection send:locationUpdate];
+}
+
+
 - (void)handleCrewLocationUpdate:(PTPusherEvent *)event
 {
-        NSLog(@"%s, event %@", __func__, event);
+    NSLog(@"%s, event %@", __func__, event);
     NSDictionary * locationUpdate = event.data;
     
     NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
@@ -237,81 +306,49 @@
     [self zoomToFitMapAnnotations];
 }
 
--(void)sendDataToPusher:(CLLocationCoordinate2D )locationCoordinates
-{
-    PTPusherConnection * connection = self.pusher.connection;
-    NSLog(@"sendDataToPusher:: pusher connection %@ ", connection);
 
-    if ( !self.isConnected ) {
-        NSLog(@"sendDataToPusher:: pusher %@ connection is not made yet, can't send", self.pusher);
-        return;
-    }
-    NSDictionary * locationUpdate = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
-                                      @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
-                                      kUserPublicId: self.userID,
-                                      kRequestPublicId: self.requestID};
-    
-    [connection send:locationUpdate];
-}
 
--(void)startPusherUpdates
-{
-    NSLog(@"%s", __func__);
-    //create pusher
-    self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
-    
-    //TODO: authorise for private channel
-    //self.client.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
-    
-    [self.pusher connect];
-    
-    //subscribe to location channel created by server
-    //TODO: use subscribeToPresenceChannelNamed
-    PTPusherChannel *channel = [self.pusher subscribeToChannelNamed:self.locationChannel];
-    
-    [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
-}
-
--(void)stopPusherUpdates
-{
-    NSLog(@"%s", __func__);
-    PTPusherChannel *channel = [self.pusher channelNamed:self.locationChannel];
-    [channel unsubscribe];
-    
-}
+#pragma mark - PTPusher delegate
 
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withRequest:(NSMutableURLRequest *)request
 {
     //TODO: fill in right credentials
+    NSLog(@"willAuthorizeChannel:: %@, %@", channel, request);
+    
     [request setValue:@"afbadb4ff8485c0adcba486b4ca90cc4" forHTTPHeaderField:@"X-MyCustom-AuthTokenHeader"];
-}
-
-- (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
-{
-        NSLog(@"%s", __func__);
-    [self handleDisconnectionWithError:error];
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection
 {
-    NSLog(@"connectionDidConnect:: pusher connection %@ ", connection);
+    NSLog(@"connectionDidConnect:: isPusherConnected %d ", self.isPusherConnected);
 
-    self.isConnected = YES;
+    self.isPusherConnected = YES;
 }
 
+- (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
+{
+    NSLog(@"connection failedWithError:: %@", error);
+    
+    self.isPusherConnected = NO;
+    
+    [self handleDisconnectionWithError:error];
+}
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect
 {
-    NSLog(@"%s", __func__);
-    self.isConnected = NO;
-    if (!willAttemptReconnect) {
+    NSLog(@"didDisconnectWithError:%@, isPusherConnected %d", error, self.isPusherConnected);
+    
+    self.isPusherConnected = NO;
+    
+    if ( !willAttemptReconnect )
         [self handleDisconnectionWithError:error];
-    }
+    
 }
 
 - (void)handleDisconnectionWithError:(NSError *)error
 {
     NSLog(@"%s", __func__);
+    
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     
     if (error && [error.domain isEqualToString:PTPusherErrorDomain]) {
@@ -336,6 +373,8 @@
 
 - (void)_reachabilityChanged:(NSNotification *)note
 {
+    NSLog(@"%s", __func__);
+
     Reachability *reachability = [note object];
     if ([reachability isReachable]) {
         // we're reachable, we can try and reconnect, otherwise keep waiting
@@ -355,6 +394,8 @@
 
 -(void)showDropOffLocation
 {
+    NSLog(@"%s", __func__);
+
     if ( !self.dropOffAnnotation )
     {
         self.dropOffAnnotation = [[MKPointAnnotation alloc]init];
@@ -373,6 +414,8 @@
 
 -(void)showPickUpLocation
 {
+    NSLog(@"%s", __func__);
+
     if ( !self.pickUpAnnotation )
     {
         self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
@@ -391,6 +434,8 @@
 
 -(void)zoomToFitMapAnnotations
 {
+    NSLog(@"%s", __func__);
+
     if([self.mapView.annotations count] == 0)
         return;
     
@@ -426,6 +471,8 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
+    NSLog(@"viewForAnnotation::-- title %@, subtitle %@", annotation.title, annotation.subtitle);
+
     //TODO: reuse kAnnotationIdentifier
     
     MKPointAnnotation *resultPin = [[MKPointAnnotation alloc] init];
