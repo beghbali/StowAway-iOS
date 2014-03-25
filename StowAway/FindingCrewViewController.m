@@ -374,11 +374,10 @@
 -(void)cancelRide
 {
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.rideID];
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
-    sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];
+    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
     
     //go back to enter drop off pick up view
     [self dismissViewControllerAnimated:YES completion:^(void){}];
