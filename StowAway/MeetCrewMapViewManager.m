@@ -47,7 +47,7 @@
 //called anytime a stowaways gets updated
 -(void)initializeCrew:(NSMutableArray *)newCrew
 {
-    NSLog(@"%s: newcrew-- %@", __func__, newCrew);
+    NSLog(@"initializeCrew::: initializeCrew......");
     
     
     //for the first time, just copy the crew
@@ -147,17 +147,20 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"Meet crew: loc update - %@", locations);
+    NSLog(@"didUpdateLocations !");
+    //NSLog(@"Meet crew: loc update - %@", locations);
     CLLocation * newLocation = [locations lastObject];
     
     CLLocationDistance change = [self.location   distanceFromLocation:newLocation];
-    NSLog(@"prev loc %@, change %f", self.location, change);
+   // NSLog(@"prev loc %@, change %f", self.location, change);
     
     if ( self.location && (change < 1) ) {
-        NSLog(@"change is less than a meter, ignore");
+        NSLog(@"change is less than a meter, ignoring...");
         return;
     }
     
+    NSLog(@"Meet crew: loc update - %@", newLocation);
+
     self.location = newLocation;
     [self sendDataToPusher:newLocation.coordinate];
 }
@@ -254,14 +257,14 @@
                                       @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
                                       kUserPublicId: self.userID,
                                       kRequestPublicId: self.requestID};
-    
+    NSLog(@"*** sendDataToPusher:: %@", locationUpdate);
     [connection send:locationUpdate];
 }
 
 
 - (void)handleCrewLocationUpdate:(PTPusherEvent *)event
 {
-    NSLog(@"%s, event %@", __func__, event);
+    NSLog(@"\n %s, event %@ !!!!! \n", __func__, event);
     NSDictionary * locationUpdate = event.data;
     
     NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
@@ -483,6 +486,7 @@
     
     if ([annotation.title isEqualToString: @"Drop-Off point"])
     {
+        NSLog(@"color mp RED");
         result.pinColor = MKPinAnnotationColorRed;
         
         return result;
@@ -490,13 +494,17 @@
     
     if ([annotation.title isEqualToString:@"Pick-Up point"])
     {
+        NSLog(@"color mp GREEN");
+
         result.pinColor = MKPinAnnotationColorGreen;
         
         return result;
     }
     
-    if (annotation.title)
+    if (annotation.title && annotation.subtitle)
     {
+        NSLog(@"color mp PURPLE");
+
         result.pinColor = MKPinAnnotationColorPurple;
         
         return result;

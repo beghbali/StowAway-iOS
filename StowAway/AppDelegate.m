@@ -65,11 +65,6 @@
 {
     NSLog(@"isAppRunning %d, process push: %@", isAppRunning, pushMsg);
     
-    if ( [[[pushMsg objectForKey:@"aps"] objectForKey:@"alert"] isEqualToString:@"Will has joined the ride"]) {
-        NSLog(@"ignore.... for testing");
-        return;
-    }
-    
     NSString * status = [pushMsg valueForKey:kStatus];
     NSString * ride_id = [pushMsg valueForKey:kPublicId];
     NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];

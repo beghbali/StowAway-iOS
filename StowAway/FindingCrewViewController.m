@@ -98,7 +98,7 @@
 
 -(void)processRideRequestResponse:(NSDictionary *)response
 {
-    NSLog(@"processRideRequestResponse:: %@", response);
+    NSLog(@"processRideRequestResponse........................");
     
     id nsNullObj = (id)[NSNull null];
     
@@ -150,7 +150,7 @@
 //either GET ride or FINALIZE ride result
 -(void)processRideResult:(NSDictionary *)response
 {
-    NSLog(@"processRideResult:: %@", response);
+    NSLog(@"processRideResult......................................");
 
     NSLog(@"crew before processing: %@", self.crew);
     
@@ -174,13 +174,13 @@
         NSString * designation = [request objectForKey:kDesignation];
         BOOL isCaptain = ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] );
         
-        NSLog(@"processing <%d>request %@", i, request);
+        //NSLog(@"processing <%d>request %@", i, request);
         
         for (int j = 0; j < countCrew; j++)
         {
             NSMutableDictionary * crewMember = [self.crew objectAtIndex:j];
         
-            NSLog(@"processing <%d>crewmember %@", j, crewMember);
+           // NSLog(@"processing <%d>crewmember %@", j, crewMember);
             
             if ( [[crewMember objectForKey:kUserPublicId] compare:[request objectForKey:kUserPublicId]] == NSOrderedSame )
             {

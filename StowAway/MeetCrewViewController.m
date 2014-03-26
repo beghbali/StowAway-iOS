@@ -51,7 +51,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    NSLog(@"MeetCrewViewController *** crew %@, mapView %@, suggLoc %@, locChannel %@ ****", self.crew, self.mapView, self.suggestedLocations, self.locationChannel);
+    NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****", self.crew,
+                                                                self.suggestedLocations, self.locationChannel);
     
     self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
     self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
