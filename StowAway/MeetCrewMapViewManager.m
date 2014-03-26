@@ -253,7 +253,8 @@
     if ( !self.isPusherConnected )
         return;
 
-    NSDictionary * locationUpdate = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
+    NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
+                                      @"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
                                       @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
                                       kUserPublicId: self.userID,
                                       kRequestPublicId: self.requestID};
