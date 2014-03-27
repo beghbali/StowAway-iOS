@@ -93,10 +93,20 @@
 }
 
 //called when 5mins timer expires
--(void)setAutoCheckinMode:(BOOL)inAutoCheckinModeNow
+-(void)startAutoCheckinMode
 {
+    //TODO: send server api to call start auto checkin 
+    NSLog(@"startAutoCheckinMode");
     //change the location activity mode to give us auto navigation location updates
     self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+}
+
+//called when server made a decision about auto-checkin
+-(void)stopAutoCheckinMode
+{
+    NSLog(@"stopAutoCheckinMode");
+    [self stopLocationUpdates];
+    [self stopPusherUpdates];
 }
 
 //called once when meet your crew view is loaded
@@ -223,9 +233,10 @@
     NSLog(@"%s", __func__);
     //create pusher
     self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
+    self.pusher.reconnectAutomatically = YES;
     
-    //TODO: authorise for private channel
-    //self.client.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
+    //authentication endpoint
+    self.pusher.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
     
     self.isPusherConnected = NO;
     

@@ -117,7 +117,7 @@
 }
 
 #pragma mark countdown timer
-
+//TODO: needs to be replaced by uilocalnotification
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
@@ -129,6 +129,7 @@
 - (void)countdownTimerExpired
 {
     NSLog(@"%s", __func__);
+    [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
 #pragma mark cancel ride

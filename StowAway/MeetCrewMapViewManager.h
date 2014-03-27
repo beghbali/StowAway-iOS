@@ -17,4 +17,7 @@
 -(void)startUpdatingMapView:(MKMapView *)mapView
      withSuggestedLocations:(NSDictionary *)suggestedLocations andPusherChannel:(NSString *)locationChannel;
 
+-(void)startAutoCheckinMode;
+
+
 @end
