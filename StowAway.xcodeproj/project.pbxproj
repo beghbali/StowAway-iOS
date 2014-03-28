@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AAC41B03ACA45D2B1CD5BB0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 347CED1860724CA9AAE54326 /* libPods.a */; };
 		68BAFEB0188DDBD3009738A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEAF188DDBD3009738A0 /* Foundation.framework */; };
 		68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */; };
 		68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
@@ -38,6 +39,7 @@
 		F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */; };
 		F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
+		F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5818D547A200FAF3D0 /* Reachability.m */; };
 		F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */; };
 		F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F5918BC5BC300A404D0 /* MapKit.framework */; };
 		F4CB1F6018BC634A00A404D0 /* EnterPickupDropOffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */; };
@@ -61,8 +63,6 @@
 		F4CB1F8818C5996A00A404D0 /* win_7.png in Resources */ = {isa = PBXBuildFile; fileRef = F4CB1F7818C5996A00A404D0 /* win_7.png */; };
 		F4CB1F8918C5996A00A404D0 /* win_8.png in Resources */ = {isa = PBXBuildFile; fileRef = F4CB1F7918C5996A00A404D0 /* win_8.png */; };
 		F4CB1F8A18C5996A00A404D0 /* win_9.png in Resources */ = {isa = PBXBuildFile; fileRef = F4CB1F7A18C5996A00A404D0 /* win_9.png */; };
-		F4CB1FA218C7F25100A404D0 /* libPusher-combined.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F9E18C7F25100A404D0 /* libPusher-combined.a */; };
-		F4CB1FA518C7F25100A404D0 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4CB1FA118C7F25100A404D0 /* README.txt */; };
 		F4CB1FA718C7F35C00A404D0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */; };
 		F4CB1FA918C7F4BA00A404D0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */; };
 		F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4D65A5618D547A200FAF3D0 /* LICENCE.txt */; };
@@ -83,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		347CED1860724CA9AAE54326 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAC188DDBD3009738A0 /* StowAway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StowAway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAF188DDBD3009738A0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -102,6 +103,7 @@
 		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
 		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
+		EBB5AAE28C6C411786386FFA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
 		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
 		F4266D4018B5A87800A46BB1 /* STPCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPCard.h; sourceTree = "<group>"; };
@@ -156,25 +158,6 @@
 		F4CB1F7818C5996A00A404D0 /* win_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = win_7.png; sourceTree = "<group>"; };
 		F4CB1F7918C5996A00A404D0 /* win_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = win_8.png; sourceTree = "<group>"; };
 		F4CB1F7A18C5996A00A404D0 /* win_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = win_9.png; sourceTree = "<group>"; };
-		F4CB1F8D18C7F25100A404D0 /* PTEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTEventListener.h; sourceTree = "<group>"; };
-		F4CB1F8E18C7F25100A404D0 /* PTJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTJSON.h; sourceTree = "<group>"; };
-		F4CB1F8F18C7F25100A404D0 /* PTJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTJSONParser.h; sourceTree = "<group>"; };
-		F4CB1F9018C7F25100A404D0 /* PTPusher+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PTPusher+Testing.h"; sourceTree = "<group>"; };
-		F4CB1F9118C7F25100A404D0 /* PTPusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusher.h; sourceTree = "<group>"; };
-		F4CB1F9218C7F25100A404D0 /* PTPusherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherAPI.h; sourceTree = "<group>"; };
-		F4CB1F9318C7F25100A404D0 /* PTPusherChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherChannel.h; sourceTree = "<group>"; };
-		F4CB1F9418C7F25100A404D0 /* PTPusherConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherConnection.h; sourceTree = "<group>"; };
-		F4CB1F9518C7F25100A404D0 /* PTPusherDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherDelegate.h; sourceTree = "<group>"; };
-		F4CB1F9618C7F25100A404D0 /* PTPusherErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherErrors.h; sourceTree = "<group>"; };
-		F4CB1F9718C7F25100A404D0 /* PTPusherEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherEvent.h; sourceTree = "<group>"; };
-		F4CB1F9818C7F25100A404D0 /* PTPusherEventDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherEventDispatcher.h; sourceTree = "<group>"; };
-		F4CB1F9918C7F25100A404D0 /* PTPusherEventPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherEventPublisher.h; sourceTree = "<group>"; };
-		F4CB1F9A18C7F25100A404D0 /* PTPusherMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherMacros.h; sourceTree = "<group>"; };
-		F4CB1F9B18C7F25100A404D0 /* PTPusherMockConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherMockConnection.h; sourceTree = "<group>"; };
-		F4CB1F9C18C7F25100A404D0 /* PTPusherPresenceChannelDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPusherPresenceChannelDelegate.h; sourceTree = "<group>"; };
-		F4CB1F9D18C7F25100A404D0 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
-		F4CB1F9E18C7F25100A404D0 /* libPusher-combined.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPusher-combined.a"; sourceTree = "<group>"; };
-		F4CB1FA118C7F25100A404D0 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		F4D65A5618D547A200FAF3D0 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
@@ -202,13 +185,13 @@
 				F4CB1F6318BDAEA600A404D0 /* QuartzCore.framework in Frameworks */,
 				F4CB1F6218BC759600A404D0 /* CoreLocation.framework in Frameworks */,
 				F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */,
-				F4CB1FA218C7F25100A404D0 /* libPusher-combined.a in Frameworks */,
 				F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */,
 				F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */,
 				F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */,
 				68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */,
 				68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */,
 				68BAFEB0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
+				0AAC41B03ACA45D2B1CD5BB0 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +217,7 @@
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				68BAFEAD188DDBD3009738A0 /* Products */,
 				F4CB1F6A18C5996A00A404D0 /* findingCrewAnimationImages */,
+				EBB5AAE28C6C411786386FFA /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -260,6 +244,7 @@
 				68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */,
 				68BAFEB3188DDBD3009738A0 /* UIKit.framework */,
 				68BAFECE188DDBD3009738A0 /* XCTest.framework */,
+				347CED1860724CA9AAE54326 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -410,40 +395,6 @@
 			path = findingCrewAnimationImages;
 			sourceTree = "<group>";
 		};
-		F4CB1F8B18C7F25100A404D0 /* libPusher */ = {
-			isa = PBXGroup;
-			children = (
-				F4CB1F8C18C7F25100A404D0 /* headers */,
-				F4CB1F9E18C7F25100A404D0 /* libPusher-combined.a */,
-				F4CB1FA118C7F25100A404D0 /* README.txt */,
-			);
-			path = libPusher;
-			sourceTree = "<group>";
-		};
-		F4CB1F8C18C7F25100A404D0 /* headers */ = {
-			isa = PBXGroup;
-			children = (
-				F4CB1F8D18C7F25100A404D0 /* PTEventListener.h */,
-				F4CB1F8E18C7F25100A404D0 /* PTJSON.h */,
-				F4CB1F8F18C7F25100A404D0 /* PTJSONParser.h */,
-				F4CB1F9018C7F25100A404D0 /* PTPusher+Testing.h */,
-				F4CB1F9118C7F25100A404D0 /* PTPusher.h */,
-				F4CB1F9218C7F25100A404D0 /* PTPusherAPI.h */,
-				F4CB1F9318C7F25100A404D0 /* PTPusherChannel.h */,
-				F4CB1F9418C7F25100A404D0 /* PTPusherConnection.h */,
-				F4CB1F9518C7F25100A404D0 /* PTPusherDelegate.h */,
-				F4CB1F9618C7F25100A404D0 /* PTPusherErrors.h */,
-				F4CB1F9718C7F25100A404D0 /* PTPusherEvent.h */,
-				F4CB1F9818C7F25100A404D0 /* PTPusherEventDispatcher.h */,
-				F4CB1F9918C7F25100A404D0 /* PTPusherEventPublisher.h */,
-				F4CB1F9A18C7F25100A404D0 /* PTPusherMacros.h */,
-				F4CB1F9B18C7F25100A404D0 /* PTPusherMockConnection.h */,
-				F4CB1F9C18C7F25100A404D0 /* PTPusherPresenceChannelDelegate.h */,
-				F4CB1F9D18C7F25100A404D0 /* SRWebSocket.h */,
-			);
-			path = headers;
-			sourceTree = "<group>";
-		};
 		F4D65A5518D547A200FAF3D0 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -458,7 +409,6 @@
 			isa = PBXGroup;
 			children = (
 				F4D65A5518D547A200FAF3D0 /* Reachability */,
-				F4CB1F8B18C7F25100A404D0 /* libPusher */,
 				F4266D3F18B5A87800A46BB1 /* Stripe */,
 				F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */,
 				F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */,
@@ -473,9 +423,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68BAFEDE188DDBD3009738A0 /* Build configuration list for PBXNativeTarget "StowAway" */;
 			buildPhases = (
+				B52D80BA131D40AD977EECAA /* Check Pods Manifest.lock */,
 				68BAFEA8188DDBD3009738A0 /* Sources */,
 				68BAFEA9188DDBD3009738A0 /* Frameworks */,
 				68BAFEAA188DDBD3009738A0 /* Resources */,
+				EF07BF46B73E4056A41E793C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -551,7 +503,6 @@
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
 				68BAFEBA188DDBD3009738A0 /* InfoPlist.strings in Resources */,
 				F4CB1F8618C5996A00A404D0 /* win_5.png in Resources */,
-				F4CB1FA518C7F25100A404D0 /* README.txt in Resources */,
 				F4CB1F7C18C5996A00A404D0 /* win_10.png in Resources */,
 				F4CB1F7F18C5996A00A404D0 /* win_13.png in Resources */,
 				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
@@ -582,6 +533,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B52D80BA131D40AD977EECAA /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EF07BF46B73E4056A41E793C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		68BAFEA8188DDBD3009738A0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -604,6 +588,7 @@
 				F4266DDC18B5C00300A46BB1 /* PaymentViewController.m in Sources */,
 				F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */,
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
+				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,
 				68BAFEBC188DDBD3009738A0 /* main.m in Sources */,
@@ -730,6 +715,7 @@
 		};
 		68BAFEDF188DDBD3009738A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBB5AAE28C6C411786386FFA /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -755,6 +741,7 @@
 		};
 		68BAFEE0188DDBD3009738A0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBB5AAE28C6C411786386FFA /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
