@@ -252,33 +252,11 @@
 		68BAFEB5188DDBD3009738A0 /* StowAway */ = {
 			isa = PBXGroup;
 			children = (
+				F4A7E48D18E7183200B1C482 /* View Controllers */,
+				F4A7E48E18E7187F00B1C482 /* Helper Classes */,
 				68BAFEBE188DDBD3009738A0 /* AppDelegate.h */,
 				68BAFEBF188DDBD3009738A0 /* AppDelegate.m */,
 				68BAFEC1188DDBD3009738A0 /* Main.storyboard */,
-				F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */,
-				F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */,
-				F4CB1F5E18BC634900A404D0 /* EnterPickupDropOffViewController.h */,
-				F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */,
-				F4CB1F6418C31BF200A404D0 /* FindingCrewViewController.h */,
-				F4CB1F6518C31BF200A404D0 /* FindingCrewViewController.m */,
-				F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */,
-				F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */,
-				F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */,
-				F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */,
-				F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */,
-				F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */,
-				68BAFEC4188DDBD3009738A0 /* LoginViewController.h */,
-				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
-				F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */,
-				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
-				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
-				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
-				F4D65A5B18D805DE00FAF3D0 /* MeetCrewMapViewManager.h */,
-				F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */,
-				F4CB1F6718C3214500A404D0 /* CountdownTimer.h */,
-				F4CB1F6818C3214500A404D0 /* CountdownTimer.m */,
-				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
-				F451B6C618B3333400CF59BA /* StowawayConstants.m */,
 				68BAFEC7188DDBD3009738A0 /* Images.xcassets */,
 				68BAFEB6188DDBD3009738A0 /* Supporting Files */,
 			);
@@ -370,6 +348,44 @@
 				F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */,
 			);
 			path = Touch;
+			sourceTree = "<group>";
+		};
+		F4A7E48D18E7183200B1C482 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */,
+				F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */,
+				F4CB1F5E18BC634900A404D0 /* EnterPickupDropOffViewController.h */,
+				F4CB1F5F18BC634900A404D0 /* EnterPickupDropOffViewController.m */,
+				F4CB1F6418C31BF200A404D0 /* FindingCrewViewController.h */,
+				F4CB1F6518C31BF200A404D0 /* FindingCrewViewController.m */,
+				F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */,
+				F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */,
+				F4EB918618AA11FD00C57BF2 /* PaymentViewController.h */,
+				F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */,
+				F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */,
+				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
+				68BAFEC4188DDBD3009738A0 /* LoginViewController.h */,
+				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F4A7E48E18E7187F00B1C482 /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */,
+				F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */,
+				F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */,
+				F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */,
+				F4D65A5B18D805DE00FAF3D0 /* MeetCrewMapViewManager.h */,
+				F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */,
+				F4CB1F6718C3214500A404D0 /* CountdownTimer.h */,
+				F4CB1F6818C3214500A404D0 /* CountdownTimer.m */,
+				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
+				F451B6C618B3333400CF59BA /* StowawayConstants.m */,
+			);
+			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
 		F4CB1F6A18C5996A00A404D0 /* findingCrewAnimationImages */ = {
