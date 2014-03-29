@@ -45,12 +45,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     //remember that ride has been finalized, to be used if app gets killed and relaunched
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveRemoteNotification:)
+                                                 name:@"updateMeetCrew"
+                                               object:nil];
     
+
     NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****", self.crew,
                                                                 self.suggestedLocations, self.locationChannel);
     
@@ -67,6 +72,14 @@
     //    //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
+}
+
+-(void)didReceiveRemoteNotification:(NSNotification *)notification
+{
+    NSLog(@"%s:  %@", __func__, notification);
+    
+    //get the ride object and create the crew array, get suggestedLoc, locChannel, self.requestID
+    //TODO: stowaway server communicator should handle this -- getRideObject
 }
 
 
@@ -147,6 +160,8 @@
 
 -(void)cancelRide
 {
+    [self.meetCrewMapViewManager stopAutoCheckinMode];
+    
     //DELETE ride request
     NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
     

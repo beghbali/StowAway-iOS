@@ -19,5 +19,6 @@
 
 -(void)startAutoCheckinMode;
 
+-(void)stopAutoCheckinMode;
 
 @end

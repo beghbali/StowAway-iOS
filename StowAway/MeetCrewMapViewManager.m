@@ -47,12 +47,14 @@
 //called anytime a stowaways gets updated
 -(void)initializeCrew:(NSMutableArray *)newCrew
 {
-    NSLog(@"initializeCrew::: initializeCrew......");
+    NSLog(@"new crew......... %@", newCrew);
     
     
     //for the first time, just copy the crew
     if ( !self.crew )
     {
+        NSLog(@"initializeCrew......");
+
         self.crew = [NSMutableArray arrayWithArray:newCrew];
         
         //get self user id
@@ -243,8 +245,7 @@
     [self.pusher connect];
     
     //subscribe to location channel created by server
-    //TODO: use subscribeToPresenceChannelNamed
-    PTPusherChannel *channel = [self.pusher subscribeToChannelNamed:self.locationChannel];
+    PTPusherChannel *channel = [self.pusher subscribeToPrivateChannelNamed:self.locationChannel];
     
     [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
 }

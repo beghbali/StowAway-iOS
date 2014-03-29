@@ -68,13 +68,17 @@
     NSString * status = [pushMsg valueForKey:kStatus];
     NSString * ride_id = [pushMsg valueForKey:kPublicId];
     NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    
     BOOL isRideFinalized = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
 
     NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
-    
 
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
 
+    NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********", (MeetCrewViewController *)[mainStoryboard
+                                                                     instantiateViewControllerWithIdentifier:@"MeetCrewViewController"],
+          (FindingCrewViewController *)[mainStoryboard
+                                        instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]);
     //we have a update while finding crew - that means new crew joined or someone dropped out
     if ( !isRideFinalized )
     {
@@ -91,8 +95,9 @@
         
         if (isAppRunning)
         {
+            //send notification to the FC vc
             NSLog(@" *** update FC vc");
-
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFindCrew"
                                                                 object:self
                                                               userInfo:fakeRideRequestResponse];
@@ -117,17 +122,35 @@
             //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
              [self.window.rootViewController presentViewController:findingCrewVC animated:NO completion:Nil];
         }
+        return;
+    }
+    
+    //notification after we have been on meet your crew
+    
+    if (isAppRunning)
+    {
+        //send notification to the meet your crew vc
+        NSLog(@" *** updateMeetCrew");
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMeetCrew"
+                                                            object:self
+                                                          userInfo:pushMsg];
     } else
     {
-        //we have a update while crew is meeting
-        NSLog(@"**** we have a update while crew is meeting ***");
+        //TODO:
+        //we have a update while crew is meeting -- either a stowaway dropped or captain dropped(ride_id==nil)
+        //need to fill the crew property before loading the VC - view did load calls initiatecrew and puts stuff on map
         MeetCrewViewController *meetCrewVC = (MeetCrewViewController *)[mainStoryboard
                                                                         instantiateViewControllerWithIdentifier:@"MeetCrewViewController"];
+        
+        NSLog(@"**** we have a update while crew is meeting %@ ***", meetCrewVC.view.window);
+
         [self.window.rootViewController presentViewController:meetCrewVC animated:YES completion:NULL];
-
-
     }
+
+    
+
+    
 }
 
 #pragma mark local notif

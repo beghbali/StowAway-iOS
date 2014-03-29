@@ -121,7 +121,7 @@
     
     if ( ride_id && (ride_id != nsNullObj) )
     { // there is a match - GET RIDE result
-        
+        //TODO: stowaway server communicator should handle this -- getRideObject, also used in meet crew
         NSLog(@"there is a match - get ride result");
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, ride_id];
         
