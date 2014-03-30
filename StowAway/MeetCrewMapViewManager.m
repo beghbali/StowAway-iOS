@@ -260,7 +260,7 @@
     self.pusher.reconnectAutomatically = YES;
     
     //authentication endpoint
-    self.pusher.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
+    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://api.getstowaway.com/pusher/%@/auth", self.userID]];
     
     self.isPusherConnected = NO;
     
