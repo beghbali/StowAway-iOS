@@ -66,7 +66,7 @@
     [self updateCrewInfoInView];
     
     self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
-    [self.meetCrewMapViewManager initializeCrew: self.crew];
+    [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];
     
     //    //outlets are loaded, now arm the timer, this is only set once
@@ -76,7 +76,7 @@
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
 {
-    NSLog(@"%s:  %@", __func__, notification);
+    NSLog(@"%s: MC_vc  %@", __func__, notification);
     
     //get the ride object and create the crew array, get suggestedLoc, locChannel, self.requestID
     //TODO: stowaway server communicator should handle this -- getRideObject

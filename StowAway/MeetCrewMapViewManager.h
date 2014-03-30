@@ -12,7 +12,7 @@
 
 @interface MeetCrewMapViewManager : NSObject
 
--(void)initializeCrew:(NSMutableArray *)crew;
+-(void)initializeCrew:(NSMutableArray *)newCrew forRideID:(NSNumber *)rideID;
 
 -(void)startUpdatingMapView:(MKMapView *)mapView
      withSuggestedLocations:(NSDictionary *)suggestedLocations andPusherChannel:(NSString *)locationChannel;

@@ -14,9 +14,9 @@
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
 //my ID's - used for finalize ride and delete request
-@property (strong, nonatomic) NSString *rideID;
-@property (strong, nonatomic) NSString *userID;
-@property (strong, nonatomic) NSString *requestID;
+@property (strong, nonatomic) NSNumber *rideID;
+@property (strong, nonatomic) NSNumber *userID;
+@property (strong, nonatomic) NSNumber *requestID;
 
 //pusher channel, suggested locations
 @property (strong, nonatomic) NSDictionary *suggestedLocations;

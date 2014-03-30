@@ -15,6 +15,8 @@
 #import "Reachability.h"
 #import "PTPusherErrors.h"
 #import "PTPusherConnection.h"
+#import "StowawayServerCommunicator.h"
+
 
 @interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate>
 
@@ -37,6 +39,8 @@
 
 @property (strong, nonatomic) NSNumber *userID;
 @property (strong, nonatomic) NSNumber *requestID;
+@property (strong, nonatomic) NSNumber *rideID;
+
 @property BOOL isPusherConnected;
 @property BOOL isLocationDisabled;
 @end
@@ -45,10 +49,11 @@
 @implementation MeetCrewMapViewManager
 
 //called anytime a stowaways gets updated
--(void)initializeCrew:(NSMutableArray *)newCrew
+-(void)initializeCrew:(NSMutableArray *)newCrew forRideID:(NSNumber *)rideID
 {
-    NSLog(@"new crew......... %@", newCrew);
+    NSLog(@"new crew......... %@, rideID %@", newCrew, rideID);
     
+    self.rideID = rideID;
     
     //for the first time, just copy the crew
     if ( !self.crew )
@@ -94,11 +99,28 @@
     }
 }
 
+#pragma mark Auto-checkin
+
 //called when 5mins timer expires
 -(void)startAutoCheckinMode
 {
-    //TODO: send server api to call start auto checkin 
-    NSLog(@"startAutoCheckinMode");
+    NSDictionary * crewMember_self = [self.crew objectAtIndex:0];
+
+    NSLog(@"startAutoCheckinMode - self %@", crewMember_self);
+   
+    if ([[crewMember_self objectForKey:kIsCaptain] boolValue])
+    {
+        NSLog(@"i am the captain, asking server to start auto-checkin");
+        //checkin request - only captain sends
+        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@/checkin", self.userID, self.rideID];
+        
+        StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+        sscommunicator.sscDelegate = nil; //no response expected
+        [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"PUT"];
+    }
+    else
+        NSLog(@"i am a stowaway, so dont tell server to auto-checkin");
+
     //change the location activity mode to give us auto navigation location updates
     self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
 }

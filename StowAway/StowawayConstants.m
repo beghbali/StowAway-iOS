@@ -58,7 +58,7 @@ NSString *const kMKPointAnnotation      = @"mapPoint";
 NSString *const kIsRideFinalized        = @"isRideFinalized";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = 100; //5mins
+NSUInteger kCountdownTimerMaxSeconds    = 60; //5mins
 
 //Pusher
 NSString *const kPusherApiKey               = @"403b5fc6f392db2fe167";

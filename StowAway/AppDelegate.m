@@ -73,6 +73,14 @@
 
     NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
 
+    NSDictionary * fakeRideRequestResponse = nil;
+    if (ride_id && (ride_id != (id)[NSNull null]))
+        fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
+    else
+        fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
+    
+    NSLog(@"fake ride req: %@", fakeRideRequestResponse);
+
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
 
     NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********", (MeetCrewViewController *)[mainStoryboard
@@ -84,14 +92,6 @@
     {
         //prepare find crew view to be launched
         NSLog(@" **** prepare find crew view to be launched **** ");
-       
-        NSDictionary * fakeRideRequestResponse = nil;
-        if (ride_id && (ride_id != (id)[NSNull null]))
-            fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
-        else
-            fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
-        
-        NSLog(@"fake ride req: %@", fakeRideRequestResponse);
         
         if (isAppRunning)
         {
@@ -137,6 +137,26 @@
                                                           userInfo:pushMsg];
     } else
     {
+        if (ride_id && (ride_id != (id)[NSNull null]))
+        {
+            NSLog(@"ride canceled");
+            //captain canceled the ride, so cancel it for everyone, take them to FindingCrewViewController
+            
+            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
+                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
+            
+            NSLog(@"findingCrewVC %@", findingCrewVC);
+            
+            
+            findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
+            NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
+            
+            // self.window.rootViewController = enterPickUpDropOffCrewVC;
+            // [self.window.rootViewController presentViewController:enterPickUpDropOffCrewVC animated:NO completion:Nil];
+            //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
+            [self.window.rootViewController presentViewController:findingCrewVC animated:NO completion:Nil];
+
+        }
         //TODO:
         //we have a update while crew is meeting -- either a stowaway dropped or captain dropped(ride_id==nil)
         //need to fill the crew property before loading the VC - view did load calls initiatecrew and puts stuff on map
