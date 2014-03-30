@@ -35,8 +35,7 @@
         [self performSegueWithIdentifier: @"enter pickup dropoff" sender: self];
     }
     
-    NSString * enquiryurl =
-    @"http://www.apple.com/legal/internet-services/itunes/us/terms.html#SERVICE";
+    NSString * enquiryurl = @"https://getstowaway.com/legal/terms.html";
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:enquiryurl]];
 
