@@ -138,7 +138,6 @@ int locationInputCount = 0;
 {
     // pass the individual place to our map destination view controller
     NSIndexPath *selectedItem = [tableView indexPathForSelectedRow];
-    NSLog(@"selected index path row %d, selectedItem %@", indexPath.row, selectedItem);
     
     if ( [self isPickUpTableView:tableView] )
     {
@@ -223,10 +222,9 @@ int locationInputCount = 0;
 {
     //show current location as soon as user taps it
     // TODO: show current location
-    if ( searchBar == self.pickUpSearchBar ) {
-        NSLog(@"reload table");
+    if ( searchBar == self.pickUpSearchBar )
         [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
-    }
+    
     
     [searchBar setShowsCancelButton:YES animated:YES];
 }

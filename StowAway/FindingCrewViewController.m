@@ -34,9 +34,9 @@
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
 //my ID's - used for finalize ride and delete request
-@property (strong, nonatomic) NSString *rideID;
-@property (strong, nonatomic) NSString *userID;
-@property (strong, nonatomic) NSString *requestID;
+@property (strong, nonatomic) NSNumber *rideID;
+@property (strong, nonatomic) NSNumber *userID;
+@property (strong, nonatomic) NSNumber *requestID;
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
@@ -159,13 +159,13 @@
     
     NSArray * requests = [response objectForKey:@"requests"];
     
-    int countRequests = requests.count;
-    int countCrew = self.crew.count;
+    NSUInteger countRequests = requests.count;
+    NSUInteger countCrew = self.crew.count;
     
-    NSLog(@"crew# %d, rideResult# %d", countCrew, countRequests);
+    NSLog(@"crew# %lu, rideResult# %lu", (unsigned long)countCrew, (unsigned long)countRequests);
     
     //ADD NEW MEMBERS
-    for ( int i = 0; i < countRequests; i++)
+    for ( NSUInteger i = 0; i < countRequests; i++)
     {
         BOOL alreadyExistsInCrew = NO;
         NSDictionary * request = [requests objectAtIndex:i];
@@ -419,7 +419,7 @@
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew<count %d> view %@", self.crew.count, self.crew);
+    NSLog(@"update crew<count %lu> view %@", (unsigned long)self.crew.count, self.crew);
     
     //set the cd timer
     [self reCalculateCDTimer];
@@ -432,22 +432,26 @@
         });
     }
     
-    for (int i = self.crew.count; i < 4; i++)
+    for (NSUInteger i = self.crew.count; i < 4; i++)
     {
+        //reset the images to animate and also reset the name to finding....
         switch (i) {
             case 1:
                 NSLog(@"start animation on image1");
                 [self startAnimatingImage:self.imageView1];
+                self.nameLabel1.text = @"finding...";
                 break;
                 
             case 2:
                 NSLog(@"start animation on image2");
                 [self startAnimatingImage:self.imageView2];
+                self.nameLabel1.text = @"finding...";
                 break;
                 
             case 3:
                 NSLog(@"start animation on image3");
                 [self startAnimatingImage:self.imageView3];
+                self.nameLabel1.text = @"finding...";
                 break;
 
             default:

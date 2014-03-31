@@ -55,7 +55,7 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-	NSLog(@"Received notification: %@", userInfo);
+	NSLog(@"didReceiveRemoteNotification: %@ ..........", userInfo);
     
     [self processStowawayPushNotification:userInfo isAppRunning:YES];
 }
@@ -63,7 +63,7 @@
 
 - (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
-    NSLog(@"isAppRunning %d, process push: %@", isAppRunning, pushMsg);
+    NSLog(@"isAppRunning %d, processStowawayPushNotification........", isAppRunning);
     
     NSString * status = [pushMsg valueForKey:kStatus];
     NSString * ride_id = [pushMsg valueForKey:kPublicId];
@@ -83,10 +83,10 @@
 
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
 
-    NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********", (MeetCrewViewController *)[mainStoryboard
-                                                                     instantiateViewControllerWithIdentifier:@"MeetCrewViewController"],
-          (FindingCrewViewController *)[mainStoryboard
-                                        instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]);
+   NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********",
+         ((MeetCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"MeetCrewViewController"]).view.window,
+          ((FindingCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]).view.window);
+    
     //we have a update while finding crew - that means new crew joined or someone dropped out
     if ( !isRideFinalized )
     {
