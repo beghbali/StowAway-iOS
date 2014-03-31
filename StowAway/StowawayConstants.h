@@ -69,6 +69,7 @@ extern NSUInteger kCountdownTimerMaxSeconds;
 //Pusher
 extern NSString *const kPusherApiKey;
 extern NSString *const kPusherCrewLocationEvent;
+extern double const kPusherCrewWalkingLocationUpdateThreshholdMeters;
 
 
 

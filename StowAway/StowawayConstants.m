@@ -61,5 +61,6 @@ NSString *const kIsRideFinalized        = @"isRideFinalized";
 NSUInteger kCountdownTimerMaxSeconds    = 60; //5mins
 
 //Pusher
-NSString *const kPusherApiKey               = @"403b5fc6f392db2fe167";
-NSString *const kPusherCrewLocationEvent    = @"client-location-update";
+NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";
+NSString *const kPusherCrewLocationEvent                        = @"client-location-update";
+double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 1; //10meters

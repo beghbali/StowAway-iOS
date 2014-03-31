@@ -74,13 +74,14 @@
 {
     
     [super viewDidAppear:animated];
-    NSLog(@"view did appear");
+    NSLog(@"FindingCrewViewController::view did appear ..............");
 
     //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
+    NSLog(@"   NOT--- //update the view - pics, names /// ");
     //update the view - pics, names
-    [self updateFindingCrewView];
+    //[self updateFindingCrewView]; ?? verify that this is not requied -- since on launch due to push, it will be processed
 }
 
 #pragma mark stowawayServer
@@ -244,6 +245,7 @@
     //save loc channel, suggested locn, if the ride is FULFILLED
     if ([[response objectForKey:kStatus] isEqualToString:KStatusFulfilled])
     {
+        NSLog(@"ride has been FULFILLED...... lets go to 'meet your crew'");
         //cancel timer expiry notif
         [self cancelTimerExpiryNotificationSchedule];
         
@@ -403,7 +405,7 @@
 
 - (void)cancelTimerExpiryNotificationSchedule
 {
-    NSLog(@"%s:<self.localNotification %@>", __func__, self.localNotification);
+    NSLog(@"cancelTimerExpiryNotificationSchedule %@ .....", self.localNotification);
     
     if ( !self.localNotification )
         return;
@@ -424,6 +426,8 @@
     //set the cd timer
     [self reCalculateCDTimer];
     
+    NSLog(@"updateFindingCrewView: CDT updated...");
+    
     for (NSUInteger i = 1; i < self.crew.count; i++)
     {
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
@@ -434,22 +438,21 @@
     
     for (NSUInteger i = self.crew.count; i < 4; i++)
     {
+        NSLog(@"RESET crew#%lu ........", (unsigned long)i);
+
         //reset the images to animate and also reset the name to finding....
         switch (i) {
             case 1:
-                NSLog(@"start animation on image1");
                 [self startAnimatingImage:self.imageView1];
                 self.nameLabel1.text = @"finding...";
                 break;
                 
             case 2:
-                NSLog(@"start animation on image2");
                 [self startAnimatingImage:self.imageView2];
                 self.nameLabel1.text = @"finding...";
                 break;
                 
             case 3:
-                NSLog(@"start animation on image3");
                 [self startAnimatingImage:self.imageView3];
                 self.nameLabel1.text = @"finding...";
                 break;
@@ -493,6 +496,7 @@
 // run this function on a background thread
 -(void)setCrewImageAndName:(NSUInteger)crewPostion withFbUID:(NSString *)fbUID
 {
+    NSLog(@" Q<%s> set crew<%lu> image+name with FBUID %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbUID);
     NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
     NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/profile", fbUID]];
    
