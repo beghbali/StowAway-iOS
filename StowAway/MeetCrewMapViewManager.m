@@ -188,7 +188,7 @@
     CLLocationDistance change = [self.location   distanceFromLocation:newLocation];
    // NSLog(@"prev loc %@, change %f", self.location, change);
     
-    if ( self.location && (change < 1) ) {
+    if ( self.location && (change < kPusherCrewWalkingLocationUpdateThreshholdMeters) ) {
         NSLog(@"change is less than a meter, ignoring...");
         return;
     }
