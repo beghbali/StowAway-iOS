@@ -287,11 +287,13 @@
     if ( !self.isPusherConnected )
         return;
 
+    NSDictionary * dataDict = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
+                                @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
+                                kUserPublicId: self.userID,
+                                kRequestPublicId: self.requestID};
     NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
-                                      @"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
-                                      @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
-                                      kUserPublicId: self.userID,
-                                      kRequestPublicId: self.requestID};
+                                      @"channel":[NSString stringWithFormat:@"private-%@", self.locationChannel],
+                                      @"data": dataDict};
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);
     [connection send:locationUpdate];
 }
