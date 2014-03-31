@@ -89,6 +89,10 @@ int locationInputCount = 0;
     
     self.findCrewButton.enabled = NO;
 
+    //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
 #pragma mark - UITableView delegate methods

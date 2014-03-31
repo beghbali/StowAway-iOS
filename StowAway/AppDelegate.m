@@ -82,11 +82,11 @@
     NSLog(@"fake ride req: %@", fakeRideRequestResponse);
 
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-
+/*
    NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********",
          ((MeetCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"MeetCrewViewController"]).view.window,
           ((FindingCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]).view.window);
-    
+*/
     //we have a update while finding crew - that means new crew joined or someone dropped out
     if ( !isRideFinalized )
     {
@@ -125,6 +125,8 @@
         return;
     }
     
+    NSLog(@" **** prepare meet your crew view to be launched **** ");
+
     //notification after we have been on meet your crew
     
     if (isAppRunning)
