@@ -115,7 +115,7 @@
         [self.crew insertObject:mutableDict atIndex:0];
     }
     
-    NSString * ride_id = [response objectForKey:kRidePublicId];
+    NSNumber * ride_id = [response objectForKey:kRidePublicId];
     self.rideID = ride_id;
     NSLog(@"request ride result for ride_id %@", ride_id);
     
