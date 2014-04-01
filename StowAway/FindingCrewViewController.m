@@ -41,6 +41,10 @@
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
 
+@property BOOL isReadyToGoToMeetCrew;
+
+@property BOOL viewDidLoadFinished;
+
 @end
 
 @implementation FindingCrewViewController
@@ -58,10 +62,10 @@
     
     [self.getRideResultActivityIndicator stopAnimating];
 
+    [self setupAnimation];
+
     //process ride request reply from server -- also sets cd timer value
     [self processRideRequestResponse:self.rideRequestResponse];
-
-    [self setupAnimation];
 }
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
@@ -72,16 +76,21 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    
     [super viewDidAppear:animated];
-    NSLog(@"FindingCrewViewController::view did appear ..............");
+    
+    self.viewDidLoadFinished = YES;
+
+    NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
 
     //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
-    NSLog(@"   NOT--- //update the view - pics, names /// ");
     //update the view - pics, names
-    //[self updateFindingCrewView]; ?? verify that this is not requied -- since on launch due to push, it will be processed
+    [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed
+    
+    //go to "meet the crew" view
+    if ( self.isReadyToGoToMeetCrew && self.viewDidLoadFinished )
+        [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
 }
 
 #pragma mark stowawayServer
@@ -99,7 +108,9 @@
 
 -(void)processRideRequestResponse:(NSDictionary *)response
 {
-    NSLog(@"processRideRequestResponse........................");
+    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished);
+    
+    self.isReadyToGoToMeetCrew = NO;
     
     id nsNullObj = (id)[NSNull null];
     
@@ -138,7 +149,7 @@
     if (self.crew.count > 1)
     {
         // this is possible when there was just one match, and that person canceled the ride
-        NSLog(@"there was just one match, and that person canceled the ride");
+        NSLog(@"there was just one match, and that person canceled the ride, remove crew from view");
         while ( self.crew.count > 1 )
             [self.crew removeLastObject];
         
@@ -245,7 +256,10 @@
     //save loc channel, suggested locn, if the ride is FULFILLED
     if ([[response objectForKey:kStatus] isEqualToString:KStatusFulfilled])
     {
-        NSLog(@"ride has been FULFILLED...... lets go to 'meet your crew'");
+        NSLog(@"ride has been FULFILLED (viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'", self.viewDidLoadFinished);
+        
+        self.isReadyToGoToMeetCrew = YES;
+        
         //cancel timer expiry notif
         [self cancelTimerExpiryNotificationSchedule];
         
@@ -259,8 +273,10 @@
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
         
-        //go to "meet the crew" view
-        [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
+        //go to "meet the crew" view if view has been loaded
+        if (self.viewDidLoadFinished)
+            [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
+
     } else
     {
         // set UILOCALNOTIFICATION
@@ -319,6 +335,7 @@
 
 #pragma mark countdown timer
 
+//TODO: dont take the cb for timer expiry -- use uilocalnotif cb
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
@@ -330,7 +347,7 @@
 
 - (void)countdownTimerExpired
 {
-    NSLog(@"%s, crew <%d> %@", __func__, self.crew.count, self.crew);
+    NSLog(@"%s, crew <%lu> %@", __func__, (unsigned long)self.crew.count, self.crew);
   //  [self stopAnimatingImage:self.imageView1];
     //[self stopAnimatingImage:self.imageView2];
     //[self stopAnimatingImage:self.imageView3];
@@ -405,6 +422,9 @@
 
 - (void)cancelTimerExpiryNotificationSchedule
 {
+    //TODO: clean this mess of 2 different timer callbacks
+    self.cdt.cdTimerDelegate = nil;
+
     NSLog(@"cancelTimerExpiryNotificationSchedule %@ .....", self.localNotification);
     
     if ( !self.localNotification )
@@ -421,7 +441,7 @@
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew<count %lu> view %@", (unsigned long)self.crew.count, self.crew);
+    NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
     
     //set the cd timer
     [self reCalculateCDTimer];
@@ -430,13 +450,30 @@
     
     for (NSUInteger i = 1; i < self.crew.count; i++)
     {
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
-            //Background Thread
-            [self setCrewImageAndName:i withFbUID:[[self.crew objectAtIndex:i] objectForKey:kFbId]];
-        });
+        NSDictionary * crewMember = [self.crew objectAtIndex:i];
+
+        if ([crewMember objectForKey:kCrewFbImage] && [crewMember objectForKey:kCrewFbName])
+        {
+            NSLog(@"we already have the fb image and name for crewMember %lu", (unsigned long)i);
+            continue;
+        }
+
+        [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
+/*
+        if ( i == (kMaxCrewCount-1) ) {
+            NSLog(@"for the last person, wait till we get the fb image and name");
+            [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
+        } else
+        {
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
+                //Background Thread
+                [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
+            });
+        }
+ */
     }
     
-    for (NSUInteger i = self.crew.count; i < 4; i++)
+    for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
     {
         NSLog(@"RESET crew#%lu ........", (unsigned long)i);
 
@@ -496,22 +533,25 @@
 // run this function on a background thread
 -(void)setCrewImageAndName:(NSUInteger)crewPostion withFbUID:(NSString *)fbUID
 {
-    NSLog(@" Q<%s> set crew<%lu> image+name with FBUID %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbUID);
-    NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
-    NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/profile", fbUID]];
+    NSError* error;
+
+    NSLog(@" Q<%s> find out crew#%lu's image+name with FBUID %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbUID);
    
+    NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
     NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
     UIImage *profilePic = [[UIImage alloc] initWithData:profilePicData] ;
 
+    NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/profile", fbUID]];
     NSData *firstNameData = [NSData dataWithContentsOfURL:firstNameURL];
-    NSError* error;
-    NSDictionary* json = [NSJSONSerialization
+    NSDictionary* jsonDict = [NSJSONSerialization
                           JSONObjectWithData:firstNameData
-                          
                           options:kNilOptions
                           error:&error];
+    NSString * fbName = nil;
+    NSLog(@"jsonDict %@", jsonDict);
     
-    NSString * fbName = [[[json objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
+    if (jsonDict && !error)
+        fbName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
 
     switch (crewPostion)
     {
@@ -519,6 +559,8 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
+                NSLog(@" Q<%s> set crew#%lu's image+name %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbName);
+
                 [self stopAnimatingImage:self.imageView1];
                 self.imageView1.image   = profilePic;
                 self.nameLabel1.text    = fbName;

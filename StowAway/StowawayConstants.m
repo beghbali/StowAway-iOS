@@ -59,6 +59,7 @@ NSString *const kIsRideFinalized        = @"isRideFinalized";
 
 //countdown timer
 NSUInteger kCountdownTimerMaxSeconds    = 60; //5mins
+NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 
 //Pusher
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";
