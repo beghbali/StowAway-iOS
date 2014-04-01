@@ -63,8 +63,9 @@ extern NSString *const kSuggestedPickUpLat;
 extern NSString *const kMKPointAnnotation;
 extern NSString *const kIsRideFinalized;
 
-//countdown timer
+//crew and waiting constants
 extern NSUInteger kCountdownTimerMaxSeconds;
+extern NSUInteger kMaxCrewCount;
 
 //Pusher
 extern NSString *const kPusherApiKey;
