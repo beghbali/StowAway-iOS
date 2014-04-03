@@ -43,6 +43,8 @@ extern NSString *const kRequestedAt;
 extern NSString *const kRidePublicId;
 extern NSString *const kStatus;
 extern NSString *const KStatusFulfilled;
+extern NSString *const kStatusCheckedin;
+extern NSString *const kStatusMissed;
 
 //crew member
 extern NSString *const kIsCaptain;
@@ -50,6 +52,7 @@ extern NSString *const kCrewFbImage;
 extern NSString *const kCrewFbName;
 extern NSString *const kDesignation;
 extern NSString *const kDesignationCaptain;
+extern NSString *const kIsCheckedIn;
 
 
 //meet the crew

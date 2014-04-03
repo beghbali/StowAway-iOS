@@ -11,6 +11,7 @@
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewViewController.h"
+#import "AppDelegate.h"
 
 @interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
@@ -53,7 +54,7 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewdidload - FC_vc %@", self);
+    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
@@ -76,6 +77,17 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    /*
+    BOOL wasAppLaunchedDueToPush = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wasAppLaunchedDueToPush"] boolValue];
+    
+    if (wasAppLaunchedDueToPush) {
+        NSLog(@"%s: call view did load \n", __func__);
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"wasAppLaunchedDueToPush"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self viewDidLoad];
+    }
+     */
     [super viewDidAppear:animated];
     
     self.viewDidLoadFinished = YES;
@@ -108,7 +120,11 @@
 
 -(void)processRideRequestResponse:(NSDictionary *)response
 {
-    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished);
+    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
+
+    if (!response) {
+        self.rideRequestResponse = response = ((AppDelegate *)[UIApplication sharedApplication].delegate).fakeRideRequestResponse;
+    }
     
     self.isReadyToGoToMeetCrew = NO;
     
@@ -120,7 +136,17 @@
         self.crew = [NSMutableArray arrayWithCapacity: 1];
         self.userID = [response objectForKey:kUserPublicId];
         self.requestID = [response objectForKey:kPublicId];
+
+        if (self.requestID)
+        {
+            //remember request id, incase app gets killed and is relaunced due to a match
+            [[NSUserDefaults standardUserDefaults] setObject:self.requestID forKey:kRequestPublicId];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        } else
+            self.requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+        
         //parse the response to fill in SELF request_id, user_id
+        NSLog(@"self.requestID %@, self.userID %@", self.requestID, self.userID );
         NSDictionary * dict = @{kRequestPublicId: self.requestID,
                                 kUserPublicId: self.userID};
         NSMutableDictionary * mutableDict = [NSMutableDictionary dictionaryWithDictionary:dict];
@@ -224,7 +250,7 @@
         
         [self.crew addObject:dict];
     }
-    NSLog(@"after add - %@", self.crew);
+    //NSLog(@"after add - %@", self.crew);
 
     //REMOVE STALE MEMBERS
     for (int j = 0; j < self.crew.count; j++)
@@ -248,7 +274,7 @@
         [self.crew removeObjectAtIndex:j];
         j--;
     }
-    NSLog(@"after remove **FINAL** - %@", self.crew);
+    NSLog(@"** crew after processing ** - %@", self.crew);
     
     //UPDATE VIEW with updated crew and new cd time
     [self updateFindingCrewView];
@@ -441,8 +467,8 @@
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
-    
+  //  NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
+    NSLog(@"updateFindingCrewView ............");
     //set the cd timer
     [self reCalculateCDTimer];
     
@@ -486,12 +512,12 @@
                 
             case 2:
                 [self startAnimatingImage:self.imageView2];
-                self.nameLabel1.text = @"finding...";
+                self.nameLabel2.text = @"finding...";
                 break;
                 
             case 3:
                 [self startAnimatingImage:self.imageView3];
-                self.nameLabel1.text = @"finding...";
+                self.nameLabel3.text = @"finding...";
                 break;
 
             default:
@@ -548,7 +574,7 @@
                           options:kNilOptions
                           error:&error];
     NSString * fbName = nil;
-    NSLog(@"jsonDict %@", jsonDict);
+   // NSLog(@"jsonDict %@", jsonDict);
     
     if (jsonDict && !error)
         fbName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];

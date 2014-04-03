@@ -38,6 +38,8 @@ NSString *const kRequestedAt        = @"requested_at";
 NSString *const kRidePublicId           = @"ride_public_id";
 NSString *const kStatus                 = @"status";
 NSString *const KStatusFulfilled        = @"fulfilled";
+NSString *const kStatusCheckedin        = @"checkedin";
+NSString *const kStatusMissed           = @"missed";
 
 //crew member
 NSString *const kIsCaptain              = @"isCaptain";
@@ -45,6 +47,7 @@ NSString *const kCrewFbImage            = @"crewFbImage";
 NSString *const kCrewFbName             = @"crewFbName";
 NSString *const kDesignation            = @"designation";
 NSString *const kDesignationCaptain     = @"captain";
+NSString *const kIsCheckedIn            = @"isCheckedIn";
 
 //meet the crew
 NSString *const kLocationChannel        = @"location_channel";
@@ -58,7 +61,7 @@ NSString *const kMKPointAnnotation      = @"mapPoint";
 NSString *const kIsRideFinalized        = @"isRideFinalized";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = 60; //5mins
+NSUInteger kCountdownTimerMaxSeconds    = 90; //5mins
 NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 
 //Pusher

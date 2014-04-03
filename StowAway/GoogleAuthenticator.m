@@ -146,7 +146,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     } else
     {
         //SUCCESS - move to the next screen - ie credit card
-        NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+        NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
 
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", publicUserId];
         

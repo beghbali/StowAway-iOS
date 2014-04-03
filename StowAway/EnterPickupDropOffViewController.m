@@ -61,6 +61,8 @@ int locationInputCount = 0;
 {
     [super viewDidLoad];
     
+    NSLog(@"%s......", __func__);
+    
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -83,6 +85,8 @@ int locationInputCount = 0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"%s......", __func__);
+    
     [self isLocationEnabled];
     
     [self updateMapsViewArea];
@@ -479,7 +483,7 @@ int locationInputCount = 0;
     
     //prepare the ride request query
     
-    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
     NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", publicUserId];
     
