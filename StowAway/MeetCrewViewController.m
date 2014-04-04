@@ -229,6 +229,7 @@
 
 -(void)animateDesignationLabel:(BOOL)isCaptain withEffect:(BOOL)isSpecial
 {
+    NSLog(@"\n--------- %s ---------- %d %d\n",__func__, isCaptain, isSpecial);
     NSString * designation = isCaptain ? @"You are the Captain !!" : @"You are a Stowaway !";
     
     if (!isSpecial) {
@@ -239,7 +240,7 @@
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString:designation];
     
     [s addAttribute:NSBackgroundColorAttributeName
-              value:[UIColor greenColor]
+              value:isCaptain? [UIColor greenColor]:[UIColor yellowColor]
               range:NSMakeRange(0, s.length)];
     
     self.designationLabel.attributedText = s;
@@ -277,7 +278,7 @@
                 self.requestUberButton.hidden = YES;
             }
             
-            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //do fancy only once
+            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //do fancy only oncefr
             {
                 //sound travels slower than light :)
                 if ( ![prevDesg isEqualToString:self.designationLabel.text] )
@@ -285,9 +286,12 @@
                 
                 //visual effect
                 [self animateDesignationLabel:isCaptain withEffect:YES];
-                // Delay execution of block for 5 seconds.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self animateDesignationLabel:isCaptain withEffect:NO];
+                });
+
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    [self animateDesignationLabel:isCaptain withEffect:YES];
                 });
             }
             
