@@ -61,7 +61,7 @@ NSString *const kMKPointAnnotation      = @"mapPoint";
 NSString *const kIsRideFinalized        = @"isRideFinalized";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = 90; //5mins
+NSUInteger kCountdownTimerMaxSeconds    = 30; //5mins
 NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 
 //Pusher

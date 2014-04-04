@@ -29,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
-@property (strong, nonatomic) NSDate * timerExpiryDate;
+//@property (strong, nonatomic) NSDate * timerExpiryDate;
 @property (strong, nonatomic) UILocalNotification *localNotification;
 //dictionary contains user_id, fb_id, picture, name, iscaptain, requestedAt time, request_id
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
@@ -96,6 +96,8 @@
 
     //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
+
+    [self setTimerExpiryNotification];
 
     //update the view - pics, names
     [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed
@@ -368,7 +370,7 @@
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
-    self.timerExpiryDate = self.cdt.countDownEndDate;
+   // self.timerExpiryDate = self.cdt.countDownEndDate;
 }
 
 - (void)countdownTimerExpired
@@ -431,19 +433,20 @@
 #pragma mark timer expiry localnotification 
 - (void)setTimerExpiryNotification
 {
-    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.timerExpiryDate);
+    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.cdt.countDownEndDate);
     
     if ( self.localNotification )
-    {
-        self.localNotification.fireDate = self.timerExpiryDate;
-        return;
-    }
-
+        [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
+    
     self.localNotification = [[UILocalNotification alloc] init];
-    self.localNotification.fireDate = self.timerExpiryDate;
-    self.localNotification.alertBody = [NSString stringWithFormat:@"Prepare to meet your crew !!"];
-    self.localNotification.soundName = UILocalNotificationDefaultSoundName;
+    self.localNotification.applicationIconBadgeNumber = 0;//TODO: remove this
+    self.localNotification.fireDate = self.cdt.countDownEndDate;
+    self.localNotification.alertBody = @"Check your crew and immediate ACTION !!";
+    self.localNotification.soundName = @"ride_missed.wav"; //TODO: change it to alarm sound
     [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
+
+    NSLog(@"%s:SET -- <self.localNotification %@> ", __func__, self.localNotification);
+
 }
 
 - (void)cancelTimerExpiryNotificationSchedule
@@ -549,11 +552,11 @@
     
     NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);
 
-    self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
+   // self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
     
-    self.cdt.countDownEndDate = self.timerExpiryDate;
+    self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
     
-    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.timerExpiryDate);
+    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.cdt.countDownEndDate);
 }
 
 // run this function on a background thread

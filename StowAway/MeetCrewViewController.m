@@ -227,8 +227,28 @@
     AudioServicesPlaySystemSound (soundID);
 }
 
+-(void)animateDesignationLabel:(BOOL)isCaptain withEffect:(BOOL)isSpecial
+{
+    NSString * designation = isCaptain ? @"You are the Captain !!" : @"You are a Stowaway !";
+    
+    if (!isSpecial) {
+        self.designationLabel.text = designation;
+        return;
+    }
+    
+    NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString:designation];
+    
+    [s addAttribute:NSBackgroundColorAttributeName
+              value:[UIColor greenColor]
+              range:NSMakeRange(0, s.length)];
+    
+    self.designationLabel.attributedText = s;
+}
+
 -(void)updateCrewInfoInView
 {
+    NSLog(@"%s......", __func__);
+    
     NSString * prevDesg = nil;
     UIImage * badgedImage = nil;
 
@@ -243,23 +263,32 @@
         if (i == 0 )
         {
             BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+            prevDesg = self.designationLabel.text;
+
             if ( isCaptain )
             {
-                prevDesg = self.designationLabel.text;
                 self.designationLabel.text = @"You are the Captain !!";
                 self.instructionsLabel.text = @"Please get to the pick up point and call Uberx";
                 self.requestUberButton.hidden = NO;
-                
-                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
-                    [self playSound:@"you-are-captain"];
             } else
             {
-                prevDesg = self.designationLabel.text;
                 self.designationLabel.text = @"You are a Stowaway !";
                 self.instructionsLabel.text = @"Please get to the pick up point and you don't have to call Uberx";
                 self.requestUberButton.hidden = YES;
+            }
+            
+            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //do fancy only once
+            {
+                //sound travels slower than light :)
                 if ( ![prevDesg isEqualToString:self.designationLabel.text] )
-                    [self playSound:@"you-are-stowaway"];
+                    [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
+                
+                //visual effect
+                [self animateDesignationLabel:isCaptain withEffect:YES];
+                // Delay execution of block for 5 seconds.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    [self animateDesignationLabel:isCaptain withEffect:NO];
+                });
             }
             
             //if checked in, hide uber and cancel buttons and show done button
@@ -339,7 +368,6 @@
 }
 
 #pragma mark countdown timer
-//TODO: needs to be replaced by uilocalnotification
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");

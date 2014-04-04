@@ -12,6 +12,5 @@
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
--(void) armUpCountdownTimer;
 
 @end
