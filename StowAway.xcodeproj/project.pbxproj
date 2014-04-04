@@ -24,6 +24,11 @@
 		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
 		F41D042D18ED25BE00785EA5 /* cross-mark-256.png in Resources */ = {isa = PBXBuildFile; fileRef = F41D042B18ED25BE00785EA5 /* cross-mark-256.png */; };
 		F41D043118ED3C4300785EA5 /* check-mark-256.png in Resources */ = {isa = PBXBuildFile; fileRef = F41D043018ED3C4300785EA5 /* check-mark-256.png */; };
+		F41D043818EE6C2200785EA5 /* ride_checkedin.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043318EE6C2200785EA5 /* ride_checkedin.wav */; };
+		F41D043918EE6C2200785EA5 /* ride_matched.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043418EE6C2200785EA5 /* ride_matched.wav */; };
+		F41D043A18EE6C2200785EA5 /* ride_missed.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043518EE6C2200785EA5 /* ride_missed.wav */; };
+		F41D043B18EE6C2200785EA5 /* you-are-captain.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043618EE6C2200785EA5 /* you-are-captain.wav */; };
+		F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043718EE6C2200785EA5 /* you-are-stowaway.wav */; };
 		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F4266D9E18B5A87900A46BB1 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4118B5A87900A46BB1 /* STPCard.m */; };
 		F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4318B5A87900A46BB1 /* STPToken.m */; };
@@ -108,6 +113,11 @@
 		EBB5AAE28C6C411786386FFA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F41D042B18ED25BE00785EA5 /* cross-mark-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross-mark-256.png"; sourceTree = "<group>"; };
 		F41D043018ED3C4300785EA5 /* check-mark-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark-256.png"; sourceTree = "<group>"; };
+		F41D043318EE6C2200785EA5 /* ride_checkedin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_checkedin.wav; sourceTree = "<group>"; };
+		F41D043418EE6C2200785EA5 /* ride_matched.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_matched.wav; sourceTree = "<group>"; };
+		F41D043518EE6C2200785EA5 /* ride_missed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_missed.wav; sourceTree = "<group>"; };
+		F41D043618EE6C2200785EA5 /* you-are-captain.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "you-are-captain.wav"; sourceTree = "<group>"; };
+		F41D043718EE6C2200785EA5 /* you-are-stowaway.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "you-are-stowaway.wav"; sourceTree = "<group>"; };
 		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
 		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
 		F4266D4018B5A87800A46BB1 /* STPCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPCard.h; sourceTree = "<group>"; };
@@ -219,6 +229,7 @@
 				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
+				F41D043218EE6C2200785EA5 /* ios_app_sounds */,
 				68BAFEAD188DDBD3009738A0 /* Products */,
 				F41D042918ED25BE00785EA5 /* auto-checkin badges */,
 				F4CB1F6A18C5996A00A404D0 /* findingCrewAnimationImages */,
@@ -304,6 +315,19 @@
 				F41D042B18ED25BE00785EA5 /* cross-mark-256.png */,
 			);
 			path = "auto-checkin badges";
+			sourceTree = "<group>";
+		};
+		F41D043218EE6C2200785EA5 /* ios_app_sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F41D043318EE6C2200785EA5 /* ride_checkedin.wav */,
+				F41D043418EE6C2200785EA5 /* ride_matched.wav */,
+				F41D043518EE6C2200785EA5 /* ride_missed.wav */,
+				F41D043618EE6C2200785EA5 /* you-are-captain.wav */,
+				F41D043718EE6C2200785EA5 /* you-are-stowaway.wav */,
+			);
+			name = ios_app_sounds;
+			path = otherFrameworks/ios_app_sounds;
 			sourceTree = "<group>";
 		};
 		F4266D3F18B5A87800A46BB1 /* Stripe */ = {
@@ -528,6 +552,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4CB1F8A18C5996A00A404D0 /* win_9.png in Resources */,
+				F41D043818EE6C2200785EA5 /* ride_checkedin.wav in Resources */,
 				F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */,
 				F4CB1F8318C5996A00A404D0 /* win_2.png in Resources */,
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
@@ -536,6 +561,7 @@
 				F4CB1F7C18C5996A00A404D0 /* win_10.png in Resources */,
 				F4CB1F7F18C5996A00A404D0 /* win_13.png in Resources */,
 				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
+				F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */,
 				F4CB1F7D18C5996A00A404D0 /* win_11.png in Resources */,
 				F4266DD518B5A87900A46BB1 /* VERSION in Resources */,
 				F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */,
@@ -546,12 +572,15 @@
 				F4CB1F8418C5996A00A404D0 /* win_3.png in Resources */,
 				68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */,
 				F4CB1F8718C5996A00A404D0 /* win_6.png in Resources */,
+				F41D043918EE6C2200785EA5 /* ride_matched.wav in Resources */,
 				F41D042D18ED25BE00785EA5 /* cross-mark-256.png in Resources */,
 				F4CB1F8818C5996A00A404D0 /* win_7.png in Resources */,
+				F41D043B18EE6C2200785EA5 /* you-are-captain.wav in Resources */,
 				F4CB1F7B18C5996A00A404D0 /* win_1.png in Resources */,
 				F41D043118ED3C4300785EA5 /* check-mark-256.png in Resources */,
 				F4CB1F8018C5996A00A404D0 /* win_14.png in Resources */,
 				F4CB1F8518C5996A00A404D0 /* win_4.png in Resources */,
+				F41D043A18EE6C2200785EA5 /* ride_missed.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

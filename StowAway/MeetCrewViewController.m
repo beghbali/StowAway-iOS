@@ -12,7 +12,7 @@
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewMapViewManager.h"
 #import "CountdownTimer.h"
-
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface MeetCrewViewController () <StowawayServerCommunicatorDelegate, CountdownTimerDelegate>
 
@@ -177,7 +177,7 @@
     return resultImage;
 }
 
--(UIImage *)updateCheckedInStatusForCrewMember:(NSDictionary *)crewMember
+-(UIImage *)getBadgedCheckedInImageForCrewMember:(NSDictionary *)crewMember
 {
     NSNumber * isCheckedInNum = nil;
     UIImage * badgedImage = nil;
@@ -214,27 +214,51 @@
     return badgedImage;
 }
 
+-(void) playSound:(NSString *)soundFile
+{
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource:soundFile ofType:@"wav"];
+    if (!soundPath) {
+        NSLog(@"%s: can't find %@.wav", __func__, soundFile);
+        return;
+    }
+    SystemSoundID soundID;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:soundPath], &soundID);
+    AudioServicesPlaySystemSound (soundID);
+}
 
 -(void)updateCrewInfoInView
 {
+    NSString * prevDesg = nil;
+    UIImage * badgedImage = nil;
+
     for (int i = 0; i < self.crew.count; i++)
     {
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
         NSLog(@"updateCrewInfoInView for crewMember %@", crewMember);
-        UIImage * badgedImage = nil;
         
+        prevDesg = nil;
+        badgedImage = nil;
+
         if (i == 0 )
         {
-            if ( [[crewMember objectForKey:kIsCaptain] boolValue])
+            BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+            if ( isCaptain )
             {
+                prevDesg = self.designationLabel.text;
                 self.designationLabel.text = @"You are the Captain !!";
                 self.instructionsLabel.text = @"Please get to the pick up point and call Uberx";
                 self.requestUberButton.hidden = NO;
+                
+                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
+                    [self playSound:@"you-are-captain"];
             } else
             {
+                prevDesg = self.designationLabel.text;
                 self.designationLabel.text = @"You are a Stowaway !";
                 self.instructionsLabel.text = @"Please get to the pick up point and you don't have to call Uberx";
                 self.requestUberButton.hidden = YES;
+                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
+                    [self playSound:@"you-are-stowaway"];
             }
             
             continue;
@@ -246,7 +270,7 @@
                 self.nameLabel1.text = [crewMember objectForKey:kCrewFbName];
                 self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
                 
-                badgedImage = [self updateCheckedInStatusForCrewMember:crewMember];
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView1.image = badgedImage;
                 
@@ -256,7 +280,7 @@
                 self.nameLabel2.text = [crewMember objectForKey:kCrewFbName];
                 self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
                 
-                badgedImage = [self updateCheckedInStatusForCrewMember:crewMember];
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView2.image = badgedImage;
                 
@@ -266,7 +290,7 @@
                 self.nameLabel3.text = [crewMember objectForKey:kCrewFbName];
                 self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
                 
-                badgedImage = [self updateCheckedInStatusForCrewMember:crewMember];
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView3.image = badgedImage;
                 
