@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (strong, nonatomic) CountdownTimer * cdt;
@@ -187,7 +188,7 @@
         return badgedImage;
     
     NSLog(@"updateCheckedInStatusForCrewMember %@", crewMember);
-    isCheckedInNum = [crewMember objectForKey:kStatusCheckedin];
+    isCheckedInNum = [crewMember objectForKey:kIsCheckedIn];
 
     if (!isCheckedInNum )
         return badgedImage;
@@ -261,6 +262,13 @@
                     [self playSound:@"you-are-stowaway"];
             }
             
+            //if checked in, hide uber and cancel buttons and show done button
+            if ([crewMember objectForKey:kIsCheckedIn])
+            {
+                self.doneButton.hidden = NO;
+                self.requestUberButton.hidden = YES;
+                self.cancelButton.hidden = YES;
+            }
             continue;
         }
         
@@ -408,6 +416,12 @@
     }
     
     self.requestUberButton.titleLabel.textColor = [UIColor grayColor];
+}
+
+- (IBAction)doneButtonTapped:(UIButton *)sender
+{
+    NSLog(@"we are DONE here....go back to enter drop off pick up view");
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 #pragma mark stowawayServer
