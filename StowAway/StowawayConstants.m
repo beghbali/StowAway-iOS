@@ -25,14 +25,15 @@ NSString *const kDeviceType         = @"device_type";
 NSString *const kDeviceToken        = @"device_token";
 
 //ride request
-NSString *const kPickUpAddress      = @"pickup_address";
-NSString *const kDropOffUpAddress   = @"dropoff_address";
-NSString *const kPickUpLat          = @"pickup_lat";
-NSString *const kPickUpLong         = @"pickup_lng";
-NSString *const kDropOffLat         = @"dropoff_lat";
-NSString *const kDropOffLong        = @"dropoff_lng";
-NSString *const kRequestPublicId    = @"request_public_id";
-NSString *const kRequestedAt        = @"requested_at";
+NSString *const kPickUpAddress                  = @"pickup_address";
+NSString *const kDropOffUpAddress               = @"dropoff_address";
+NSString *const kPickUpLat                      = @"pickup_lat";
+NSString *const kPickUpLong                     = @"pickup_lng";
+NSString *const kDropOffLat                     = @"dropoff_lat";
+NSString *const kDropOffLong                    = @"dropoff_lng";
+NSString *const kRequestPublicId                = @"request_public_id";
+NSString *const kRequestedAt                    = @"requested_at";
+NSString *const kPickUpDefaultCurrentLocation   = @"Current Location";
 
 //ride result
 NSString *const kRidePublicId           = @"ride_public_id";
@@ -50,15 +51,17 @@ NSString *const kDesignationCaptain     = @"captain";
 NSString *const kIsCheckedIn            = @"isCheckedIn";
 
 //meet the crew
-NSString *const kLocationChannel        = @"location_channel";
-NSString *const kSuggestedDropOffAddr   = @"suggested_dropoff_address";
-NSString *const kSuggestedPickUpAddr    = @"suggested_pickup_address";
-NSString *const kSuggestedDropOffLong   = @"suggested_dropoff_lng";
-NSString *const kSuggestedDropOffLat    = @"suggested_dropoff_lat";
-NSString *const kSuggestedPickUpLong    = @"suggested_pickup_lng";
-NSString *const kSuggestedPickUpLat     = @"suggested_pickup_lat";
-NSString *const kMKPointAnnotation      = @"mapPoint";
-NSString *const kIsRideFinalized        = @"isRideFinalized";
+NSString *const kLocationChannel                = @"location_channel";
+NSString *const kSuggestedDropOffAddr           = @"suggested_dropoff_address";
+NSString *const kSuggestedPickUpAddr            = @"suggested_pickup_address";
+NSString *const kSuggestedDropOffLong           = @"suggested_dropoff_lng";
+NSString *const kSuggestedDropOffLat            = @"suggested_dropoff_lat";
+NSString *const kSuggestedPickUpLong            = @"suggested_pickup_lng";
+NSString *const kSuggestedPickUpLat             = @"suggested_pickup_lat";
+NSString *const kMKPointAnnotation              = @"mapPoint";
+NSString *const kIsRideFinalized                = @"isRideFinalized";
+NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
+NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
 NSUInteger kCountdownTimerMaxSeconds    = 30; //5mins

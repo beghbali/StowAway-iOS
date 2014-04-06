@@ -78,7 +78,7 @@ int locationInputCount = 0;
     
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
-    currentLoc.name = @"Current Location";
+    currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 
 }
@@ -360,7 +360,7 @@ int locationInputCount = 0;
     {
         result.pinColor = MKPinAnnotationColorGreen;
         
-        if ( [annotation.title isEqualToString:@"Current Location"]) {
+        if ( [annotation.title isEqualToString:kPickUpDefaultCurrentLocation]) {
             NSLog(@"use the latest user location");
             resultPin.coordinate = self.userLocation;
             self.isUsingCurrentLoc = YES;

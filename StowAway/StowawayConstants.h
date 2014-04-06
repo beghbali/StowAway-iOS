@@ -31,6 +31,7 @@ extern NSString *const kDeviceToken;
 
 //ride request
 extern NSString *const kPickUpAddress;
+extern NSString *const kPickUpDefaultCurrentLocation;
 extern NSString *const kDropOffUpAddress;
 extern NSString *const kPickUpLat;
 extern NSString *const kPickUpLong;
@@ -65,6 +66,8 @@ extern NSString *const kSuggestedPickUpLong;
 extern NSString *const kSuggestedPickUpLat;
 extern NSString *const kMKPointAnnotation;
 extern NSString *const kIsRideFinalized;
+extern NSString *const kSuggestedDefaultDropOffAddr;
+extern NSString *const kSuggestedDefaultPickUpAddr;
 
 //crew and waiting constants
 extern NSUInteger kCountdownTimerMaxSeconds;
