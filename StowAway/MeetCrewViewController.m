@@ -146,7 +146,7 @@
             continue;
         
         //remove the crew member
-        NSLog(@"%s: remove the crew member",__func__);
+        NSLog(@"%s: remove the crew member  kUserPublicId = %@",__func__, [crewMember objectForKey:kUserPublicId]);
         [self.crew removeObjectAtIndex:j];
         j--;
     }

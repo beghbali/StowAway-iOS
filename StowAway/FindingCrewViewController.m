@@ -97,8 +97,6 @@
     //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
-    [self setTimerExpiryNotification];
-
     //update the view - pics, names
     [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed
     
@@ -305,10 +303,6 @@
         if (self.viewDidLoadFinished)
             [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
 
-    } else
-    {
-        // set UILOCALNOTIFICATION
-        [self setTimerExpiryNotification];
     }
 }
 
@@ -363,14 +357,17 @@
 
 #pragma mark countdown timer
 
-//TODO: dont take the cb for timer expiry -- use uilocalnotif cb
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
+   
     self.cdt = [[CountdownTimer alloc] init];
+    
     self.cdt.cdTimerDelegate = self;
+    
     [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
-   // self.timerExpiryDate = self.cdt.countDownEndDate;
+
+    [self setTimerExpiryNotification];
 }
 
 - (void)countdownTimerExpired
@@ -439,9 +436,8 @@
         [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
     
     self.localNotification = [[UILocalNotification alloc] init];
-    self.localNotification.applicationIconBadgeNumber = 0;//TODO: remove this
     self.localNotification.fireDate = self.cdt.countDownEndDate;
-    self.localNotification.alertBody = @"Check your crew and immediate ACTION !!";
+    self.localNotification.alertBody = @"Your Immediate Action Required !!";
     self.localNotification.soundName = @"ride_missed.wav"; //TODO: change it to alarm sound
     [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
 
@@ -451,7 +447,6 @@
 
 - (void)cancelTimerExpiryNotificationSchedule
 {
-    //TODO: clean this mess of 2 different timer callbacks
     self.cdt.cdTimerDelegate = nil;
 
     NSLog(@"cancelTimerExpiryNotificationSchedule %@ .....", self.localNotification);
@@ -564,7 +559,7 @@
 {
     NSError* error;
 
-    NSLog(@" Q<%s> find out crew#%lu's image+name with FBUID %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbUID);
+    NSLog(@"find out crew#%lu's image+name with FBUID %@", (unsigned long)crewPostion, fbUID);
    
     NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
     NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
@@ -588,7 +583,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
-                NSLog(@" Q<%s> set crew#%lu's image+name %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbName);
+                NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbName);
 
                 [self stopAnimatingImage:self.imageView1];
                 self.imageView1.image   = profilePic;
