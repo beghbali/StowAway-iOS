@@ -39,10 +39,10 @@
     NSString * userEmailProvider = [data objectForKey:kUserEmailProvider];
     if ( userEmailProvider != nsNullObj ) [standardDefaults setObject: userEmailProvider  forKey:kUserEmailProvider];
 
-    NSString * fbId = [data objectForKey:kFbId];
+    NSNumber * fbId = [data objectForKey:kFbId];
     if ( fbId != nsNullObj ) [standardDefaults setObject: fbId               forKey:kFbId];
     
-    NSString * publicId = [data objectForKey:kPublicId];
+    NSNumber * publicId = [data objectForKey:kPublicId];
     if ( publicId != nsNullObj ) [standardDefaults setObject: publicId           forKey:kUserPublicId];
     
     NSString * firstName = [data objectForKey:kFirstName];

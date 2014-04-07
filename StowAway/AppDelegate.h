@@ -13,5 +13,5 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) FBSession *session;
-
+@property (strong, nonatomic) NSDictionary * fakeRideRequestResponse;
 @end

@@ -11,6 +11,7 @@
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewViewController.h"
+#import "AppDelegate.h"
 
 @interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
@@ -28,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
-@property (strong, nonatomic) NSDate * timerExpiryDate;
+//@property (strong, nonatomic) NSDate * timerExpiryDate;
 @property (strong, nonatomic) UILocalNotification *localNotification;
 //dictionary contains user_id, fb_id, picture, name, iscaptain, requestedAt time, request_id
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
@@ -53,7 +54,7 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewdidload - FC_vc %@", self);
+    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
@@ -76,6 +77,17 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    /*
+    BOOL wasAppLaunchedDueToPush = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wasAppLaunchedDueToPush"] boolValue];
+    
+    if (wasAppLaunchedDueToPush) {
+        NSLog(@"%s: call view did load \n", __func__);
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"wasAppLaunchedDueToPush"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [self viewDidLoad];
+    }
+     */
     [super viewDidAppear:animated];
     
     self.viewDidLoadFinished = YES;
@@ -108,7 +120,11 @@
 
 -(void)processRideRequestResponse:(NSDictionary *)response
 {
-    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished);
+    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
+
+    if (!response) {
+        self.rideRequestResponse = response = ((AppDelegate *)[UIApplication sharedApplication].delegate).fakeRideRequestResponse;
+    }
     
     self.isReadyToGoToMeetCrew = NO;
     
@@ -120,7 +136,17 @@
         self.crew = [NSMutableArray arrayWithCapacity: 1];
         self.userID = [response objectForKey:kUserPublicId];
         self.requestID = [response objectForKey:kPublicId];
+
+        if (self.requestID)
+        {
+            //remember request id, incase app gets killed and is relaunced due to a match
+            [[NSUserDefaults standardUserDefaults] setObject:self.requestID forKey:kRequestPublicId];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        } else
+            self.requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+        
         //parse the response to fill in SELF request_id, user_id
+        NSLog(@"self.requestID %@, self.userID %@", self.requestID, self.userID );
         NSDictionary * dict = @{kRequestPublicId: self.requestID,
                                 kUserPublicId: self.userID};
         NSMutableDictionary * mutableDict = [NSMutableDictionary dictionaryWithDictionary:dict];
@@ -224,7 +250,7 @@
         
         [self.crew addObject:dict];
     }
-    NSLog(@"after add - %@", self.crew);
+    //NSLog(@"after add - %@", self.crew);
 
     //REMOVE STALE MEMBERS
     for (int j = 0; j < self.crew.count; j++)
@@ -248,7 +274,7 @@
         [self.crew removeObjectAtIndex:j];
         j--;
     }
-    NSLog(@"after remove **FINAL** - %@", self.crew);
+    NSLog(@"** crew after processing ** - %@", self.crew);
     
     //UPDATE VIEW with updated crew and new cd time
     [self updateFindingCrewView];
@@ -277,10 +303,6 @@
         if (self.viewDidLoadFinished)
             [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
 
-    } else
-    {
-        // set UILOCALNOTIFICATION
-        [self setTimerExpiryNotification];
     }
 }
 
@@ -335,14 +357,17 @@
 
 #pragma mark countdown timer
 
-//TODO: dont take the cb for timer expiry -- use uilocalnotif cb
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
+   
     self.cdt = [[CountdownTimer alloc] init];
+    
     self.cdt.cdTimerDelegate = self;
+    
     [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
-    self.timerExpiryDate = self.cdt.countDownEndDate;
+
+    [self setTimerExpiryNotification];
 }
 
 - (void)countdownTimerExpired
@@ -405,24 +430,23 @@
 #pragma mark timer expiry localnotification 
 - (void)setTimerExpiryNotification
 {
-    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.timerExpiryDate);
+    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.cdt.countDownEndDate);
     
     if ( self.localNotification )
-    {
-        self.localNotification.fireDate = self.timerExpiryDate;
-        return;
-    }
-
+        [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
+    
     self.localNotification = [[UILocalNotification alloc] init];
-    self.localNotification.fireDate = self.timerExpiryDate;
-    self.localNotification.alertBody = [NSString stringWithFormat:@"Prepare to meet your crew !!"];
-    self.localNotification.soundName = UILocalNotificationDefaultSoundName;
+    self.localNotification.fireDate = self.cdt.countDownEndDate;
+    self.localNotification.alertBody = @"Your Immediate Action Required !!";
+    self.localNotification.soundName = @"action_required.wav";
     [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
+
+    NSLog(@"%s:SET -- <self.localNotification %@> ", __func__, self.localNotification);
+
 }
 
 - (void)cancelTimerExpiryNotificationSchedule
 {
-    //TODO: clean this mess of 2 different timer callbacks
     self.cdt.cdTimerDelegate = nil;
 
     NSLog(@"cancelTimerExpiryNotificationSchedule %@ .....", self.localNotification);
@@ -441,8 +465,8 @@
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
-    NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
-    
+  //  NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
+    NSLog(@"updateFindingCrewView ............");
     //set the cd timer
     [self reCalculateCDTimer];
     
@@ -486,12 +510,12 @@
                 
             case 2:
                 [self startAnimatingImage:self.imageView2];
-                self.nameLabel1.text = @"finding...";
+                self.nameLabel2.text = @"finding...";
                 break;
                 
             case 3:
                 [self startAnimatingImage:self.imageView3];
-                self.nameLabel1.text = @"finding...";
+                self.nameLabel3.text = @"finding...";
                 break;
 
             default:
@@ -523,11 +547,11 @@
     
     NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);
 
-    self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
+   // self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
     
-    self.cdt.countDownEndDate = self.timerExpiryDate;
+    self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
     
-    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.timerExpiryDate);
+    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.cdt.countDownEndDate);
 }
 
 // run this function on a background thread
@@ -535,7 +559,7 @@
 {
     NSError* error;
 
-    NSLog(@" Q<%s> find out crew#%lu's image+name with FBUID %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbUID);
+    NSLog(@"find out crew#%lu's image+name with FBUID %@", (unsigned long)crewPostion, fbUID);
    
     NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
     NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
@@ -548,7 +572,7 @@
                           options:kNilOptions
                           error:&error];
     NSString * fbName = nil;
-    NSLog(@"jsonDict %@", jsonDict);
+   // NSLog(@"jsonDict %@", jsonDict);
     
     if (jsonDict && !error)
         fbName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
@@ -559,7 +583,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
-                NSLog(@" Q<%s> set crew#%lu's image+name %@", dispatch_queue_get_label(dispatch_get_current_queue()), (unsigned long)crewPostion, fbName);
+                NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbName);
 
                 [self stopAnimatingImage:self.imageView1];
                 self.imageView1.image   = profilePic;
