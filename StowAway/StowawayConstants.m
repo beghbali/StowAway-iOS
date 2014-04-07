@@ -64,7 +64,7 @@ NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = 30; //5mins
+NSUInteger kCountdownTimerMaxSeconds    = (60*5); //5mins
 NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 
 //Pusher
