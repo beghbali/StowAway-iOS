@@ -20,7 +20,7 @@
 
 @interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate>
 
-@property (strong, nonatomic) NSDictionary *suggestedLocations;
+@property (strong, nonatomic) NSMutableDictionary *suggestedLocations;
 
 @property (strong, nonatomic) NSString * locationChannel;
 @property (strong, nonatomic) PTPusher * pusher;
@@ -43,6 +43,9 @@
 
 @property BOOL isPusherConnected;
 @property BOOL isLocationDisabled;
+
+@property (strong, nonatomic) CLGeocoder * geocoder;
+
 @end
 
 
@@ -139,16 +142,19 @@
            andPusherChannel:(NSString *)locationChannel
 {
     NSLog(@"%s",__func__);
+   
     //check loc is on
     self.isLocationDisabled = ![self isLocationEnabled];
 
     //set class properties
     self.mapView = mapView;
     self.mapView.delegate = self;
-    self.suggestedLocations = suggestedLocations;
+    self.suggestedLocations = [NSMutableDictionary dictionaryWithDictionary: suggestedLocations];
     self.locationChannel = locationChannel;
     
-    //show suggested locations map annotations
+    [self reverseGeocodeSuggestedPickUpAddresses];  //pick up first and only if it finishes go for drop off geocoding
+   
+    //show suggested locations map annotations, drop off first
     [self showDropOffLocation];
     [self showPickUpLocation];
     [self zoomToFitMapAnnotations];
@@ -158,6 +164,99 @@
 
     //subscribe to pusher channel
     [self startPusherUpdates];
+}
+
+-(void)reverseGeocodeDropOffSuggestedAddresses
+{
+    CLLocation *dropOffLoc = nil;
+    
+    NSLog(@"%s.........", __func__);
+    
+    NSString * suggDropOffAddr = [self.suggestedLocations objectForKey:kSuggestedDropOffAddr];
+    
+    if ( [suggDropOffAddr isEqualToString:kSuggestedDefaultDropOffAddr])
+    {
+        dropOffLoc = [[CLLocation alloc]
+                      initWithLatitude:[[self.suggestedLocations objectForKey:kSuggestedDropOffLat] doubleValue]
+                      longitude:[[self.suggestedLocations objectForKey:kSuggestedDropOffLong] doubleValue]];
+        
+        [self.suggestedLocations setObject:@"" forKey:kSuggestedDropOffAddr];
+    }
+    
+    if ( dropOffLoc )
+    {
+        NSLog(@"reverse geo coding drop off loc ...");
+        
+        if (!self.geocoder)
+            self.geocoder = [[CLGeocoder alloc]init];
+        
+        [self.geocoder reverseGeocodeLocation: dropOffLoc completionHandler:
+         ^(NSArray *placemarks, NSError *error)
+        {
+            NSLog(@"drop off -- %@, error %@", placemarks, error);
+            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+            
+            NSString * streetName = placemark.name ? placemark.name: @"";
+            NSString * locality = placemark.locality ? placemark.locality: @"";
+            if (streetName || locality)
+            {
+                NSString * streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
+
+                NSLog(@"drop off Addr %@, --  %@, %@", streetAdd, placemark.name, placemark.locality);
+                [self.suggestedLocations setObject:streetAdd forKey:kSuggestedDropOffAddr];
+                [self showDropOffLocation];
+                [self showPickUpLocation];
+            }
+        }];
+    }
+}
+
+-(void)reverseGeocodeSuggestedPickUpAddresses
+{
+    CLLocation *pickUpLoc = nil;
+    
+    NSLog(@"%s.........", __func__);
+    
+    NSString * suggPickUpAddr = [self.suggestedLocations objectForKey:kSuggestedPickUpAddr];
+    
+    if ( [suggPickUpAddr isEqualToString:kSuggestedDefaultPickUpAddr] ||
+        [suggPickUpAddr isEqualToString:kPickUpDefaultCurrentLocation] )
+    {
+        pickUpLoc = [[CLLocation alloc]
+                     initWithLatitude:[[self.suggestedLocations objectForKey:kSuggestedPickUpLat] doubleValue]
+                     longitude:[[self.suggestedLocations objectForKey:kSuggestedPickUpLong] doubleValue]];
+        
+        //replace default with empty string
+        [self.suggestedLocations setObject:@"" forKey:kSuggestedPickUpAddr];
+    }
+    
+    if ( pickUpLoc )
+    {
+        NSLog(@"reverse geo coding pick up loc ...");
+        
+        if (!self.geocoder)
+            self.geocoder = [[CLGeocoder alloc]init];
+        
+        [self.geocoder reverseGeocodeLocation: pickUpLoc completionHandler:
+         ^(NSArray *placemarks, NSError *error)
+         {
+             NSLog(@"pick up -- %@, error %@", placemarks, error);
+             CLPlacemark *placemark = [placemarks objectAtIndex:0];
+             NSString * streetName = placemark.name ? placemark.name: @"";
+             NSString * locality = placemark.locality ? placemark.locality: @"";
+             if (streetName || locality)
+             {
+                 NSString * streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
+                 NSLog(@"pickup Addr %@, -- %@, %@", streetAdd, placemark.name, placemark.locality);
+                 [self.suggestedLocations setObject:streetAdd forKey:kSuggestedPickUpAddr];
+                 [self showPickUpLocation];
+             }
+             [self reverseGeocodeDropOffSuggestedAddresses];
+         }];
+        return;
+    }
+    
+    [self reverseGeocodeDropOffSuggestedAddresses];
 }
 
 #pragma mark - Core Location
@@ -188,8 +287,8 @@
     CLLocationDistance change = [self.location   distanceFromLocation:newLocation];
    // NSLog(@"prev loc %@, change %f", self.location, change);
     
-    if ( self.location && (change < 1) ) {
-        NSLog(@"change is less than a meter, ignoring...");
+    if ( self.location && (change < kPusherCrewWalkingLocationUpdateThreshholdMeters) ) {
+        NSLog(@"change is less than %f, ignoring...", kPusherCrewWalkingLocationUpdateThreshholdMeters);
         return;
     }
     
@@ -260,7 +359,7 @@
     self.pusher.reconnectAutomatically = YES;
     
     //authentication endpoint
-    self.pusher.authorizationURL = [NSURL URLWithString:@"https://api.getstowaway.com/pusher/auth"];
+    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://api.getstowaway.com/pusher/%@/auth", self.userID]];
     
     self.isPusherConnected = NO;
     
@@ -287,11 +386,13 @@
     if ( !self.isPusherConnected )
         return;
 
+    NSDictionary * dataDict = @{@"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
+                                @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
+                                kUserPublicId: self.userID,
+                                kRequestPublicId: self.requestID};
     NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
-                                      @"lat": [NSNumber numberWithDouble:locationCoordinates.latitude],
-                                      @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
-                                      kUserPublicId: self.userID,
-                                      kRequestPublicId: self.requestID};
+                                      @"channel":[NSString stringWithFormat:@"private-%@", self.locationChannel],
+                                      @"data": dataDict};
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);
     [connection send:locationUpdate];
 }

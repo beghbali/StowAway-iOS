@@ -61,6 +61,8 @@ int locationInputCount = 0;
 {
     [super viewDidLoad];
     
+    NSLog(@"%s......", __func__);
+    
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -76,18 +78,24 @@ int locationInputCount = 0;
     
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
-    currentLoc.name = @"Current Location";
+    currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"%s......", __func__);
+    
     [self isLocationEnabled];
     
     [self updateMapsViewArea];
     
     self.findCrewButton.enabled = NO;
+
+    //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
 
@@ -138,7 +146,6 @@ int locationInputCount = 0;
 {
     // pass the individual place to our map destination view controller
     NSIndexPath *selectedItem = [tableView indexPathForSelectedRow];
-    NSLog(@"selected index path row %d, selectedItem %@", indexPath.row, selectedItem);
     
     if ( [self isPickUpTableView:tableView] )
     {
@@ -223,10 +230,9 @@ int locationInputCount = 0;
 {
     //show current location as soon as user taps it
     // TODO: show current location
-    if ( searchBar == self.pickUpSearchBar ) {
-        NSLog(@"reload table");
+    if ( searchBar == self.pickUpSearchBar )
         [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
-    }
+    
     
     [searchBar setShowsCancelButton:YES animated:YES];
 }
@@ -354,7 +360,7 @@ int locationInputCount = 0;
     {
         result.pinColor = MKPinAnnotationColorGreen;
         
-        if ( [annotation.title isEqualToString:@"Current Location"]) {
+        if ( [annotation.title isEqualToString:kPickUpDefaultCurrentLocation]) {
             NSLog(@"use the latest user location");
             resultPin.coordinate = self.userLocation;
             self.isUsingCurrentLoc = YES;
@@ -477,7 +483,7 @@ int locationInputCount = 0;
     
     //prepare the ride request query
     
-    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
     NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", publicUserId];
     

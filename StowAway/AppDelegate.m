@@ -55,7 +55,7 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-	NSLog(@"Received notification: %@", userInfo);
+	NSLog(@"didReceiveRemoteNotification: %@ ..........", userInfo);
     
     [self processStowawayPushNotification:userInfo isAppRunning:YES];
 }
@@ -63,30 +63,29 @@
 
 - (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
-    NSLog(@"isAppRunning %d, process push: %@", isAppRunning, pushMsg);
+    NSLog(@"isAppRunning %d, processStowawayPushNotification........", isAppRunning);
     
     NSString * status = [pushMsg valueForKey:kStatus];
-    NSString * ride_id = [pushMsg valueForKey:kPublicId];
-    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    NSNumber * ride_id = [pushMsg valueForKey:kPublicId];
+    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
     BOOL isRideFinalized = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
 
     NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
 
-    NSDictionary * fakeRideRequestResponse = nil;
     if (ride_id && (ride_id != (id)[NSNull null]))
-        fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
+        self.fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
     else
-        fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
+        self.fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
     
-    NSLog(@"fake ride req: %@", fakeRideRequestResponse);
+    NSLog(@"fake ride req: %@", self.fakeRideRequestResponse);
 
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-
-    NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********", (MeetCrewViewController *)[mainStoryboard
-                                                                     instantiateViewControllerWithIdentifier:@"MeetCrewViewController"],
-          (FindingCrewViewController *)[mainStoryboard
-                                        instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]);
+/*
+   NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********",
+         ((MeetCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"MeetCrewViewController"]).view.window,
+          ((FindingCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]).view.window);
+*/
     //we have a update while finding crew - that means new crew joined or someone dropped out
     if ( !isRideFinalized )
     {
@@ -96,35 +95,49 @@
         if (isAppRunning)
         {
             //send notification to the FC vc
-            NSLog(@" *** update FC vc");
+            NSLog(@" *** app was running so post a notification to FC_vc");
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFindCrew"
                                                                 object:self
-                                                              userInfo:fakeRideRequestResponse];
+                                                              userInfo:self.fakeRideRequestResponse];
         } else
         {
-            NSLog(@"launch app into FC view");
-            EnterPickupDropOffViewController *enterPickUpDropOffCrewVC = (EnterPickupDropOffViewController *)[mainStoryboard
-                                                                                     instantiateViewControllerWithIdentifier:@"EnterPickupDropOffViewController"];
-            NSLog(@"enterPickUpDropOffCrewVC %@", enterPickUpDropOffCrewVC);
-            
-            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
-                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
-
-            NSLog(@"findingCrewVC %@", findingCrewVC);
-
-           
-            findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
-            NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
+            /*
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"wasAppLaunchedDueToPush"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+*/
+              //NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
             
            // self.window.rootViewController = enterPickUpDropOffCrewVC;
            // [self.window.rootViewController presentViewController:enterPickUpDropOffCrewVC animated:NO completion:Nil];
             //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
-             [self.window.rootViewController presentViewController:findingCrewVC animated:NO completion:Nil];
+            //[self.window.rootViewController addS  presentViewController:findingCrewVC animated:NO completion:Nil];
+            UIViewController * rootViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+            NSLog(@"rootViewController %@", rootViewController);
+
+            NSLog(@"app was not running, so build view hierarchy and go to FC view");
+            EnterPickupDropOffViewController *enterPickUpDropOffCrewVC = (EnterPickupDropOffViewController *)[mainStoryboard
+                                                                                                              instantiateViewControllerWithIdentifier:@"EnterPickupDropOffViewController"];
+            NSLog(@"enterPickUpDropOffCrewVC %@", enterPickUpDropOffCrewVC);
+            
+            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
+                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
+            
+            NSLog(@"findingCrewVC %@", findingCrewVC);
+            
+            [rootViewController addChildViewController:enterPickUpDropOffCrewVC];
+            NSLog(@"enterpickup vc added as childviewcontroller $$$");
+          
+            [rootViewController addChildViewController:findingCrewVC];
+            NSLog(@"findingCrewVC vc added as childviewcontroller $$$");
+#warning fix the view to be presented modally here....
+//            [enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:NO completion:Nil];
         }
         return;
     }
     
+    NSLog(@" **** prepare meet your crew view to be launched **** ");
+
     //notification after we have been on meet your crew
     
     if (isAppRunning)
@@ -148,7 +161,7 @@
             NSLog(@"findingCrewVC %@", findingCrewVC);
             
             
-            findingCrewVC.rideRequestResponse = fakeRideRequestResponse;
+            findingCrewVC.rideRequestResponse = self.fakeRideRequestResponse;
             NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
             
             // self.window.rootViewController = enterPickUpDropOffCrewVC;

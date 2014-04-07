@@ -491,7 +491,7 @@ char isReadyToSavePayment = 0;
 {
     NSLog(@"Received token %@", token.tokenId);
     
-    NSString * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
     NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", publicUserId];
     

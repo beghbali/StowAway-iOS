@@ -10,6 +10,8 @@
 
 @interface MeetCrewViewController : UIViewController
 
+//TODO: create crew member class
+
 //dictionary contains user_id, fb_id, picture, name, iscaptain
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
