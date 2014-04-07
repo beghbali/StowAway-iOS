@@ -438,7 +438,7 @@
     self.localNotification = [[UILocalNotification alloc] init];
     self.localNotification.fireDate = self.cdt.countDownEndDate;
     self.localNotification.alertBody = @"Your Immediate Action Required !!";
-    self.localNotification.soundName = @"ride_missed.wav"; //TODO: change it to alarm sound
+    self.localNotification.soundName = @"action_required.wav";
     [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
 
     NSLog(@"%s:SET -- <self.localNotification %@> ", __func__, self.localNotification);

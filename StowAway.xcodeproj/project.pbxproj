@@ -29,6 +29,7 @@
 		F41D043A18EE6C2200785EA5 /* ride_missed.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043518EE6C2200785EA5 /* ride_missed.wav */; };
 		F41D043B18EE6C2200785EA5 /* you-are-captain.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043618EE6C2200785EA5 /* you-are-captain.wav */; };
 		F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043718EE6C2200785EA5 /* you-are-stowaway.wav */; };
+		F41D043E18F23F1500785EA5 /* action_required.wav in Resources */ = {isa = PBXBuildFile; fileRef = F41D043D18F23F1500785EA5 /* action_required.wav */; };
 		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F4266D9E18B5A87900A46BB1 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4118B5A87900A46BB1 /* STPCard.m */; };
 		F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4318B5A87900A46BB1 /* STPToken.m */; };
@@ -118,6 +119,7 @@
 		F41D043518EE6C2200785EA5 /* ride_missed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_missed.wav; sourceTree = "<group>"; };
 		F41D043618EE6C2200785EA5 /* you-are-captain.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "you-are-captain.wav"; sourceTree = "<group>"; };
 		F41D043718EE6C2200785EA5 /* you-are-stowaway.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "you-are-stowaway.wav"; sourceTree = "<group>"; };
+		F41D043D18F23F1500785EA5 /* action_required.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = action_required.wav; sourceTree = "<group>"; };
 		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
 		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
 		F4266D4018B5A87800A46BB1 /* STPCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPCard.h; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		F41D043218EE6C2200785EA5 /* ios_app_sounds */ = {
 			isa = PBXGroup;
 			children = (
+				F41D043D18F23F1500785EA5 /* action_required.wav */,
 				F41D043318EE6C2200785EA5 /* ride_checkedin.wav */,
 				F41D043418EE6C2200785EA5 /* ride_matched.wav */,
 				F41D043518EE6C2200785EA5 /* ride_missed.wav */,
@@ -569,6 +572,7 @@
 				F4CB1F8218C5996A00A404D0 /* win_16.png in Resources */,
 				F4CB1F8118C5996A00A404D0 /* win_15.png in Resources */,
 				F4CB1F8918C5996A00A404D0 /* win_8.png in Resources */,
+				F41D043E18F23F1500785EA5 /* action_required.wav in Resources */,
 				F4CB1F8418C5996A00A404D0 /* win_3.png in Resources */,
 				68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */,
 				F4CB1F8718C5996A00A404D0 /* win_6.png in Resources */,
