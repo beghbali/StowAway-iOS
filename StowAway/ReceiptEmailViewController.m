@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
 @property (weak, nonatomic) IBOutlet UITextView *changeUberEmailTextView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *skipBarButton;
 
 @end
 
@@ -73,6 +74,8 @@
     
     self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+}
+- (IBAction)skipTapped:(UIBarButtonItem *)sender {
 }
 
 // to check what the user is writting -- show red/green text box

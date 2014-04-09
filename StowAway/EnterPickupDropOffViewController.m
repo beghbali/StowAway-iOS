@@ -102,22 +102,13 @@ int locationInputCount = 0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"%s......", __func__);
     
-    [self isLocationEnabled];
-    
-    [self updateMapsViewArea];
-    
-    self.findCrewButton.enabled = NO;
-
-    //forget that ride was finalized
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-}
+   }
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"%s......", __func__);
+
     [super viewDidAppear:YES];
     
     //check ONBOARDING DONE ?
@@ -125,6 +116,18 @@ int locationInputCount = 0;
     if ( ![self isUserLoggedIn] ) {
         [self performSegueWithIdentifier: @"onboarding_login" sender: self];
     }
+    
+    [self isLocationEnabled];
+    
+    [self updateMapsViewArea];
+    
+    self.findCrewButton.enabled = NO;
+    
+    //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+
     
 }
 

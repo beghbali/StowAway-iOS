@@ -246,7 +246,7 @@
             </objects>
             <point key="canvasLocation" x="-796" y="-630"/>
         </scene>
-        <!--Login View Controller - Login-->
+        <!--Login View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="LoginViewController" sceneMemberID="viewController">
@@ -278,6 +278,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wED-MA-BfT">
+                                <rect key="frame" x="0.0" y="19" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Login" id="w8U-2A-5qb">
+                                        <barButtonItem key="rightBarButtonItem" title="cancel" id="bCu-6a-YIQ"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -293,7 +302,6 @@
                             <constraint firstItem="cFc-yy-CbB" firstAttribute="top" secondItem="7VX-I3-nc4" secondAttribute="bottom" constant="104" id="umA-Wr-tij"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Login" id="hKn-HB-kDe"/>
                     <connections>
                         <outlet property="loginView" destination="aXB-0Q-gBP" id="PSp-cX-VlQ"/>
                         <outlet property="nameLabel" destination="cFc-yy-CbB" id="3Dr-jG-Asz"/>
@@ -303,9 +311,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="114" y="-810"/>
+            <point key="canvasLocation" x="117" y="-725"/>
         </scene>
-        <!--Receipt Email View Controller - Link Receipts-->
+        <!--Receipt Email View Controller-->
         <scene sceneID="T5s-3p-ytz">
             <objects>
                 <viewController storyboardIdentifier="Email" id="FZI-WL-nLp" customClass="ReceiptEmailViewController" sceneMemberID="viewController">
@@ -401,6 +409,19 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PUq-ID-gyF">
+                                <rect key="frame" x="-1" y="18" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Link Receipts" id="yd9-CM-CIe">
+                                        <barButtonItem key="rightBarButtonItem" title="skip" id="2CN-iS-GBg">
+                                            <connections>
+                                                <action selector="skipTapped:" destination="FZI-WL-nLp" id="cBP-DI-nGW"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -426,9 +447,6 @@
                             <constraint firstAttribute="bottom" secondItem="fj8-jl-bwF" secondAttribute="bottom" constant="20" symbolic="YES" id="zml-g2-Z6h"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Link Receipts" id="jz6-rn-ygD">
-                        <barButtonItem key="rightBarButtonItem" title="next" id="WSa-bJ-nYR"/>
-                    </navigationItem>
                     <connections>
                         <outlet property="askMailProviderLabel" destination="jzU-wQ-GeV" id="MUx-mq-Pay"/>
                         <outlet property="authenticateWithGoogleButton" destination="00E-pe-7If" id="BcE-d8-2aF"/>
@@ -436,17 +454,17 @@
                         <outlet property="emailTextField" destination="3Kr-F5-29m" id="A1a-1Y-mCY"/>
                         <outlet property="googleMailProviderButton" destination="h2o-fV-4Ko" id="LPz-Qj-mcI"/>
                         <outlet property="gotItButton" destination="ja2-5M-48S" id="koZ-JW-BNp"/>
-                        <outlet property="nextBarButton" destination="WSa-bJ-nYR" id="Dt0-Zs-8T7"/>
                         <outlet property="otherMailProviderButton" destination="ldK-sc-fCc" id="0iP-pK-Kpc"/>
+                        <outlet property="skipBarButton" destination="2CN-iS-GBg" id="ca0-04-et7"/>
                         <outlet property="stowawayEmailFooterLabel" destination="fj8-jl-bwF" id="iih-JT-5cp"/>
                         <segue destination="Gqh-qZ-Ggc" kind="modal" identifier="go to payment" id="wbq-E7-Ekt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="561" y="-725"/>
+            <point key="canvasLocation" x="546" y="-725"/>
         </scene>
-        <!--Payment View Controller - Payment-->
+        <!--Payment View Controller-->
         <scene sceneID="rF1-fA-BHQ">
             <objects>
                 <viewController id="Gqh-qZ-Ggc" customClass="PaymentViewController" sceneMemberID="viewController">
@@ -459,17 +477,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit Card that you will use to pay for the shared rides" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="r4l-AW-ESE">
-                                <rect key="frame" x="20" y="74" width="280" height="148"/>
+                                <rect key="frame" x="30" y="27" width="280" height="148"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" restorationIdentifier="vinNameTF" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="name on the card" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1t6-SR-bJq">
-                                <rect key="frame" x="20" y="230" width="280" height="30"/>
+                                <rect key="frame" x="20" y="148" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="gJR-CE-2hm"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" keyboardType="namePhonePad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
@@ -477,11 +492,8 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="credit card  number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ljf-ZJ-HR7">
-                                <rect key="frame" x="20" y="268" width="280" height="30"/>
+                                <rect key="frame" x="20" y="186" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="jAG-t9-hrD"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
@@ -489,11 +501,10 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="mm/yy" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xqm-FW-WYl">
-                                <rect key="frame" x="20" y="306" width="66" height="30"/>
+                                <rect key="frame" x="20" y="224" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="P0v-i5-dek"/>
-                                    <constraint firstAttribute="width" constant="66" id="u0h-qB-ip5"/>
+                                    <constraint firstAttribute="width" constant="66" id="rkI-Ug-Z91"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -502,10 +513,10 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="cvv" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5hg-3C-t2E">
-                                <rect key="frame" x="112" y="306" width="66" height="30"/>
+                                <rect key="frame" x="112" y="224" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="66" id="pj3-LW-lek"/>
+                                    <constraint firstAttribute="width" constant="66" id="1LV-Ha-qEV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -514,7 +525,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="zip code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jui-uf-3g3">
-                                <rect key="frame" x="203" y="306" width="97" height="30"/>
+                                <rect key="frame" x="203" y="224" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -522,12 +533,12 @@
                                     <outlet property="delegate" destination="Gqh-qZ-Ggc" id="ERB-Be-GGe"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOm-3h-qW0">
-                                <rect key="frame" x="102" y="426" width="87" height="37"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOm-3h-qW0">
+                                <rect key="frame" x="117" y="363" width="87" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="9Tq-aG-jaz"/>
-                                    <constraint firstAttribute="width" constant="87" id="z4c-p6-Zpm"/>
+                                    <constraint firstAttribute="width" constant="87" id="Snm-Bx-ubv"/>
+                                    <constraint firstAttribute="height" constant="37" id="aGd-Gi-Yvx"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <state key="normal" title="Save">
@@ -537,51 +548,67 @@
                                     <action selector="saveButtonTapped:" destination="Gqh-qZ-Ggc" eventType="touchUpInside" id="PrW-s8-TwA"/>
                                 </connections>
                             </button>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wTC-BL-M3Z">
+                                <rect key="frame" x="0.0" y="16" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Payment" id="7XW-bG-feu">
+                                        <barButtonItem key="rightBarButtonItem" title="skip" id="K67-kK-yDm"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCA-RQ-3y6">
+                                <rect key="frame" x="142" y="269" width="37" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonTapped:" destination="Gqh-qZ-Ggc" eventType="touchUpInside" id="j1n-lr-wmI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xqm-FW-WYl" firstAttribute="leading" secondItem="ljf-ZJ-HR7" secondAttribute="leading" id="6zE-hy-Ldr"/>
-                            <constraint firstItem="xqm-FW-WYl" firstAttribute="top" secondItem="ljf-ZJ-HR7" secondAttribute="bottom" constant="8" symbolic="YES" id="AJa-wG-jRf"/>
-                            <constraint firstItem="jYz-Ep-B6V" firstAttribute="top" secondItem="xqm-FW-WYl" secondAttribute="bottom" constant="232" id="DKt-Q0-u57"/>
-                            <constraint firstItem="1t6-SR-bJq" firstAttribute="top" secondItem="r4l-AW-ESE" secondAttribute="bottom" constant="8" symbolic="YES" id="ETa-kd-hI9"/>
-                            <constraint firstAttribute="trailing" secondItem="r4l-AW-ESE" secondAttribute="trailing" constant="20" symbolic="YES" id="HzU-Zo-4xx"/>
-                            <constraint firstItem="1t6-SR-bJq" firstAttribute="leading" secondItem="r4l-AW-ESE" secondAttribute="leading" id="Ilg-4D-ec9"/>
-                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="top" secondItem="1t6-SR-bJq" secondAttribute="bottom" constant="8" symbolic="YES" id="R6p-wX-F0Q"/>
-                            <constraint firstItem="5hg-3C-t2E" firstAttribute="leading" secondItem="xqm-FW-WYl" secondAttribute="trailing" constant="26" id="RvG-gC-v6Q"/>
-                            <constraint firstItem="1t6-SR-bJq" firstAttribute="leading" secondItem="ljf-ZJ-HR7" secondAttribute="leading" id="UQJ-qb-D1q"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" constant="20" symbolic="YES" id="WAL-12-69v"/>
-                            <constraint firstItem="jui-uf-3g3" firstAttribute="leading" secondItem="5hg-3C-t2E" secondAttribute="trailing" constant="25" id="WS5-5x-bCy"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="XHY-yR-Mr2"/>
-                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="ZpJ-9g-jf4"/>
-                            <constraint firstItem="WOm-3h-qW0" firstAttribute="centerX" secondItem="5hg-3C-t2E" secondAttribute="centerX" id="aNF-gK-OqY"/>
-                            <constraint firstItem="5hg-3C-t2E" firstAttribute="baseline" secondItem="xqm-FW-WYl" secondAttribute="baseline" id="eUZ-oG-1sC"/>
-                            <constraint firstItem="r4l-AW-ESE" firstAttribute="top" secondItem="wD6-7p-ybq" secondAttribute="bottom" constant="10" id="hGw-Om-4m9"/>
-                            <constraint firstItem="WOm-3h-qW0" firstAttribute="top" secondItem="5hg-3C-t2E" secondAttribute="bottom" constant="90" id="mYb-3n-1IF"/>
-                            <constraint firstItem="jui-uf-3g3" firstAttribute="baseline" secondItem="5hg-3C-t2E" secondAttribute="baseline" id="oUS-Tq-LUz"/>
-                            <constraint firstItem="jui-uf-3g3" firstAttribute="trailing" secondItem="ljf-ZJ-HR7" secondAttribute="trailing" id="pPB-FZ-0dy"/>
+                            <constraint firstItem="wTC-BL-M3Z" firstAttribute="centerX" secondItem="1t6-SR-bJq" secondAttribute="centerX" id="281-np-Noe"/>
+                            <constraint firstItem="r4l-AW-ESE" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" constant="30" id="2Jq-Fo-heR"/>
+                            <constraint firstItem="1t6-SR-bJq" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" constant="20" symbolic="YES" id="ABv-d4-fBx"/>
+                            <constraint firstItem="5hg-3C-t2E" firstAttribute="leading" secondItem="xqm-FW-WYl" secondAttribute="trailing" constant="26" id="H0w-oN-Zg4"/>
+                            <constraint firstItem="xqm-FW-WYl" firstAttribute="top" secondItem="ljf-ZJ-HR7" secondAttribute="bottom" constant="8" symbolic="YES" id="Nw0-Qb-TtD"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="top" secondItem="r4l-AW-ESE" secondAttribute="bottom" constant="11" id="RTW-tZ-g7M"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="trailing" secondItem="ljf-ZJ-HR7" secondAttribute="trailing" id="UU7-Vk-FfN"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="leading" secondItem="1t6-SR-bJq" secondAttribute="leading" id="XRn-M3-ata"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" id="XnI-qG-7wZ"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="top" secondItem="1t6-SR-bJq" secondAttribute="bottom" constant="8" symbolic="YES" id="aoL-2V-k9y"/>
+                            <constraint firstItem="wTC-BL-M3Z" firstAttribute="top" secondItem="bAi-pi-fv9" secondAttribute="top" constant="16" id="eNq-tS-wWv"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="leading" secondItem="5hg-3C-t2E" secondAttribute="trailing" constant="25" id="gao-Rt-3i5"/>
+                            <constraint firstItem="jYz-Ep-B6V" firstAttribute="top" secondItem="WOm-3h-qW0" secondAttribute="bottom" constant="168" id="kbP-vn-sFT"/>
+                            <constraint firstItem="5hg-3C-t2E" firstAttribute="centerX" secondItem="WOm-3h-qW0" secondAttribute="centerX" id="olw-O5-ztL"/>
+                            <constraint firstItem="jui-uf-3g3" firstAttribute="baseline" secondItem="5hg-3C-t2E" secondAttribute="baseline" id="pcf-Qs-jU9"/>
+                            <constraint firstItem="1t6-SR-bJq" firstAttribute="top" secondItem="wTC-BL-M3Z" secondAttribute="bottom" constant="88" id="qNx-s5-Jb9"/>
+                            <constraint firstItem="wTC-BL-M3Z" firstAttribute="leading" secondItem="bAi-pi-fv9" secondAttribute="leading" id="qgz-El-rn0"/>
+                            <constraint firstAttribute="trailing" secondItem="r4l-AW-ESE" secondAttribute="trailing" constant="10" id="rnQ-4N-Vc6"/>
+                            <constraint firstItem="r4l-AW-ESE" firstAttribute="top" secondItem="wD6-7p-ybq" secondAttribute="bottom" constant="7" id="sSn-Z4-5aZ"/>
+                            <constraint firstItem="ljf-ZJ-HR7" firstAttribute="leading" secondItem="xqm-FW-WYl" secondAttribute="leading" id="u8F-bB-vnq"/>
+                            <constraint firstItem="5hg-3C-t2E" firstAttribute="baseline" secondItem="xqm-FW-WYl" secondAttribute="baseline" id="wpk-iJ-hdx"/>
+                            <constraint firstAttribute="trailing" secondItem="1t6-SR-bJq" secondAttribute="trailing" constant="20" symbolic="YES" id="zaW-Vm-dy8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Payment" id="9RZ-XH-n63">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Done" id="m8A-sJ-Bau">
-                            <connections>
-                                <action selector="doneBarButtonTapped:" destination="Gqh-qZ-Ggc" id="HT4-Q8-stD"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="cardNumberField" destination="ljf-ZJ-HR7" id="Pr3-M8-rU7"/>
                         <outlet property="cvvField" destination="5hg-3C-t2E" id="NG3-Jh-7nw"/>
-                        <outlet property="doneBarButton" destination="m8A-sJ-Bau" id="HWw-Th-XQT"/>
+                        <outlet property="doneButton" destination="UCA-RQ-3y6" id="oUY-YI-blZ"/>
                         <outlet property="expiryField" destination="xqm-FW-WYl" id="kgg-iX-x2h"/>
                         <outlet property="nameField" destination="1t6-SR-bJq" id="KoN-5p-ndd"/>
                         <outlet property="saveButton" destination="WOm-3h-qW0" id="hu0-Eb-ReD"/>
+                        <outlet property="skipBarButton" destination="K67-kK-yDm" id="oTg-qt-7DR"/>
                         <outlet property="zipField" destination="jui-uf-3g3" id="yX0-ec-jaO"/>
                         <segue destination="721-hy-SPE" kind="modal" identifier="go to terms" id="D7o-TK-Kff"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3v-jh-alh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1002" y="-725"/>
+            <point key="canvasLocation" x="985" y="-722"/>
         </scene>
         <!--Terms And Agreements View Controller - Congrats !-->
         <scene sceneID="dsM-be-Uzr">
@@ -620,6 +647,19 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wi7-ox-yfx">
+                                <rect key="frame" x="0.0" y="16" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Terms of Use" id="sOs-Uo-bRq">
+                                        <barButtonItem key="rightBarButtonItem" title="skip" id="tfi-VW-3cl">
+                                            <connections>
+                                                <action selector="skipTapped:" destination="721-hy-SPE" id="E6e-rn-VkY"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -642,7 +682,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIX-BK-8eR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1418" y="-722"/>
+            <point key="canvasLocation" x="1433" y="-722"/>
         </scene>
         <!--Enter Pickup Drop Off View Controller - Stowaway-->
         <scene sceneID="k71-rh-kI6">
@@ -696,7 +736,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="144" y="333" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="124ED6DA-FE97-4BE2-B357-C41739C18D01" colorSpace="pattern"/>
+                                <color key="color" patternImage="3F99F227-FAEE-46EF-9445-95686877E212" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9pr-OR-ZzO">
                                 <rect key="frame" x="0.0" y="9" width="320" height="44"/>
@@ -851,7 +891,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="30" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="5F6FDEB9-D597-43EF-BF64-AA7E44AB45EE" colorSpace="pattern"/>
+                                <color key="color" patternImage="066A11AF-68B3-49FD-8BF2-75363C8D39B2" colorSpace="pattern"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1064,7 +1104,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="124ED6DA-FE97-4BE2-B357-C41739C18D01" width="320" height="460">
+        <image name="066A11AF-68B3-49FD-8BF2-75363C8D39B2" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -10951,7 +10991,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="5F6FDEB9-D597-43EF-BF64-AA7E44AB45EE" width="320" height="460">
+        <image name="3F99F227-FAEE-46EF-9445-95686877E212" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
