@@ -524,6 +524,11 @@
 				TargetAttributes = {
 					68BAFEAB188DDBD3009738A0 = {
 						DevelopmentTeam = 9CFLNLAQFN;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					68BAFECC188DDBD3009738A0 = {
 						TestTargetID = 68BAFEAB188DDBD3009738A0;
@@ -799,7 +804,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "E6AD4CD4-8EC1-4102-A179-28069474EFE2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -825,7 +830,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "E6AD4CD4-8EC1-4102-A179-28069474EFE2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

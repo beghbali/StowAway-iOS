@@ -64,10 +64,10 @@ NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = 30; //5mins
+NSUInteger kCountdownTimerMaxSeconds    = (60*5); //5mins
 NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 
 //Pusher
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";
 NSString *const kPusherCrewLocationEvent                        = @"client-location-update";
-double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 1; //10meters
+double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 5; //5meters == 16feet

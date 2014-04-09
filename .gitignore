@@ -2,4 +2,5 @@ Pods/
 StowAway.xcodeproj/project.xcworkspace/xcuserdata/
 StowAway.xcodeproj/xcuserdata/*
 StowAway.xcworkspace/
-
+Build/
+.DS_Store
