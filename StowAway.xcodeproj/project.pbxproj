@@ -40,6 +40,9 @@
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
 		F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823018F5142800E3F059 /* SWRevealViewController.m */; };
+		F460823418F515DE00E3F059 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823318F515DE00E3F059 /* MenuTableViewController.m */; };
+		F460823818F51ACA00E3F059 /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F460823618F51ACA00E3F059 /* reveal-icon.png */; };
+		F460823918F51ACA00E3F059 /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F460823718F51ACA00E3F059 /* reveal-icon@2x.png */; };
 		F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -139,6 +142,10 @@
 		F451B6C618B3333400CF59BA /* StowawayConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayConstants.m; sourceTree = "<group>"; };
 		F460822F18F5142800E3F059 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		F460823018F5142800E3F059 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		F460823218F515DE00E3F059 /* MenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewController.h; sourceTree = "<group>"; };
+		F460823318F515DE00E3F059 /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
+		F460823618F51ACA00E3F059 /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon.png"; sourceTree = "<group>"; };
+		F460823718F51ACA00E3F059 /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon@2x.png"; sourceTree = "<group>"; };
 		F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewViewController.h; sourceTree = "<group>"; };
 		F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewViewController.m; sourceTree = "<group>"; };
 		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
@@ -235,9 +242,10 @@
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				F41D043218EE6C2200785EA5 /* ios_app_sounds */,
-				68BAFEAD188DDBD3009738A0 /* Products */,
+				F460823518F51ACA00E3F059 /* menu_images */,
 				F41D042918ED25BE00785EA5 /* auto-checkin badges */,
 				F4CB1F6A18C5996A00A404D0 /* findingCrewAnimationImages */,
+				68BAFEAD188DDBD3009738A0 /* Products */,
 				EBB5AAE28C6C411786386FFA /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
@@ -362,6 +370,15 @@
 			path = SWRevealViewController;
 			sourceTree = "<group>";
 		};
+		F460823518F51ACA00E3F059 /* menu_images */ = {
+			isa = PBXGroup;
+			children = (
+				F460823618F51ACA00E3F059 /* reveal-icon.png */,
+				F460823718F51ACA00E3F059 /* reveal-icon@2x.png */,
+			);
+			path = menu_images;
+			sourceTree = "<group>";
+		};
 		F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +437,8 @@
 				F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */,
 				68BAFEC4188DDBD3009738A0 /* LoginViewController.h */,
 				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
+				F460823218F515DE00E3F059 /* MenuTableViewController.h */,
+				F460823318F515DE00E3F059 /* MenuTableViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -574,6 +593,7 @@
 			files = (
 				F4CB1F8A18C5996A00A404D0 /* win_9.png in Resources */,
 				F41D043818EE6C2200785EA5 /* ride_checkedin.wav in Resources */,
+				F460823918F51ACA00E3F059 /* reveal-icon@2x.png in Resources */,
 				F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */,
 				F4CB1F8318C5996A00A404D0 /* win_2.png in Resources */,
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
@@ -595,6 +615,7 @@
 				68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */,
 				F4CB1F8718C5996A00A404D0 /* win_6.png in Resources */,
 				F41D043918EE6C2200785EA5 /* ride_matched.wav in Resources */,
+				F460823818F51ACA00E3F059 /* reveal-icon.png in Resources */,
 				F41D042D18ED25BE00785EA5 /* cross-mark-256.png in Resources */,
 				F4CB1F8818C5996A00A404D0 /* win_7.png in Resources */,
 				F41D043B18EE6C2200785EA5 /* you-are-captain.wav in Resources */,
@@ -668,6 +689,7 @@
 				F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */,
 				F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */,
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
+				F460823418F515DE00E3F059 /* MenuTableViewController.m in Sources */,
 				F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */,
 				F4266DDC18B5C00300A46BB1 /* PaymentViewController.m in Sources */,
 				F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */,

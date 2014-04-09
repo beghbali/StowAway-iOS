@@ -423,6 +423,9 @@
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
     
+    //cancel local notif
+    [self cancelTimerExpiryNotificationSchedule];
+    
     //go back to enter drop off pick up view
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }

@@ -12,6 +12,7 @@
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "FindingCrewViewController.h"
+#import "SWRevealViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
@@ -27,6 +28,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (weak, nonatomic) IBOutlet UISearchBar *dropOffSearchBar;
 @property (weak, nonatomic) IBOutlet UIButton *findCrewButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rideRequestActivityIndicator;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
@@ -62,6 +64,14 @@ int locationInputCount = 0;
     [super viewDidLoad];
     
     NSLog(@"%s......", __func__);
+
+    //set text as white - useful when background is blue
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    
+    //set up the reveal button
+    [self.revealButtonItem setTarget: self.revealViewController];
+    [self.revealButtonItem setAction: @selector( revealToggle: )];
+    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
     
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
@@ -72,7 +82,7 @@ int locationInputCount = 0;
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
     
-    self.navigationController.navigationBarHidden = YES;
+    //self.navigationController.navigationBarHidden = YES;
 
     [self setupLocationServices];
     
