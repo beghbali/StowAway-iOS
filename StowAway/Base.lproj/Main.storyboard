@@ -24,7 +24,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pb8-mI-fwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-909" y="-1463"/>
+            <point key="canvasLocation" x="-1017" y="-1633"/>
         </scene>
         <!--Menu Table View Controller-->
         <scene sceneID="iV5-Oq-hHd">
@@ -244,7 +244,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s0P-rz-p5i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-550" y="-702"/>
+            <point key="canvasLocation" x="-796" y="-630"/>
         </scene>
         <!--Login View Controller - Login-->
         <scene sceneID="ufC-wZ-h7g">
@@ -258,17 +258,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXB-0Q-gBP" customClass="FBLoginView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aXB-0Q-gBP" customClass="FBLoginView">
                                 <rect key="frame" x="35" y="287" width="251" height="176"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PrF-mo-JcJ" customClass="FBProfilePictureView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PrF-mo-JcJ" customClass="FBProfilePictureView">
                                 <rect key="frame" x="35" y="152" width="75" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFc-yy-CbB">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFc-yy-CbB">
                                 <rect key="frame" x="126" y="168" width="160" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -293,24 +293,17 @@
                             <constraint firstItem="cFc-yy-CbB" firstAttribute="top" secondItem="7VX-I3-nc4" secondAttribute="bottom" constant="104" id="umA-Wr-tij"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Login" id="hKn-HB-kDe">
-                        <barButtonItem key="rightBarButtonItem" title="next" id="ccu-WD-W5t">
-                            <connections>
-                                <segue destination="FZI-WL-nLp" kind="push" identifier="fbNextToReceipts" id="lf2-sN-jec"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Login" id="hKn-HB-kDe"/>
                     <connections>
                         <outlet property="loginView" destination="aXB-0Q-gBP" id="PSp-cX-VlQ"/>
                         <outlet property="nameLabel" destination="cFc-yy-CbB" id="3Dr-jG-Asz"/>
-                        <outlet property="nextBarButton" destination="ccu-WD-W5t" id="lgq-Ob-fIu"/>
                         <outlet property="profilePictureView" destination="PrF-mo-JcJ" id="SRo-QP-fTq"/>
-                        <segue destination="FZI-WL-nLp" kind="push" identifier="fbLoginToReceipt" id="ojm-M0-nu7"/>
+                        <segue destination="FZI-WL-nLp" kind="modal" identifier="fbLoginToReceipt" id="ojm-M0-nu7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-195" y="-555"/>
+            <point key="canvasLocation" x="114" y="-810"/>
         </scene>
         <!--Receipt Email View Controller - Link Receipts-->
         <scene sceneID="T5s-3p-ytz">
@@ -446,12 +439,12 @@
                         <outlet property="nextBarButton" destination="WSa-bJ-nYR" id="Dt0-Zs-8T7"/>
                         <outlet property="otherMailProviderButton" destination="ldK-sc-fCc" id="0iP-pK-Kpc"/>
                         <outlet property="stowawayEmailFooterLabel" destination="fj8-jl-bwF" id="iih-JT-5cp"/>
-                        <segue destination="Gqh-qZ-Ggc" kind="push" identifier="go to payment" id="wbq-E7-Ekt"/>
+                        <segue destination="Gqh-qZ-Ggc" kind="modal" identifier="go to payment" id="wbq-E7-Ekt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TaQ-Rj-YoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="231" y="-555"/>
+            <point key="canvasLocation" x="561" y="-725"/>
         </scene>
         <!--Payment View Controller - Payment-->
         <scene sceneID="rF1-fA-BHQ">
@@ -583,12 +576,12 @@
                         <outlet property="nameField" destination="1t6-SR-bJq" id="KoN-5p-ndd"/>
                         <outlet property="saveButton" destination="WOm-3h-qW0" id="hu0-Eb-ReD"/>
                         <outlet property="zipField" destination="jui-uf-3g3" id="yX0-ec-jaO"/>
-                        <segue destination="721-hy-SPE" kind="push" identifier="go to terms" id="D7o-TK-Kff"/>
+                        <segue destination="721-hy-SPE" kind="modal" identifier="go to terms" id="D7o-TK-Kff"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3v-jh-alh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="672" y="-555"/>
+            <point key="canvasLocation" x="1002" y="-725"/>
         </scene>
         <!--Terms And Agreements View Controller - Congrats !-->
         <scene sceneID="dsM-be-Uzr">
@@ -649,7 +642,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIX-BK-8eR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1088" y="-552"/>
+            <point key="canvasLocation" x="1418" y="-722"/>
         </scene>
         <!--Enter Pickup Drop Off View Controller - Stowaway-->
         <scene sceneID="k71-rh-kI6">
@@ -703,7 +696,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="144" y="333" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="8BE9BF7A-560B-4EBE-A0C6-BE3D8C525154" colorSpace="pattern"/>
+                                <color key="color" patternImage="124ED6DA-FE97-4BE2-B357-C41739C18D01" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9pr-OR-ZzO">
                                 <rect key="frame" x="0.0" y="9" width="320" height="44"/>
@@ -748,6 +741,7 @@
                         <outlet property="revealButtonItem" destination="UhN-tw-WfS" id="f6a-3H-Zsw"/>
                         <outlet property="rideRequestActivityIndicator" destination="7XM-fk-vcd" id="xi8-f3-Zcq"/>
                         <segue destination="ddu-Zc-dJg" kind="modal" identifier="toFindingCrew" id="9AW-cq-4eF"/>
+                        <segue destination="vXZ-lx-hvc" kind="modal" identifier="onboarding_login" animates="NO" id="WTk-75-MPQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2b-pk-H4i" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -770,7 +764,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-69" y="-1457"/>
+            <point key="canvasLocation" x="-335" y="-1259"/>
         </scene>
         <!--Finding Crew View Controller-->
         <scene sceneID="3uT-tg-mP0">
@@ -857,7 +851,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="30" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="BF5BFDF8-4579-44E8-98E2-6970716B9549" colorSpace="pattern"/>
+                                <color key="color" patternImage="5F6FDEB9-D597-43EF-BF64-AA7E44AB45EE" colorSpace="pattern"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -877,7 +871,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCa-ol-41Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="448" y="-1457"/>
+            <point key="canvasLocation" x="272" y="-1633"/>
         </scene>
         <!--Meet Crew View Controller - Meet Your Crew-->
         <scene sceneID="uD3-8c-8Uz">
@@ -1066,11 +1060,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DTG-KP-TIw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="916" y="-1457"/>
+            <point key="canvasLocation" x="736" y="-1633"/>
         </scene>
     </scenes>
     <resources>
-        <image name="8BE9BF7A-560B-4EBE-A0C6-BE3D8C525154" width="320" height="460">
+        <image name="124ED6DA-FE97-4BE2-B357-C41739C18D01" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -10957,7 +10951,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="BF5BFDF8-4579-44E8-98E2-6970716B9549" width="320" height="460">
+        <image name="5F6FDEB9-D597-43EF-BF64-AA7E44AB45EE" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -20852,7 +20846,4 @@ AAAAAAAAAAAJCvs
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="ojm-M0-nu7"/>
-    </inferredMetricsTieBreakers>
 </document>

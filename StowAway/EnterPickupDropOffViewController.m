@@ -13,6 +13,7 @@
 #import "StowawayServerCommunicator.h"
 #import "FindingCrewViewController.h"
 #import "SWRevealViewController.h"
+#import "LoginViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
@@ -59,6 +60,18 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 int locationInputCount = 0;
 
+-(BOOL)isUserLoggedIn
+{
+    if ( [LoginViewController isFBLoggedIn] )
+    {
+        NSLog(@"%s: fb already logged in", __func__);
+        return YES;
+    } else {
+        NSLog(@"%s: fb NOT logged in", __func__);
+        return NO;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -73,24 +86,18 @@ int locationInputCount = 0;
     [self.revealButtonItem setAction: @selector( revealToggle: )];
     [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
     
-    //forget that ride was finalized
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     [self.rideRequestActivityIndicator stopAnimating];
 
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
-    
-    //self.navigationController.navigationBarHidden = YES;
 
-    [self setupLocationServices];
     
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 
+    [self setupLocationServices];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,6 +114,18 @@ int locationInputCount = 0;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
+    //check ONBOARDING DONE ?
+    //check if user is logged in
+    if ( ![self isUserLoggedIn] ) {
+        [self performSegueWithIdentifier: @"onboarding_login" sender: self];
+    }
+    
 }
 
 #pragma mark - UITableView delegate methods
