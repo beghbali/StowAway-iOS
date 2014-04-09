@@ -39,6 +39,7 @@
 		F4266DDC18B5C00300A46BB1 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */; };
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
+		F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823018F5142800E3F059 /* SWRevealViewController.m */; };
 		F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -136,6 +137,8 @@
 		F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayServerCommunicator.m; sourceTree = "<group>"; };
 		F451B6C518B3333400CF59BA /* StowawayConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayConstants.h; sourceTree = "<group>"; };
 		F451B6C618B3333400CF59BA /* StowawayConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayConstants.m; sourceTree = "<group>"; };
+		F460822F18F5142800E3F059 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		F460823018F5142800E3F059 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewViewController.h; sourceTree = "<group>"; };
 		F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewViewController.m; sourceTree = "<group>"; };
 		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
@@ -350,6 +353,15 @@
 			path = Stripe;
 			sourceTree = "<group>";
 		};
+		F460822E18F5142800E3F059 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F460822F18F5142800E3F059 /* SWRevealViewController.h */,
+				F460823018F5142800E3F059 /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
 		F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,6 +477,7 @@
 		F4EB90E518A8345C00C57BF2 /* otherFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F460822E18F5142800E3F059 /* SWRevealViewController */,
 				F4D65A5518D547A200FAF3D0 /* Reachability */,
 				F4266D3F18B5A87800A46BB1 /* Stripe */,
 				F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */,
@@ -652,6 +665,7 @@
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
 				F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */,
+				F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */,
 				F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */,
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
 				F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */,
