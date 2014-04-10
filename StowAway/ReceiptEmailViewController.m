@@ -11,6 +11,7 @@
 #import "GoogleAuthenticator.h"
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
+#import "SWRevealViewController.h"
 
 @interface ReceiptEmailViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate, StowawayServerCommunicatorDelegate>
 
@@ -23,7 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *otherMailProviderButton;
 @property (weak, nonatomic) IBOutlet UIButton *authenticateWithGoogleButton;
 @property (weak, nonatomic) IBOutlet UIButton *gotItButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
 @property (weak, nonatomic) IBOutlet UITextView *changeUberEmailTextView;
 
@@ -35,12 +35,6 @@
 {
     [super viewDidLoad];
   
-    BOOL isReceiptEmailDone = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isReceiptEmailDone"] boolValue];
-
-    if ( isReceiptEmailDone) {
-        NSLog(@"receipts email done... move to next view");
-        [self performSegueWithIdentifier: @"go to payment" sender: self];
-    }
     //TODO: encapsulate the buttons appearence and hiding into a function
     
     //hide labels, buttons and text view
@@ -51,7 +45,6 @@
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
-    self.nextBarButton.enabled = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -69,10 +62,24 @@
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
-    self.nextBarButton.enabled = NO;
     
     self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+}
+- (IBAction)skipTapped:(UIBarButtonItem *)sender {
+    
+    
+        UIViewController * presentingVC = self.presentingViewController;
+        
+        NSLog(@"presenting vc %@ ", presentingVC);
+        
+        while ( [presentingVC class] != [SWRevealViewController class] )
+        {
+            presentingVC = presentingVC.presentingViewController;
+            NSLog(@"next presenting vc %@", presentingVC);
+        }
+        NSLog(@" ======= return home =====");
+        [presentingVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 // to check what the user is writting -- show red/green text box
@@ -213,7 +220,7 @@
     NSLog(@"%s::: error %@", __func__, error);
     if ( !error )
     {
-        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isReceiptEmailDone"];
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self performSegueWithIdentifier: @"go to payment" sender: self];
     }
@@ -247,7 +254,7 @@
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
 
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isReceiptEmailDone"];
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     // segue to payment screen

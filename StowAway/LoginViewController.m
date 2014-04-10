@@ -15,7 +15,6 @@
 @interface LoginViewController () <StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic) IBOutlet FBLoginView *loginView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButton;
 @property (strong, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property BOOL gotLogInUserInfo;
@@ -68,25 +67,15 @@
 - (void) setFacebookLoginStatus:(BOOL)facebookLoginStatus
 {
     NSLog(@"enable next button %d", facebookLoginStatus);
-    self.navigationItem.rightBarButtonItem.enabled = facebookLoginStatus; //hide next button if not logged in
 }
 
 -( void) moveToEmailRegistration
 {
-       [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
+    NSLog(@"%s: moveToEmailRegistration", __func__);
+    [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
+
 }
 
-
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-        NSLog(@"prepareForSegue id: %@", segue.identifier);
-    
-    if ([segue.identifier isEqualToString:@"fbNextToReceipts"] || [segue.identifier isEqualToString:@"fbLoginToReceipt"]) {
-        if ([segue.destinationViewController class] == [ReceiptEmailViewController class]) {
-           // ReceiptEmailViewController * receiptVC = segue.destinationViewController; //incase we need to setup some stuff - for autosuggestion of stowaway email address
-        }
-    }
-}
 
 - (void)viewDidLoad
 {
@@ -104,6 +93,12 @@
     }
 }
 
++(BOOL)isFBLoggedIn
+{
+    
+    NSLog(@"%s: FB activeSession %@", __func__ ,FBSession.activeSession);
+    return (FBSession.activeSession.isOpen)||(FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)? YES: NO;
+}
 
 
 

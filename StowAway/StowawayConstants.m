@@ -71,3 +71,11 @@ NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";
 NSString *const kPusherCrewLocationEvent                        = @"client-location-update";
 double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 5; //5meters == 16feet
+
+
+//OnboardingStatus
+NSString *const kOnboardingStatusReceiptsDone   = @"OnboardingStatusReceiptsDone";
+NSString *const kOnboardingStatusPaymentDone    = @"OnboardingStatusPaymentDone";
+NSString *const kOnboardingStatusTermsDone      = @"OnboardingStatusTermsDone";
+
+

@@ -12,6 +12,8 @@
 #import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "FindingCrewViewController.h"
+#import "SWRevealViewController.h"
+#import "LoginViewController.h"
 
 #define METERS_PER_MILE 1609.344
 #define SHOW_MILES_OF_MAP_VIEW 0.6
@@ -27,6 +29,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (weak, nonatomic) IBOutlet UISearchBar *dropOffSearchBar;
 @property (weak, nonatomic) IBOutlet UIButton *findCrewButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rideRequestActivityIndicator;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
@@ -57,24 +60,26 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 int locationInputCount = 0;
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     NSLog(@"%s......", __func__);
-    
-    //forget that ride was finalized
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
+    //set text as white - useful when background is blue
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    
+    //set up the reveal button
+    [self.revealButtonItem setTarget: self.revealViewController];
+    [self.revealButtonItem setAction: @selector( revealToggle: )];
+    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+    
     [self.rideRequestActivityIndicator stopAnimating];
 
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
-    
-    self.navigationController.navigationBarHidden = YES;
 
-    [self setupLocationServices];
     
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
@@ -83,20 +88,60 @@ int locationInputCount = 0;
 
 }
 
-- (void)viewWillAppear:(BOOL)animated
+
+
+-(BOOL)isUserLoggedIn
+{
+    if ( [LoginViewController isFBLoggedIn] )
+    {
+        NSLog(@"%s: fb already logged in", __func__);
+        return YES;
+    } else {
+        NSLog(@"%s: fb NOT logged in", __func__);
+        return NO;
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"%s......", __func__);
+
+    [super viewDidAppear:YES];
     
+    //check ONBOARDING DONE ?
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+
+    if ( ![self isUserLoggedIn] )
+        [self performSegueWithIdentifier: @"onboarding_login" sender: self];
+    else
+    {
+        if (![[userDefaults objectForKey:kOnboardingStatusReceiptsDone]boolValue] )
+            [self performSegueWithIdentifier: @"onboarding_receipts" sender: self];
+        else
+        {
+            if (![[userDefaults objectForKey:kOnboardingStatusPaymentDone]boolValue] )
+                [self performSegueWithIdentifier: @"onboarding_payment" sender: self];
+            else if (![[userDefaults objectForKey:kOnboardingStatusTermsDone]boolValue] )
+                [self performSegueWithIdentifier: @"onboarding_terms" sender: self];
+        }
+    }
+
+    self.mapView.showsUserLocation = YES;
+
+    [self setupLocationServices];
+
     [self isLocationEnabled];
     
     [self updateMapsViewArea];
     
     self.findCrewButton.enabled = NO;
-
+    
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
 
+    
 }
 
 #pragma mark - UITableView delegate methods
@@ -384,6 +429,10 @@ int locationInputCount = 0;
 -(void) setupLocationServices
 {
     // start by locating user's current position
+    if (self.locationManager) {
+        NSLog(@"%s: location manager is not null", __func__);
+        return;
+    }
 	self.locationManager = [[CLLocationManager alloc] init];
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeFitness;

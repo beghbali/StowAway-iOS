@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong) FBSession *session;
 
++(BOOL)isFBLoggedIn;
+
 @end

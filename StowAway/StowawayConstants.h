@@ -78,6 +78,9 @@ extern NSString *const kPusherApiKey;
 extern NSString *const kPusherCrewLocationEvent;
 extern double const kPusherCrewWalkingLocationUpdateThreshholdMeters;
 
-
+//OnboardingStatus
+extern NSString *const kOnboardingStatusReceiptsDone;
+extern NSString *const kOnboardingStatusPaymentDone;
+extern NSString *const kOnboardingStatusTermsDone;
 
 

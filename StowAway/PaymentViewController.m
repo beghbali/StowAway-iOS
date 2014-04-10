@@ -10,7 +10,7 @@
 #import "Stripe.h"
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
-
+#import "SWRevealViewController.h"
 /*
 
 Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
@@ -31,7 +31,7 @@ Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
 @property (weak, nonatomic) IBOutlet UITextField *expiryField;
 @property (weak, nonatomic) IBOutlet UITextField *cvvField;
 @property (weak, nonatomic) IBOutlet UITextField *zipField;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneBarButton;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
 
@@ -49,12 +49,8 @@ char isReadyToSavePayment = 0;
 {
     [super viewDidLoad];
     
-    BOOL isPaymentOptionSaved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isPaymentOptionSaved"] boolValue];
+    self.doneButton.hidden = YES;
     
-    if ( isPaymentOptionSaved) {
-        NSLog(@"payment option already saved... move to next view");
-        [self performSegueWithIdentifier: @"go to terms" sender: self];
-    }
     
     [self.cardNumberField addTarget: self action:@selector(reformatAsCardNumber:)
                    forControlEvents:UIControlEventEditingChanged];
@@ -66,6 +62,20 @@ char isReadyToSavePayment = 0;
     
 }
 
+- (IBAction)skipButtonTapped:(id)sender {
+
+        UIViewController * presentingVC = self.presentingViewController;
+        
+        NSLog(@"presenting vc %@ ", presentingVC);
+        
+        while ( [presentingVC class] != [SWRevealViewController class] )
+        {
+            presentingVC = presentingVC.presentingViewController;
+            NSLog(@"next presenting vc %@", presentingVC);
+        }
+        NSLog(@" ======= return home =====");
+        [presentingVC dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 /*
@@ -239,7 +249,7 @@ char isReadyToSavePayment = 0;
     NSInteger curMonth = [components month];
     NSInteger curYear = [components year];
     
-    NSLog(@"cur %d %d, %d %d", curMonth, curYear, *month, *year);
+    NSLog(@"cur %ld %ld, %ld %ld", (long)curMonth, (long)curYear, (long)*month, (long)*year);
     
     if ( *year < curYear ) {
         return NO;
@@ -414,9 +424,7 @@ char isReadyToSavePayment = 0;
     
 }
 
-
-- (IBAction)doneBarButtonTapped:(UIBarButtonItem *)sender
-{
+- (IBAction)doneButtonTapped:(UIButton *)sender {
     //hide keyboard
     [self.view endEditing:YES];
 }
@@ -434,13 +442,13 @@ char isReadyToSavePayment = 0;
 
 -(void)keyboardWillShow:(NSNotification *)aNotification
 {
-    self.doneBarButton.enabled = YES;
+    self.doneButton.hidden = NO;
 }
 
 
 -(void)keyboardWillHide:(NSNotification *)aNotification
 {
-    self.doneBarButton.enabled = NO;
+    self.doneButton.hidden = YES;
     
 }
 
@@ -501,7 +509,7 @@ char isReadyToSavePayment = 0;
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
     
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isPaymentOptionSaved"];
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusPaymentDone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     //move to terms view
@@ -511,7 +519,7 @@ char isReadyToSavePayment = 0;
 
 - (IBAction)saveButtonTapped:(UIButton *)sender
 {
-    NSLog(@"CARD:: %@, %@, %d %d, %@, %@", self.stripeCard.name, self.stripeCard.number, self.stripeCard.expMonth, self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip);
+    NSLog(@"CARD:: %@, %@, %lu %lu, %@, %@", self.stripeCard.name, self.stripeCard.number, (unsigned long)self.stripeCard.expMonth, (unsigned long)self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip);
  
     [Stripe createTokenWithCard:self.stripeCard
                  publishableKey: STRIPE_TEST_PUBLIC_KEY
