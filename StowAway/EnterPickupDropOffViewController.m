@@ -60,17 +60,6 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 int locationInputCount = 0;
 
--(BOOL)isUserLoggedIn
-{
-    if ( [LoginViewController isFBLoggedIn] )
-    {
-        NSLog(@"%s: fb already logged in", __func__);
-        return YES;
-    } else {
-        NSLog(@"%s: fb NOT logged in", __func__);
-        return NO;
-    }
-}
 
 - (void)viewDidLoad
 {
@@ -97,13 +86,21 @@ int locationInputCount = 0;
     currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 
-    [self setupLocationServices];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+
+
+-(BOOL)isUserLoggedIn
 {
-    
-   }
+    if ( [LoginViewController isFBLoggedIn] )
+    {
+        NSLog(@"%s: fb already logged in", __func__);
+        return YES;
+    } else {
+        NSLog(@"%s: fb NOT logged in", __func__);
+        return NO;
+    }
+}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -112,11 +109,27 @@ int locationInputCount = 0;
     [super viewDidAppear:YES];
     
     //check ONBOARDING DONE ?
-    //check if user is logged in
-    if ( ![self isUserLoggedIn] ) {
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+
+    if ( ![self isUserLoggedIn] )
         [self performSegueWithIdentifier: @"onboarding_login" sender: self];
+    else
+    {
+        if (![[userDefaults objectForKey:kOnboardingStatusReceiptsDone]boolValue] )
+            [self performSegueWithIdentifier: @"onboarding_receipts" sender: self];
+        else
+        {
+            if (![[userDefaults objectForKey:kOnboardingStatusPaymentDone]boolValue] )
+                [self performSegueWithIdentifier: @"onboarding_payment" sender: self];
+            else if (![[userDefaults objectForKey:kOnboardingStatusTermsDone]boolValue] )
+                [self performSegueWithIdentifier: @"onboarding_terms" sender: self];
+        }
     }
-    
+
+    self.mapView.showsUserLocation = YES;
+
+    [self setupLocationServices];
+
     [self isLocationEnabled];
     
     [self updateMapsViewArea];
@@ -416,6 +429,10 @@ int locationInputCount = 0;
 -(void) setupLocationServices
 {
     // start by locating user's current position
+    if (self.locationManager) {
+        NSLog(@"%s: location manager is not null", __func__);
+        return;
+    }
 	self.locationManager = [[CLLocationManager alloc] init];
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeFitness;

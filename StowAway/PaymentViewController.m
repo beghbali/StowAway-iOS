@@ -10,7 +10,7 @@
 #import "Stripe.h"
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
-
+#import "SWRevealViewController.h"
 /*
 
 Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
@@ -31,7 +31,6 @@ Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
 @property (weak, nonatomic) IBOutlet UITextField *expiryField;
 @property (weak, nonatomic) IBOutlet UITextField *cvvField;
 @property (weak, nonatomic) IBOutlet UITextField *zipField;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *skipBarButton;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
@@ -52,12 +51,6 @@ char isReadyToSavePayment = 0;
     
     self.doneButton.hidden = YES;
     
-    BOOL isPaymentOptionSaved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isPaymentOptionSaved"] boolValue];
-    
-    if ( isPaymentOptionSaved) {
-        NSLog(@"payment option already saved... move to next view");
-        [self performSegueWithIdentifier: @"go to terms" sender: self];
-    }
     
     [self.cardNumberField addTarget: self action:@selector(reformatAsCardNumber:)
                    forControlEvents:UIControlEventEditingChanged];
@@ -69,6 +62,20 @@ char isReadyToSavePayment = 0;
     
 }
 
+- (IBAction)skipButtonTapped:(id)sender {
+
+        UIViewController * presentingVC = self.presentingViewController;
+        
+        NSLog(@"presenting vc %@ ", presentingVC);
+        
+        while ( [presentingVC class] != [SWRevealViewController class] )
+        {
+            presentingVC = presentingVC.presentingViewController;
+            NSLog(@"next presenting vc %@", presentingVC);
+        }
+        NSLog(@" ======= return home =====");
+        [presentingVC dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 /*
@@ -502,7 +509,7 @@ char isReadyToSavePayment = 0;
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
     
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:@"isPaymentOptionSaved"];
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusPaymentDone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     //move to terms view
