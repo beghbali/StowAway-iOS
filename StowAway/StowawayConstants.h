@@ -72,6 +72,7 @@ extern NSString *const kSuggestedDefaultPickUpAddr;
 //crew and waiting constants
 extern NSUInteger kCountdownTimerMaxSeconds;
 extern NSUInteger kMaxCrewCount;
+extern NSUInteger kServerPollingIntervalSeconds;
 
 //Pusher
 extern NSString *const kPusherApiKey;
