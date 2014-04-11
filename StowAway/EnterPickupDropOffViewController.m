@@ -59,7 +59,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @implementation EnterPickupDropOffViewController
 
 int locationInputCount = 0;
-
+BOOL hasCheckedOnboarding = NO;
 
 - (void)viewDidLoad
 {
@@ -68,7 +68,7 @@ int locationInputCount = 0;
     NSLog(@"%s......", __func__);
 
     //set text as white - useful when background is blue
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+   // [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
     //set up the reveal button
     [self.revealButtonItem setTarget: self.revealViewController];
@@ -102,15 +102,17 @@ int locationInputCount = 0;
     }
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)checkOnboardingStatus
 {
-    NSLog(@"%s......", __func__);
-
-    [super viewDidAppear:YES];
+    if (hasCheckedOnboarding) {
+        NSLog(@"has already checked onboarding status");
+        return;
+    }
+    hasCheckedOnboarding = YES;
     
     //check ONBOARDING DONE ?
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-
+    
     if ( ![self isUserLoggedIn] )
         [self performSegueWithIdentifier: @"onboarding_login" sender: self];
     else
@@ -126,6 +128,15 @@ int locationInputCount = 0;
         }
     }
 
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%s......", __func__);
+
+    [super viewDidAppear:YES];
+    
+    [self checkOnboardingStatus];
+   
     self.mapView.showsUserLocation = YES;
 
     [self setupLocationServices];
@@ -139,9 +150,6 @@ int locationInputCount = 0;
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-
-    
 }
 
 #pragma mark - UITableView delegate methods

@@ -64,8 +64,9 @@ NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds    = (60*5); //5mins
-NSUInteger kMaxCrewCount                = 4; //1 captain + 3 stowaways
+NSUInteger kCountdownTimerMaxSeconds        = (60*5); //5mins
+NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
+NSUInteger kServerPollingIntervalSeconds    = (30); //30secs
 
 //Pusher
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";

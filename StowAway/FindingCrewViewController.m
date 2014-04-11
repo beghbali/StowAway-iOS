@@ -46,6 +46,8 @@
 
 @property BOOL viewDidLoadFinished;
 
+@property (strong, nonatomic) NSTimer * serverPollingTimer;
+
 @end
 
 @implementation FindingCrewViewController
@@ -66,28 +68,24 @@
     [self setupAnimation];
 
     //process ride request reply from server -- also sets cd timer value
-    [self processRideRequestResponse:self.rideRequestResponse];
+    [self processRequestObject:self.rideRequestResponse];
+    
+    //schedule to poll the server every 30secs
+    self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
+                                                               target:self
+                                                             selector:@selector(pollServer)
+                                                             userInfo:nil
+                                                              repeats:YES];
 }
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
 {
     NSLog(@"%s:  %@", __func__, notification);
-    [self processRideRequestResponse:notification.userInfo];
+    [self processRequestObject:notification.userInfo];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    /*
-    BOOL wasAppLaunchedDueToPush = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wasAppLaunchedDueToPush"] boolValue];
-    
-    if (wasAppLaunchedDueToPush) {
-        NSLog(@"%s: call view did load \n", __func__);
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"wasAppLaunchedDueToPush"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        [self viewDidLoad];
-    }
-     */
     [super viewDidAppear:animated];
     
     self.viewDidLoadFinished = YES;
@@ -105,6 +103,33 @@
         [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
 }
 
+- (void)pollServer
+{
+    NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
+    
+    if (!self.requestID || !self.userID)
+        return;
+    
+    //if ride id is nil get request object
+    if ( self.rideID && (id)(self.rideID) != [NSNull null] )
+    {
+        NSDictionary * dict = @{kRidePublicId: self.rideID};
+
+        [self processRequestObject:dict];
+
+        return;
+    }
+    
+    //get fresh request object to see if there is a ride
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
+    
+    [self.getRideResultActivityIndicator startAnimating];
+}
+
 #pragma mark stowawayServer
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
@@ -112,15 +137,21 @@
     [self.getRideResultActivityIndicator stopAnimating];
 
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
-    if ( !sError)
-        [self processRideResult:data];
+
+    if (sError)
+        return;
+    
+    if ([data objectForKey:kSuggestedDropOffLat])
+        [self processRideObject:data];
+    else
+        [self processRequestObject:data];
 }
 
-#pragma mark process response
+#pragma mark - process REQUEST
 
--(void)processRideRequestResponse:(NSDictionary *)response
+-(void)processRequestObject:(NSDictionary *)response
 {
-    NSLog(@"processRideRequestResponse........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
+    NSLog(@"processRequestObject........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
 
     if (!response) {
         self.rideRequestResponse = response = ((AppDelegate *)[UIApplication sharedApplication].delegate).fakeRideRequestResponse;
@@ -185,10 +216,11 @@
     }
 }
 
-//either GET ride or FINALIZE ride result
--(void)processRideResult:(NSDictionary *)response
+#pragma mark - process RIDE
+
+-(void)processRideObject:(NSDictionary *)response
 {
-    NSLog(@"processRideResult......................................");
+    NSLog(@"processRideObject......................................");
 
     NSLog(@"crew before processing: %@", self.crew);
     
@@ -289,6 +321,9 @@
         //cancel timer expiry notif
         [self cancelTimerExpiryNotificationSchedule];
         
+        //going to meet crew
+        [self.serverPollingTimer invalidate];
+        
         // get suggested locn
         self.suggestedLocations = @{kSuggestedDropOffAddr: [response objectForKey:kSuggestedDropOffAddr],
                                     kSuggestedDropOffLong: [response objectForKey:kSuggestedDropOffLong],
@@ -380,6 +415,11 @@
    //check if there is atleast one match
     if ( self.crew.count > 1)
     {
+        [self cancelTimerExpiryNotificationSchedule];
+        
+        //going to meet crew
+        [self.serverPollingTimer invalidate];
+        
         // ask server for roles
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@/finalize", self.userID, self.rideID];
         
@@ -425,6 +465,9 @@
     
     //cancel local notif
     [self cancelTimerExpiryNotificationSchedule];
+    
+    //cancel server polling- going back to requests
+    [self.serverPollingTimer invalidate];
     
     //go back to enter drop off pick up view
     [self dismissViewControllerAnimated:YES completion:^(void){}];
