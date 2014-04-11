@@ -14,8 +14,8 @@
 #include "StowawayServerCommunicator.h"
 #include "StowawayConstants.h"
 
-#define CLIENT_ID       @"959311382355-ev9e7hcsktb9hothfpo1ip27c92fd726.apps.googleusercontent.com"
-#define CLIENT_SECRET   @"pz62Gn5ZrRObzaRDEWVz9kyz"
+#define CLIENT_ID       @"91236755086-hnkvlu1h2ltagv3cjtkj37ohp2h51r90.apps.googleusercontent.com"
+#define CLIENT_SECRET   @"W7e1b6OQaJjWuTF-m5oDyDEQ"
 
 static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
