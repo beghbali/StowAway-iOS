@@ -34,7 +34,10 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 // check if the user is already google auth'ed
 - (BOOL)isGoogleAuthInKeychain
 {
-    NSLog(@"** %s ***", __func__);
+    NSLog(@"** %s HACK returns NO always ***", __func__);
+    
+    return NO; //TODO: remove this hack
+    
     // Check for authorization saved in keychain
     GTMOAuth2Authentication *authFromKeychain =
     [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:kKeychainItemName
@@ -43,17 +46,18 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     if ([authFromKeychain canAuthorize])
     {
         self.googleAuth = authFromKeychain;
-        NSLog(@"got google auth in keychain already for %@, auth expires on %@", self.googleAuth.userEmail, self.googleAuth.expirationDate);
+        NSLog(@"authFromKeychain%@ got google auth in keychain already for %@, auth expires on %@",authFromKeychain, self.googleAuth.userEmail, self.googleAuth.expirationDate);
 
 //TODO: revisit this check , it should never happen
-        if ( ![self.email isEqualToString:self.googleAuth.userEmail]) {
+        if ( ![self.email isEqualToString:self.googleAuth.userEmail] )
+        {
             NSLog(@"auth is not for the user email provided");
             return NO;
         }
         
         return YES;
-    }else {
-
+    }else
+    {
         NSLog(@"don't have the google auth");
         return NO;
     }
@@ -69,8 +73,8 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     if ( [self isGoogleAuthInKeychain]) {
         NSLog(@"in keychain, lets move to payments...");
 
-        //return without showing signin view
-        [self.googleAuthDelegate googleAuthenticatorResult:nil];
+        //return without showing signin view and send the data to server
+        [self authWithGoogleReturnedWithError:nil];
         return error;
     }
     
@@ -121,8 +125,8 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
     [viewController dismissViewControllerAnimated:YES
                                        completion:^{
-                                        NSLog(@"finished google auth, error:%@, auth accessToken %@, refresh token %@",
-                                              error, [auth accessToken], [auth refreshToken]);
+                                        NSLog(@"finished google auth, error:%@, auth accessToken %@, refresh token %@, user email %@ ",
+                                              error, [auth accessToken], [auth refreshToken], auth.userEmail);
                                         [self performSelectorOnMainThread:@selector(authWithGoogleReturnedWithError:)
                                                                withObject:error waitUntilDone:NO];
                                        }];
@@ -151,7 +155,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", publicUserId];
         
         NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
-                              kUserEmail, self.email, kUserEmailProvider, self.emailProvider,
+                              kUserEmail, self.googleAuth.userEmail, kUserEmailProvider, @"gmail",
                               kGmailAccessToken, self.googleAuth.accessToken, kGmailRefreshToken, self.googleAuth.refreshToken];
         
         
