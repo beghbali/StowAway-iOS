@@ -43,6 +43,12 @@
 		F460823418F515DE00E3F059 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823318F515DE00E3F059 /* MenuTableViewController.m */; };
 		F460823818F51ACA00E3F059 /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F460823618F51ACA00E3F059 /* reveal-icon.png */; };
 		F460823918F51ACA00E3F059 /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F460823718F51ACA00E3F059 /* reveal-icon@2x.png */; };
+		F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823B18FA38E200E3F059 /* PageContentViewController.m */; };
+		F460824118FA3EAB00E3F059 /* tutorial_1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = F460823E18FA3EAB00E3F059 /* tutorial_1.PNG */; };
+		F460824218FA3EAB00E3F059 /* tutorial_2.PNG in Resources */ = {isa = PBXBuildFile; fileRef = F460823F18FA3EAB00E3F059 /* tutorial_2.PNG */; };
+		F460824318FA3EAB00E3F059 /* tutorial_3.PNG in Resources */ = {isa = PBXBuildFile; fileRef = F460824018FA3EAB00E3F059 /* tutorial_3.PNG */; };
+		F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460824E18FA434A00E3F059 /* TutorialViewController.m */; };
+		F460825118FA506200E3F059 /* tutorial_0.PNG in Resources */ = {isa = PBXBuildFile; fileRef = F460825018FA506200E3F059 /* tutorial_0.PNG */; };
 		F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -146,6 +152,14 @@
 		F460823318F515DE00E3F059 /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
 		F460823618F51ACA00E3F059 /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon.png"; sourceTree = "<group>"; };
 		F460823718F51ACA00E3F059 /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon@2x.png"; sourceTree = "<group>"; };
+		F460823A18FA38E200E3F059 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
+		F460823B18FA38E200E3F059 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
+		F460823E18FA3EAB00E3F059 /* tutorial_1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_1.PNG; sourceTree = "<group>"; };
+		F460823F18FA3EAB00E3F059 /* tutorial_2.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_2.PNG; sourceTree = "<group>"; };
+		F460824018FA3EAB00E3F059 /* tutorial_3.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_3.PNG; sourceTree = "<group>"; };
+		F460824D18FA434A00E3F059 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		F460824E18FA434A00E3F059 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		F460825018FA506200E3F059 /* tutorial_0.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_0.PNG; sourceTree = "<group>"; };
 		F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewViewController.h; sourceTree = "<group>"; };
 		F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewViewController.m; sourceTree = "<group>"; };
 		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
@@ -241,6 +255,7 @@
 				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
+				F460823D18FA3EAB00E3F059 /* tutorial_images */,
 				F41D043218EE6C2200785EA5 /* ios_app_sounds */,
 				F460823518F51ACA00E3F059 /* menu_images */,
 				F41D042918ED25BE00785EA5 /* auto-checkin badges */,
@@ -379,6 +394,18 @@
 			path = menu_images;
 			sourceTree = "<group>";
 		};
+		F460823D18FA3EAB00E3F059 /* tutorial_images */ = {
+			isa = PBXGroup;
+			children = (
+				F460823E18FA3EAB00E3F059 /* tutorial_1.PNG */,
+				F460825018FA506200E3F059 /* tutorial_0.PNG */,
+				F460823F18FA3EAB00E3F059 /* tutorial_2.PNG */,
+				F460824018FA3EAB00E3F059 /* tutorial_3.PNG */,
+			);
+			name = tutorial_images;
+			path = otherFrameworks/ios_app_sounds/tutorial_images;
+			sourceTree = "<group>";
+		};
 		F47CB6B918AAF84000FD8FB9 /* gtm-oauth2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,6 +466,10 @@
 				68BAFEC5188DDBD3009738A0 /* LoginViewController.m */,
 				F460823218F515DE00E3F059 /* MenuTableViewController.h */,
 				F460823318F515DE00E3F059 /* MenuTableViewController.m */,
+				F460823A18FA38E200E3F059 /* PageContentViewController.h */,
+				F460823B18FA38E200E3F059 /* PageContentViewController.m */,
+				F460824D18FA434A00E3F059 /* TutorialViewController.h */,
+				F460824E18FA434A00E3F059 /* TutorialViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -600,8 +631,10 @@
 				68BAFEBA188DDBD3009738A0 /* InfoPlist.strings in Resources */,
 				F4CB1F8618C5996A00A404D0 /* win_5.png in Resources */,
 				F4CB1F7C18C5996A00A404D0 /* win_10.png in Resources */,
+				F460824118FA3EAB00E3F059 /* tutorial_1.PNG in Resources */,
 				F4CB1F7F18C5996A00A404D0 /* win_13.png in Resources */,
 				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
+				F460825118FA506200E3F059 /* tutorial_0.PNG in Resources */,
 				F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */,
 				F4CB1F7D18C5996A00A404D0 /* win_11.png in Resources */,
 				F4266DD518B5A87900A46BB1 /* VERSION in Resources */,
@@ -624,6 +657,8 @@
 				F4CB1F8018C5996A00A404D0 /* win_14.png in Resources */,
 				F4CB1F8518C5996A00A404D0 /* win_4.png in Resources */,
 				F41D043A18EE6C2200785EA5 /* ride_missed.wav in Resources */,
+				F460824218FA3EAB00E3F059 /* tutorial_2.PNG in Resources */,
+				F460824318FA3EAB00E3F059 /* tutorial_3.PNG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,6 +721,7 @@
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
 				F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */,
+				F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */,
 				F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */,
 				F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */,
 				68BAFEC0188DDBD3009738A0 /* AppDelegate.m in Sources */,
@@ -696,6 +732,7 @@
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
 				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
+				F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */,
 				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,
 				68BAFEBC188DDBD3009738A0 /* main.m in Sources */,
 				F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */,

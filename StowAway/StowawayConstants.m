@@ -78,5 +78,6 @@ double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 5; //5meters =
 NSString *const kOnboardingStatusReceiptsDone   = @"OnboardingStatusReceiptsDone";
 NSString *const kOnboardingStatusPaymentDone    = @"OnboardingStatusPaymentDone";
 NSString *const kOnboardingStatusTermsDone      = @"OnboardingStatusTermsDone";
+NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone";
 
 
