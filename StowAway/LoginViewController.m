@@ -76,6 +76,10 @@
 
 }
 
+- (IBAction)cancelBarButtonTapped:(UIBarButtonItem *)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)viewDidLoad
 {
