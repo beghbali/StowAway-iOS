@@ -112,9 +112,15 @@ BOOL hasCheckedOnboarding = NO;
     
     //check ONBOARDING DONE ?
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    
+   /*
+    if (![[userDefaults objectForKey:kOnboardingStatusTutorialDone]boolValue] )
+    {
+        [self performSegueWithIdentifier: @"onboarding_tutorial" sender: self];
+        return;
+    }
+*/
     if ( ![self isUserLoggedIn] )
-        [self performSegueWithIdentifier: @"onboarding_login" sender: self];
+        [self performSegueWithIdentifier: @"onboarding_tutorial" sender: self];
     else
     {
         if (![[userDefaults objectForKey:kOnboardingStatusReceiptsDone]boolValue] )

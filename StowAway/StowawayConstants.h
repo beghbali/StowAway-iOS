@@ -83,5 +83,6 @@ extern double const kPusherCrewWalkingLocationUpdateThreshholdMeters;
 extern NSString *const kOnboardingStatusReceiptsDone;
 extern NSString *const kOnboardingStatusPaymentDone;
 extern NSString *const kOnboardingStatusTermsDone;
+extern NSString *const kOnboardingStatusTutorialDone;
 
 
