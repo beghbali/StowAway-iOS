@@ -94,7 +94,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                                                                   redirectURI:[GTMOAuth2SignIn nativeClientRedirectURI]
                                                                      clientID:CLIENT_ID
                                                                  clientSecret:CLIENT_SECRET];
-    googleAuth.scope = @"openid email";
+    googleAuth.scope = @"https://mail.google.com/";
     
     
     // Prepare to display the authenticator view
