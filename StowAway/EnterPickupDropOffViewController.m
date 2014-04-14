@@ -68,7 +68,7 @@ BOOL hasCheckedOnboarding = NO;
     NSLog(@"%s......", __func__);
 
     //set text as white - useful when background is blue
-   // [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
     //set up the reveal button
     [self.revealButtonItem setTarget: self.revealViewController];
