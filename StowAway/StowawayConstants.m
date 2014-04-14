@@ -80,4 +80,6 @@ NSString *const kOnboardingStatusPaymentDone    = @"OnboardingStatusPaymentDone"
 NSString *const kOnboardingStatusTermsDone      = @"OnboardingStatusTermsDone";
 NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone";
 
+//animation finding crew
+double const kFindingCrewFacesAnimationDelay    = 2;
 

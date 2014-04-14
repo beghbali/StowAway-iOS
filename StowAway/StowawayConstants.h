@@ -85,4 +85,7 @@ extern NSString *const kOnboardingStatusPaymentDone;
 extern NSString *const kOnboardingStatusTermsDone;
 extern NSString *const kOnboardingStatusTutorialDone;
 
+//animation finding crew
+extern double const kFindingCrewFacesAnimationDelay;
+
 

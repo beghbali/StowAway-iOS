@@ -15,7 +15,9 @@
 
 @interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
-@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages;
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages1;
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages2;
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages3;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *getRideResultActivityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
@@ -366,24 +368,95 @@ double timeToExpire = 0;
 }
 
 #pragma mark animation
+
+void swap (NSUInteger *a, NSUInteger *b)
+{
+    NSUInteger temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 -(void) setupAnimation
 {
     // Load images
-    NSArray *imageNames = @[@"win_1.png", @"win_2.png", @"win_3.png", @"win_4.png",
-                            @"win_5.png", @"win_6.png", @"win_7.png", @"win_8.png",
-                            @"win_9.png", @"win_10.png", @"win_11.png", @"win_12.png",
-                            @"win_13.png", @"win_14.png", @"win_15.png", @"win_16.png"];
+    NSArray *imageNames = @[@"1.png", @"2.png",@"3.png", @"4.png",
+                            @"5.png", @"6.png",@"7.png", @"8.png",
+                            @"9.png", @"10.png",@"11.png", @"12.png",
+                            @"13.png", @"14.png",@"15.png", @"16.png"];
     
-    self.animationImages = [[NSMutableArray alloc] init];
+    //TODO: clean up this - allocate only when required
+    self.animationImages1 = [[NSMutableArray alloc] init];
+    self.animationImages2 = [[NSMutableArray alloc] init];
+    self.animationImages3 = [[NSMutableArray alloc] init];
+
+    NSUInteger arr[imageNames.count];
+    for (NSUInteger i = 0 ; i < imageNames.count; i++)
+        arr[i] = i;
+    
+    srand(time(NULL) );
+    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
+    {
+        NSUInteger j = rand()%(i+1);
+        NSLog(@"-- j %d -- ", j);
+        swap(&arr[i], &arr[j]);
+    }
     
     for (int i = 0; i < imageNames.count; i++)
-        [self.animationImages addObject:[UIImage imageNamed:[imageNames objectAtIndex:i]]];
+        [self.animationImages1 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
+    
+    srand(time(NULL) );
+    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
+    {
+        NSUInteger j = rand()%(i+1);
+        swap(&arr[i], &arr[j]);
+    }
+
+    for (int i = 0; i < imageNames.count; i++)
+        [self.animationImages2 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
+    
+    srand(time(NULL) );
+    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
+    {
+        NSUInteger j = rand()%(i+1);
+        swap(&arr[i], &arr[j]);
+    }
+
+    for (int i = 0; i < imageNames.count; i++)
+        [self.animationImages3 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
+
+    
 }
 
--(void) startAnimatingImage:(UIImageView *)imageView
-{    
-    imageView.animationImages = self.animationImages;
-    imageView.animationDuration = 1;    //secs between each image
+
+-(void) startAnimatingImageForCrewNumber:(NSUInteger)crewNumber
+{
+    UIImageView * imageView = nil;
+    
+    switch (crewNumber)
+    {
+        case 1:
+            imageView = self.imageView1;
+            imageView.animationImages   = self.animationImages1;
+
+            break;
+
+        case 2:
+            imageView = self.imageView2;
+            imageView.animationImages   = self.animationImages2;
+
+            break;
+            
+        case 3:
+            imageView = self.imageView3;
+            imageView.animationImages   = self.animationImages3;
+
+            break;
+            
+        default:
+            break;
+    }
+    
+    imageView.animationDuration = kFindingCrewFacesAnimationDelay;
     
     [imageView startAnimating];
 }
@@ -520,6 +593,8 @@ double timeToExpire = 0;
 -(void)updateFindingCrewView
 { //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
     
+#warning infinite alert bug - wait -- does not restart the timer
+    
   //  NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
     NSLog(@"updateFindingCrewView ............hasTimerBeenRecalculated %d", hasTimerBeenRecalculated);
     //set the cd timer
@@ -564,17 +639,17 @@ double timeToExpire = 0;
         //reset the images to animate and also reset the name to finding....
         switch (i) {
             case 1:
-                [self startAnimatingImage:self.imageView1];
+                [self startAnimatingImageForCrewNumber:1];
                 self.nameLabel1.text = @"finding...";
                 break;
                 
             case 2:
-                [self startAnimatingImage:self.imageView2];
+                [self startAnimatingImageForCrewNumber:2];
                 self.nameLabel2.text = @"finding...";
                 break;
                 
             case 3:
-                [self startAnimatingImage:self.imageView3];
+                [self startAnimatingImageForCrewNumber:3];
                 self.nameLabel3.text = @"finding...";
                 break;
 
