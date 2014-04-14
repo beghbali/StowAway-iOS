@@ -59,6 +59,10 @@
 		F427739C18FB7274003AE6AD /* from-to@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F427739618FB7274003AE6AD /* from-to@2x.png */; };
 		F427739D18FB7274003AE6AD /* stowaway-headline.png in Resources */ = {isa = PBXBuildFile; fileRef = F427739718FB7274003AE6AD /* stowaway-headline.png */; };
 		F427739E18FB7274003AE6AD /* stowaway-headline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F427739818FB7274003AE6AD /* stowaway-headline@2x.png */; };
+		F42773A718FB8613003AE6AD /* find-crew-wood.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773A318FB8613003AE6AD /* find-crew-wood.png */; };
+		F42773A818FB8613003AE6AD /* find-crew-wood@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773A418FB8613003AE6AD /* find-crew-wood@2x.png */; };
+		F42773A918FB8613003AE6AD /* from-to-v2.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773A518FB8613003AE6AD /* from-to-v2.png */; };
+		F42773AA18FB8613003AE6AD /* from-to-v2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773A618FB8613003AE6AD /* from-to-v2@2x.png */; };
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
 		F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823018F5142800E3F059 /* SWRevealViewController.m */; };
@@ -186,6 +190,10 @@
 		F427739618FB7274003AE6AD /* from-to@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "from-to@2x.png"; sourceTree = "<group>"; };
 		F427739718FB7274003AE6AD /* stowaway-headline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stowaway-headline.png"; sourceTree = "<group>"; };
 		F427739818FB7274003AE6AD /* stowaway-headline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stowaway-headline@2x.png"; sourceTree = "<group>"; };
+		F42773A318FB8613003AE6AD /* find-crew-wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find-crew-wood.png"; sourceTree = "<group>"; };
+		F42773A418FB8613003AE6AD /* find-crew-wood@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find-crew-wood@2x.png"; sourceTree = "<group>"; };
+		F42773A518FB8613003AE6AD /* from-to-v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "from-to-v2.png"; sourceTree = "<group>"; };
+		F42773A618FB8613003AE6AD /* from-to-v2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "from-to-v2@2x.png"; sourceTree = "<group>"; };
 		F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayServerCommunicator.h; sourceTree = "<group>"; };
 		F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayServerCommunicator.m; sourceTree = "<group>"; };
 		F451B6C518B3333400CF59BA /* StowawayConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayConstants.h; sourceTree = "<group>"; };
@@ -427,6 +435,10 @@
 				F427739318FB7274003AE6AD /* find-crew-background.png */,
 				F427739418FB7274003AE6AD /* find-crew-background@2x.png */,
 				F427739518FB7274003AE6AD /* from-to.png */,
+				F42773A318FB8613003AE6AD /* find-crew-wood.png */,
+				F42773A418FB8613003AE6AD /* find-crew-wood@2x.png */,
+				F42773A518FB8613003AE6AD /* from-to-v2.png */,
+				F42773A618FB8613003AE6AD /* from-to-v2@2x.png */,
 				F427739618FB7274003AE6AD /* from-to@2x.png */,
 				F427739718FB7274003AE6AD /* stowaway-headline.png */,
 				F427739818FB7274003AE6AD /* stowaway-headline@2x.png */,
@@ -699,6 +711,7 @@
 			files = (
 				F427738818FB4C4B003AE6AD /* credit-card.png in Resources */,
 				F4CB1F8A18C5996A00A404D0 /* win_9.png in Resources */,
+				F42773AA18FB8613003AE6AD /* from-to-v2@2x.png in Resources */,
 				F41D043818EE6C2200785EA5 /* ride_checkedin.wav in Resources */,
 				F460823918F51ACA00E3F059 /* reveal-icon@2x.png in Resources */,
 				F427739018FB4C4B003AE6AD /* ride_credits.png in Resources */,
@@ -719,7 +732,9 @@
 				F427739C18FB7274003AE6AD /* from-to@2x.png in Resources */,
 				F427739118FB4C4B003AE6AD /* ride_credits@2x.png in Resources */,
 				F427737C18FB431F003AE6AD /* Icon.png in Resources */,
+				F42773A718FB8613003AE6AD /* find-crew-wood.png in Resources */,
 				F427737618FB3556003AE6AD /* footer.png in Resources */,
+				F42773A918FB8613003AE6AD /* from-to-v2.png in Resources */,
 				F460825118FA506200E3F059 /* tutorial_0.PNG in Resources */,
 				F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */,
 				F4CB1F7D18C5996A00A404D0 /* win_11.png in Resources */,
@@ -745,6 +760,7 @@
 				F41D042D18ED25BE00785EA5 /* cross-mark-256.png in Resources */,
 				F427737D18FB431F003AE6AD /* Icon@2x.png in Resources */,
 				F4CB1F8818C5996A00A404D0 /* win_7.png in Resources */,
+				F42773A818FB8613003AE6AD /* find-crew-wood@2x.png in Resources */,
 				F41D043B18EE6C2200785EA5 /* you-are-captain.wav in Resources */,
 				F427737818FB3556003AE6AD /* small-footer.png in Resources */,
 				F4CB1F7B18C5996A00A404D0 /* win_1.png in Resources */,
