@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
+#import "EnterPickupDropOffViewController.h"
+
 #import "ReceiptEmailViewController.h"
 #import "LoginViewController.h"
 #import "GoogleAuthenticator.h"
@@ -68,18 +70,20 @@
 }
 - (IBAction)skipTapped:(UIBarButtonItem *)sender {
     
+
+    UIViewController * presentingVC = self.presentingViewController;
     
-        UIViewController * presentingVC = self.presentingViewController;
-        
-        NSLog(@"presenting vc %@ ", presentingVC);
-        
-        while ( [presentingVC class] != [SWRevealViewController class] )
-        {
-            presentingVC = presentingVC.presentingViewController;
-            NSLog(@"next presenting vc %@", presentingVC);
-        }
-        NSLog(@" ======= return home =====");
-        [presentingVC dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"presenting vc %@ ", presentingVC);
+    
+    while ( [presentingVC class] != [SWRevealViewController class] )
+    {
+        presentingVC = presentingVC.presentingViewController;
+        NSLog(@"next presenting vc %@", presentingVC);
+    }
+    NSLog(@" ======= return home =====");
+    [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
+
+    [presentingVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 // to check what the user is writting -- show red/green text box

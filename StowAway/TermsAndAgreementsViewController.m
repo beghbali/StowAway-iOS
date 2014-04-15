@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
+#import "EnterPickupDropOffViewController.h"
+
 #import "TermsAndAgreementsViewController.h"
 #import "StowawayConstants.h"
 #import "SWRevealViewController.h"
@@ -46,6 +48,8 @@
         NSLog(@"next presenting vc %@", presentingVC);
     }
     NSLog(@" ======= return home =====");
+    [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
+
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
     
 }

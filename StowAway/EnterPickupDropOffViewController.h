@@ -10,4 +10,5 @@
 
 @interface EnterPickupDropOffViewController : UIViewController
 
++(void)setOnBoardingStatusChecked:(BOOL)yesOrNo;
 @end

@@ -24,6 +24,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @interface EnterPickupDropOffViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, StowawayServerCommunicatorDelegate>
 
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
 @property (weak, nonatomic) IBOutlet UISearchBar *dropOffSearchBar;
@@ -53,13 +54,33 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
+
 @end
 
 
 @implementation EnterPickupDropOffViewController
 
 int locationInputCount = 0;
-BOOL hasCheckedOnboarding = NO;
+BOOL onBoardingStatusChecked = NO;
+
+-(void)setUpRevealMenuButton
+{  //set up the reveal button
+    [self.revealButtonItem setTarget: self.revealViewController];
+    [self.revealButtonItem setAction: @selector( revealToggle: )];
+    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+}
+
+-(void)setUpPlacesSearch
+{
+    
+    self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
+    self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
+    
+    // first thing in serach table should be current location
+    MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
+    currentLoc.name = kPickUpDefaultCurrentLocation;
+    [self.pickUpPlaces insertObject: currentLoc atIndex:0];
+}
 
 - (void)viewDidLoad
 {
@@ -70,24 +91,31 @@ BOOL hasCheckedOnboarding = NO;
     //set text as white - useful when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
-    //set up the reveal button
-    [self.revealButtonItem setTarget: self.revealViewController];
-    [self.revealButtonItem setAction: @selector( revealToggle: )];
-    [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
+    [self setUpRevealMenuButton];
     
     [self.rideRequestActivityIndicator stopAnimating];
-
-    self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
-    self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
-
     
-    // first thing in serach table should be current location
-    MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
-    currentLoc.name = kPickUpDefaultCurrentLocation;
-    [self.pickUpPlaces insertObject: currentLoc atIndex:0];
-
+    [self setUpPlacesSearch];
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%s......, onBoardingStatusChecked %d", __func__, onBoardingStatusChecked);
+    
+    [super viewDidAppear:YES];
+    
+    [self checkOnboardingStatus];
+    
+    self.findCrewButton.enabled = NO;
+    
+    //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (onBoardingStatusChecked)
+        [self setUpLocationServices];
+}
 
 
 -(BOOL)isUserLoggedIn
@@ -104,11 +132,12 @@ BOOL hasCheckedOnboarding = NO;
 
 -(void)checkOnboardingStatus
 {
-    if (hasCheckedOnboarding) {
+    NSLog(@"%s...... onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
+
+    if (onBoardingStatusChecked) {
         NSLog(@"has already checked onboarding status");
         return;
     }
-    hasCheckedOnboarding = YES;
     
     //check ONBOARDING DONE ?
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
@@ -133,29 +162,6 @@ BOOL hasCheckedOnboarding = NO;
                 [self performSegueWithIdentifier: @"onboarding_terms" sender: self];
         }
     }
-
-}
--(void)viewDidAppear:(BOOL)animated
-{
-    NSLog(@"%s......", __func__);
-
-    [super viewDidAppear:YES];
-    
-    [self checkOnboardingStatus];
-   
-    self.mapView.showsUserLocation = YES;
-
-    [self setupLocationServices];
-
-    [self isLocationEnabled];
-    
-    [self updateMapsViewArea];
-    
-    self.findCrewButton.enabled = NO;
-    
-    //forget that ride was finalized
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - UITableView delegate methods
@@ -440,7 +446,24 @@ BOOL hasCheckedOnboarding = NO;
 
 #pragma mark - Location 
 
--(void) setupLocationServices
++(void)setOnBoardingStatusChecked:(BOOL)yesOrNo
+{
+    NSLog(@"setOnBoardingStatusChecked %d", yesOrNo);
+    onBoardingStatusChecked = yesOrNo;
+}
+-(void)setUpLocationServices
+{
+    NSLog(@"---------- setUpLocationServices ---------");
+    [self isLocationEnabled];
+    
+    self.mapView.showsUserLocation = YES;
+    
+    [self setupLocationManager];
+    
+    [self updateMapsViewArea];
+}
+
+-(void) setupLocationManager
 {
     // start by locating user's current position
     if (self.locationManager) {

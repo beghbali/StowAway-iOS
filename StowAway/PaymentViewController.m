@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
+#import "EnterPickupDropOffViewController.h"
+
 #import "PaymentViewController.h"
 #import "Stripe.h"
 #import "StowawayServerCommunicator.h"
@@ -64,17 +66,18 @@ char isReadyToSavePayment = 0;
 
 - (IBAction)skipButtonTapped:(id)sender {
 
-        UIViewController * presentingVC = self.presentingViewController;
-        
-        NSLog(@"presenting vc %@ ", presentingVC);
-        
-        while ( [presentingVC class] != [SWRevealViewController class] )
-        {
-            presentingVC = presentingVC.presentingViewController;
-            NSLog(@"next presenting vc %@", presentingVC);
-        }
-        NSLog(@" ======= return home =====");
-        [presentingVC dismissViewControllerAnimated:YES completion:nil];
+    UIViewController * presentingVC = self.presentingViewController;
+    
+    NSLog(@"presenting vc %@ ", presentingVC);
+    
+    while ( [presentingVC class] != [SWRevealViewController class] )
+    {
+        presentingVC = presentingVC.presentingViewController;
+        NSLog(@"next presenting vc %@", presentingVC);
+    }
+    NSLog(@" ======= return home =====");
+    [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
+    [presentingVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 
