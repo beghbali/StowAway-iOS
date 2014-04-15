@@ -54,9 +54,6 @@
 
 @implementation FindingCrewViewController
 
-bool hasTimerBeenRecalculated = NO; //TODO: remove this and use a better model to handle this
-double timeToExpire = 0;
-
 -(void) viewDidLoad
 {
     [super viewDidLoad];
@@ -96,6 +93,9 @@ double timeToExpire = 0;
 
     //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
+    
+    //recalculate timer
+    [self reCalculateCDTimer];
 
     //update the view - pics, names
     [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed
@@ -246,14 +246,11 @@ double timeToExpire = 0;
         NSString * designation = [request objectForKey:kDesignation];
         BOOL isCaptain = ( designation && (designation != (id)[NSNull null]) && [designation isEqualToString:kDesignationCaptain] );
         
-        //NSLog(@"processing <%d>request %@", i, request);
-        
         for (int j = 0; j < countCrew; j++)
         {
             NSMutableDictionary * crewMember = [self.crew objectAtIndex:j];
         
-           // NSLog(@"processing <%d>crewmember %@", j, crewMember);
-            
+            //UPDATE existing crew member
             if ( [[crewMember objectForKey:kUserPublicId] compare:[request objectForKey:kUserPublicId]] == NSOrderedSame )
             {
                 [dontRemoveCrewIndexList addObject:[crewMember objectForKey:kUserPublicId]];
@@ -284,7 +281,6 @@ double timeToExpire = 0;
         
         [self.crew addObject:dict];
     }
-    //NSLog(@"after add - %@", self.crew);
 
     //REMOVE STALE MEMBERS
     for (int j = 0; j < self.crew.count; j++)
@@ -320,13 +316,8 @@ double timeToExpire = 0;
         
         self.isReadyToGoToMeetCrew = YES;
         
-        hasTimerBeenRecalculated = NO;
-        
         //cancel timer expiry notif
         [self cancelTimerExpiryNotificationSchedule];
-        
-        //going to meet crew
-        [self.serverPollingTimer invalidate];
         
         // get suggested locn
         self.suggestedLocations = @{kSuggestedDropOffAddr: [response objectForKey:kSuggestedDropOffAddr],
@@ -361,6 +352,8 @@ double timeToExpire = 0;
             meetCrewVC.crew     = self.crew;
             meetCrewVC.locationChannel  = self.locationChannel;
             meetCrewVC.suggestedLocations = self.suggestedLocations;
+            
+            [self.serverPollingTimer invalidate];
         }
     }
 }
@@ -483,6 +476,33 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 #pragma mark countdown timer
 
+-(void)reCalculateCDTimer
+{
+    double rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] doubleValue];
+    double minRideRequestedAt = rideRequestedAt;
+    
+    for (int i = 1; i < self.crew.count; i++)
+    {
+        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] doubleValue];
+        NSLog(@"iRide_req_at %f, minRideReq %f, i%d", iRideRequestedAt, minRideRequestedAt, i);
+        //compare self with the other crew members requested time, we want the minimum req time
+        if ( iRideRequestedAt < minRideRequestedAt )
+            minRideRequestedAt = iRideRequestedAt;
+    }
+    
+    if ( minRideRequestedAt == rideRequestedAt)
+    {
+        NSLog(@"%s: there was no ride requested before mine, so dont change CDT", __func__);
+        return;
+    }
+    
+    NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);
+    
+    self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
+    
+    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.cdt.countDownEndDate);
+}
+
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
@@ -491,7 +511,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     self.cdt.cdTimerDelegate = self;
     
-    [self.cdt initializeWithSecondsRemaining:hasTimerBeenRecalculated? timeToExpire: kCountdownTimerMaxSeconds
+    [self.cdt initializeWithSecondsRemaining: kCountdownTimerMaxSeconds
                                     ForLabel:self.countDownTimer];
 
     [self setTimerExpiryNotification];
@@ -500,16 +520,11 @@ void swap (NSUInteger *a, NSUInteger *b)
 - (void)countdownTimerExpired
 {
     NSLog(@"%s, crew <%lu> %@", __func__, (unsigned long)self.crew.count, self.crew);
-  //  [self stopAnimatingImage:self.imageView1];
-    //[self stopAnimatingImage:self.imageView2];
-    //[self stopAnimatingImage:self.imageView3];
 
-   //check if there is atleast one match
+    //check if there is atleast one match
     if ( self.crew.count > 1)
     {
         [self cancelTimerExpiryNotificationSchedule];
-        
-        hasTimerBeenRecalculated = NO;
         
         //going to meet crew
         [self.serverPollingTimer invalidate];
@@ -557,8 +572,6 @@ void swap (NSUInteger *a, NSUInteger *b)
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
     
-    hasTimerBeenRecalculated = NO;
-    
     //cancel local notif
     [self cancelTimerExpiryNotificationSchedule];
     
@@ -605,22 +618,10 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 //crew and timer
 -(void)updateFindingCrewView
-{ //go through the crew array, set fb pic, name, stop/start animation as required, and adjust CDTimer
+{
+    NSLog(@"updateFindingCrewView.................");
     
-#warning infinite alert bug - wait -- does not restart the timer
-    
-  //  NSLog(@"update crew view <count %lu> %@", (unsigned long)self.crew.count, self.crew);
-    NSLog(@"updateFindingCrewView ............hasTimerBeenRecalculated %d", hasTimerBeenRecalculated);
-    //set the cd timer
-    
-    if (!hasTimerBeenRecalculated)
-    {
-        [self reCalculateCDTimer];
-        hasTimerBeenRecalculated = YES;
-    }
-    
-    NSLog(@"updateFindingCrewView: CDT updated...");
-    
+    //go through the crew array, set fb pic, name, stop/start animation as required
     for (NSUInteger i = 1; i < self.crew.count; i++)
     {
         NSDictionary * crewMember = [self.crew objectAtIndex:i];
@@ -632,18 +633,6 @@ void swap (NSUInteger *a, NSUInteger *b)
         }
 
         [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
-/*
-        if ( i == (kMaxCrewCount-1) ) {
-            NSLog(@"for the last person, wait till we get the fb image and name");
-            [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
-        } else
-        {
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
-                //Background Thread
-                [self setCrewImageAndName:i withFbUID:[crewMember objectForKey:kFbId]];
-            });
-        }
- */
     }
     
     for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
@@ -673,40 +662,8 @@ void swap (NSUInteger *a, NSUInteger *b)
     }
 }
 
--(void)reCalculateCDTimer
-{
-   // NSLog(@"%s: self.crew %@ \n................\n",__func__, self.crew);
-    
-    double rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] doubleValue];
-    double minRideRequestedAt = rideRequestedAt;
-    
-    for (int i = 1; i < self.crew.count; i++)
-    {
-        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] doubleValue];
-        NSLog(@"iRide_req_at %f, minRideReq %f, i%d", iRideRequestedAt, minRideRequestedAt, i);
-        //compare self with the other crew members requested time, we want the minimum req time
-        if ( iRideRequestedAt < minRideRequestedAt )
-            minRideRequestedAt = iRideRequestedAt;
-    }
-    
-    if ( minRideRequestedAt == rideRequestedAt)
-    {
-        NSLog(@"%s: there was no ride requested before mine, so dont change CDT", __func__);
-        return;
-    }
-    
-    NSTimeInterval secondsToExpire = kCountdownTimerMaxSeconds - (rideRequestedAt - minRideRequestedAt);
 
-   // self.timerExpiryDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];
-    
-    self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
-    
-    timeToExpire = secondsToExpire;
-    
-    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.cdt.countDownEndDate);
-}
-
-// run this function on a background thread
+// this function can block main queue
 -(void)setCrewImageAndName:(NSUInteger)crewPostion withFbUID:(NSString *)fbUID
 {
     NSError* error;
