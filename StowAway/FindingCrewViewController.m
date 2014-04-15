@@ -69,8 +69,6 @@ double timeToExpire = 0;
     
     [self.getRideResultActivityIndicator stopAnimating];
 
-    [self setupAnimation];
-
     //process ride request reply from server -- also sets cd timer value
     [self processRequestObject:self.rideRequestResponse];
     
@@ -376,61 +374,77 @@ void swap (NSUInteger *a, NSUInteger *b)
     *b = temp;
 }
 
--(void) setupAnimation
+-(void) setupAnimationForImageNumber:(NSUInteger)imageNumber
 {
-    // Load images
-    NSArray *imageNames = @[@"1.png", @"2.png",@"3.png", @"4.png",
+    // images to be circulated
+    NSArray *faces =      @[@"1.png", @"2.png",@"3.png", @"4.png",
                             @"5.png", @"6.png",@"7.png", @"8.png",
                             @"9.png", @"10.png",@"11.png", @"12.png",
                             @"13.png", @"14.png",@"15.png", @"16.png"];
+   
+    NSUInteger facesCount = faces.count;
     
-    //TODO: clean up this - allocate only when required
-    self.animationImages1 = [[NSMutableArray alloc] init];
-    self.animationImages2 = [[NSMutableArray alloc] init];
-    self.animationImages3 = [[NSMutableArray alloc] init];
+    //non repeating random numbers
+    NSUInteger shuffledNumbers[facesCount];
+    for (NSUInteger i = 0 ; i < facesCount; i++)
+        shuffledNumbers[i] = i;
+  
+    uint32_t randBoundary = (uint32_t)facesCount;
+    while ( randBoundary > 1)
+    {
+        NSUInteger randIndex = arc4random_uniform(randBoundary); // rand between 0 - (randboundary-1)
+        
+        randBoundary--;
 
-    NSUInteger arr[imageNames.count];
-    for (NSUInteger i = 0 ; i < imageNames.count; i++)
-        arr[i] = i;
-    
-    srand(time(NULL) );
-    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
-    {
-        NSUInteger j = rand()%(i+1);
-        NSLog(@"-- j %d -- ", j);
-        swap(&arr[i], &arr[j]);
-    }
-    
-    for (int i = 0; i < imageNames.count; i++)
-        [self.animationImages1 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
-    
-    srand(time(NULL) );
-    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
-    {
-        NSUInteger j = rand()%(i+1);
-        swap(&arr[i], &arr[j]);
+        swap(&shuffledNumbers[randBoundary], &shuffledNumbers[randIndex]);
     }
 
-    for (int i = 0; i < imageNames.count; i++)
-        [self.animationImages2 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
-    
-    srand(time(NULL) );
-    for (NSUInteger i = (imageNames.count-1); i > 0 ; i--)
+    switch (imageNumber)
     {
-        NSUInteger j = rand()%(i+1);
-        swap(&arr[i], &arr[j]);
+        case 1:
+            if ( self.animationImages1 )
+                return;
+            
+            self.animationImages1 = [[NSMutableArray alloc] init];
+            
+            for (int i = 0; i < facesCount; i++)
+                [self.animationImages1 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
+
+            break;
+       
+        case 2:
+            if ( self.animationImages2 )
+                return;
+            
+            self.animationImages2 = [[NSMutableArray alloc] init];
+            
+            for (int i = 0; i < facesCount; i++)
+                [self.animationImages2 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
+
+            break;
+        
+        case 3:
+            if ( self.animationImages3 )
+                return;
+            
+            self.animationImages3 = [[NSMutableArray alloc] init];
+            
+            for (int i = 0; i < facesCount; i++)
+                [self.animationImages3 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
+
+            break;
+            
+        default:
+            break;
     }
-
-    for (int i = 0; i < imageNames.count; i++)
-        [self.animationImages3 addObject:[UIImage imageNamed:[imageNames objectAtIndex:arr[i]]]];
-
-    
 }
 
 
 -(void) startAnimatingImageForCrewNumber:(NSUInteger)crewNumber
 {
     UIImageView * imageView = nil;
+    
+    [self setupAnimationForImageNumber:crewNumber];
     
     switch (crewNumber)
     {
