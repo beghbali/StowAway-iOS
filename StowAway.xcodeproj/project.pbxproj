@@ -89,6 +89,7 @@
 		F42773E918FB922B003AE6AD /* 8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773C918FB922B003AE6AD /* 8@2x.png */; };
 		F42773EA18FB922B003AE6AD /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773CA18FB922B003AE6AD /* 9.png */; };
 		F42773EB18FB922B003AE6AD /* 9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773CB18FB922B003AE6AD /* 9@2x.png */; };
+		F42773EE18FE353A003AE6AD /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42773ED18FE353A003AE6AD /* HelpViewController.m */; };
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
 		F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823018F5142800E3F059 /* SWRevealViewController.m */; };
@@ -230,6 +231,8 @@
 		F42773C918FB922B003AE6AD /* 8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8@2x.png"; sourceTree = "<group>"; };
 		F42773CA18FB922B003AE6AD /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 		F42773CB18FB922B003AE6AD /* 9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9@2x.png"; sourceTree = "<group>"; };
+		F42773EC18FE353A003AE6AD /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		F42773ED18FE353A003AE6AD /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayServerCommunicator.h; sourceTree = "<group>"; };
 		F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayServerCommunicator.m; sourceTree = "<group>"; };
 		F451B6C518B3333400CF59BA /* StowawayConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayConstants.h; sourceTree = "<group>"; };
@@ -611,6 +614,8 @@
 				F460823B18FA38E200E3F059 /* PageContentViewController.m */,
 				F460824D18FA434A00E3F059 /* TutorialViewController.h */,
 				F460824E18FA434A00E3F059 /* TutorialViewController.m */,
+				F42773EC18FE353A003AE6AD /* HelpViewController.h */,
+				F42773ED18FE353A003AE6AD /* HelpViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -875,6 +880,7 @@
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
 				F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */,
+				F42773EE18FE353A003AE6AD /* HelpViewController.m in Sources */,
 				F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */,
 				F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */,
 				F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */,

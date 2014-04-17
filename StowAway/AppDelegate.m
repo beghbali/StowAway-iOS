@@ -21,7 +21,12 @@
 {
     
     NSLog(@"app launched with launch options %@", launchOptions);
-
+/*
+    //set bar color - #7ac7cf
+    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:122.0/256.0 green:199.0/256.0 blue:207.0/256.0 alpha:1.0];
+    //bar tint color - white
+    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+*/
     if (launchOptions != nil)
 	{
 		NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];

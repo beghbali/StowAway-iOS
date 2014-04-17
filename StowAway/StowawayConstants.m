@@ -81,5 +81,5 @@ NSString *const kOnboardingStatusTermsDone      = @"OnboardingStatusTermsDone";
 NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone";
 
 //animation finding crew
-double const kFindingCrewFacesAnimationDelay    = 2;
+double const kFindingCrewFacesAnimationDelay    = 5; //time it takes to go through all the faces #16
 

@@ -7,6 +7,7 @@
 //
 
 #import "MenuTableViewController.h"
+#import "SWRevealViewController.h"
 
 @interface MenuTableViewController ()
 
@@ -106,7 +107,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -114,7 +115,23 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    // configure the segue.
+    
+    if ( [segue isKindOfClass: [SWRevealViewControllerSegue class]] )
+    {
+        SWRevealViewControllerSegue* rvcs = (SWRevealViewControllerSegue*) segue;
+        
+        SWRevealViewController* rvc = self.revealViewController;
+        NSAssert( rvc != nil, @"oops! must have a revealViewController" );
+        
+        //NSAssert( [rvc.frontViewController isKindOfClass: [UINavigationController class]], @"oops!  for this segue we want a permanent navigation controller in the front!" );
+        
+        rvcs.performBlock = ^(SWRevealViewControllerSegue* rvc_segue, UIViewController* svc, UIViewController* dvc)
+        {
+           // UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:dvc];
+            [rvc pushFrontViewController:segue.destinationViewController animated:YES];
+        };
+    }
 }
-*/
 
 @end
