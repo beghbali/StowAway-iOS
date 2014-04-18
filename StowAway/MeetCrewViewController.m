@@ -32,6 +32,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *uberOrderInstructionLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -269,12 +270,12 @@
             if ( isCaptain )
             {
                 self.designationLabel.text = @"You are the Captain !!";
-                self.instructionsLabel.text = @"Please get to the pick up point and call Uberx";
+                self.uberOrderInstructionLabel.text = @"Order uberX and meet your crew";
                 self.requestUberButton.hidden = NO;
             } else
             {
                 self.designationLabel.text = @"You are a Stowaway !";
-                self.instructionsLabel.text = @"Please get to the pick up point and you don't have to call Uberx";
+                self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain will order uberX"];
                 self.requestUberButton.hidden = YES;
             }
             
@@ -303,7 +304,9 @@
                 self.cancelButton.hidden = YES;
             }
             continue;
-        }
+        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
+            self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        
         
         switch (i)
         {

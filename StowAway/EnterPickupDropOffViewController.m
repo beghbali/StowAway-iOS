@@ -148,20 +148,37 @@ BOOL onBoardingStatusChecked = NO;
         return;
     }
 */
+    onBoardingStatusChecked = YES;
+
     if ( ![self isUserLoggedIn] )
+    {
+        onBoardingStatusChecked = NO;
         [self performSegueWithIdentifier: @"onboarding_tutorial" sender: self];
+    }
     else
     {
         if (![[userDefaults objectForKey:kOnboardingStatusReceiptsDone]boolValue] )
+        {
+            onBoardingStatusChecked = NO;
             [self performSegueWithIdentifier: @"onboarding_receipts" sender: self];
+        }
         else
         {
             if (![[userDefaults objectForKey:kOnboardingStatusPaymentDone]boolValue] )
+            {
+                onBoardingStatusChecked = NO;
                 [self performSegueWithIdentifier: @"onboarding_payment" sender: self];
+            }
             else if (![[userDefaults objectForKey:kOnboardingStatusTermsDone]boolValue] )
+            {
+                onBoardingStatusChecked = NO;
                 [self performSegueWithIdentifier: @"onboarding_terms" sender: self];
+            }
         }
-    }
+    }    
+    
+    NSLog(@"%s......######## onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
+
 }
 
 #pragma mark - UITableView delegate methods

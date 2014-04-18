@@ -114,6 +114,8 @@
 		F4A4EC1E1900EB690087D438 /* PaymentMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */; };
 		F4A4EC211900EB970087D438 /* LinkReceiptsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */; };
 		F4A4EC241900EBB20087D438 /* RideCreditsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */; };
+		F4A4EC2A1900F3800087D438 /* wood-with-portholes.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A4EC261900F3800087D438 /* wood-with-portholes.png */; };
+		F4A4EC2B1900F3800087D438 /* wood-with-portholes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A4EC271900F3800087D438 /* wood-with-portholes@2x.png */; };
 		F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5818D547A200FAF3D0 /* Reachability.m */; };
 		F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */; };
 		F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F5918BC5BC300A404D0 /* MapKit.framework */; };
@@ -275,6 +277,8 @@
 		F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkReceiptsMenuViewController.m; sourceTree = "<group>"; };
 		F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCreditsMenuViewController.h; sourceTree = "<group>"; };
 		F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideCreditsMenuViewController.m; sourceTree = "<group>"; };
+		F4A4EC261900F3800087D438 /* wood-with-portholes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes.png"; sourceTree = "<group>"; };
+		F4A4EC271900F3800087D438 /* wood-with-portholes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes@2x.png"; sourceTree = "<group>"; };
 		F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndAgreementsViewController.h; sourceTree = "<group>"; };
 		F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndAgreementsViewController.m; sourceTree = "<group>"; };
 		F4CB1F5918BC5BC300A404D0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -342,6 +346,7 @@
 				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
+				F4A4EC251900F3800087D438 /* findingCrewImages */,
 				F460823D18FA3EAB00E3F059 /* tutorial_images */,
 				F41D043218EE6C2200785EA5 /* ios_app_sounds */,
 				F460823518F51ACA00E3F059 /* menu_images */,
@@ -603,6 +608,16 @@
 			path = Touch;
 			sourceTree = "<group>";
 		};
+		F4A4EC251900F3800087D438 /* findingCrewImages */ = {
+			isa = PBXGroup;
+			children = (
+				F4A4EC261900F3800087D438 /* wood-with-portholes.png */,
+				F4A4EC271900F3800087D438 /* wood-with-portholes@2x.png */,
+			);
+			name = findingCrewImages;
+			path = otherFrameworks/ios_app_sounds/tutorial_images/findingCrewImages;
+			sourceTree = "<group>";
+		};
 		F4A7E48D18E7183200B1C482 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,6 +813,7 @@
 				F42773A718FB8613003AE6AD /* find-crew-wood.png in Resources */,
 				F427737618FB3556003AE6AD /* footer.png in Resources */,
 				F42773A918FB8613003AE6AD /* from-to-v2.png in Resources */,
+				F4A4EC2A1900F3800087D438 /* wood-with-portholes.png in Resources */,
 				F460825118FA506200E3F059 /* tutorial_0.PNG in Resources */,
 				F42773E018FB922B003AE6AD /* 4.png in Resources */,
 				F41D043C18EE6C2200785EA5 /* you-are-stowaway.wav in Resources */,
@@ -825,6 +841,7 @@
 				F42773E218FB922B003AE6AD /* 5.png in Resources */,
 				F42773CF18FB922B003AE6AD /* 11.png in Resources */,
 				F42773D618FB922B003AE6AD /* 14@2x.png in Resources */,
+				F4A4EC2B1900F3800087D438 /* wood-with-portholes@2x.png in Resources */,
 				F460823818F51ACA00E3F059 /* reveal-icon.png in Resources */,
 				F41D042D18ED25BE00785EA5 /* cross-mark-256.png in Resources */,
 				F427737D18FB431F003AE6AD /* Icon@2x.png in Resources */,
