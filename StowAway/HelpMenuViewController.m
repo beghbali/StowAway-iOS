@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
-#import "HelpViewController.h"
+#import "HelpMenuViewController.h"
 #import "SWRevealViewController.h"
 
-@interface HelpViewController ()
+@interface HelpMenuViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
-@implementation HelpViewController
+@implementation HelpMenuViewController
 
 -(void)setUpRevealMenuButton
 {  //set up the reveal button

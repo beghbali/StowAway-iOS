@@ -89,7 +89,7 @@
 		F42773E918FB922B003AE6AD /* 8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773C918FB922B003AE6AD /* 8@2x.png */; };
 		F42773EA18FB922B003AE6AD /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773CA18FB922B003AE6AD /* 9.png */; };
 		F42773EB18FB922B003AE6AD /* 9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F42773CB18FB922B003AE6AD /* 9@2x.png */; };
-		F42773EE18FE353A003AE6AD /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42773ED18FE353A003AE6AD /* HelpViewController.m */; };
+		F42773EE18FE353A003AE6AD /* HelpMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42773ED18FE353A003AE6AD /* HelpMenuViewController.m */; };
 		F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */; };
 		F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F451B6C618B3333400CF59BA /* StowawayConstants.m */; };
 		F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823018F5142800E3F059 /* SWRevealViewController.m */; };
@@ -110,6 +110,10 @@
 		F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */; };
 		F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */; };
+		F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */; };
+		F4A4EC1E1900EB690087D438 /* PaymentMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */; };
+		F4A4EC211900EB970087D438 /* LinkReceiptsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */; };
+		F4A4EC241900EBB20087D438 /* RideCreditsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */; };
 		F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5818D547A200FAF3D0 /* Reachability.m */; };
 		F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */; };
 		F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F5918BC5BC300A404D0 /* MapKit.framework */; };
@@ -231,8 +235,8 @@
 		F42773C918FB922B003AE6AD /* 8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8@2x.png"; sourceTree = "<group>"; };
 		F42773CA18FB922B003AE6AD /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 		F42773CB18FB922B003AE6AD /* 9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9@2x.png"; sourceTree = "<group>"; };
-		F42773EC18FE353A003AE6AD /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
-		F42773ED18FE353A003AE6AD /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		F42773EC18FE353A003AE6AD /* HelpMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpMenuViewController.h; sourceTree = "<group>"; };
+		F42773ED18FE353A003AE6AD /* HelpMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpMenuViewController.m; sourceTree = "<group>"; };
 		F451B6BF18B18CE700CF59BA /* StowawayServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayServerCommunicator.h; sourceTree = "<group>"; };
 		F451B6C018B18CE700CF59BA /* StowawayServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StowawayServerCommunicator.m; sourceTree = "<group>"; };
 		F451B6C518B3333400CF59BA /* StowawayConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StowawayConstants.h; sourceTree = "<group>"; };
@@ -263,6 +267,14 @@
 		F47CB6ED18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2ViewControllerTouch.h; sourceTree = "<group>"; };
 		F47CB6EE18AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
 		F47CB6EF18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
+		F4A4EC191900E13E0087D438 /* ProfileMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileMenuViewController.h; sourceTree = "<group>"; };
+		F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileMenuViewController.m; sourceTree = "<group>"; };
+		F4A4EC1C1900EB690087D438 /* PaymentMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentMenuViewController.h; sourceTree = "<group>"; };
+		F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentMenuViewController.m; sourceTree = "<group>"; };
+		F4A4EC1F1900EB970087D438 /* LinkReceiptsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkReceiptsMenuViewController.h; sourceTree = "<group>"; };
+		F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkReceiptsMenuViewController.m; sourceTree = "<group>"; };
+		F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCreditsMenuViewController.h; sourceTree = "<group>"; };
+		F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideCreditsMenuViewController.m; sourceTree = "<group>"; };
 		F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndAgreementsViewController.h; sourceTree = "<group>"; };
 		F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndAgreementsViewController.m; sourceTree = "<group>"; };
 		F4CB1F5918BC5BC300A404D0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -614,8 +626,16 @@
 				F460823B18FA38E200E3F059 /* PageContentViewController.m */,
 				F460824D18FA434A00E3F059 /* TutorialViewController.h */,
 				F460824E18FA434A00E3F059 /* TutorialViewController.m */,
-				F42773EC18FE353A003AE6AD /* HelpViewController.h */,
-				F42773ED18FE353A003AE6AD /* HelpViewController.m */,
+				F42773EC18FE353A003AE6AD /* HelpMenuViewController.h */,
+				F42773ED18FE353A003AE6AD /* HelpMenuViewController.m */,
+				F4A4EC191900E13E0087D438 /* ProfileMenuViewController.h */,
+				F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */,
+				F4A4EC1C1900EB690087D438 /* PaymentMenuViewController.h */,
+				F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */,
+				F4A4EC1F1900EB970087D438 /* LinkReceiptsMenuViewController.h */,
+				F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */,
+				F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */,
+				F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -869,18 +889,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4A4EC241900EBB20087D438 /* RideCreditsMenuViewController.m in Sources */,
+				F4A4EC1E1900EB690087D438 /* PaymentMenuViewController.m in Sources */,
 				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
 				F4D65A5D18D805DE00FAF3D0 /* MeetCrewMapViewManager.m in Sources */,
 				F4CB1F6618C31BF200A404D0 /* FindingCrewViewController.m in Sources */,
 				F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */,
 				F4266DA218B5A87900A46BB1 /* StripeError.m in Sources */,
+				F4A4EC211900EB970087D438 /* LinkReceiptsMenuViewController.m in Sources */,
 				F4CB1F6018BC634A00A404D0 /* EnterPickupDropOffViewController.m in Sources */,
 				F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */,
 				68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */,
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
 				F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */,
-				F42773EE18FE353A003AE6AD /* HelpViewController.m in Sources */,
+				F42773EE18FE353A003AE6AD /* HelpMenuViewController.m in Sources */,
 				F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */,
 				F460823118F5142800E3F059 /* SWRevealViewController.m in Sources */,
 				F451B6C118B18CE700CF59BA /* StowawayServerCommunicator.m in Sources */,
@@ -891,6 +914,7 @@
 				F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */,
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
 				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
+				F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */,
 				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,
