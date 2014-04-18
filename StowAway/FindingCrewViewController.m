@@ -643,17 +643,17 @@ void swap (NSUInteger *a, NSUInteger *b)
         switch (i) {
             case 1:
                 [self startAnimatingImageForCrewNumber:1];
-                self.nameLabel1.text = @"finding...";
+                self.nameLabel1.text = nil;
                 break;
                 
             case 2:
                 [self startAnimatingImageForCrewNumber:2];
-                self.nameLabel2.text = @"finding...";
+                self.nameLabel2.text = nil;
                 break;
                 
             case 3:
                 [self startAnimatingImageForCrewNumber:3];
-                self.nameLabel3.text = @"finding...";
+                self.nameLabel3.text = nil;
                 break;
 
             default:
