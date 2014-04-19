@@ -695,7 +695,13 @@ void swap (NSUInteger *a, NSUInteger *b)
                 NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbName);
 
                 [self stopAnimatingImage:self.imageView1];
+                
                 self.imageView1.image   = profilePic;
+                self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
+                self.imageView1.layer.masksToBounds = YES;
+                self.imageView1.layer.borderWidth = 1;
+                self.imageView1.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
                 self.nameLabel1.text    = fbName;
             });
         }
@@ -706,7 +712,13 @@ void swap (NSUInteger *a, NSUInteger *b)
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
                 [self stopAnimatingImage:self.imageView2];
+                
                 self.imageView2.image   = profilePic;
+                self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
+                self.imageView2.layer.masksToBounds = YES;
+                self.imageView2.layer.borderWidth = 1;
+                self.imageView2.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
                 self.nameLabel2.text    = fbName;
             });
         }
@@ -717,7 +729,13 @@ void swap (NSUInteger *a, NSUInteger *b)
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
                 [self stopAnimatingImage:self.imageView3];
+                
                 self.imageView3.image   = profilePic;
+                self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
+                self.imageView3.layer.masksToBounds = YES;
+                self.imageView3.layer.borderWidth = 1;
+                self.imageView3.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
                 self.nameLabel3.text    = fbName;
             });
         }

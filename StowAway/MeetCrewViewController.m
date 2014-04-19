@@ -312,8 +312,13 @@
         {
             case 1:
                 self.nameLabel1.text = [crewMember objectForKey:kCrewFbName];
-                self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
                 
+                self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
+                self.imageView1.layer.masksToBounds = YES;
+                self.imageView1.layer.borderWidth = 1;
+                self.imageView1.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+
                 badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView1.image = badgedImage;
@@ -322,8 +327,13 @@
                 
             case 2:
                 self.nameLabel2.text = [crewMember objectForKey:kCrewFbName];
-                self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
                 
+                self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
+                self.imageView2.layer.masksToBounds = YES;
+                self.imageView2.layer.borderWidth = 1;
+                self.imageView2.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+
                 badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView2.image = badgedImage;
@@ -332,8 +342,13 @@
                 
             case 3:
                 self.nameLabel3.text = [crewMember objectForKey:kCrewFbName];
-                self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
                 
+                self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
+                self.imageView3.layer.masksToBounds = YES;
+                self.imageView3.layer.borderWidth = 1;
+                self.imageView3.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+
                 badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
                 if (badgedImage)
                     self.imageView3.image = badgedImage;
