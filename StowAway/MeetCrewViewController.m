@@ -253,7 +253,8 @@
     
     NSString * prevDesg = nil;
     UIImage * badgedImage = nil;
-
+    NSString * couponCode = nil;
+    
     for (int i = 0; i < self.crew.count; i++)
     {
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
@@ -264,6 +265,8 @@
 
         if (i == 0 )
         {
+            couponCode =  [crewMember objectForKey:kCouponCodeKey];
+            
             BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
             prevDesg = self.designationLabel.text;
 
@@ -304,6 +307,7 @@
                 self.cancelButton.hidden = YES;
             }
             continue;
+            
         } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
             self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
         
@@ -362,22 +366,23 @@
     
     for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
     {
-        NSLog(@"RESET image and name for crew #%lu ........", (unsigned long)i);
-        
+        BOOL isLoneRider = [couponCode isEqualToString:kCouponCodeLoneRider];
+        NSLog(@"RESET image and name for crew #%lu ........isLoneRider %d", (unsigned long)i, isLoneRider);
+
         //reset the images to nil and also reset the name to nil....
         switch (i) {
             case 1:
-                self.imageView1.image = nil;
+                self.imageView1.image = isLoneRider? [UIImage imageNamed:@"50.png"]: nil;
                 self.nameLabel1.text = nil;
                 break;
                 
             case 2:
-                self.imageView2.image = nil;
+                self.imageView2.image = isLoneRider? [UIImage imageNamed:@"percent.png"]: nil;
                 self.nameLabel2.text = nil;
                 break;
                 
             case 3:
-                self.imageView3.image = nil;
+                self.imageView3.image = isLoneRider? [UIImage imageNamed:@"off.png"]: nil;
                 self.nameLabel3.text = nil;
                 break;
                 

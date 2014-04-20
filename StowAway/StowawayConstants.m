@@ -85,3 +85,7 @@ NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone
 //animation finding crew
 double const kFindingCrewFacesAnimationDelay    = 5; //time it takes to go through all the faces #16
 
+//coupon request
+NSString *const kCouponCodeKey                  = @"coupon_code";
+NSString *const kCouponCodeLoneRider            = @"LONERIDER";
+

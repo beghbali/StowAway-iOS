@@ -90,4 +90,9 @@ extern NSString *const kOnboardingStatusTutorialDone;
 //animation finding crew
 extern double const kFindingCrewFacesAnimationDelay;
 
+//coupon request
+extern NSString *const kCouponCodeKey;
+extern NSString *const kCouponCodeLoneRider;
+
+
 

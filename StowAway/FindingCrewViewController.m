@@ -257,7 +257,9 @@
                 
                 //update  - as this might be after a getting launched from push, also designation might have changed
                 [crewMember setObject:[request objectForKey:kRequestedAt] forKey: kRequestedAt];
-                
+
+                [crewMember setObject:[request objectForKey:kCouponCodeKey] forKey: kCouponCodeKey];
+
                 [crewMember setObject:[NSNumber numberWithBool:isCaptain] forKey: kIsCaptain];
 
                 [crewMember setObject:[request objectForKey:kPublicId] forKey: kRequestPublicId];
@@ -310,9 +312,10 @@
     [self updateFindingCrewView];
 
     //save loc channel, suggested locn, if the ride is FULFILLED
-    if ([[response objectForKey:kStatus] isEqualToString:KStatusFulfilled])
+    NSString * rideStatus = [response objectForKey:kStatus];
+    if ( [rideStatus isEqualToString:KStatusFulfilled] || [rideStatus isEqualToString:kStatusCheckedin] )//kStatusCheckedin in case of lonerider
     {
-        NSLog(@"ride has been FULFILLED (viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'", self.viewDidLoadFinished);
+        NSLog(@"ride status %@ (viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'",rideStatus, self.viewDidLoadFinished);
         
         self.isReadyToGoToMeetCrew = YES;
         
@@ -582,7 +585,26 @@ void swap (NSUInteger *a, NSUInteger *b)
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
-#pragma mark timer expiry localnotification 
+-(void)sendCoupon:(NSString *)couponCode
+{
+    //cancel local notif
+    [self cancelTimerExpiryNotificationSchedule];
+
+    //send couponed request
+    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    
+    NSString *couponRequest = [NSString stringWithFormat:@"{\"%@\": \"%@\"}",
+                                                     kCouponCodeKey, couponCode];
+    
+
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+
+    sscommunicator.sscDelegate = self;
+
+    [sscommunicator sendServerRequest:couponRequest ForURL:url usingHTTPMethod:@"PUT"];    //don't need the callback, so no delegate
+}
+
+#pragma mark timer expiry localnotification
 - (void)setTimerExpiryNotification
 {
     NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.cdt.countDownEndDate);
@@ -770,7 +792,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     if ([theAlert.title isEqualToString:@"No Matches Yet !"])
     {
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"No"])
-            [self cancelRide];
+            [self sendCoupon:kCouponCodeLoneRider];
         else
             [self armUpCountdownTimer]; //re-start the 5mins timer
     }

@@ -131,6 +131,12 @@
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
 		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
+		F4EEE67C1904755600A20886 /* 50.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6761904755600A20886 /* 50.png */; };
+		F4EEE67D1904755600A20886 /* 50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6771904755600A20886 /* 50@2x.png */; };
+		F4EEE67E1904755600A20886 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6781904755600A20886 /* off.png */; };
+		F4EEE67F1904755600A20886 /* off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6791904755600A20886 /* off@2x.png */; };
+		F4EEE6801904755600A20886 /* percent.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE67A1904755600A20886 /* percent.png */; };
+		F4EEE6811904755600A20886 /* percent@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE67B1904755600A20886 /* percent@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,6 +310,12 @@
 		F4EB918718AA11FD00C57BF2 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
 		F4EB920818AAF5D800C57BF2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F4EEE6761904755600A20886 /* 50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 50.png; sourceTree = "<group>"; };
+		F4EEE6771904755600A20886 /* 50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "50@2x.png"; sourceTree = "<group>"; };
+		F4EEE6781904755600A20886 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = off.png; sourceTree = "<group>"; };
+		F4EEE6791904755600A20886 /* off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "off@2x.png"; sourceTree = "<group>"; };
+		F4EEE67A1904755600A20886 /* percent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = percent.png; sourceTree = "<group>"; };
+		F4EEE67B1904755600A20886 /* percent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "percent@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +359,7 @@
 				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				F4A4EC251900F3800087D438 /* findingCrewImages */,
+				F4EEE6751904755600A20886 /* loneRiderImages */,
 				F460823D18FA3EAB00E3F059 /* tutorial_images */,
 				F41D043218EE6C2200785EA5 /* ios_app_sounds */,
 				F460823518F51ACA00E3F059 /* menu_images */,
@@ -694,6 +707,20 @@
 			path = otherFrameworks;
 			sourceTree = SOURCE_ROOT;
 		};
+		F4EEE6751904755600A20886 /* loneRiderImages */ = {
+			isa = PBXGroup;
+			children = (
+				F4EEE6761904755600A20886 /* 50.png */,
+				F4EEE6771904755600A20886 /* 50@2x.png */,
+				F4EEE6781904755600A20886 /* off.png */,
+				F4EEE6791904755600A20886 /* off@2x.png */,
+				F4EEE67A1904755600A20886 /* percent.png */,
+				F4EEE67B1904755600A20886 /* percent@2x.png */,
+			);
+			name = loneRiderImages;
+			path = otherFrameworks/ios_app_sounds/tutorial_images/loneRiderImages;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -780,6 +807,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4EEE67F1904755600A20886 /* off@2x.png in Resources */,
 				F42773E818FB922B003AE6AD /* 8.png in Resources */,
 				F42773DD18FB922B003AE6AD /* 2@2x.png in Resources */,
 				F42773D718FB922B003AE6AD /* 15.png in Resources */,
@@ -798,6 +826,7 @@
 				F42773CC18FB922B003AE6AD /* 1.png in Resources */,
 				F42773EA18FB922B003AE6AD /* 9.png in Resources */,
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
+				F4EEE67C1904755600A20886 /* 50.png in Resources */,
 				F42773D018FB922B003AE6AD /* 11@2x.png in Resources */,
 				F42773D918FB922B003AE6AD /* 16.png in Resources */,
 				68BAFEBA188DDBD3009738A0 /* InfoPlist.strings in Resources */,
@@ -806,9 +835,11 @@
 				F460824118FA3EAB00E3F059 /* tutorial_1.PNG in Resources */,
 				F42773E618FB922B003AE6AD /* 7.png in Resources */,
 				F42773D818FB922B003AE6AD /* 15@2x.png in Resources */,
+				F4EEE6811904755600A20886 /* percent@2x.png in Resources */,
 				F42773E518FB922B003AE6AD /* 6@2x.png in Resources */,
 				F47CB70818AAF84000FD8FB9 /* ReleaseNotes.txt in Resources */,
 				F427739118FB4C4B003AE6AD /* ride_credits@2x.png in Resources */,
+				F4EEE6801904755600A20886 /* percent.png in Resources */,
 				F427737C18FB431F003AE6AD /* Icon.png in Resources */,
 				F42773A718FB8613003AE6AD /* find-crew-wood.png in Resources */,
 				F427737618FB3556003AE6AD /* footer.png in Resources */,
@@ -850,9 +881,11 @@
 				F41D043118ED3C4300785EA5 /* check-mark-256.png in Resources */,
 				F427738F18FB4C4B003AE6AD /* receipt@2x.png in Resources */,
 				F427738D18FB4C4B003AE6AD /* profile@2x.png in Resources */,
+				F4EEE67D1904755600A20886 /* 50@2x.png in Resources */,
 				F41D043A18EE6C2200785EA5 /* ride_missed.wav in Resources */,
 				F42773DB18FB922B003AE6AD /* 1@2x.png in Resources */,
 				F42773E118FB922B003AE6AD /* 4@2x.png in Resources */,
+				F4EEE67E1904755600A20886 /* off.png in Resources */,
 				F460824218FA3EAB00E3F059 /* tutorial_2.PNG in Resources */,
 				F460824318FA3EAB00E3F059 /* tutorial_3.PNG in Resources */,
 			);
