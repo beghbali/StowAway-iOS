@@ -680,11 +680,13 @@ void swap (NSUInteger *a, NSUInteger *b)
                           JSONObjectWithData:firstNameData
                           options:kNilOptions
                           error:&error];
-    NSString * fbName = nil;
+    NSString * fbFullName = nil;
    // NSLog(@"jsonDict %@", jsonDict);
     
     if (jsonDict && !error)
-        fbName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
+        fbFullName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
+
+    NSString * fbName = [[fbFullName componentsSeparatedByString: @" "] objectAtIndex:0];
 
     switch (crewPostion)
     {
