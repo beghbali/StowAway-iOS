@@ -154,9 +154,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
         NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", publicUserId];
         
-        NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
+        NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
                               kUserEmail, self.googleAuth.userEmail, kUserEmailProvider, @"gmail",
-                              kGmailAccessToken, self.googleAuth.accessToken, kGmailRefreshToken, self.googleAuth.refreshToken];
+                              kGmailAccessToken, self.googleAuth.accessToken, kGmailRefreshToken, self.googleAuth.refreshToken, kGmailAccessTokenExpiration, self.googleAuth.expirationDate];
         
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];

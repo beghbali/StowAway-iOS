@@ -126,6 +126,10 @@
     NSString *domain = [components objectAtIndex:1];
     
     provider = [[domain componentsSeparatedByString:@"."] objectAtIndex:0];
+
+    if (![[NSArray arrayWithObjects:*kSupportedEmailProviders, nil] containsObject:[provider lowercaseString]]) {
+        provider = @"other";
+    }
     
     return  provider;
 }

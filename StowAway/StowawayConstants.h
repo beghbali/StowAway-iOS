@@ -13,11 +13,13 @@ extern NSString *const kPublicId;
 //link receipts
 extern NSString *const kUserEmail;
 extern NSString *const kUserEmailProvider;
+extern NSString *const kSupportedEmailProviders[];
 extern NSString *const kStowawayEmail;
 
 //gmail OAuth token
 extern NSString *const kGmailAccessToken;
 extern NSString *const kGmailRefreshToken;
+extern NSString *const kGmailAccessTokenExpiration;
 
 //FB login
 extern NSString *const kFirstName;
