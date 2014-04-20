@@ -265,7 +265,9 @@
 
         if (i == 0 )
         {
-            couponCode =  [crewMember objectForKey:kCouponCodeKey];
+            couponCode = [crewMember objectForKey:kCouponCodeKey];
+            if (couponCode == (NSString *)[NSNull null])
+                couponCode = nil;
             
             BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
             prevDesg = self.designationLabel.text;
