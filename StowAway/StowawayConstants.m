@@ -83,7 +83,7 @@ NSString *const kOnboardingStatusTermsDone      = @"OnboardingStatusTermsDone";
 NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone";
 
 //animation finding crew
-double const kFindingCrewFacesAnimationDelay    = 5; //time it takes to go through all the faces #16
+double const kFindingCrewFacesAnimationDelay    = 3; //time it takes to go through all the faces #16
 
 //coupon request
 NSString *const kCouponCodeKey                  = @"coupon_code";

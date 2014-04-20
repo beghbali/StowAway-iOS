@@ -676,7 +676,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Setup(1/2): Receipts" id="yd9-CM-CIe">
-                                        <barButtonItem key="rightBarButtonItem" title="skip" id="Gp4-t3-J4k">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="skip" id="Gp4-t3-J4k">
                                             <connections>
                                                 <action selector="skipTapped:" destination="FZI-WL-nLp" id="z5D-M4-1Ux"/>
                                             </connections>
@@ -748,7 +748,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Setup(2/2): Payment" id="7XW-bG-feu">
-                                        <barButtonItem key="rightBarButtonItem" title="skip" id="y6E-n2-vLw">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="skip" id="y6E-n2-vLw">
                                             <connections>
                                                 <action selector="skipButtonTapped:" destination="Gqh-qZ-Ggc" id="cEq-RF-x42"/>
                                             </connections>
@@ -930,7 +930,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Terms of Use" id="sOs-Uo-bRq">
-                                        <barButtonItem key="rightBarButtonItem" title="skip" id="tfi-VW-3cl">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="skip" id="tfi-VW-3cl">
                                             <connections>
                                                 <action selector="skipTapped:" destination="721-hy-SPE" id="E6e-rn-VkY"/>
                                             </connections>
@@ -1017,7 +1017,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="231" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="1763DD3D-0BD0-43EC-83B2-28B62C40028D" colorSpace="pattern"/>
+                                <color key="color" patternImage="DC7A421B-36B5-44A5-AA92-B704AA9B2ED4" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find-crew-wood.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="424" width="320" height="56"/>
@@ -1249,7 +1249,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="221" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="B5FE62B6-5BC4-440C-BFCF-71ADD9367530" colorSpace="pattern"/>
+                                <color key="color" patternImage="21C8A997-1F30-45DF-83BB-0CA3336313FD" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="lra-f2-ZOm">
                                 <rect key="frame" x="0.0" y="352" width="320" height="128"/>
@@ -1484,7 +1484,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1763DD3D-0BD0-43EC-83B2-28B62C40028D" width="320" height="460">
+        <image name="21C8A997-1F30-45DF-83BB-0CA3336313FD" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11371,7 +11371,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="B5FE62B6-5BC4-440C-BFCF-71ADD9367530" width="320" height="460">
+        <image name="DC7A421B-36B5-44A5-AA92-B704AA9B2ED4" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -21280,7 +21280,7 @@ AAAAAAAAAAAJCvs
         <segue reference="pAS-ik-Ig1"/>
         <segue reference="R97-G3-Fuo"/>
         <segue reference="WTk-75-MPQ"/>
-        <segue reference="ozj-xX-N4X"/>
+        <segue reference="wbq-E7-Ekt"/>
         <segue reference="D7o-TK-Kff"/>
     </inferredMetricsTieBreakers>
 </document>
