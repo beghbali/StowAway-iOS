@@ -27,13 +27,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *authenticateWithGoogleButton;
 @property (weak, nonatomic) IBOutlet UIButton *gotItButton;
 @property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
-@property (weak, nonatomic) IBOutlet UITextView *changeUberEmailTextView;
+@property (weak, nonatomic) IBOutlet UILabel *changeUberEmailTextView;
+@property (weak, nonatomic) IBOutlet UIButton *showMeHowButton;
 
 @end
 
 @implementation ReceiptEmailViewController
 
--(void) viewDidLoad
+
+-(void)viewDidLoad
 {
     [super viewDidLoad];
   
@@ -43,16 +45,23 @@
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
+    
     self.changeUberEmailTextView.hidden = YES;
+    self.showMeHowButton.hidden =   YES;
+
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
+    
+    [self.emailTextField becomeFirstResponder];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
+    /*
     //auto bring up keyboard to enter email
     [self.emailTextField becomeFirstResponder];
     
@@ -60,17 +69,20 @@
     self.askMailProviderLabel.hidden = YES;
     self.googleMailProviderButton.hidden = YES;
     self.otherMailProviderButton.hidden = YES;
+
     self.changeUberEmailTextView.hidden = YES;
+    self.showMeHowButton.hidden =   YES;
     self.stowawayEmailFooterLabel.hidden = YES;
     self.authenticateWithGoogleButton.hidden = YES;
     self.gotItButton.hidden = YES;
     
     self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+     */
 }
-- (IBAction)skipTapped:(UIBarButtonItem *)sender {
-    
 
+- (IBAction)skipTapped:(UIBarButtonItem *)sender
+{
     UIViewController * presentingVC = self.presentingViewController;
     
     NSLog(@"presenting vc %@ ", presentingVC);
@@ -84,6 +96,10 @@
     [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
 
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)showMeHowButtonTapped:(UIButton *)sender {
+    
 }
 
 // to check what the user is writting -- show red/green text box
@@ -161,10 +177,9 @@
         self.otherMailProviderButton.hidden = YES;
         
         self.changeUberEmailTextView.hidden = YES;
+        self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
-        
         self.authenticateWithGoogleButton.hidden = NO;
-        
         self.gotItButton.hidden = YES;
     } else
     {
@@ -175,6 +190,7 @@
         self.otherMailProviderButton.hidden = NO;
         
         self.changeUberEmailTextView.hidden = YES;
+        self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
         self.authenticateWithGoogleButton.hidden = YES;
@@ -186,12 +202,13 @@
     return YES;
 }
 
+
 -(void)setOtherMailTexts
 {
-    //TODO: changing this to textview would be better ?
+    //TODO: make the email bold - nsattributed text
     NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
     self.changeUberEmailTextView.text = [NSString stringWithFormat:
-                                              @"To read uber receipts, you will need to set your email in ubers account settings to %@", stowawayEmail];
+                                              @"To use Stowaway, you'll need to update your email in the Uber app to %@", stowawayEmail];
 
     self.stowawayEmailFooterLabel.text = [NSString stringWithFormat:
                                               @"Don't worry... you will also get uber receipts at %@", self.email];
@@ -199,13 +216,14 @@
 
 - (IBAction)mailProviderSelected:(UIButton *)sender
 {
-    if ([sender.titleLabel.text isEqualToString:@"Google"]) {
+    if ([sender.titleLabel.text isEqualToString:@"Yes"]) {
         NSLog(@"google selected");
         sender.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
         self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         self.authenticateWithGoogleButton.hidden = NO;
         
         self.changeUberEmailTextView.hidden = YES;
+        self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         self.gotItButton.hidden = YES;
     } else
@@ -217,6 +235,7 @@
         self.authenticateWithGoogleButton.hidden = YES;
         
         self.changeUberEmailTextView.hidden = NO;
+        self.showMeHowButton.hidden =   NO;
         self.stowawayEmailFooterLabel.hidden = NO;
         self.gotItButton.hidden = NO;
 

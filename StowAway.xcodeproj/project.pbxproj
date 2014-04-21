@@ -137,6 +137,7 @@
 		F4EEE67F1904755600A20886 /* off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6791904755600A20886 /* off@2x.png */; };
 		F4EEE6801904755600A20886 /* percent.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE67A1904755600A20886 /* percent.png */; };
 		F4EEE6811904755600A20886 /* percent@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE67B1904755600A20886 /* percent@2x.png */; };
+		F4EEE6841904C53F00A20886 /* UberSettingsGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EEE6831904C53F00A20886 /* UberSettingsGuideViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +317,8 @@
 		F4EEE6791904755600A20886 /* off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "off@2x.png"; sourceTree = "<group>"; };
 		F4EEE67A1904755600A20886 /* percent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = percent.png; sourceTree = "<group>"; };
 		F4EEE67B1904755600A20886 /* percent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "percent@2x.png"; sourceTree = "<group>"; };
+		F4EEE6821904C53F00A20886 /* UberSettingsGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UberSettingsGuideViewController.h; sourceTree = "<group>"; };
+		F4EEE6831904C53F00A20886 /* UberSettingsGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UberSettingsGuideViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -664,6 +667,8 @@
 				F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */,
 				F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */,
 				F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */,
+				F4EEE6821904C53F00A20886 /* UberSettingsGuideViewController.h */,
+				F4EEE6831904C53F00A20886 /* UberSettingsGuideViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -966,6 +971,7 @@
 				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
 				F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
+				F4EEE6841904C53F00A20886 /* UberSettingsGuideViewController.m in Sources */,
 				F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */,
 				F47CB71F18AB566E00FD8FB9 /* ReceiptEmailViewController.m in Sources */,
 				68BAFEBC188DDBD3009738A0 /* main.m in Sources */,
