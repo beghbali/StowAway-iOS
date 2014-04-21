@@ -85,3 +85,7 @@ NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone
 //animation finding crew
 double const kFindingCrewFacesAnimationDelay    = 5; //time it takes to go through all the faces #16
 
+//app update bundle
+NSString *const kBundlePlistPath       = @"https://getstowaway.com/app/latest/Stowaway.plist";
+
+

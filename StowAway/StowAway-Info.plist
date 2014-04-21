@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getstowaway.staging</string>
+	<string>com.getstowaway.stowaway.beta</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -30,11 +30,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>3.0</string>
 	<key>FacebookAppID</key>
 	<string>524966727601670</string>
 	<key>FacebookDisplayName</key>
-	<string>StowAway</string>
+	<string>Stowaway</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>

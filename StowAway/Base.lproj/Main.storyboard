@@ -1017,7 +1017,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="231" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="45572496-6437-4C48-B4E2-EF2320E8591F" colorSpace="pattern"/>
+                                <color key="color" patternImage="25F73131-EA66-4775-AD66-29323B3ADAA0" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find-crew-wood.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="424" width="320" height="56"/>
@@ -1249,7 +1249,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="221" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="C8249CA2-A157-4412-BAF9-5039CC408EDE" colorSpace="pattern"/>
+                                <color key="color" patternImage="914360DC-3991-47C5-BAB9-97C65F850620" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="lra-f2-ZOm">
                                 <rect key="frame" x="0.0" y="352" width="320" height="128"/>
@@ -1484,7 +1484,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="45572496-6437-4C48-B4E2-EF2320E8591F" width="320" height="460">
+        <image name="25F73131-EA66-4775-AD66-29323B3ADAA0" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11371,7 +11371,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="C8249CA2-A157-4412-BAF9-5039CC408EDE" width="320" height="460">
+        <image name="914360DC-3991-47C5-BAB9-97C65F850620" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

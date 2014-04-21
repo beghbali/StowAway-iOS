@@ -262,7 +262,41 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    BOOL updateAvailable = NO;
+    NSDictionary *updateDictionary = [NSDictionary dictionaryWithContentsOfURL:
+                                      [NSURL URLWithString: kBundlePlistPath]];
+    
+    if (updateDictionary)
+    {
+        NSArray *items = [updateDictionary objectForKey:@"items"];
+        NSDictionary *itemDict = [items lastObject];
+        
+        NSDictionary *metaData = [itemDict objectForKey:@"metadata"];
+        NSString *newversion = [metaData valueForKey:@"bundle-version"];
+        NSString *currentversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        
+        updateAvailable = [newversion compare:currentversion options:NSNumericSearch] == NSOrderedDescending;
+    }
+
+    if (updateAvailable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"App Update Required"
+                                                        message:@"You must update to the latest version of the app"
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
+        [alert show];
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", kBundlePlistPath];
+        NSURL *url = [NSURL URLWithString:myURL];
+        [[UIApplication sharedApplication] openURL: url];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
