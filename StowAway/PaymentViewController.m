@@ -53,7 +53,6 @@ char isReadyToSavePayment = 0;
     
     self.doneButton.hidden = YES;
     
-    
     [self.cardNumberField addTarget: self action:@selector(reformatAsCardNumber:)
                    forControlEvents:UIControlEventEditingChanged];
     
@@ -62,6 +61,15 @@ char isReadyToSavePayment = 0;
     
     self.stripeCard = [[STPCard alloc] init];
     
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+
+    NSString * firstName = [standardDefaults objectForKey:kFirstName];
+    NSString * lastName = [standardDefaults objectForKey:kLastName];
+
+    //prefil fb name
+    self.nameField.text = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    [self textFieldDidEndEditing:self.nameField];
+    [self.cardNumberField becomeFirstResponder];
 }
 
 - (IBAction)skipButtonTapped:(id)sender {
@@ -470,7 +478,7 @@ char isReadyToSavePayment = 0;
              object:nil];
     
     //TODO: prefill the name with facebook name
-    [self.nameField becomeFirstResponder];
+    //[self.nameField becomeFirstResponder];
 }
 
 - (void) viewWillDisappear: (BOOL)animated{
