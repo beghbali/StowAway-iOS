@@ -139,7 +139,7 @@
 
 /* Begin PBXFileReference section */
 		347CED1860724CA9AAE54326 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		68BAFEAC188DDBD3009738A0 /* StowAway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StowAway.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		68BAFEAC188DDBD3009738A0 /* Stowaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stowaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAF188DDBD3009738A0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		68BAFEB3188DDBD3009738A0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -344,7 +344,7 @@
 		68BAFEAD188DDBD3009738A0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				68BAFEAC188DDBD3009738A0 /* StowAway.app */,
+				68BAFEAC188DDBD3009738A0 /* Stowaway.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -704,7 +704,7 @@
 			);
 			name = StowAway;
 			productName = StowAway;
-			productReference = 68BAFEAC188DDBD3009738A0 /* StowAway.app */;
+			productReference = 68BAFEAC188DDBD3009738A0 /* Stowaway.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -726,7 +726,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
+			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -967,6 +967,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Stowaway;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -998,6 +999,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = Stowaway;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1024,7 +1026,7 @@
 					"$(SRCROOT)/**",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Stowaway;
 				PROVISIONING_PROFILE = "1F37D327-7226-4D51-98E3-9AFD5CF75E94";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1051,7 +1053,7 @@
 					"$(SRCROOT)/**",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Stowaway;
 				PROVISIONING_PROFILE = "1F37D327-7226-4D51-98E3-9AFD5CF75E94";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1060,7 +1062,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */ = {
+		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68BAFEDC188DDBD3009738A0 /* Debug */,
