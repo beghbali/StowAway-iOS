@@ -21,14 +21,16 @@
 @property (strong, nonatomic)  NSString * emailProvider;
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-@property (weak, nonatomic) IBOutlet UILabel *askMailProviderLabel;
-@property (weak, nonatomic) IBOutlet UIButton *googleMailProviderButton;
-@property (weak, nonatomic) IBOutlet UIButton *otherMailProviderButton;
-@property (weak, nonatomic) IBOutlet UIButton *authenticateWithGoogleButton;
-@property (weak, nonatomic) IBOutlet UIButton *gotItButton;
-@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *changeUberEmailTextView;
 @property (weak, nonatomic) IBOutlet UIButton *showMeHowButton;
+@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *isUsingGmailLabel;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailYesButton;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailNoButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *finalActionButton;
 
 @end
 
@@ -39,67 +41,21 @@
 {
     [super viewDidLoad];
   
-    //TODO: encapsulate the buttons appearence and hiding into a function
-    
-    //hide labels, buttons and text view
-    self.askMailProviderLabel.hidden = YES;
-    self.googleMailProviderButton.hidden = YES;
-    self.otherMailProviderButton.hidden = YES;
-    
-    self.changeUberEmailTextView.hidden = YES;
-    self.showMeHowButton.hidden =   YES;
-
-    self.stowawayEmailFooterLabel.hidden = YES;
-    self.authenticateWithGoogleButton.hidden = YES;
-    self.gotItButton.hidden = YES;
-    
     [self.emailTextField becomeFirstResponder];
 
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    /*
-    //auto bring up keyboard to enter email
-    [self.emailTextField becomeFirstResponder];
-    
-    //hide labels, buttons and text view
-    self.askMailProviderLabel.hidden = YES;
-    self.googleMailProviderButton.hidden = YES;
-    self.otherMailProviderButton.hidden = YES;
-
-    self.changeUberEmailTextView.hidden = YES;
-    self.showMeHowButton.hidden =   YES;
-    self.stowawayEmailFooterLabel.hidden = YES;
-    self.authenticateWithGoogleButton.hidden = YES;
-    self.gotItButton.hidden = YES;
-    
-    self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-     */
-}
 
 - (IBAction)skipTapped:(UIBarButtonItem *)sender
 {
     UIViewController * presentingVC = self.presentingViewController;
     
-    NSLog(@"presenting vc %@ ", presentingVC);
-    
     while ( [presentingVC class] != [SWRevealViewController class] )
-    {
         presentingVC = presentingVC.presentingViewController;
-        NSLog(@"next presenting vc %@", presentingVC);
-    }
-    NSLog(@" ======= return home =====");
+    
     [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
 
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)showMeHowButtonTapped:(UIButton *)sender {
-    
 }
 
 // to check what the user is writting -- show red/green text box
@@ -110,13 +66,9 @@
     textField.layer.borderWidth = 1.0f;
     
     if ([self isEmailValid:email])
-    {
         textField.layer.borderColor = [[UIColor greenColor] CGColor];
-        
-    } else
-    {
+    else
         textField.layer.borderColor = [[UIColor redColor] CGColor];
-    }
     
     return YES;
 }
@@ -143,9 +95,8 @@
     
     provider = [[domain componentsSeparatedByString:@"."] objectAtIndex:0];
 
-    if (![[NSArray arrayWithObjects:*kSupportedEmailProviders, nil] containsObject:[provider lowercaseString]]) {
+    if (![[NSArray arrayWithObjects:*kSupportedEmailProviders, nil] containsObject:[provider lowercaseString]])
         provider = @"other";
-    }
     
     return  provider;
 }
@@ -169,33 +120,41 @@
     self.emailProvider = [self getEmailProvider:self.email];
     NSLog(@"provider -- %@",self.emailProvider);
     
-    if ( [self.emailProvider caseInsensitiveCompare:@"gmail"] == NSOrderedSame ) {
+    if ( [self.emailProvider caseInsensitiveCompare:@"gmail"] == NSOrderedSame )
+    {
         NSLog(@"gmail = show auth button");
         
-        self.askMailProviderLabel.hidden = YES;
-        self.googleMailProviderButton.hidden = YES;
-        self.otherMailProviderButton.hidden = YES;
+        //hide is gmail question and answer
+        self.isUsingGmailLabel.hidden = YES;
+        self.isGmailNoButton.hidden = YES;
+        self.isGmailYesButton.hidden = YES;
         
+        //hide uber email change instructions
         self.changeUberEmailTextView.hidden = YES;
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
-        self.authenticateWithGoogleButton.hidden = NO;
-        self.gotItButton.hidden = YES;
+        
+        //set final action button
+        self.finalActionButton.titleLabel.text = @"Connect Inbox";
+        self.finalActionButton.hidden = NO;
     } else
     {
         NSLog(@"not gmail = ask provider");
 
-        self.askMailProviderLabel.hidden = NO;
-        self.googleMailProviderButton.hidden = NO;
-        self.otherMailProviderButton.hidden = NO;
+        //show is gmail question and answer
+        self.isUsingGmailLabel.hidden = NO;
+        self.isGmailNoButton.hidden = NO;
+        self.isGmailNoButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        self.isGmailYesButton.hidden = NO;
+        self.isGmailYesButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         
+        //hide uber email change instructions
         self.changeUberEmailTextView.hidden = YES;
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
-        self.authenticateWithGoogleButton.hidden = YES;
-        
-        self.gotItButton.hidden = YES;
+        //hide final action button
+        self.finalActionButton.hidden = YES;
     }
     
     [self.emailTextField resignFirstResponder];
@@ -216,29 +175,41 @@
 
 - (IBAction)mailProviderSelected:(UIButton *)sender
 {
-    if ([sender.titleLabel.text isEqualToString:@"Yes"]) {
+    if ([sender.titleLabel.text isEqualToString:@"Yes"])
+    {
         NSLog(@"google selected");
-        sender.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
-        self.otherMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-        self.authenticateWithGoogleButton.hidden = NO;
         
+        //highlight yes button
+        sender.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        self.isGmailNoButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        
+        //hide uber change email stuff
         self.changeUberEmailTextView.hidden = YES;
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
-        self.gotItButton.hidden = YES;
+        
+        //set final action button
+        self.finalActionButton.titleLabel.text = @"Connect Inbox";
+        self.finalActionButton.hidden = NO;
     } else
     {
         NSLog(@"other selected");
-        [self setOtherMailTexts];
-        sender.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
-        self.googleMailProviderButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-        self.authenticateWithGoogleButton.hidden = YES;
         
+        //highlight no button
+        sender.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        self.isGmailYesButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        
+        // set uber email change instruction
+        [self setOtherMailTexts];
+
+        //show uber change email stuff
         self.changeUberEmailTextView.hidden = NO;
         self.showMeHowButton.hidden =   NO;
         self.stowawayEmailFooterLabel.hidden = NO;
-        self.gotItButton.hidden = NO;
-
+        
+        //set final action button
+        self.finalActionButton.titleLabel.text = @"        Done     ";
+        self.finalActionButton.hidden = NO;
     }
 }
 
@@ -254,18 +225,23 @@
 }
 
 
-- (IBAction)authenticateWithGoogle:(UIButton *)sender {
-    
-    GoogleAuthenticator * googleAuthenticator = [[GoogleAuthenticator alloc]init];
-    googleAuthenticator.googleAuthDelegate = self;
-    googleAuthenticator.email = self.email;
-    googleAuthenticator.emailProvider = self.emailProvider;
-    
-    //show gtm view
-    [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
+- (IBAction)authenticateWithGoogle:(UIButton *)sender
+{
+    if ( [sender.titleLabel.text isEqualToString:@"Connect Inbox"] )
+    {
+        GoogleAuthenticator * googleAuthenticator = [[GoogleAuthenticator alloc]init];
+        googleAuthenticator.googleAuthDelegate = self;
+        googleAuthenticator.email = self.email;
+        googleAuthenticator.emailProvider = self.emailProvider;
+        
+        //show gtm view
+        [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
+    } else
+        [self confirmedOtherEmailButtonTapped];
+        
 }
 
-- (IBAction)confirmedOtherEmailButtonTapped:(UIButton *)sender
+- (void)confirmedOtherEmailButtonTapped
 {
     //send the other email to server
     //SUCCESS - move to the next screen - ie credit card
