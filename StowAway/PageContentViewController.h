@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TutorialViewController.h"
 
 @interface PageContentViewController : UIViewController
 
 @property NSUInteger pageIndex;
 @property NSString *imageFile;
+@property TutorialViewController * tutVC;
 
 @end

@@ -11,6 +11,7 @@
 @interface PageContentViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *letsRideButton;
 
 @end
 
@@ -21,7 +22,16 @@
     [super viewDidLoad];
 
     self.backgroundImageView.image = [UIImage imageNamed:self.imageFile];
+    
+    if (self.pageIndex == 3)
+        self.letsRideButton.hidden = NO;
+    else
+        self.letsRideButton.hidden = YES;
 }
 
+- (IBAction)gotItButtonTapped:(UIButton *)sender
+{
+    [self.tutVC endTutorial];
+}
 
 @end

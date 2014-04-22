@@ -18,10 +18,15 @@
 
 @implementation TutorialViewController
 
+-(void)endTutorial
+{
+    [self performSegueWithIdentifier:@"tutorialToLogin" sender:self];
+
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     _pageImages = @[@"tutorial_1.png", @"tutorial_2.png", @"tutorial_3.png", @"tutorial_4.png"];
     
     // Create page view controller
@@ -30,41 +35,28 @@
     
     PageContentViewController *startingViewController = [self viewControllerAtIndex:0];
     NSArray *viewControllers = @[startingViewController];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [self.pageViewController setViewControllers:viewControllers
+                                      direction:UIPageViewControllerNavigationDirectionForward
+                                       animated:YES
+                                     completion:nil];
     
-    // Change the size of page view controller
-    //self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 30);
-
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
-   
-    return;
-    /*
-    NSArray *subviews = self.pageViewController.view.subviews;
-    UIPageControl *thisControl = nil;
-    for (int i=0; i<[subviews count]; i++) {
-        if ([[subviews objectAtIndex:i] isKindOfClass:[UIPageControl class]]) {
-            thisControl = (UIPageControl *)[subviews objectAtIndex:i];
-        }
-    }
-    
-    thisControl.hidden = true;
-    self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
-     */
+
 }
 
 
 - (PageContentViewController *)viewControllerAtIndex:(NSUInteger)index
 {
-    if (([self.pageImages count] == 0) || (index >= [self.pageImages count])) {
+    if (([self.pageImages count] == 0) || (index >= [self.pageImages count]))
         return nil;
-    }
     
     // Create a new view controller and pass suitable data.
     PageContentViewController *pageContentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageContentViewController"];
     pageContentViewController.imageFile = self.pageImages[index];
     pageContentViewController.pageIndex = index;
+    pageContentViewController.tutVC     = self;
     
     return pageContentViewController;
 }

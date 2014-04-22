@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PST-0O-nWs">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Reveal View Controller-->
@@ -1134,7 +1135,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="231" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="A39CC5AE-66C8-4957-AAB5-D91F4611489F" colorSpace="pattern"/>
+                                <color key="color" patternImage="2B9DCDF8-92DE-4549-9040-AB7940B14F49" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find-crew-wood.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="424" width="320" height="56"/>
@@ -1241,11 +1242,33 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMK-dH-4l8">
+                                <rect key="frame" x="118" y="391" width="182" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="OMK-dH-4l8" secondAttribute="height" multiplier="163:33" constant="19" id="AgP-zd-vRP"/>
+                                    <constraint firstAttribute="height" constant="33" id="dKE-OO-wgx"/>
+                                    <constraint firstAttribute="width" constant="182" id="qv1-VZ-dJV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Got it, now lets ride >>">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="gotItButtonTapped:" destination="isp-VV-W4i" eventType="touchUpInside" id="L4a-SD-AVG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.47843137250000001" green="0.78039215689999997" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="APb-TV-FZg" firstAttribute="top" secondItem="OMK-dH-4l8" secondAttribute="bottom" constant="56" id="Dkq-sI-JeM"/>
+                            <constraint firstAttribute="trailing" secondItem="OMK-dH-4l8" secondAttribute="trailing" constant="20" id="IRZ-Pb-jU9"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="UOo-wz-ltX" id="mZD-Vo-wCl"/>
+                        <outlet property="letsRideButton" destination="OMK-dH-4l8" id="fg2-xZ-ZdJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q6G-FM-x27" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1358,7 +1381,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                 <rect key="frame" x="142" y="221" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="8E6F934A-4FB5-41C2-A481-5ED801DB143E" colorSpace="pattern"/>
+                                <color key="color" patternImage="442B6AF7-508B-4971-B982-AE2547E3688D" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="lra-f2-ZOm">
                                 <rect key="frame" x="0.0" y="352" width="320" height="128"/>
@@ -1593,7 +1616,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="8E6F934A-4FB5-41C2-A481-5ED801DB143E" width="320" height="460">
+        <image name="2B9DCDF8-92DE-4549-9040-AB7940B14F49" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11480,7 +11503,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="A39CC5AE-66C8-4957-AAB5-D91F4611489F" width="320" height="460">
+        <image name="442B6AF7-508B-4971-B982-AE2547E3688D" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
