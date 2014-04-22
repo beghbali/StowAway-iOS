@@ -17,11 +17,6 @@
 		68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFEC1188DDBD3009738A0 /* Main.storyboard */; };
 		68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEC5188DDBD3009738A0 /* LoginViewController.m */; };
 		68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFEC7188DDBD3009738A0 /* Images.xcassets */; };
-		68BAFECF188DDBD3009738A0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFECE188DDBD3009738A0 /* XCTest.framework */; };
-		68BAFED0188DDBD3009738A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEAF188DDBD3009738A0 /* Foundation.framework */; };
-		68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
-		68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFED7188DDBD3009738A0 /* InfoPlist.strings */; };
-		68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */; };
 		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F4266D9E18B5A87900A46BB1 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4118B5A87900A46BB1 /* STPCard.m */; };
 		F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4318B5A87900A46BB1 /* STPToken.m */; };
@@ -142,16 +137,6 @@
 		F4EEE7361906339500A20886 /* cross-mark-256.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE7341906339500A20886 /* cross-mark-256.png */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		68BAFED2188DDBD3009738A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68BAFEA4188DDBD3009738A0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 68BAFEAB188DDBD3009738A0;
-			remoteInfo = StowAway;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		347CED1860724CA9AAE54326 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAC188DDBD3009738A0 /* StowAway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StowAway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,11 +153,7 @@
 		68BAFEC4188DDBD3009738A0 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		68BAFEC5188DDBD3009738A0 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		68BAFEC7188DDBD3009738A0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		68BAFECD188DDBD3009738A0 /* StowAwayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StowAwayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFECE188DDBD3009738A0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StowAwayTests-Info.plist"; sourceTree = "<group>"; };
-		68BAFED8188DDBD3009738A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StowAwayTests.m; sourceTree = "<group>"; };
 		EBB5AAE28C6C411786386FFA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
 		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
@@ -345,16 +326,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		68BAFECA188DDBD3009738A0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				68BAFECF188DDBD3009738A0 /* XCTest.framework in Frameworks */,
-				68BAFED1188DDBD3009738A0 /* UIKit.framework in Frameworks */,
-				68BAFED0188DDBD3009738A0 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -364,7 +335,6 @@
 				68BAFEB5188DDBD3009738A0 /* StowAway */,
 				F4EEE69519062B3900A20886 /* images+sounds */,
 				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
-				68BAFED4188DDBD3009738A0 /* StowAwayTests */,
 				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				68BAFEAD188DDBD3009738A0 /* Products */,
 				EBB5AAE28C6C411786386FFA /* Pods.xcconfig */,
@@ -375,7 +345,6 @@
 			isa = PBXGroup;
 			children = (
 				68BAFEAC188DDBD3009738A0 /* StowAway.app */,
-				68BAFECD188DDBD3009738A0 /* StowAwayTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -420,24 +389,6 @@
 				68BAFEB8188DDBD3009738A0 /* InfoPlist.strings */,
 				68BAFEBB188DDBD3009738A0 /* main.m */,
 				68BAFEBD188DDBD3009738A0 /* StowAway-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		68BAFED4188DDBD3009738A0 /* StowAwayTests */ = {
-			isa = PBXGroup;
-			children = (
-				68BAFEDA188DDBD3009738A0 /* StowAwayTests.m */,
-				68BAFED5188DDBD3009738A0 /* Supporting Files */,
-			);
-			path = StowAwayTests;
-			sourceTree = "<group>";
-		};
-		68BAFED5188DDBD3009738A0 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				68BAFED6188DDBD3009738A0 /* StowAwayTests-Info.plist */,
-				68BAFED7188DDBD3009738A0 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -756,24 +707,6 @@
 			productReference = 68BAFEAC188DDBD3009738A0 /* StowAway.app */;
 			productType = "com.apple.product-type.application";
 		};
-		68BAFECC188DDBD3009738A0 /* StowAwayTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 68BAFEE1188DDBD3009738A0 /* Build configuration list for PBXNativeTarget "StowAwayTests" */;
-			buildPhases = (
-				68BAFEC9188DDBD3009738A0 /* Sources */,
-				68BAFECA188DDBD3009738A0 /* Frameworks */,
-				68BAFECB188DDBD3009738A0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				68BAFED3188DDBD3009738A0 /* PBXTargetDependency */,
-			);
-			name = StowAwayTests;
-			productName = StowAwayTests;
-			productReference = 68BAFECD188DDBD3009738A0 /* StowAwayTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -791,9 +724,6 @@
 							};
 						};
 					};
-					68BAFECC188DDBD3009738A0 = {
-						TestTargetID = 68BAFEAB188DDBD3009738A0;
-					};
 				};
 			};
 			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
@@ -810,7 +740,6 @@
 			projectRoot = "";
 			targets = (
 				68BAFEAB188DDBD3009738A0 /* StowAway */,
-				68BAFECC188DDBD3009738A0 /* StowAwayTests */,
 			);
 		};
 /* End PBXProject section */
@@ -906,14 +835,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		68BAFECB188DDBD3009738A0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				68BAFED9188DDBD3009738A0 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -990,23 +911,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		68BAFEC9188DDBD3009738A0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				68BAFEDB188DDBD3009738A0 /* StowAwayTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		68BAFED3188DDBD3009738A0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 68BAFEAB188DDBD3009738A0 /* StowAway */;
-			targetProxy = 68BAFED2188DDBD3009738A0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		68BAFEB8188DDBD3009738A0 /* InfoPlist.strings */ = {
@@ -1023,14 +928,6 @@
 				68BAFEC2188DDBD3009738A0 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		68BAFED7188DDBD3009738A0 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				68BAFED8188DDBD3009738A0 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1160,48 +1057,6 @@
 			};
 			name = Release;
 		};
-		68BAFEE2188DDBD3009738A0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/StowAway.app/StowAway";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/francisfernandes/Documents/FacebookSDK,
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "StowAwayTests/StowAwayTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		68BAFEE3188DDBD3009738A0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/StowAway.app/StowAway";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/francisfernandes/Documents/FacebookSDK,
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
-				INFOPLIST_FILE = "StowAwayTests/StowAwayTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1219,15 +1074,6 @@
 			buildConfigurations = (
 				68BAFEDF188DDBD3009738A0 /* Debug */,
 				68BAFEE0188DDBD3009738A0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		68BAFEE1188DDBD3009738A0 /* Build configuration list for PBXNativeTarget "StowAwayTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				68BAFEE2188DDBD3009738A0 /* Debug */,
-				68BAFEE3188DDBD3009738A0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
