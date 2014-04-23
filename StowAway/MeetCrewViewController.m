@@ -18,7 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (strong, nonatomic) CountdownTimer * cdt;
@@ -32,7 +31,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *uberOrderInstructionLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -74,7 +72,7 @@
     [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];
     
-    //    //outlets are loaded, now arm the timer, this is only set once
+    //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
 }
@@ -277,13 +275,13 @@
 
             if ( isCaptain )
             {
-                self.designationLabel.text = @"You are the Captain !!";
-                self.uberOrderInstructionLabel.text = @"Order uberX and meet your crew";
+                self.designationLabel.text = @"YOU ARE THE CAPTAIN !";
+                self.instructionsLabel.text = @"Crew will be at the pick up point in about";
                 self.requestUberButton.hidden = NO;
             } else
             {
-                self.designationLabel.text = @"You are a Stowaway !";
-                self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain will order uberX"];
+                self.designationLabel.text = @"YOU ARE A STOWAWAY !";
+                self.instructionsLabel.text = @"Please walk to the pick up point in about";
                 self.requestUberButton.hidden = YES;
             }
             
@@ -292,7 +290,7 @@
                 //sound travels slower than light :)
                 if ( ![prevDesg isEqualToString:self.designationLabel.text] )
                     [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
-                
+                /*
                 //visual effect
                 [self animateDesignationLabel:isCaptain withEffect:YES];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -302,19 +300,21 @@
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self animateDesignationLabel:isCaptain withEffect:YES];
                 });
+                 */
             }
             
             //if checked in, hide uber and cancel buttons and show done button
             if ([crewMember objectForKey:kIsCheckedIn])
             {
-                self.doneButton.hidden = NO;
                 self.requestUberButton.hidden = YES;
-                self.cancelButton.hidden = YES;
+                self.cancelButton.titleLabel.text = @"      Done";
             }
             continue;
             
-        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])    // if someone else is a captain
-            self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
+        {   // if someone else is a captain
+         //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        }
         
         
         switch (i)
@@ -408,6 +408,7 @@
 - (void)countdownTimerExpired
 {
     NSLog(@"%s", __func__);
+    //self.countDownTimer.text = @"00:00";
     [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
@@ -415,13 +416,20 @@
 
 - (IBAction)cancelRideButtonTapped:(UIButton *)sender
 {
-    //warn user
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your crew would be disappointed !"
-                                                    message:@"Do you really want cancel this ride ?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"No", nil];
-    [alert show];
+    if ([sender.titleLabel.text isEqualToString:@"Cancel Ride"])
+        {
+        //warn user
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your crew would be disappointed !"
+                                                        message:@"Do you really want cancel this ride ?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Yes"
+                                              otherButtonTitles:@"No", nil];
+        [alert show];
+    } else
+    {
+        //done button
+        [self doneButtonTapped];
+    }
 }
 
 -(void)cancelRide
@@ -475,7 +483,7 @@
     self.requestUberButton.titleLabel.textColor = [UIColor grayColor];
 }
 
-- (IBAction)doneButtonTapped:(UIButton *)sender
+- (void)doneButtonTapped
 {
     NSLog(@"we are DONE here....go back to enter drop off pick up view");
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];

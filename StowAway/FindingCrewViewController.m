@@ -524,6 +524,8 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSLog(@"%s, crew <%lu> %@", __func__, (unsigned long)self.crew.count, self.crew);
 
+    //self.countDownTimer.text = @"00:00";
+
     //check if there is atleast one match
     if ( self.crew.count > 1)
     {
