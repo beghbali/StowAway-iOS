@@ -254,6 +254,8 @@
     NSString * prevDesg = nil;
     UIImage * badgedImage = nil;
     NSString * couponCode = nil;
+    NSString * displayName = nil;
+    BOOL isCaptain = NO;
     
     for (int i = 0; i < self.crew.count; i++)
     {
@@ -262,14 +264,15 @@
         
         prevDesg = nil;
         badgedImage = nil;
-
+        isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+        displayName = isCaptain? [NSString stringWithFormat:@"CAPT. %@",[crewMember objectForKey:kCrewFbName]]: [crewMember objectForKey:kCrewFbName];
+        
         if (i == 0 )
-        {
+        { //myself
             couponCode = [crewMember objectForKey:kCouponCodeKey];
             if (couponCode == (NSString *)[NSNull null])
                 couponCode = nil;
             
-            BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
             prevDesg = self.designationLabel.text;
 
             if ( isCaptain )
@@ -284,7 +287,7 @@
                 self.requestUberButton.hidden = YES;
             }
             
-            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //do fancy only oncefr
+            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
             {
                 //sound travels slower than light :)
                 if ( ![prevDesg isEqualToString:self.designationLabel.text] )
@@ -310,15 +313,14 @@
             }
             continue;
             
-        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
+        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])    // if someone else is a captain
             self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
         
         
         switch (i)
         {
             case 1:
-                self.nameLabel1.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel1.text = displayName;
                 self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
                 self.imageView1.layer.masksToBounds = YES;
@@ -332,8 +334,7 @@
                 break;
                 
             case 2:
-                self.nameLabel2.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel2.text = displayName;
                 self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
                 self.imageView2.layer.masksToBounds = YES;
@@ -347,8 +348,7 @@
                 break;
                 
             case 3:
-                self.nameLabel3.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel3.text = displayName;
                 self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
                 self.imageView3.layer.masksToBounds = YES;
