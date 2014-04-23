@@ -50,6 +50,8 @@
     if([now compare:self.countDownEndDate] == NSOrderedAscending)
     {
         strTimeRemaining = [[NSString alloc] initWithFormat:@"%02ld:%02ld", (long)[comp minute], (long)[comp second]];
+        self.countdownTimerLabel.text = strTimeRemaining;
+
     }
     else
     {
