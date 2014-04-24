@@ -12,6 +12,9 @@
 extern NSString *const kStowawayServerApiUrl_pusher;
 extern NSString *const kStowawayServerApiUrl_users;
 
+//location history
+extern NSString *const kPickUpDropOffLocationHistory; //keep 10 MRU
+
 //link receipts
 extern NSString *const kUserEmail;
 extern NSString *const kUserEmailProvider;

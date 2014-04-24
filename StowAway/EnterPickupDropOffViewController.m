@@ -39,7 +39,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (nonatomic, strong) MKLocalSearch *localSearch;
 
-// MARK: Future: remember previosuly entered places - store it on device
+// MARK: Future: remember previosuly entered places - store it on device -- keep it in user defaults as an nsarray kPickUpDropOffLocationHistory
 @property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
 @property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *dropOffPlaces;
 
@@ -76,12 +76,17 @@ BOOL onBoardingStatusChecked = NO;
     self.pickUpPlaces   = [NSMutableArray arrayWithCapacity: 1];
     self.dropOffPlaces  = [NSMutableArray arrayWithCapacity: 1];
     
+    [self addCurrentLocToPickUpPlaces];
+}
+
+-(void)addCurrentLocToPickUpPlaces
+{
     // first thing in serach table should be current location
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
-}
 
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -356,10 +361,17 @@ BOOL onBoardingStatusChecked = NO;
         {
             if ( searchBar == self.pickUpSearchBar)
             {
+                //clear the array before adding new result
+                [self.pickUpPlaces removeAllObjects];
+                [self addCurrentLocToPickUpPlaces];
+
                 [self.pickUpPlaces addObjectsFromArray: response.mapItems];
                 [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
             } else
             {
+                //clear the array before adding new result
+                [self.dropOffPlaces removeAllObjects];
+                
                 [self.dropOffPlaces addObjectsFromArray: response.mapItems];
                 [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
             }

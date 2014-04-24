@@ -9,9 +9,11 @@
 #import "StowawayConstants.h"
 
 //stowaway server
-
 NSString *const kStowawayServerApiUrl_pusher = @"https://staging.getstowaway.com/pusher/";;
 NSString *const kStowawayServerApiUrl_users = @"http://staging.getstowaway.com/api/v1/users/";;
+
+//location history
+NSString *const kPickUpDropOffLocationHistory = @"PickUpDropOffLocationHistory";
 
 //link receipts
 NSString *const kUserEmail          = @"email";
