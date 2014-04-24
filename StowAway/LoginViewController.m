@@ -121,8 +121,6 @@
     self.profilePictureView.profileID = user.id;
     self.nameLabel.text = user.name;
     
-    NSString *url = @"http://api.getstowaway.com/api/v1/users/";
-    
     NSDate *fbAccessTokenExpirationDate = [[[FBSession activeSession] accessTokenData] expirationDate];
     NSString *fbAccessToken = [[[FBSession activeSession] accessTokenData] accessToken];
     NSString *provider = @"facebook";
@@ -144,7 +142,7 @@
 
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:post ForURL:url usingHTTPMethod:@"POST"];
+    [sscommunicator sendServerRequest:post ForURL:kStowawayServerApiUrl_users usingHTTPMethod:@"POST"];
 }
 
 // Logged-in user experience

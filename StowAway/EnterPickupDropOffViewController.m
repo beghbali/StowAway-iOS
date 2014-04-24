@@ -588,7 +588,7 @@ BOOL onBoardingStatusChecked = NO;
     
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests", publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests", kStowawayServerApiUrl_users, publicUserId];
     
     NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f}}",
                              kPickUpAddress, self.pickUpAnnotation.title,

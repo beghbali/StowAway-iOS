@@ -96,7 +96,7 @@
 -(void)getRideObject
 {
     NSLog(@"there is a ride update - get ride object from server..........");
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, self.rideID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", kStowawayServerApiUrl_users, self.userID, self.rideID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
@@ -437,7 +437,7 @@
     [self.meetCrewMapViewManager stopAutoCheckinMode];
     
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = nil; //don't need to process the response
