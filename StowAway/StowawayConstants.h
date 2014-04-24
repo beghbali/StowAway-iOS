@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kPublicId;
+//stowaway server
+extern NSString *const kStowawayServerApiUrl_pusher;
+extern NSString *const kStowawayServerApiUrl_users;
 
 //link receipts
 extern NSString *const kUserEmail;
@@ -41,6 +43,7 @@ extern NSString *const kDropOffLat;
 extern NSString *const kDropOffLong;
 extern NSString *const kRequestPublicId;
 extern NSString *const kRequestedAt;
+extern NSString *const kPublicId;
 
 //ride result
 extern NSString *const kRidePublicId;
@@ -56,7 +59,6 @@ extern NSString *const kCrewFbName;
 extern NSString *const kDesignation;
 extern NSString *const kDesignationCaptain;
 extern NSString *const kIsCheckedIn;
-
 
 //meet the crew
 extern NSString *const kLocationChannel;

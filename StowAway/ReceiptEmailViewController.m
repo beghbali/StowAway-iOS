@@ -247,7 +247,7 @@
     //SUCCESS - move to the next screen - ie credit card
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@", publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@", kStowawayServerApiUrl_users, publicUserId];
     
     NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\"}",
                                                       kUserEmail, self.email,

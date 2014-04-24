@@ -123,7 +123,7 @@
     }
     
     //get fresh request object to see if there is a ride
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
@@ -194,7 +194,7 @@
     { // there is a match - GET RIDE result
         //TODO: stowaway server communicator should handle this -- getRideObject, also used in meet crew
         NSLog(@"there is a match - get ride result");
-        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, ride_id];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", kStowawayServerApiUrl_users, self.userID, ride_id];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = self;
@@ -524,6 +524,8 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSLog(@"%s, crew <%lu> %@", __func__, (unsigned long)self.crew.count, self.crew);
 
+    //self.countDownTimer.text = @"00:00";
+
     //check if there is atleast one match
     if ( self.crew.count > 1)
     {
@@ -533,7 +535,7 @@ void swap (NSUInteger *a, NSUInteger *b)
         [self.serverPollingTimer invalidate];
         
         // ask server for roles
-        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@/finalize", self.userID, self.rideID];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/finalize", kStowawayServerApiUrl_users, self.userID, self.rideID];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = self;
@@ -570,7 +572,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 -(void)cancelRide
 {
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
@@ -591,7 +593,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     [self cancelTimerExpiryNotificationSchedule];
 
     //send couponed request
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
     
     NSString *couponRequest = [NSString stringWithFormat:@"{\"%@\": \"%@\"}",
                                                      kCouponCodeKey, couponCode];

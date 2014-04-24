@@ -18,7 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (strong, nonatomic) CountdownTimer * cdt;
@@ -32,7 +31,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *uberOrderInstructionLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -74,7 +72,7 @@
     [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView withSuggestedLocations:self.suggestedLocations andPusherChannel:self.locationChannel];
     
-    //    //outlets are loaded, now arm the timer, this is only set once
+    //outlets are loaded, now arm the timer, this is only set once
     [self armUpCountdownTimer];
 
 }
@@ -98,7 +96,7 @@
 -(void)getRideObject
 {
     NSLog(@"there is a ride update - get ride object from server..........");
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@", self.userID, self.rideID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", kStowawayServerApiUrl_users, self.userID, self.rideID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
@@ -254,6 +252,8 @@
     NSString * prevDesg = nil;
     UIImage * badgedImage = nil;
     NSString * couponCode = nil;
+    NSString * displayName = nil;
+    BOOL isCaptain = NO;
     
     for (int i = 0; i < self.crew.count; i++)
     {
@@ -262,34 +262,35 @@
         
         prevDesg = nil;
         badgedImage = nil;
-
+        isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+        displayName = isCaptain? [NSString stringWithFormat:@"CAPT. %@",[crewMember objectForKey:kCrewFbName]]: [crewMember objectForKey:kCrewFbName];
+        
         if (i == 0 )
-        {
+        { //myself
             couponCode = [crewMember objectForKey:kCouponCodeKey];
             if (couponCode == (NSString *)[NSNull null])
                 couponCode = nil;
             
-            BOOL isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
             prevDesg = self.designationLabel.text;
 
             if ( isCaptain )
             {
-                self.designationLabel.text = @"You are the Captain !!";
-                self.uberOrderInstructionLabel.text = @"Order uberX and meet your crew";
+                self.designationLabel.text = @"YOU ARE THE CAPTAIN !";
+                self.instructionsLabel.text = @"Crew will be at the pick up point in about";
                 self.requestUberButton.hidden = NO;
             } else
             {
-                self.designationLabel.text = @"You are a Stowaway !";
-                self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain will order uberX"];
+                self.designationLabel.text = @"YOU ARE A STOWAWAY !";
+                self.instructionsLabel.text = @"Please walk to the pick up point in about";
                 self.requestUberButton.hidden = YES;
             }
             
-            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //do fancy only oncefr
+            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
             {
                 //sound travels slower than light :)
                 if ( ![prevDesg isEqualToString:self.designationLabel.text] )
                     [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
-                
+                /*
                 //visual effect
                 [self animateDesignationLabel:isCaptain withEffect:YES];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -299,26 +300,27 @@
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self animateDesignationLabel:isCaptain withEffect:YES];
                 });
+                 */
             }
             
             //if checked in, hide uber and cancel buttons and show done button
             if ([crewMember objectForKey:kIsCheckedIn])
             {
-                self.doneButton.hidden = NO;
                 self.requestUberButton.hidden = YES;
-                self.cancelButton.hidden = YES;
+                self.cancelButton.titleLabel.text = @"      Done";
             }
             continue;
             
         } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
-            self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        {   // if someone else is a captain
+         //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        }
         
         
         switch (i)
         {
             case 1:
-                self.nameLabel1.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel1.text = displayName;
                 self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
                 self.imageView1.layer.masksToBounds = YES;
@@ -332,8 +334,7 @@
                 break;
                 
             case 2:
-                self.nameLabel2.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel2.text = displayName;
                 self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
                 self.imageView2.layer.masksToBounds = YES;
@@ -347,8 +348,7 @@
                 break;
                 
             case 3:
-                self.nameLabel3.text = [crewMember objectForKey:kCrewFbName];
-                
+                self.nameLabel3.text = displayName;
                 self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
                 self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
                 self.imageView3.layer.masksToBounds = YES;
@@ -408,6 +408,7 @@
 - (void)countdownTimerExpired
 {
     NSLog(@"%s", __func__);
+    //self.countDownTimer.text = @"00:00";
     [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
@@ -415,13 +416,20 @@
 
 - (IBAction)cancelRideButtonTapped:(UIButton *)sender
 {
-    //warn user
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your crew would be disappointed !"
-                                                    message:@"Do you really want cancel this ride ?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"No", nil];
-    [alert show];
+    if ([sender.titleLabel.text isEqualToString:@"Cancel Ride"])
+        {
+        //warn user
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your crew would be disappointed !"
+                                                        message:@"Do you really want cancel this ride ?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Yes"
+                                              otherButtonTitles:@"No", nil];
+        [alert show];
+    } else
+    {
+        //done button
+        [self doneButtonTapped];
+    }
 }
 
 -(void)cancelRide
@@ -429,7 +437,7 @@
     [self.meetCrewMapViewManager stopAutoCheckinMode];
     
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/requests/%@", self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = nil; //don't need to process the response
@@ -475,7 +483,7 @@
     self.requestUberButton.titleLabel.textColor = [UIColor grayColor];
 }
 
-- (IBAction)doneButtonTapped:(UIButton *)sender
+- (void)doneButtonTapped
 {
     NSLog(@"we are DONE here....go back to enter drop off pick up view");
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];

@@ -8,19 +8,27 @@
 
 #import "StowawayConstants.h"
 
+//stowaway server
 
+NSString *const kStowawayServerApiUrl_pusher = @"https://staging.getstowaway.com/pusher/";;
+NSString *const kStowawayServerApiUrl_users = @"http://staging.getstowaway.com/api/v1/users/";;
+
+//link receipts
 NSString *const kUserEmail          = @"email";
 NSString *const kUserEmailProvider  = @"email_provider";
 NSString *const kSupportedEmailProviders[] = { @"gmail" };
+NSString *const kStowawayEmail      = @"stowaway_email";
+
+//FB login
 NSString *const kFirstName          = @"first_name";
 NSString *const kLastName           = @"last_name";
-NSString *const kPublicId           = @"public_id";
 NSString *const kUserPublicId       = @"user_public_id";
 NSString *const kFbId               = @"uid";
+
+//gmail OAuth token
 NSString *const kGmailAccessToken   = @"gmail_access_token";
 NSString *const kGmailRefreshToken  = @"gmail_refresh_token";
 NSString *const kGmailAccessTokenExpiration  = @"gmail_access_token_expires_at";
-NSString *const kStowawayEmail      = @"stowaway_email";
 
 //APNS
 NSString *const kDeviceType         = @"device_type";
@@ -36,6 +44,7 @@ NSString *const kDropOffLong                    = @"dropoff_lng";
 NSString *const kRequestPublicId                = @"request_public_id";
 NSString *const kRequestedAt                    = @"requested_at";
 NSString *const kPickUpDefaultCurrentLocation   = @"Current Location";
+NSString *const kPublicId           = @"public_id";
 
 //ride result
 NSString *const kRidePublicId           = @"ride_public_id";

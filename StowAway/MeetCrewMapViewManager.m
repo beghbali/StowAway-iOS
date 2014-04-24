@@ -115,7 +115,7 @@
     {
         NSLog(@"i am the captain, asking server to start auto-checkin");
         //checkin request - only captain sends
-        NSString *url = [NSString stringWithFormat:@"http://api.getstowaway.com/api/v1/users/%@/rides/%@/checkin", self.userID, self.rideID];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/checkin", kStowawayServerApiUrl_users, self.userID, self.rideID];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = nil; //no response expected
@@ -359,7 +359,7 @@
     self.pusher.reconnectAutomatically = YES;
     
     //authentication endpoint
-    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://api.getstowaway.com/pusher/%@/auth", self.userID]];
+    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@/auth", kStowawayServerApiUrl_pusher, self.userID]];
     
     self.isPusherConnected = NO;
     

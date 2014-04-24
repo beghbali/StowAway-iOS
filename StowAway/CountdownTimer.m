@@ -21,7 +21,7 @@
 
 -(void) initializeWithSecondsRemaining:(NSUInteger)seconds ForLabel:(UILabel *)label
 {
-    NSLog(@"init CountdownTimer:: %@, %dsecs", label.text, seconds);
+    NSLog(@"init CountdownTimer:: %@, %lusecs", label.text, (unsigned long)seconds);
     self.countdownTimerLabel = label;
     self.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:seconds];
     
@@ -49,11 +49,13 @@
     // if date have not expired
     if([now compare:self.countDownEndDate] == NSOrderedAscending)
     {
-        strTimeRemaining = [[NSString alloc] initWithFormat:@"%02d:%02d", [comp minute], [comp second]];
+        strTimeRemaining = [[NSString alloc] initWithFormat:@"%02ld:%02ld", (long)[comp minute], (long)[comp second]];
+        self.countdownTimerLabel.text = strTimeRemaining;
+
     }
     else
     {
-        NSLog(@"-- %@ --", @"expired!!!!!");
+        NSLog(@"-- %s : expired--", __func__);
 
         // time has expired, set time to 00:00 and call delegate function
         self.countdownTimerLabel.text = @"00:00";
@@ -62,8 +64,6 @@
         
         [self.cdTimerDelegate countdownTimerExpired];
     }
-   
-    self.countdownTimerLabel.text = strTimeRemaining;
 }
 
 
