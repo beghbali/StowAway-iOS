@@ -13,7 +13,11 @@ extern NSString *const kStowawayServerApiUrl_pusher;
 extern NSString *const kStowawayServerApiUrl_users;
 
 //location history
-extern NSString *const kPickUpDropOffLocationHistory; //keep 10 MRU
+extern NSString *const kPickUpDropOffLocationHistory; //array of dict to keep 10 MRU
+extern NSUInteger kPickUpDropOffLocationHistorySize;
+extern NSString *const kLocationHistoryName; //mkmapitem name
+extern NSString *const kLocationHistoryLatitude; //mkmapitem lat
+extern NSString *const kLocationHistoryLongitude; //mkmapitem long
 
 //link receipts
 extern NSString *const kUserEmail;
