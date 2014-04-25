@@ -295,6 +295,19 @@ BOOL onBoardingStatusChecked = NO;
 
 #pragma mark - UISearchBarDelegate
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+   // NSLog(@"searchText %@, length %d", searchText, searchText.length);
+    
+    // don't search untill 2 chars entered
+    if (searchText.length < 2)
+        return;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch:) object:searchBar];
+    
+    [self performSelector:@selector(startSearch:) withObject:searchBar afterDelay:1];
+    
+}
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
     locationInputCount = 2;
@@ -319,7 +332,6 @@ BOOL onBoardingStatusChecked = NO;
     // TODO: show current location
     if ( searchBar == self.pickUpSearchBar )
         [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
-    
     
     [searchBar setShowsCancelButton:YES animated:YES];
 }
@@ -346,16 +358,20 @@ BOOL onBoardingStatusChecked = NO;
     {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-        NSLog(@"SEARCH returned: error %@", error);
+        NSLog(@"SEARCH returned %d things: error %@", response.mapItems.count, error);
+        
         if (error != nil)
         {
             NSString *errorStr = [[error userInfo] valueForKey:NSLocalizedDescriptionKey];
+            NSLog(@"%s: error %@", __func__, errorStr);
+           /* 
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not find places"
                                                             message:errorStr
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
             [alert show];
+            */
         }
         else
         {
