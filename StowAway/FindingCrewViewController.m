@@ -778,7 +778,10 @@ void swap (NSUInteger *a, NSUInteger *b)
     }
     
     NSMutableDictionary * mutableDict = [NSMutableDictionary dictionaryWithDictionary:[self.crew objectAtIndex:crewPostion]];
-    [mutableDict setObject:profilePic forKey:kCrewFbImage];
+    
+    if (profilePic)
+        [mutableDict setObject:profilePic forKey:kCrewFbImage];
+    
     [mutableDict setObject:fbName forKey:kCrewFbName];
     [self.crew replaceObjectAtIndex:crewPostion withObject:mutableDict];
 }
