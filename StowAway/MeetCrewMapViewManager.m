@@ -195,18 +195,32 @@
         {
             NSLog(@"drop off -- %@, error %@", placemarks, error);
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
+        
+            NSString * streetAdd = nil;
             
-            NSString * streetName = placemark.name ? placemark.name: @"";
-            NSString * locality = placemark.locality ? placemark.locality: @"";
-            if (streetName || locality)
+            if (placemark.thoroughfare && placemark.subThoroughfare)
             {
-                NSString * streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
-
-                NSLog(@"drop off Addr %@, --  %@, %@", streetAdd, placemark.name, placemark.locality);
-                [self.suggestedLocations setObject:streetAdd forKey:kSuggestedDropOffAddr];
-                [self showDropOffLocation];
-                [self showPickUpLocation];
+                if (placemark.locality)
+                    streetAdd = [NSString stringWithFormat:@"%@ %@, %@", placemark.subThoroughfare, placemark.thoroughfare, placemark.locality ];
+                else
+                    streetAdd = [NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare ];
             }
+            else if( placemark.name || placemark.locality)
+            {
+                NSString * streetName = placemark.name ? placemark.name: @"";
+                NSString * locality = placemark.locality ? placemark.locality: @"";
+                
+                streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
+            }
+
+            NSLog(@"drop off Addr %@, --  name %@, locality %@ ==== sub %@ thoroughfare %@", streetAdd, placemark.name, placemark.locality, placemark.subThoroughfare, placemark.thoroughfare);
+
+            if (!streetAdd)
+                return;
+            
+            [self.suggestedLocations setObject:streetAdd forKey:kSuggestedDropOffAddr];
+            [self showDropOffLocation];
+            [self showPickUpLocation];
         }];
     }
 }
@@ -242,18 +256,34 @@
          {
              NSLog(@"pick up -- %@, error %@", placemarks, error);
              CLPlacemark *placemark = [placemarks objectAtIndex:0];
-             NSString * streetName = placemark.name ? placemark.name: @"";
-             NSString * locality = placemark.locality ? placemark.locality: @"";
-             if (streetName || locality)
+             
+             NSString * streetAdd = nil;
+             
+             if (placemark.thoroughfare && placemark.subThoroughfare)
              {
-                 NSString * streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
-                 NSLog(@"pickup Addr %@, -- %@, %@", streetAdd, placemark.name, placemark.locality);
-                 [self.suggestedLocations setObject:streetAdd forKey:kSuggestedPickUpAddr];
-                 [self showPickUpLocation];
+                 if (placemark.locality)
+                     streetAdd = [NSString stringWithFormat:@"%@ %@, %@", placemark.subThoroughfare, placemark.thoroughfare, placemark.locality ];
+                 else
+                     streetAdd = [NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare ];
              }
+             else if( placemark.name || placemark.locality)
+             {
+                 NSString * streetName = placemark.name ? placemark.name: @"";
+                 NSString * locality = placemark.locality ? placemark.locality: @"";
+                 
+                 streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
+             }
+             
+             NSLog(@"pickup Addr %@, --  name %@, locality %@ ==== sub %@ thoroughfare %@", streetAdd, placemark.name, placemark.locality, placemark.subThoroughfare, placemark.thoroughfare);
+             if (!streetAdd)
+                 return;
+             
+             [self.suggestedLocations setObject:streetAdd forKey:kSuggestedPickUpAddr];
+             [self showPickUpLocation];
              [self reverseGeocodeDropOffSuggestedAddresses];
          }];
-        return;
+             
+          return;
     }
     
     [self reverseGeocodeDropOffSuggestedAddresses];
