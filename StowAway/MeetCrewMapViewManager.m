@@ -198,18 +198,23 @@
         
             NSString * streetAdd = nil;
             
-            if (placemark.thoroughfare)
-                streetAdd = placemark.thoroughfare;
+            if (placemark.thoroughfare && placemark.subThoroughfare)
+            {
+                if (placemark.locality)
+                    streetAdd = [NSString stringWithFormat:@"%@ %@, %@", placemark.subThoroughfare, placemark.thoroughfare, placemark.locality ];
+                else
+                    streetAdd = [NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare ];
+            }
             else if( placemark.name || placemark.locality)
             {
                 NSString * streetName = placemark.name ? placemark.name: @"";
                 NSString * locality = placemark.locality ? placemark.locality: @"";
-
-                streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
                 
+                streetAdd = [NSString stringWithFormat:@"%@, %@", streetName, locality];
             }
 
-            NSLog(@"drop off Addr %@, --  name %@, locality %@ ==== thoroughfare %@", streetAdd, placemark.name, placemark.locality, placemark.thoroughfare);
+            NSLog(@"drop off Addr %@, --  name %@, locality %@ ==== sub %@ thoroughfare %@", streetAdd, placemark.name, placemark.locality, placemark.subThoroughfare, placemark.thoroughfare);
+
             if (!streetAdd)
                 return;
             
