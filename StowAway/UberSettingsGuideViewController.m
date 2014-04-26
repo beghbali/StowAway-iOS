@@ -16,6 +16,11 @@
 @implementation UberSettingsGuideViewController
 
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 
 - (IBAction)gotItButtonTapped:(UIButton *)sender
 {

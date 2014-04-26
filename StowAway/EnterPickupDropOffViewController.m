@@ -62,6 +62,12 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 int locationInputCount = 0;
 BOOL onBoardingStatusChecked = NO;
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+
 -(void)setUpRevealMenuButton
 {  //set up the reveal button
     [self.revealButtonItem setTarget: self.revealViewController];

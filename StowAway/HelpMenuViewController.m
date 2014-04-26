@@ -18,6 +18,12 @@
 
 @implementation HelpMenuViewController
 
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 -(void)setUpRevealMenuButton
 {  //set up the reveal button
     [self.revealButtonItem setTarget: self.revealViewController];

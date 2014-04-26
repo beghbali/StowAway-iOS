@@ -18,6 +18,12 @@
 
 @implementation TutorialViewController
 
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 -(void)endTutorial
 {
     [self performSegueWithIdentifier:@"tutorialToLogin" sender:self];

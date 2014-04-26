@@ -43,7 +43,10 @@
 
 @implementation MeetCrewViewController
 
-
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)viewDidLoad
 {

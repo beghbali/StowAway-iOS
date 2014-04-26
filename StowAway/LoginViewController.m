@@ -23,6 +23,12 @@
 
 @implementation LoginViewController
 
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);

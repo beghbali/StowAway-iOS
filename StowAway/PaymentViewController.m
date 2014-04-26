@@ -47,6 +47,12 @@ NSError * error = Nil;
 
 char isReadyToSavePayment = 0;
 
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -20,6 +20,12 @@
 
 @implementation TermsAndAgreementsViewController
 
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (IBAction)skipTapped:(id)sender
 {
     NSLog(@"skipping ...  terms ");
