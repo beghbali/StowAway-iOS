@@ -39,7 +39,6 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (nonatomic, strong) MKLocalSearch *localSearch;
 
-// MARK: Future: remember previosuly entered places - store it on device -- keep it in user defaults as an nsarray kPickUpDropOffLocationHistory
 @property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
 @property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *dropOffPlaces;
 
@@ -113,8 +112,8 @@ BOOL onBoardingStatusChecked = NO;
     
     [self checkOnboardingStatus];
     
-    self.findCrewButton.enabled = NO;
-    
+    [self updateFindCrewButtonEnabledState];
+
     //forget that ride was finalized
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -186,6 +185,8 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@"%s......######## onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
 
 }
+
+#pragma mark - location history
 
 -(NSString *)getLocationItemName:(id)locItem
 {
@@ -313,21 +314,22 @@ BOOL onBoardingStatusChecked = NO;
 {
    // NSLog(@"searchText %@, length %d", searchText, searchText.length);
     
-    // don't search untill 2 chars entered
+    /*
+    // don't do actual network search untill 2 chars entered
     if (searchText.length < 2)
         return;
-    
+    */
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch:) object:searchBar];
     
-    [self performSelector:@selector(startSearch:) withObject:searchBar afterDelay:1];
+    //wait for 0.5sec before actual search starts over the network
+    [self performSelector:@selector(startSearch:) withObject:searchBar afterDelay:0.5];
     
 }
-- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+
+-(void)updateFindCrewButtonEnabledState
 {
     locationInputCount = 2;
-    [searchBar resignFirstResponder];
-    NSLog(@"CANCEL:: pickup %@, dropoff %@", self.pickUpSearchBar.text, self.dropOffSearchBar.text);
-    
+
     if ([self.pickUpSearchBar.text isEqualToString:@""]) {
         NSLog(@"no pickup, grey out find");
         self.findCrewButton.enabled = NO;
@@ -338,21 +340,39 @@ BOOL onBoardingStatusChecked = NO;
         self.findCrewButton.enabled = NO;
         locationInputCount--;
     }
+    
+    if (locationInputCount > 1)
+        self.findCrewButton.enabled = YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    [searchBar resignFirstResponder];
+    NSLog(@"CANCEL:: pickup %@, dropoff %@", self.pickUpSearchBar.text, self.dropOffSearchBar.text);
+    
+    [self updateFindCrewButtonEnabledState];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     //show current location as soon as user taps it
-    // TODO: show current location
-    if ( searchBar == self.pickUpSearchBar )
-        [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ( searchBar == self.pickUpSearchBar)
+            [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
+        else
+            [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
+    });
     
     [searchBar setShowsCancelButton:YES animated:YES];
+    
+    [self updateFindCrewButtonEnabledState];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
+    [self updateFindCrewButtonEnabledState];
 }
 
 
@@ -372,7 +392,7 @@ BOOL onBoardingStatusChecked = NO;
     {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-        NSLog(@"SEARCH returned %d results: error %@", response.mapItems.count, error);
+        NSLog(@"SEARCH returned %lu results: error %@", (unsigned long)response.mapItems.count, error);
         
         if (error != nil)
         {
@@ -401,7 +421,7 @@ BOOL onBoardingStatusChecked = NO;
                 [self.pickUpPlaces addObjectsFromArray: response.mapItems];
                 
                 //add places matching from the history to this array
-                [self.pickUpPlaces addObjectsFromArray: [self getFilteredLocationHistory:searchString]];
+                [self.pickUpPlaces addObjectsFromArray: [self getFilteredLocationHistory:searchString withExactMatch:NO]];
                 
                 [self.pickUpSearchDisplayController.searchResultsTableView reloadData];
 
@@ -414,7 +434,7 @@ BOOL onBoardingStatusChecked = NO;
                 [self.dropOffPlaces addObjectsFromArray: response.mapItems];
                 
                 //add places matching from the history to this array
-                [self.dropOffPlaces addObjectsFromArray: [self getFilteredLocationHistory:searchString]];
+                [self.dropOffPlaces addObjectsFromArray: [self getFilteredLocationHistory:searchString withExactMatch:NO]];
                 
                 [self.dropOffSearchDisplayController.searchResultsTableView reloadData];
             }
@@ -441,21 +461,25 @@ BOOL onBoardingStatusChecked = NO;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
--(NSArray *)getFilteredLocationHistory:(NSString *)searchString
+-(NSArray *)getFilteredLocationHistory:(NSString *)searchString withExactMatch:(BOOL)exactMatch
 {
     NSArray * filteredLoc = nil;
-    
-    NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:kPickUpDropOffLocationHistory]; //array of mapitem
-    NSLog(@"%s:looking for %@ in locationHistory %@", __func__, searchString, locationHistory);
+    NSPredicate *predicate = nil;
 
+    NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:kPickUpDropOffLocationHistory]; //array of mapitem
+    NSLog(@"%s:looking for %@ in locationHistory of size %lu" , __func__, searchString, (unsigned long)locationHistory.count);
+    
     if (locationHistory)
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLocationHistoryName, searchString];
-        
+        if (exactMatch)
+            predicate = [NSPredicate predicateWithFormat:@"%K MATCHES[cd] %@", kLocationHistoryName, searchString];
+        else
+            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLocationHistoryName, searchString];
+
         filteredLoc = [locationHistory filteredArrayUsingPredicate:predicate];
     }
 
-    NSLog(@"%s:filteredLoc result for %@ ---> %@", __func__, searchString, filteredLoc);
+    NSLog(@"%s: found %lu %@", __func__, (unsigned long)filteredLoc.count, exactMatch?@"MATCHES":@"CONTAINS");
     
     return filteredLoc;
 }
@@ -661,32 +685,42 @@ BOOL onBoardingStatusChecked = NO;
     NSArray * prevLocationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:kPickUpDropOffLocationHistory];
     [locHistory addObjectsFromArray:prevLocationHistory];
     
+    NSLog(@"self.dropOffLocItem class %@", [self.dropOffLocItem class]);
     //drop off loc
-    if ( ![self.dropOffLocItem isKindOfClass:[NSDictionary class]] )
+    if ( [self.dropOffLocItem isKindOfClass:[MKMapItem class]] )
     {
         MKMapItem * mp = (MKMapItem *)self.dropOffLocItem;
 
-        NSDictionary *dropOfflocDict = @{kLocationHistoryName: mp.name,
-                                         kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
-                                         kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
-        
-        
-        [locHistory insertObject:dropOfflocDict atIndex:0];
-        if (locHistory.count > kPickUpDropOffLocationHistorySize)
-            [locHistory removeLastObject];
+        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
+        if( !(existingHistoryMatch && existingHistoryMatch.count) )
+        {
+            NSDictionary *dropOfflocDict = @{kLocationHistoryName: mp.name,
+                                             kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
+                                             kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
+            
+            NSLog(@"adding drop off loc to history !!!");
+            [locHistory insertObject:dropOfflocDict atIndex:0];
+            if (locHistory.count > kPickUpDropOffLocationHistorySize)
+                [locHistory removeLastObject];
+        }
     }
     
+    NSLog(@"pickUpLocItem class %@", [self.pickUpLocItem class]);
+
     //pick up loc
-    if ( ![self.pickUpLocItem isKindOfClass:[NSDictionary class]] )
+    if ( [self.pickUpLocItem isKindOfClass:[MKMapItem class]] )
     {
         MKMapItem * mp = (MKMapItem *)self.pickUpLocItem;
 
-        if ( !mp.isCurrentLocation )
+        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
+        if ( !mp.isCurrentLocation && !(existingHistoryMatch && existingHistoryMatch.count) )
         {
             NSDictionary *pickUplocDict = @{kLocationHistoryName: mp.name,
                                              kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
                                              kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
             
+            NSLog(@"adding pick up loc to history !!!");
+
             [locHistory insertObject:pickUplocDict atIndex:0];
             
             if (locHistory.count > kPickUpDropOffLocationHistorySize)
