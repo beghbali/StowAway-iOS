@@ -55,6 +55,7 @@
 		F4CB1FA918C7F4BA00A404D0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */; };
 		F4D65A5918D547A200FAF3D0 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4D65A5618D547A200FAF3D0 /* LICENCE.txt */; };
 		F4D65A5D18D805DE00FAF3D0 /* MeetCrewMapViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */; };
+		F4D6C51F190C88EA009163DE /* currentLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = F4D6C51E190C88EA009163DE /* currentLocation.png */; };
 		F4EB90E418A8321700C57BF2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */; };
 		F4EB920918AAF5D800C57BF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920818AAF5D800C57BF2 /* Security.framework */; };
 		F4EB920B18AAF5E000C57BF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB920A18AAF5E000C57BF2 /* SystemConfiguration.framework */; };
@@ -218,6 +219,7 @@
 		F4D65A5818D547A200FAF3D0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F4D65A5B18D805DE00FAF3D0 /* MeetCrewMapViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewMapViewManager.h; sourceTree = "<group>"; };
 		F4D65A5C18D805DE00FAF3D0 /* MeetCrewMapViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewMapViewManager.m; sourceTree = "<group>"; };
+		F4D6C51E190C88EA009163DE /* currentLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currentLocation.png; sourceTree = "<group>"; };
 		F4EB90E218A831DB00C57BF2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = otherFrameworks/FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		F4EB90E618A9EC5800C57BF2 /* ReceiptEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptEmailViewController.h; sourceTree = "<group>"; };
 		F4EB90E718A9EC5900C57BF2 /* ReceiptEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiptEmailViewController.m; sourceTree = "<group>"; };
@@ -654,6 +656,7 @@
 			isa = PBXGroup;
 			children = (
 				F4EEE6DB19062B3900A20886 /* find-crew-wood.png */,
+				F4D6C51E190C88EA009163DE /* currentLocation.png */,
 				F4EEE6DC19062B3900A20886 /* find-crew-wood@2x.png */,
 				F4EEE6DD19062B3900A20886 /* from-to-v2.png */,
 				F4EEE6DE19062B3900A20886 /* from-to-v2@2x.png */,
@@ -807,6 +810,7 @@
 				F4EEE71019062B3900A20886 /* 50.png in Resources */,
 				F4EEE70419062B3900A20886 /* 8.png in Resources */,
 				F4EEE72019062B3900A20886 /* receipt.png in Resources */,
+				F4D6C51F190C88EA009163DE /* currentLocation.png in Resources */,
 				F4EEE70819062B3900A20886 /* wood-with-portholes_v2.png in Resources */,
 				F4EEE71E19062B3900A20886 /* profile.png in Resources */,
 				F4EEE71F19062B3900A20886 /* profile@2x.png in Resources */,

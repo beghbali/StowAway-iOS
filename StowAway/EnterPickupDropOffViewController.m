@@ -62,14 +62,15 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 int locationInputCount = 0;
 BOOL onBoardingStatusChecked = NO;
 
+#pragma mark - setup view
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
 }
 
-
 -(void)setUpRevealMenuButton
-{  //set up the reveal button
+{
     [self.revealButtonItem setTarget: self.revealViewController];
     [self.revealButtonItem setAction: @selector( revealToggle: )];
     [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
@@ -91,15 +92,15 @@ BOOL onBoardingStatusChecked = NO;
     MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
     currentLoc.name = kPickUpDefaultCurrentLocation;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
-
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     NSLog(@"%s......", __func__);
 
-    //set text as white - useful when background is blue
+    //set text as white - looks better when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
     [self setUpRevealMenuButton];
@@ -108,7 +109,6 @@ BOOL onBoardingStatusChecked = NO;
     
     [self setUpPlacesSearch];
 }
-
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -124,7 +124,7 @@ BOOL onBoardingStatusChecked = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    if (onBoardingStatusChecked)
+    if ( onBoardingStatusChecked )
         [self setUpLocationServices];
 }
 
@@ -189,10 +189,73 @@ BOOL onBoardingStatusChecked = NO;
     }    
     
     NSLog(@"%s......######## onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
+}
 
++(void)setOnBoardingStatusChecked:(BOOL)yesOrNo
+{
+    NSLog(@"setOnBoardingStatusChecked %d", yesOrNo);
+    onBoardingStatusChecked = yesOrNo;
 }
 
 #pragma mark - location history
+
+
+-(void)updateLocationHistory
+{
+    //add the searched locations to the history array
+    NSMutableArray * locHistory = [NSMutableArray arrayWithCapacity:1];
+    NSArray * prevLocationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:kPickUpDropOffLocationHistory];
+    [locHistory addObjectsFromArray:prevLocationHistory];
+    
+    NSLog(@"self.dropOffLocItem class %@", [self.dropOffLocItem class]);
+    //drop off loc
+    if ( [self.dropOffLocItem isKindOfClass:[MKMapItem class]] )
+    {
+        MKMapItem * mp = (MKMapItem *)self.dropOffLocItem;
+        
+        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
+        if( !(existingHistoryMatch && existingHistoryMatch.count) )
+        {
+            NSDictionary *dropOfflocDict = @{kLocationHistoryName: mp.name,
+                                             kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
+                                             kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
+            
+            NSLog(@"adding drop off loc to history !!!");
+            [locHistory insertObject:dropOfflocDict atIndex:0];
+            if (locHistory.count > kPickUpDropOffLocationHistorySize)
+                [locHistory removeLastObject];
+        }
+    }
+    
+    NSLog(@"pickUpLocItem class %@", [self.pickUpLocItem class]);
+    
+    //pick up loc
+    if ( [self.pickUpLocItem isKindOfClass:[MKMapItem class]] )
+    {
+        MKMapItem * mp = (MKMapItem *)self.pickUpLocItem;
+        
+        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
+        if ( !mp.isCurrentLocation && !(existingHistoryMatch && existingHistoryMatch.count) )
+        {
+            NSDictionary *pickUplocDict = @{kLocationHistoryName: mp.name,
+                                            kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
+                                            kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
+            
+            NSLog(@"adding pick up loc to history !!!");
+            
+            [locHistory insertObject:pickUplocDict atIndex:0];
+            
+            if (locHistory.count > kPickUpDropOffLocationHistorySize)
+                [locHistory removeLastObject];
+        }
+    }
+    
+    NSLog(@"%s: locHistory %@", __func__, locHistory);
+    
+    //write it
+    [[NSUserDefaults standardUserDefaults] setObject:locHistory forKey:kPickUpDropOffLocationHistory];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 -(NSString *)getLocationItemName:(id)locItem
 {
@@ -219,7 +282,7 @@ BOOL onBoardingStatusChecked = NO;
     return mp.placemark.coordinate;
 }
 
-#pragma mark - UITableView delegate methods
+#pragma mark - Search Result
 
 -(BOOL) isPickUpTableView:(UITableView *)tableView
 {
@@ -314,7 +377,7 @@ BOOL onBoardingStatusChecked = NO;
 
 
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - Search
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
@@ -330,25 +393,6 @@ BOOL onBoardingStatusChecked = NO;
     //wait for 0.5sec before actual search starts over the network
     [self performSelector:@selector(startSearch:) withObject:searchBar afterDelay:0.5];
     
-}
-
--(void)updateFindCrewButtonEnabledState
-{
-    locationInputCount = 2;
-
-    if ([self.pickUpSearchBar.text isEqualToString:@""]) {
-        NSLog(@"no pickup, grey out find");
-        self.findCrewButton.enabled = NO;
-        locationInputCount--;
-    }
-    if ([self.dropOffSearchBar.text isEqualToString:@""]) {
-        NSLog(@"no dropoff, grey out find");
-        self.findCrewButton.enabled = NO;
-        locationInputCount--;
-    }
-    
-    if (locationInputCount > 1)
-        self.findCrewButton.enabled = YES;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
@@ -490,7 +534,7 @@ BOOL onBoardingStatusChecked = NO;
     return filteredLoc;
 }
 
-#pragma mark - MKMapViewDelegate methods
+#pragma mark - Map View
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
@@ -559,19 +603,43 @@ BOOL onBoardingStatusChecked = NO;
         
         return result;
     }
-
-    
     return nil;
+}
+
+- (IBAction)currentLocationButtonTapped:(UIButton *)sender
+{
+    NSLog(@"%s", __func__);
+}
+
+-(MKCoordinateRegion) getVisibleMapRegionForUserLocation
+{
+    // confine the map search area to the user's current location
+    MKCoordinateRegion newRegion;
+    
+    newRegion.center.latitude = self.userLocation.latitude;
+    newRegion.center.longitude = self.userLocation.longitude;
+    
+    // setup the area spanned by the map region:
+    // we use the delta values to indicate the desired zoom level of the map,
+    //      (smaller delta values corresponding to a higher zoom level)
+    //
+    newRegion.span.latitudeDelta = 0.112872;
+    newRegion.span.longitudeDelta = 0.109863;
+    
+    return newRegion;
+}
+
+- (void) updateMapsViewArea
+{
+    NSLog(@"%s", __func__);
+    MKCoordinateRegion viewRegion = [self getVisibleMapRegionForUserLocation];
+    
+    [self.mapView setRegion:viewRegion animated:YES];
 }
 
 
 #pragma mark - Location 
 
-+(void)setOnBoardingStatusChecked:(BOOL)yesOrNo
-{
-    NSLog(@"setOnBoardingStatusChecked %d", yesOrNo);
-    onBoardingStatusChecked = yesOrNo;
-}
 -(void)setUpLocationServices
 {
     NSLog(@"---------- setUpLocationServices ---------");
@@ -598,17 +666,8 @@ BOOL onBoardingStatusChecked = NO;
 	[self.locationManager startUpdatingLocation];
 }
 
-- (void) updateMapsViewArea
-{
-    //NSLog(@"%s", __func__);
-    MKCoordinateRegion viewRegion = [self getVisibleMapRegionForUserLocation];
-    
-    [self.mapView setRegion:viewRegion animated:YES];
-}
-
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-   // NSLog(@"loc update - %@", locations);
     CLLocation * newLocation = [locations lastObject];
     
     // remember for later -  user's current location
@@ -624,32 +683,12 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@"loc manager failed - %@", error);
 }
 
-
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     
 //TODO: re-start loc services if needed
     
 }
-
--(MKCoordinateRegion) getVisibleMapRegionForUserLocation
-{
-    // confine the map search area to the user's current location
-    MKCoordinateRegion newRegion;
-
-    newRegion.center.latitude = self.userLocation.latitude;
-    newRegion.center.longitude = self.userLocation.longitude;
-
-    // setup the area spanned by the map region:
-    // we use the delta values to indicate the desired zoom level of the map,
-    //      (smaller delta values corresponding to a higher zoom level)
-    //
-    newRegion.span.latitudeDelta = 0.112872;
-    newRegion.span.longitudeDelta = 0.109863;
-    
-    return newRegion;
-}
-
 
 -(BOOL) isLocationEnabled
 {
@@ -682,68 +721,31 @@ BOOL onBoardingStatusChecked = NO;
     return YES;
 }
 
-#pragma mark - find crew
+#pragma mark - Find Crew
 
--(void)updateLocationHistory
+-(void)updateFindCrewButtonEnabledState
 {
-    //add the searched locations to the history array
-    NSMutableArray * locHistory = [NSMutableArray arrayWithCapacity:1];
-    NSArray * prevLocationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:kPickUpDropOffLocationHistory];
-    [locHistory addObjectsFromArray:prevLocationHistory];
+    locationInputCount = 2;
     
-    NSLog(@"self.dropOffLocItem class %@", [self.dropOffLocItem class]);
-    //drop off loc
-    if ( [self.dropOffLocItem isKindOfClass:[MKMapItem class]] )
-    {
-        MKMapItem * mp = (MKMapItem *)self.dropOffLocItem;
-
-        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
-        if( !(existingHistoryMatch && existingHistoryMatch.count) )
-        {
-            NSDictionary *dropOfflocDict = @{kLocationHistoryName: mp.name,
-                                             kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
-                                             kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
-            
-            NSLog(@"adding drop off loc to history !!!");
-            [locHistory insertObject:dropOfflocDict atIndex:0];
-            if (locHistory.count > kPickUpDropOffLocationHistorySize)
-                [locHistory removeLastObject];
-        }
+    if ([self.pickUpSearchBar.text isEqualToString:@""]) {
+        NSLog(@"no pickup, grey out find");
+        self.findCrewButton.enabled = NO;
+        locationInputCount--;
     }
     
-    NSLog(@"pickUpLocItem class %@", [self.pickUpLocItem class]);
-
-    //pick up loc
-    if ( [self.pickUpLocItem isKindOfClass:[MKMapItem class]] )
-    {
-        MKMapItem * mp = (MKMapItem *)self.pickUpLocItem;
-
-        NSArray * existingHistoryMatch = [self getFilteredLocationHistory:mp.name withExactMatch:YES];
-        if ( !mp.isCurrentLocation && !(existingHistoryMatch && existingHistoryMatch.count) )
-        {
-            NSDictionary *pickUplocDict = @{kLocationHistoryName: mp.name,
-                                             kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
-                                             kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
-            
-            NSLog(@"adding pick up loc to history !!!");
-
-            [locHistory insertObject:pickUplocDict atIndex:0];
-            
-            if (locHistory.count > kPickUpDropOffLocationHistorySize)
-                [locHistory removeLastObject];
-        }
+    if ([self.dropOffSearchBar.text isEqualToString:@""]) {
+        NSLog(@"no dropoff, grey out find");
+        self.findCrewButton.enabled = NO;
+        locationInputCount--;
     }
     
-    NSLog(@"%s: locHistory %@", __func__, locHistory);
-    
-    //write it
-    [[NSUserDefaults standardUserDefaults] setObject:locHistory forKey:kPickUpDropOffLocationHistory];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (locationInputCount > 1)
+        self.findCrewButton.enabled = YES;
 }
 
 - (IBAction)findCrewButtonTapped:(UIButton *)sender
 {
-	[self.locationManager stopUpdatingLocation]; // we don't need to update user's current location at this point
+	[self.locationManager stopUpdatingLocation]; //we don't need to update user's current location at this point
     
     [self updateLocationHistory];
     
