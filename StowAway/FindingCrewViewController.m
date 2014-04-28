@@ -700,7 +700,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 
     NSLog(@"find out crew#%lu's image+name with FBUID %@", (unsigned long)crewPostion, fbUID);
    
-    NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbUID]];
+    NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=160&height=160", fbUID]];
     NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
     UIImage *profilePic = [[UIImage alloc] initWithData:profilePicData] ;
 

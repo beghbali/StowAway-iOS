@@ -32,6 +32,8 @@
 		F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823B18FA38E200E3F059 /* PageContentViewController.m */; };
 		F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460824E18FA434A00E3F059 /* TutorialViewController.m */; };
 		F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */; };
+		F47C03F3190E207200F9916E /* wood-with-portholes_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C03F1190E207200F9916E /* wood-with-portholes_v3.png */; };
+		F47C03F4190E207200F9916E /* wood-with-portholes_v3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C03F2190E207200F9916E /* wood-with-portholes_v3@2x.png */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EA18AAF84000FD8FB9 /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -91,8 +93,6 @@
 		F4EEE70519062B3900A20886 /* 8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6B519062B3900A20886 /* 8@2x.png */; };
 		F4EEE70619062B3900A20886 /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6B619062B3900A20886 /* 9.png */; };
 		F4EEE70719062B3900A20886 /* 9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6B719062B3900A20886 /* 9@2x.png */; };
-		F4EEE70819062B3900A20886 /* wood-with-portholes_v2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6B919062B3900A20886 /* wood-with-portholes_v2.png */; };
-		F4EEE70919062B3900A20886 /* wood-with-portholes_v2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6BA19062B3900A20886 /* wood-with-portholes_v2@2x.png */; };
 		F4EEE70A19062B3900A20886 /* action_required.wav in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6BC19062B3900A20886 /* action_required.wav */; };
 		F4EEE70B19062B3900A20886 /* ride_checkedin.wav in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6BD19062B3900A20886 /* ride_checkedin.wav */; };
 		F4EEE70C19062B3900A20886 /* ride_matched.wav in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6BE19062B3900A20886 /* ride_matched.wav */; };
@@ -183,6 +183,8 @@
 		F460824E18FA434A00E3F059 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewViewController.h; sourceTree = "<group>"; };
 		F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewViewController.m; sourceTree = "<group>"; };
+		F47C03F1190E207200F9916E /* wood-with-portholes_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes_v3.png"; sourceTree = "<group>"; };
+		F47C03F2190E207200F9916E /* wood-with-portholes_v3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes_v3@2x.png"; sourceTree = "<group>"; };
 		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
 		F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
 		F47CB6E718AAF84000FD8FB9 /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
@@ -260,8 +262,6 @@
 		F4EEE6B519062B3900A20886 /* 8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8@2x.png"; sourceTree = "<group>"; };
 		F4EEE6B619062B3900A20886 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
 		F4EEE6B719062B3900A20886 /* 9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9@2x.png"; sourceTree = "<group>"; };
-		F4EEE6B919062B3900A20886 /* wood-with-portholes_v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes_v2.png"; sourceTree = "<group>"; };
-		F4EEE6BA19062B3900A20886 /* wood-with-portholes_v2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes_v2@2x.png"; sourceTree = "<group>"; };
 		F4EEE6BC19062B3900A20886 /* action_required.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = action_required.wav; sourceTree = "<group>"; };
 		F4EEE6BD19062B3900A20886 /* ride_checkedin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_checkedin.wav; sourceTree = "<group>"; };
 		F4EEE6BE19062B3900A20886 /* ride_matched.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ride_matched.wav; sourceTree = "<group>"; };
@@ -595,8 +595,8 @@
 		F4EEE6B819062B3900A20886 /* findingCrewImages */ = {
 			isa = PBXGroup;
 			children = (
-				F4EEE6B919062B3900A20886 /* wood-with-portholes_v2.png */,
-				F4EEE6BA19062B3900A20886 /* wood-with-portholes_v2@2x.png */,
+				F47C03F1190E207200F9916E /* wood-with-portholes_v3.png */,
+				F47C03F2190E207200F9916E /* wood-with-portholes_v3@2x.png */,
 			);
 			path = findingCrewImages;
 			sourceTree = "<group>";
@@ -753,6 +753,7 @@
 				F4EEE6FB19062B3900A20886 /* 3@2x.png in Resources */,
 				F4EEE6ED19062B3900A20886 /* 12.png in Resources */,
 				F4EEE6EB19062B3900A20886 /* 11.png in Resources */,
+				F47C03F3190E207200F9916E /* wood-with-portholes_v3.png in Resources */,
 				F4EEE72F19062B3900A20886 /* tutorial_3@2x.png in Resources */,
 				F47CB70A18AAF84000FD8FB9 /* GTMOAuth2ViewTouch.xib in Resources */,
 				F4EEE71819062B3900A20886 /* footer.png in Resources */,
@@ -799,7 +800,6 @@
 				F4EEE70119062B3900A20886 /* 6@2x.png in Resources */,
 				F4EEE6FD19062B3900A20886 /* 4@2x.png in Resources */,
 				F4EEE72A19062B3900A20886 /* tutorial_1.png in Resources */,
-				F4EEE70919062B3900A20886 /* wood-with-portholes_v2@2x.png in Resources */,
 				F4EEE71319062B3900A20886 /* off@2x.png in Resources */,
 				F4EEE72D19062B3900A20886 /* tutorial_2@2x.png in Resources */,
 				F4EEE6F019062B3900A20886 /* 13@2x.png in Resources */,
@@ -807,7 +807,6 @@
 				F4EEE71019062B3900A20886 /* 50.png in Resources */,
 				F4EEE70419062B3900A20886 /* 8.png in Resources */,
 				F4EEE72019062B3900A20886 /* receipt.png in Resources */,
-				F4EEE70819062B3900A20886 /* wood-with-portholes_v2.png in Resources */,
 				F4EEE71E19062B3900A20886 /* profile.png in Resources */,
 				F4EEE71F19062B3900A20886 /* profile@2x.png in Resources */,
 				F4EEE70F19062B3900A20886 /* you-are-stowaway.wav in Resources */,
@@ -817,6 +816,7 @@
 				F4EEE72B19062B3900A20886 /* tutorial_1@2x.png in Resources */,
 				F4EEE6FE19062B3900A20886 /* 5.png in Resources */,
 				F4EEE6EA19062B3900A20886 /* 10@2x.png in Resources */,
+				F47C03F4190E207200F9916E /* wood-with-portholes_v3@2x.png in Resources */,
 				F4EEE6F819062B3900A20886 /* 2.png in Resources */,
 				F4EEE71A19062B3900A20886 /* help.png in Resources */,
 				F4EEE72319062B3900A20886 /* reveal-icon@2x.png in Resources */,
