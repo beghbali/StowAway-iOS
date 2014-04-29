@@ -726,7 +726,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */;
+			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1011,8 +1011,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: emmanuelle rosales moreno (26HEG3Z9PJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: emmanuelle rosales moreno (26HEG3Z9PJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stowaway Group, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Stowaway Group, Inc.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/otherFrameworks/**",
 					"$(inherited)",
@@ -1062,7 +1062,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */ = {
+		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68BAFEDC188DDBD3009738A0 /* Debug */,
