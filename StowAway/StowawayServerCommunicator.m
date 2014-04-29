@@ -26,7 +26,7 @@
     }
     
     NSData      *bodyData   = [bodyString dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString    *postLength = [NSString stringWithFormat:@"%d", [bodyData length]];
+    NSString    *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[bodyData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL         :[NSURL URLWithString:url]];
@@ -64,7 +64,7 @@
                                               
                                               NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
                                               
-                                              NSLog(@"httpResp.statusCode %d, error %@",httpResp.statusCode , error );
+                                              NSLog(@"httpResp.statusCode %ld, error %@",(long)httpResp.statusCode , error );
                                               
                                               if (error ||
                                                   ([method isEqualToString: @"POST"] && (httpResp.statusCode != 201)) ||

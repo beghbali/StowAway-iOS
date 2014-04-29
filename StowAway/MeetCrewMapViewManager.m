@@ -54,7 +54,7 @@
 //called anytime a stowaways gets updated
 -(void)initializeCrew:(NSMutableArray *)newCrew forRideID:(NSNumber *)rideID
 {
-    NSLog(@"new crew......... %@, rideID %@", newCrew, rideID);
+    NSLog(@"MeetCrewMapViewManager:: new crew......... %@, rideID %@", newCrew, rideID);
     
     self.rideID = rideID;
     
@@ -140,8 +140,9 @@
 -(void)startUpdatingMapView:(MKMapView *)mapView
      withSuggestedLocations:(NSDictionary *)suggestedLocations
            andPusherChannel:(NSString *)locationChannel
+                isLoneRider:(BOOL)isLoneRider
 {
-    NSLog(@"%s",__func__);
+    NSLog(@"%s, isLoneRider %d",__func__, isLoneRider);
    
     //check loc is on
     self.isLocationDisabled = ![self isLocationEnabled];
@@ -159,11 +160,14 @@
     [self showPickUpLocation];
     [self zoomToFitMapAnnotations];
     
-    //start location updates
-    [self startLocationUpdates];
+    if (!isLoneRider)
+    {
+        //start location updates
+        [self startLocationUpdates];
 
-    //subscribe to pusher channel
-    [self startPusherUpdates];
+        //subscribe to pusher channel
+        [self startPusherUpdates];
+    }
 }
 
 -(void)reverseGeocodeDropOffSuggestedAddresses

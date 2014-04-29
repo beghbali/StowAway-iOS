@@ -273,12 +273,15 @@
         
         NSDictionary *metaData = [itemDict objectForKey:@"metadata"];
         NSString *newversion = [metaData valueForKey:@"bundle-version"];
+        
         NSString *currentversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
         
+        NSLog(@"app version: current %@, new %@", currentversion, newversion);
         updateAvailable = [newversion compare:currentversion options:NSNumericSearch] == NSOrderedDescending;
     }
 
-    if (updateAvailable) {
+    if (updateAvailable)
+    {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"App Update Required"
                                                         message:@"You must update to the latest version of the app"
                                                        delegate:self

@@ -12,10 +12,13 @@
 
 @interface MeetCrewMapViewManager : NSObject
 
--(void)initializeCrew:(NSMutableArray *)newCrew forRideID:(NSNumber *)rideID;
+-(void)initializeCrew:(NSMutableArray *)newCrew
+            forRideID:(NSNumber *)rideID;
 
 -(void)startUpdatingMapView:(MKMapView *)mapView
-     withSuggestedLocations:(NSDictionary *)suggestedLocations andPusherChannel:(NSString *)locationChannel;
+     withSuggestedLocations:(NSDictionary *)suggestedLocations
+           andPusherChannel:(NSString *)locationChannel
+                isLoneRider:(BOOL)isLoneRider;
 
 -(void)startAutoCheckinMode;
 
