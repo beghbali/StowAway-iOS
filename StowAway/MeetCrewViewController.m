@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *loneRiderText;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBarItem;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -293,6 +294,7 @@
                 self.loneRiderText.hidden = !self.isLoneRider;
                 self.countDownTimer.hidden  =  self.isLoneRider;
                 self.requestUberButton.hidden = NO;
+                self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
             } else
             {
                 self.designationLabel.text = @"YOU ARE A STOWAWAY !";
