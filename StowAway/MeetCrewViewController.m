@@ -189,23 +189,37 @@
     return resultImage;
 }
 
+//1 = checked in, 0 = unknown, -1 = missed
+-(int)getCheckedInStatus:(NSDictionary *)crewMember
+{
+    int         status          = 0;
+    NSNumber *  isCheckedInNum  = nil;
+    
+    if (!crewMember)
+        return status;
+    
+    isCheckedInNum = [crewMember objectForKey:kIsCheckedIn];
+    
+    if (isCheckedInNum )
+        status = [isCheckedInNum boolValue] ? 1: -1;
+    
+    return status;
+}
+
 -(UIImage *)getBadgedCheckedInImageForCrewMember:(NSDictionary *)crewMember
 {
-    NSNumber * isCheckedInNum = nil;
+    int status = 0;
     UIImage * badgedImage = nil;
     UIImage * crewImage = nil;
     
-    if ( !crewMember )
-        return badgedImage;
+    status = [self getCheckedInStatus:crewMember];
+    NSLog(@"updateCheckedInStatusForCrewMember %@, status %d", crewMember, status);
     
-    NSLog(@"updateCheckedInStatusForCrewMember %@", crewMember);
-    isCheckedInNum = [crewMember objectForKey:kIsCheckedIn];
+    if ( status == 0 )
+        return badgedImage;
 
-    if (!isCheckedInNum )
-        return badgedImage;
-    
     crewImage = [crewMember objectForKey:kCrewFbImage];
-    if ([isCheckedInNum boolValue])
+    if (status == 1)
     {
         NSLog(@"check this one in !!!");
         
@@ -286,7 +300,7 @@
             self.isLoneRider = [couponCode isEqualToString:kCouponCodeLoneRider];
 
             prevDesg = self.designationLabel.text;
-
+            
             if ( isCaptain )
             {
                 self.designationLabel.text = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
@@ -300,6 +314,8 @@
                 self.designationLabel.text = @"YOU ARE A STOWAWAY !";
                 self.instructionsLabel.text = @"Please walk to the pick up point in about";
                 self.requestUberButton.hidden = YES;
+                self.navigationBarItem.title  = @"Meet Your Captain";
+
             }
             
             if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
@@ -320,19 +336,33 @@
                  */
             }
             
-            //if checked in, hide uber and cancel buttons and show done button
-            if ([crewMember objectForKey:kIsCheckedIn])
+            
+            //check in status
+            switch ([self getCheckedInStatus:crewMember])
             {
-                self.requestUberButton.hidden = YES;
-                self.cancelButton.titleLabel.text = @"      Done";
+                case 1:
+                    //checked in
+                    self.cancelButton.titleLabel.text = @"   DONE  ";
+                    self.navigationBarItem.title  = @"Bon Voyage !!";
+                    break;
+                    
+                case -1:
+                    //missed the ride
+                    self.cancelButton.titleLabel.text = @"   DONE  ";
+                    self.navigationBarItem.title  = @"Missed Your Ship  :(";
+                    
+                    break;
+                    
+                default:
+                    break;
             }
+
             continue;
             
         } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
         {   // if someone else is a captain
          //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
         }
-        
         
         switch (i)
         {
@@ -496,7 +526,12 @@
         [[UIApplication sharedApplication] openURL:url];
     }
     
-    self.requestUberButton.titleLabel.textColor = [UIColor grayColor];
+    self.requestUberButton.hidden = YES;
+    if (self.isLoneRider)
+    {
+        self.cancelButton.titleLabel.text = @"   DONE  ";
+        self.navigationBarItem.title  = @"Bon Voyage !!";
+    }
 }
 
 - (void)doneButtonTapped
