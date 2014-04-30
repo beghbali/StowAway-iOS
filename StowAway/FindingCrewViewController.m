@@ -552,6 +552,7 @@ void swap (NSUInteger *a, NSUInteger *b)
         return;
     }
     
+    /*
     //if there are no matches, ask user if they want to wait more
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Matches Yet !"
                                                     message:@"Do you want to wait a bit more ?"
@@ -559,6 +560,9 @@ void swap (NSUInteger *a, NSUInteger *b)
                                           cancelButtonTitle:@"No"
                                           otherButtonTitles:@"Yes", nil];
     [alert show];
+    */
+    
+    [self sendCoupon:kCouponCodeLoneRider];
 }
 
 
