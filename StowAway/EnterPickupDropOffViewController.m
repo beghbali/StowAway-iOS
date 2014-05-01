@@ -58,8 +58,16 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
-@property (nonatomic, strong) NSArray *availableRideTimes;
-
+@property (nonatomic, strong) NSArray * availableRideTimes;
+@property (nonatomic, strong) NSArray * rideTypes;
+@property (weak, nonatomic) IBOutlet UIButton *leftRideTypeButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightRideTypeButton;
+@property (weak, nonatomic) IBOutlet UILabel *rideTypeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rideTimeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *decreaseRideTimeButton;
+@property (weak, nonatomic) IBOutlet UIButton *increaseRideTimeButton;
+@property NSUInteger startingRideTypeIndex;
+@property NSUInteger currentRideTimeIndex;
 @end
 
 
@@ -100,11 +108,6 @@ BOOL onBoardingStatusChecked = NO;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 }
 
--(void)configureAvailableRideTimes
-{
-    self.availableRideTimes  = @[@"9:00 - 9:15 AM", @"9:15 - 9:30 AM",@"9:30 - 9:45 AM", @"9:45 - 10:00 AM",@"10:00 - 10:15 AM",@"10:15 - 10:30 AM"];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -121,6 +124,9 @@ BOOL onBoardingStatusChecked = NO;
     [self setUpPlacesSearch];
     
     [self configureAvailableRideTimes];
+    
+    self.rideTypes = @[@"Your Ride To Work Today", @"Your Ride Home Today", @"Your Ride To Work Tomorrow", @"Your Ride Home Tomorrow"];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -212,53 +218,72 @@ BOOL onBoardingStatusChecked = NO;
     onBoardingStatusChecked = yesOrNo;
 }
 
-/*
-#pragma mark - Time Picker
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+#pragma mark - Ride Time Buttons
+- (IBAction)leftRideTypeButtonTapped:(UIButton *)sender
 {
-    return 1;
-}
+    if (self.startingRideTypeIndex)
+        self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex - 1];
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    NSLog(@"%s:........... availableRideTimes %@", __func__, self.availableRideTimes);
-    return self.availableRideTimes.count;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView
-             titleForRow:(NSInteger)row
-            forComponent:(NSInteger)component
-{
-    return self.availableRideTimes[row];
-}
-
- - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSLog(@"%s:..........row %ld", __func__, (long)row);
-
-}
-
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
-{
-    NSLog(@"%s: #####....row %ld, view %@", __func__, (long)row, view);
+    sender.enabled = NO;
     
-    UILabel* label = (UILabel*)view;
+    self.rightRideTypeButton.enabled = YES;
+
+    //update the time
+}
+
+- (IBAction)rightRideTypeButtonTapped:(UIButton *)sender
+{
+    self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex + 1];
+
+    self.leftRideTypeButton.enabled = YES;
     
-    if (!label)
+    sender.enabled = YES;
+    
+    //update the time
+}
+
+- (IBAction)decreaseRideTimeButtonTapped:(UIButton *)sender
+{
+    if (self.currentRideTimeIndex)
     {
-        NSLog(@"create new label");
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, pickerView.frame.size.width, 24)];
-//        label.backgroundColor = [UIColor lightGrayColor];
-        label.textColor = [UIColor blackColor];
-        label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
-        label.text = self.availableRideTimes[row];
-        label.adjustsFontSizeToFitWidth = YES;
+        self.currentRideTimeIndex--;
+        self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
     }
-    NSLog(@"label %@", label);
-    return label;
+    
+    if (self.currentRideTimeIndex == 0)
+        sender.enabled = NO;
+    
+    self.increaseRideTimeButton.enabled = YES;
+
 }
-*/
+
+- (IBAction)increaseRideTimeButtonTapped:(UIButton *)sender
+{
+    self.currentRideTimeIndex++;
+    self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
+
+    if (self.currentRideTimeIndex == (self.availableRideTimes.count -1) )
+        sender.enabled = NO;
+    
+    self.decreaseRideTimeButton.enabled = YES;
+}
+
+#pragma mark - Ride Scheduling
+
+-(void)configureAvailableRideTimes
+{
+    self.availableRideTimes  = @[@"9:00 - 9:15 AM", @"9:15 - 9:30 AM",@"9:30 - 9:45 AM", @"9:45 - 10:00 AM",@"10:00 - 10:15 AM",@"10:15 - 10:30 AM"];
+    self.startingRideTypeIndex = 0;
+    self.currentRideTimeIndex = 0;
+    self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
+    self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
+    
+    //disable/enable left/right ride type selection button
+    
+    //disable/enable +/- button
+}
+
+
 #pragma mark - location history
 
 -(void)updateLocationHistory
