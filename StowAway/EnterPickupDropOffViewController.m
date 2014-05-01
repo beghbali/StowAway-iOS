@@ -22,8 +22,13 @@
 static NSString *kCellIdentifier = @"cellIdentifier";
 static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
-@interface EnterPickupDropOffViewController () <CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, StowawayServerCommunicatorDelegate>
+@interface EnterPickupDropOffViewController () <CLLocationManagerDelegate,
+                                                MKMapViewDelegate,
+                                                StowawayServerCommunicatorDelegate,
+                                                UISearchBarDelegate, UISearchDisplayDelegate>/*,
+                                                UIPickerViewDelegate, UIPickerViewDataSource>*/
 
+@property (weak, nonatomic) IBOutlet UIPickerView *timePickerView;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
@@ -53,6 +58,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
+@property (nonatomic, strong) NSArray *availableRideTimes;
 
 @end
 
@@ -94,6 +100,11 @@ BOOL onBoardingStatusChecked = NO;
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 }
 
+-(void)configureAvailableRideTimes
+{
+    self.availableRideTimes  = @[@"9:00 - 9:15 AM", @"9:15 - 9:30 AM",@"9:30 - 9:45 AM", @"9:45 - 10:00 AM",@"10:00 - 10:15 AM",@"10:15 - 10:30 AM"];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -108,6 +119,8 @@ BOOL onBoardingStatusChecked = NO;
     [self.rideRequestActivityIndicator stopAnimating];
     
     [self setUpPlacesSearch];
+    
+    [self configureAvailableRideTimes];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -126,6 +139,8 @@ BOOL onBoardingStatusChecked = NO;
     
     if ( onBoardingStatusChecked )
         [self setUpLocationServices];
+    
+    [self configureAvailableRideTimes];
 }
 
 
@@ -197,8 +212,54 @@ BOOL onBoardingStatusChecked = NO;
     onBoardingStatusChecked = yesOrNo;
 }
 
-#pragma mark - location history
+/*
+#pragma mark - Time Picker
 
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    NSLog(@"%s:........... availableRideTimes %@", __func__, self.availableRideTimes);
+    return self.availableRideTimes.count;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView
+             titleForRow:(NSInteger)row
+            forComponent:(NSInteger)component
+{
+    return self.availableRideTimes[row];
+}
+
+ - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSLog(@"%s:..........row %ld", __func__, (long)row);
+
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    NSLog(@"%s: #####....row %ld, view %@", __func__, (long)row, view);
+    
+    UILabel* label = (UILabel*)view;
+    
+    if (!label)
+    {
+        NSLog(@"create new label");
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, pickerView.frame.size.width, 24)];
+//        label.backgroundColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
+        label.text = self.availableRideTimes[row];
+        label.adjustsFontSizeToFitWidth = YES;
+    }
+    NSLog(@"label %@", label);
+    return label;
+}
+*/
+#pragma mark - location history
 
 -(void)updateLocationHistory
 {
