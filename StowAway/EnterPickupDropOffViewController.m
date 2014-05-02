@@ -68,6 +68,8 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (weak, nonatomic) IBOutlet UIButton *increaseRideTimeButton;
 @property NSUInteger startingRideTypeIndex;
 @property NSUInteger currentRideTimeIndex;
+@property BOOL isRideTimeConfigured;
+
 @end
 
 
@@ -123,10 +125,23 @@ BOOL onBoardingStatusChecked = NO;
     
     [self setUpPlacesSearch];
     
-    [self configureAvailableRideTimes];
-    
+   // [self configureAvailableRideTimes];
+    self.isRideTimeConfigured = YES;
     self.rideTypes = @[@"Your Ride To Work Today", @"Your Ride Home Today", @"Your Ride To Work Tomorrow", @"Your Ride Home Tomorrow"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 
+}
+
+- (void)appReturnsActive:(NSNotification *)notification
+{
+    NSLog(@"---------%s............", __func__);
+ 
+    //dont recalculate immediately after VDL
+    if (!self.isRideTimeConfigured)
+        [self configureAvailableRideTimes];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -147,6 +162,8 @@ BOOL onBoardingStatusChecked = NO;
         [self setUpLocationServices];
     
     [self configureAvailableRideTimes];
+    
+    self.isRideTimeConfigured = NO;
 }
 
 
@@ -272,15 +289,84 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)configureAvailableRideTimes
 {
+    NSInteger nowHrs = 0;
+    NSInteger nowMins = 0;
+    NSInteger startingHrs = 0;
+    NSInteger startingMins = 0;
+    NSInteger fraction = 0;
+    //ride to work
+    NSInteger startingMorningHrs = 6;  //6:00 - 6:15 am can be the first slot
+    NSInteger endingMorningHrs = 11; //10:45 - 11:00 am will be the last slot
+    //ride to home
+    NSInteger startingEveningHrs = 15; //3:00 - 3:15 pm would be the first slot
+    NSInteger endingEveningHrs = 22; //9:45 - 10pm would be the last slot
+    
+    //history -- look at the last ride home & work and check the time
+    BOOL hasTakenRideToWorkToday = NO;
+    BOOL hasTakenRideToHomeToday = NO;
+    
+    NSDate * now = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    [dateFormatter setLocale:usLocale];
+    
+    NSLog(@"**************** now %@...........%@", now, [dateFormatter stringFromDate:now]);
+   
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSMonthCalendarUnit) fromDate:now];
+
+    nowHrs = components.hour;
+    nowMins = components.minute;
+    fraction = (nowMins / 15);
+    if ((nowMins % 15) == 0)
+        fraction--; //to take care of transitions 15,30,45 mins
+        
+    startingHrs = nowHrs;
+
+    if (nowMins == 0)
+    {
+        startingMins = 15;
+    } else
+    {
+        switch (fraction)
+        {
+            case 0:
+                startingMins = 30;
+                break;
+          
+            case 1:
+                startingMins = 45;
+                break;
+                
+            case 2:
+                startingMins = 0;
+                startingHrs++;
+                break;
+           
+            case 3:
+                startingMins = 15;
+                startingHrs++;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    NSLog(@"nowhrs %ld, nowmins %ld, == %ld ==  starting hrs %ld, starting mins %ld", (long)nowHrs, (long)nowMins, (long)fraction, (long)startingHrs, (long)startingMins);
+    
+    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)components.hour, (long)components.minute, (long)components.year, (long)components.day);
+    components.hour = components.minute = 0;
+    NSLog(@"ZERO time of the day: %@", [calendar dateFromComponents:components]);
+
     self.availableRideTimes  = @[@"9:00 - 9:15 AM", @"9:15 - 9:30 AM",@"9:30 - 9:45 AM", @"9:45 - 10:00 AM",@"10:00 - 10:15 AM",@"10:15 - 10:30 AM"];
     self.startingRideTypeIndex = 0;
     self.currentRideTimeIndex = 0;
     self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
     
-    //disable/enable left/right ride type selection button
-    
-    //disable/enable +/- button
+    NSLog(@"+++++++++++++++++++++");
 }
 
 
