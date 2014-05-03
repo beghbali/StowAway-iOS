@@ -19,6 +19,15 @@
 #define SHOW_MILES_OF_MAP_VIEW 0.6
 #define MAP_VIEW_REGION_DISTANCE (SHOW_MILES_OF_MAP_VIEW * METERS_PER_MILE)
 
+
+typedef enum : NSUInteger
+{
+    kRideType_ToWorkToday,
+    kRideType_ToHomeToday,
+    kRideType_ToWorkTomorrow,
+    kRideType_ToHomeTomorrow
+} kRideTypeIndex;
+
 static NSString *kCellIdentifier = @"cellIdentifier";
 static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
@@ -58,7 +67,8 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
-@property (nonatomic, strong) NSArray * availableRideTimes;
+@property (nonatomic, strong) NSMutableArray * availableRideTimesLabel;
+@property (nonatomic, strong) NSMutableArray * availableRideTimesAbsoluteTime;
 @property (nonatomic, strong) NSArray * rideTypes;
 @property (weak, nonatomic) IBOutlet UIButton *leftRideTypeButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightRideTypeButton;
@@ -116,6 +126,7 @@ BOOL onBoardingStatusChecked = NO;
     
     NSLog(@"%s......", __func__);
 
+    self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
     //set text as white - looks better when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
@@ -127,7 +138,10 @@ BOOL onBoardingStatusChecked = NO;
     
    // [self configureAvailableRideTimes];
     self.isRideTimeConfigured = YES;
-    self.rideTypes = @[@"Your Ride To Work Today", @"Your Ride Home Today", @"Your Ride To Work Tomorrow", @"Your Ride Home Tomorrow"];
+    self.rideTypes = @[@"Your Ride To Work Today",
+                       @"Your Ride Home Today",
+                       @"Your Ride To Work Tomorrow",
+                       @"Your Ride Home Tomorrow"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
@@ -264,7 +278,7 @@ BOOL onBoardingStatusChecked = NO;
     if (self.currentRideTimeIndex)
     {
         self.currentRideTimeIndex--;
-        self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
+        self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     }
     
     if (self.currentRideTimeIndex == 0)
@@ -277,9 +291,9 @@ BOOL onBoardingStatusChecked = NO;
 - (IBAction)increaseRideTimeButtonTapped:(UIButton *)sender
 {
     self.currentRideTimeIndex++;
-    self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
+    self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
 
-    if (self.currentRideTimeIndex == (self.availableRideTimes.count -1) )
+    if (self.currentRideTimeIndex == (self.availableRideTimesLabel.count -1) )
         sender.enabled = NO;
     
     self.decreaseRideTimeButton.enabled = YES;
@@ -294,6 +308,7 @@ BOOL onBoardingStatusChecked = NO;
     NSInteger startingHrs = 0;
     NSInteger startingMins = 0;
     NSInteger fraction = 0;
+    
     //ride to work
     NSInteger startingMorningHrs = 6;  //6:00 - 6:15 am can be the first slot
     NSInteger endingMorningHrs = 11; //10:45 - 11:00 am will be the last slot
@@ -360,11 +375,83 @@ BOOL onBoardingStatusChecked = NO;
     components.hour = components.minute = 0;
     NSLog(@"ZERO time of the day: %@", [calendar dateFromComponents:components]);
 
-    self.availableRideTimes  = @[@"9:00 - 9:15 AM", @"9:15 - 9:30 AM",@"9:30 - 9:45 AM", @"9:45 - 10:00 AM",@"10:00 - 10:15 AM",@"10:15 - 10:30 AM"];
-    self.startingRideTypeIndex = 0;
-    self.currentRideTimeIndex = 0;
-    self.rideTimeLabel.text = self.availableRideTimes[self.currentRideTimeIndex];
+    if ( nowHrs < endingMorningHrs )
+    {
+        //morning time - 0~10:59am
+        self.startingRideTypeIndex = hasTakenRideToWorkToday ? kRideType_ToHomeToday: kRideType_ToWorkToday;
+    } else
+    {
+        //day time -  after 11am
+        self.startingRideTypeIndex = hasTakenRideToHomeToday ? kRideType_ToWorkTomorrow: kRideType_ToHomeToday;
+    }
+
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
+
+    NSLog(@"startingRideTypeIndex %ld [%@].......", (long)self.startingRideTypeIndex, self.rideTypeLabel.text);
+    
+    NSUInteger maxHrs = 0;
+    NSUInteger minHrs = 0;
+    
+    switch (self.startingRideTypeIndex)
+    {
+        case kRideType_ToWorkToday:
+            
+            if(1 || nowHrs < 6 ) // 0 - 5:59am
+            {
+                //6 to 11
+                minHrs = startingMorningHrs;
+                maxHrs = endingMorningHrs;
+            }
+            break;
+
+        case kRideType_ToHomeToday:
+            if(1|| nowHrs < 15 ) // 11 - 2:59 pm
+            {
+                //3 to 10pm
+                minHrs = startingEveningHrs;
+                maxHrs = endingEveningHrs;
+            }
+            break;
+            
+
+            break;
+            
+        case kRideType_ToWorkTomorrow:
+            
+            break;
+
+        case kRideType_ToHomeTomorrow:
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSUInteger hrs = minHrs;
+    NSUInteger mins = 0;
+    NSUInteger nxtHrs = hrs;
+    NSUInteger nxtMins = 0;
+
+    
+    while ( hrs < maxHrs )
+    {
+        if (mins == 45)
+        {
+            nxtHrs ++;
+            nxtMins = 0;
+        } else
+            nxtMins +=15;
+        
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %ld:%02ld %@", (hrs > 12)? (hrs-12): hrs, (long)mins, (nxtHrs > 12)? (nxtHrs-12):nxtHrs , (long)nxtMins, (nxtHrs>12)?@"pm":@"am"]];
+        hrs = nxtHrs;
+        mins = nxtMins;
+    }
+    
+    NSLog(@" $$$ availableRideTimesLabel %@", self.availableRideTimesLabel);
+    
+    self.currentRideTimeIndex = 0;
+    self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     
     NSLog(@"+++++++++++++++++++++");
 }
