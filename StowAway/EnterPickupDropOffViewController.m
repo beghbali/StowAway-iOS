@@ -93,7 +93,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property NSInteger startingAvailabilityHrs;
 @property NSInteger startingAvailabilityMins;
 @property NSInteger endingAvailabilityHrs;
-
+@property (weak, nonatomic) NSDateComponents *nowDateComponents;
 
 @end
 
@@ -315,6 +315,7 @@ BOOL onBoardingStatusChecked = NO;
     self.decreaseRideTimeButton.enabled = YES;
     
     NSLog(@"%s: currentRideTimeIndex %ld, %@", __func__, (long)self.currentRideTimeIndex, self.rideTimeLabel.text);
+    
 }
 
 #pragma mark - Ride Scheduling
@@ -328,15 +329,12 @@ BOOL onBoardingStatusChecked = NO;
     [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSMonthCalendarUnit) fromDate:now];
+    self.nowDateComponents = [calendar components:(NSDayCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSMonthCalendarUnit) fromDate:now];
     
-    self.nowHrs = components.hour;
-    self.nowMins = components.minute;
+    self.nowHrs = self.nowDateComponents.hour;
+    self.nowMins = self.nowDateComponents.minute;
     
-    NSLog(@"**************** now %@ [%@], hrs %ld, mins %ld", now, [dateFormatter stringFromDate:now], (long)self.nowHrs, (long)self.nowMins);
-    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)components.hour, (long)components.minute, (long)components.year, (long)components.day);
-    components.hour = components.minute = 0;
-    NSLog(@"ZERO time of the day: %@", [dateFormatter stringFromDate:[calendar dateFromComponents:components]]);
+    NSLog(@"%s: now [%@], hrs %ld, mins %ld", __func__, [dateFormatter stringFromDate:now], (long)self.nowHrs, (long)self.nowMins);
 }
 
 -(void)calculateRideType
@@ -503,11 +501,11 @@ BOOL onBoardingStatusChecked = NO;
 {
     NSLog(@"+++++++++ isUsingNextRideType %d ++++++++++++", self.isUsingNextRideType);
 
+    //(1)
+    [self calculateCurrentHrsMins];
+
     if (!self.isUsingNextRideType)
     {
-        //(1)
-        [self calculateCurrentHrsMins];
-    
         //(2, 3)
         [self calculateRideType];
     }
@@ -520,6 +518,41 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@"+++++++++++++++++++++");
 }
 
+-(NSDate *)calculateRequestedRideDate
+{
+    NSDate * choosenRideDate = nil;
+    NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
+    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+    
+    NSLog(@"%s: %@, %@", __func__, self.rideTypes[choosenRideType], choosenTime);
+    
+    NSArray * tokens = [choosenTime componentsSeparatedByString:@" "];
+    NSLog(@"tokens: %@", tokens);
+    NSString * startTime = [tokens firstObject];
+    NSString * am_pm = [tokens objectAtIndex:3];
+    BOOL isPM = [am_pm isEqualToString:@"pm"];
+    tokens = [startTime componentsSeparatedByString:@":"];
+    NSString * choosenHrs = [tokens firstObject];
+    NSString * choosenMins = [tokens lastObject];
+    
+    NSLog(@"%@ %@ %@ %d", choosenHrs, choosenMins, am_pm, isPM);
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)self.nowDateComponents.hour, (long)self.nowDateComponents.minute, (long)self.nowDateComponents.year, (long)self.nowDateComponents.day);
+    self.nowDateComponents.hour = isPM? [choosenHrs intValue]+12: [choosenHrs intValue];
+    self.nowDateComponents.minute = [choosenMins intValue];
+    if (choosenRideType < 1) //tomorrow
+        self.nowDateComponents.day++;
+    
+    NSLog(@"choosen ride date: %@", [dateFormatter stringFromDate:[calendar dateFromComponents:self.nowDateComponents]]);
+
+    return choosenRideDate;
+}
 
 #pragma mark - location history
 
@@ -1089,6 +1122,8 @@ BOOL onBoardingStatusChecked = NO;
     
     [self updateLocationHistory];
     
+    NSDate * requestedRideDate = [self calculateRequestedRideDate];
+
     //prepare the ride request query
 
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
