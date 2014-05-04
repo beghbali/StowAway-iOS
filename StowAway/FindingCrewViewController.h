@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
-@property (strong, nonatomic) NSString *rideInfo;
+@property (strong, nonatomic) NSString *rideTypeLabel;
+@property (strong, nonatomic) NSString *rideTimeLabel;
 
 @end

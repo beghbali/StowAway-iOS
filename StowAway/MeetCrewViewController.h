@@ -24,4 +24,8 @@
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
 
+@property (strong, nonatomic) NSString *rideTypeLabel;
+@property (strong, nonatomic) NSString *rideTimeLabel;
+
+
 @end

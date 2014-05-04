@@ -62,6 +62,7 @@ NSString *const kStatus                 = @"status";
 NSString *const KStatusFulfilled        = @"fulfilled";
 NSString *const kStatusCheckedin        = @"checkedin";
 NSString *const kStatusMissed           = @"missed";
+NSString *const kStatusInitiated        = @"initiated";
 
 //crew member
 NSString *const kIsCaptain              = @"isCaptain";
@@ -87,7 +88,7 @@ NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 //countdown timer
 NSUInteger kCountdownTimerMaxSeconds        = (60*5); //5mins
 NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
-NSUInteger kServerPollingIntervalSeconds    = (30); //30secs
+NSUInteger kServerPollingIntervalSeconds    = 10;//10*24*60;//(30); //30secs
 
 //Pusher
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";

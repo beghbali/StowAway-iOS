@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
 @property (weak, nonatomic) IBOutlet UILabel *rideInfoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *advertiseFooterLabel;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
 //@property (strong, nonatomic) NSDate * timerExpiryDate;
@@ -83,7 +84,9 @@
                                                              userInfo:nil
                                                               repeats:YES];
     
-    self.rideInfoLabel.text = self.rideInfo;
+    self.rideInfoLabel.text = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypeLabel, self.rideTimeLabel];;
+    
+    self.advertiseFooterLabel.text = [NSString stringWithFormat:@"%@\n%@",@"This search can save you 50 to 75%",@" on your ride."];
 }
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification

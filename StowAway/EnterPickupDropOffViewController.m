@@ -321,7 +321,6 @@ BOOL onBoardingStatusChecked = NO;
 #pragma mark - Ride Scheduling
 -(void)calculateCurrentHrsMins
 {
-    
     //(1) Get current hrs and mins
     NSDate * now = [NSDate date];
     
@@ -350,7 +349,7 @@ BOOL onBoardingStatusChecked = NO;
         //morning time - 0~10:59am
         self.startingRideTypeIndex = hasTakenRideToWorkToday ? kRideType_ToHomeToday: kRideType_ToWorkToday;
     }
-    else if( self.nowHrs < endingEveningHrs && self.nowMins < 46 )
+    else if( (self.nowHrs < endingEveningHrs-1) || ( self.nowHrs < endingEveningHrs && self.nowMins < 46) )
     {
         //day time -  after 11am and before 9:45pm
         self.startingRideTypeIndex = hasTakenRideToHomeToday ? kRideType_ToWorkTomorrow: kRideType_ToHomeToday;
@@ -429,7 +428,6 @@ BOOL onBoardingStatusChecked = NO;
             NSInteger fraction = (self.startingAvailabilityMins / 15);
             if ((self.startingAvailabilityMins % 15) == 0)
                 fraction--; //to take care of transitions 15,30,45 mins
-            
             switch (fraction)
             {
                 case 0:
@@ -467,7 +465,7 @@ BOOL onBoardingStatusChecked = NO;
 {
     //(5) creating ride availability time strings array
     NSUInteger nxtHrs = self.startingAvailabilityHrs;
-    NSUInteger nxtMins = 0;
+    NSUInteger nxtMins = self.startingAvailabilityMins ;
     
     self.availableRideTimesLabel = nil;
     self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
@@ -1130,7 +1128,7 @@ BOOL onBoardingStatusChecked = NO;
     [self updateLocationHistory];
     
     NSDate * requestedRideDate = [self calculateRequestedRideDate];
-    NSTimeInterval requested_for = [requestedRideDate timeIntervalSinceReferenceDate];
+    NSTimeInterval requested_for = [requestedRideDate timeIntervalSince1970];
     NSLog(@"requestedRideDate %@, requested_for %f",requestedRideDate, requested_for);
     //prepare the ride request query
 
@@ -1182,7 +1180,8 @@ BOOL onBoardingStatusChecked = NO;
             NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
             NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
             
-            findingCrewVC.rideInfo = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypes[choosenRideType], choosenTime];
+            findingCrewVC.rideTypeLabel = self.rideTypes[choosenRideType];
+            findingCrewVC.rideTimeLabel = choosenTime;
         }
     }
 }

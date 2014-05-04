@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *loneRiderText;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBarItem;
+@property (weak, nonatomic) IBOutlet UILabel *designationBenefitsLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -84,8 +85,10 @@
                                           isLoneRider:self.isLoneRider];
     
     //outlets are loaded, now arm the timer, this is only set once
+   /*
     if (!self.isLoneRider)
         [self armUpCountdownTimer];
+    */
 
 }
 
@@ -143,12 +146,17 @@
             {
                 removeIt = NO;
                 //update status
-                NSLog(@"%s: update status",__func__);
+                NSLog(@"%s: update status --- [response objectForKey:kStatus] %@",__func__, [response objectForKey:kStatus]);
                 if ([[response objectForKey:kStatus] isEqualToString:kStatusCheckedin])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCheckedIn];
                 if ([[response objectForKey:kStatus] isEqualToString:kStatusMissed])
                     [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCheckedIn];
   
+                if ([[response objectForKey:kStatus] isEqualToString:kStatusInitiated])
+                    [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kStatusInitiated];
+                else
+                    [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kStatusInitiated];
+
                 break;
             }
         }
@@ -280,6 +288,7 @@
     NSString *  couponCode      = nil;
     NSString *  displayName     = nil;
     BOOL        isCaptain       = NO;
+    BOOL        isInitiated     = NO;
     
     for (int i = 0; i < self.crew.count; i++)
     {
@@ -300,19 +309,20 @@
             self.isLoneRider = [couponCode isEqualToString:kCouponCodeLoneRider];
 
             prevDesg = self.designationLabel.text;
+            isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
             
             if ( isCaptain )
             {
                 self.designationLabel.text = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
-                self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": @"Crew will be at the pick up point in about";
+                self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
                 self.loneRiderText.hidden = !self.isLoneRider;
                 self.countDownTimer.hidden  =  self.isLoneRider;
-                self.requestUberButton.hidden = NO;
+                self.requestUberButton.hidden = isInitiated? NO: YES;
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
             } else
             {
                 self.designationLabel.text = @"YOU ARE A STOWAWAY !";
-                self.instructionsLabel.text = @"Please walk to the pick up point in about";
+                self.instructionsLabel.text = [NSString stringWithFormat:@"%@ %@", @"Please get to the pick up point at",self.rideTimeLabel];
                 self.requestUberButton.hidden = YES;
                 self.navigationBarItem.title  = @"Meet Your Captain";
 

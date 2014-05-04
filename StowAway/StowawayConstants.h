@@ -61,6 +61,7 @@ extern NSString *const kStatus;
 extern NSString *const KStatusFulfilled;
 extern NSString *const kStatusCheckedin;
 extern NSString *const kStatusMissed;
+extern NSString *const kStatusInitiated;
 
 //crew member
 extern NSString *const kIsCaptain;
