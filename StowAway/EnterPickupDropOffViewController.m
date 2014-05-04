@@ -126,7 +126,6 @@ BOOL onBoardingStatusChecked = NO;
     
     NSLog(@"%s......", __func__);
 
-    self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
     //set text as white - looks better when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
@@ -197,20 +196,15 @@ BOOL onBoardingStatusChecked = NO;
 {
     NSLog(@"%s...... onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
 
-    if (onBoardingStatusChecked) {
+    if (onBoardingStatusChecked)
+    {
         NSLog(@"has already checked onboarding status");
         return;
     }
     
     //check ONBOARDING DONE ?
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-   /*
-    if (![[userDefaults objectForKey:kOnboardingStatusTutorialDone]boolValue] )
-    {
-        [self performSegueWithIdentifier: @"onboarding_tutorial" sender: self];
-        return;
-    }
-*/
+  
     onBoardingStatusChecked = YES;
 
     if ( ![self isUserLoggedIn] )
@@ -252,25 +246,31 @@ BOOL onBoardingStatusChecked = NO;
 #pragma mark - Ride Time Buttons
 - (IBAction)leftRideTypeButtonTapped:(UIButton *)sender
 {
+    NSLog(@"%s: startingRideTypeIndex %ld", __func__, (long)self.startingRideTypeIndex);
+    
+    /*
     if (self.startingRideTypeIndex)
         self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex - 1];
-
-    sender.enabled = NO;
+    */
+    
+    self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
     
     self.rightRideTypeButton.enabled = YES;
+    self.leftRideTypeButton.enabled = NO;
 
-    //update the time
+    //update the ride availability times for the new ride type
 }
 
 - (IBAction)rightRideTypeButtonTapped:(UIButton *)sender
 {
+    NSLog(@"%s: startingRideTypeIndex %ld", __func__, (long)self.startingRideTypeIndex);
+
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex + 1];
 
     self.leftRideTypeButton.enabled = YES;
+    self.rightRideTypeButton.enabled = NO;
     
-    sender.enabled = YES;
-    
-    //update the time
+    //update the ride availability times for the new ride type
 }
 
 - (IBAction)decreaseRideTimeButtonTapped:(UIButton *)sender
@@ -305,152 +305,186 @@ BOOL onBoardingStatusChecked = NO;
 {
     NSInteger nowHrs = 0;
     NSInteger nowMins = 0;
-    NSInteger startingHrs = 0;
-    NSInteger startingMins = 0;
-    NSInteger fraction = 0;
     
-    //ride to work
+    NSInteger startingAvailabilityHrs = 0;
+    NSInteger startingAvailabilityMins = 0;
+    NSInteger endingAvailabilityHrs = 0;
+    
+    //ride to work, service time
     NSInteger startingMorningHrs = 6;  //6:00 - 6:15 am can be the first slot
     NSInteger endingMorningHrs = 11; //10:45 - 11:00 am will be the last slot
-    //ride to home
+    //ride to home, service time
     NSInteger startingEveningHrs = 15; //3:00 - 3:15 pm would be the first slot
     NSInteger endingEveningHrs = 22; //9:45 - 10pm would be the last slot
     
-    //history -- look at the last ride home & work and check the time
+    //(1) Get current hrs and mins
+    NSDate * now = [NSDate date];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSMonthCalendarUnit) fromDate:now];
+    
+    nowHrs = components.hour;
+    nowMins = components.minute;
+    
+    NSLog(@"**************** now %@ [%@], hrs %ld, mins %ld", now, [dateFormatter stringFromDate:now], (long)nowHrs, (long)nowMins);
+    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)components.hour, (long)components.minute, (long)components.year, (long)components.day);
+    components.hour = components.minute = 0;
+    NSLog(@"ZERO time of the day: %@", [dateFormatter stringFromDate:[calendar dateFromComponents:components]]);
+    
+    //(2) history -- look at the last ride home & work and check the time
     BOOL hasTakenRideToWorkToday = NO;
     BOOL hasTakenRideToHomeToday = NO;
     
-    NSDate * now = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    [dateFormatter setLocale:usLocale];
-    
-    NSLog(@"**************** now %@...........%@", now, [dateFormatter stringFromDate:now]);
-   
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSMonthCalendarUnit) fromDate:now];
-
-    nowHrs = components.hour;
-    nowMins = components.minute;
-    fraction = (nowMins / 15);
-    if ((nowMins % 15) == 0)
-        fraction--; //to take care of transitions 15,30,45 mins
-        
-    startingHrs = nowHrs;
-
-    if (nowMins == 0)
-    {
-        startingMins = 15;
-    } else
-    {
-        switch (fraction)
-        {
-            case 0:
-                startingMins = 30;
-                break;
-          
-            case 1:
-                startingMins = 45;
-                break;
-                
-            case 2:
-                startingMins = 0;
-                startingHrs++;
-                break;
-           
-            case 3:
-                startingMins = 15;
-                startingHrs++;
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    NSLog(@"nowhrs %ld, nowmins %ld, == %ld ==  starting hrs %ld, starting mins %ld", (long)nowHrs, (long)nowMins, (long)fraction, (long)startingHrs, (long)startingMins);
-    
-    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)components.hour, (long)components.minute, (long)components.year, (long)components.day);
-    components.hour = components.minute = 0;
-    NSLog(@"ZERO time of the day: %@", [calendar dateFromComponents:components]);
-
+    //(3) get ride type
     if ( nowHrs < endingMorningHrs )
     {
         //morning time - 0~10:59am
         self.startingRideTypeIndex = hasTakenRideToWorkToday ? kRideType_ToHomeToday: kRideType_ToWorkToday;
+    }
+    else if( nowHrs < endingEveningHrs && nowMins < 46 )
+    {
+        //day time -  after 11am and before 9:45pm
+        self.startingRideTypeIndex = hasTakenRideToHomeToday ? kRideType_ToWorkTomorrow: kRideType_ToHomeToday;
     } else
     {
-        //day time -  after 11am
-        self.startingRideTypeIndex = hasTakenRideToHomeToday ? kRideType_ToWorkTomorrow: kRideType_ToHomeToday;
+        // 10pm to midnight
+        self.startingRideTypeIndex = kRideType_ToWorkTomorrow;
     }
-
+    
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
-
     NSLog(@"startingRideTypeIndex %ld [%@].......", (long)self.startingRideTypeIndex, self.rideTypeLabel.text);
     
-    NSUInteger maxHrs = 0;
-    NSUInteger minHrs = 0;
-    
+    //(4) available ride time range
     switch (self.startingRideTypeIndex)
     {
         case kRideType_ToWorkToday:
             
-            if(1 || nowHrs < 6 ) // 0 - 5:59am
-            {
-                //6 to 11
-                minHrs = startingMorningHrs;
-                maxHrs = endingMorningHrs;
-            }
-            break;
-
-        case kRideType_ToHomeToday:
-            if(1|| nowHrs < 15 ) // 11 - 2:59 pm
-            {
-                //3 to 10pm
-                minHrs = startingEveningHrs;
-                maxHrs = endingEveningHrs;
-            }
+            startingAvailabilityHrs = MAX(nowHrs, startingMorningHrs);
+            startingAvailabilityMins = (nowHrs < startingMorningHrs)? -1: nowMins;
+            endingAvailabilityHrs = endingMorningHrs;
+            
             break;
             
-
+        case kRideType_ToHomeToday:
+            
+            startingAvailabilityHrs = MAX(nowHrs, startingEveningHrs);
+            startingAvailabilityMins = (nowHrs < startingEveningHrs)? -1: nowMins;
+            endingAvailabilityHrs = endingEveningHrs;
+            
+            break;
+            
+            
             break;
             
         case kRideType_ToWorkTomorrow:
             
-            break;
+            startingAvailabilityHrs = startingMorningHrs;
+            startingAvailabilityMins = -1;
+            endingAvailabilityHrs = endingMorningHrs;
 
+            break;
+            
         case kRideType_ToHomeTomorrow:
+            
+            startingAvailabilityHrs = startingEveningHrs;
+            startingAvailabilityMins = -1;
+            endingAvailabilityHrs = endingEveningHrs;
             
             break;
             
         default:
             break;
     }
+
+    NSLog(@"BEFORE modularizing:: starting hrs %ld, starting mins %ld, endingAvailabilityHrs %ld ******* ",
+          (long)startingAvailabilityHrs, (long)startingAvailabilityMins, (long)endingAvailabilityHrs);
+
+    if (startingAvailabilityMins == -1)
+    {
+        //future hrs, so start mins is 0
+        startingAvailabilityMins = 0;
+    }
+    else
+    {
+        
+        if (startingAvailabilityMins == 0)
+        {
+            //0 mins
+            startingAvailabilityMins = 15;
+        }
+        else
+        {
+            NSInteger fraction = (startingAvailabilityMins / 15);
+            if ((startingAvailabilityMins % 15) == 0)
+                fraction--; //to take care of transitions 15,30,45 mins
+            
+            switch (fraction)
+            {
+                case 0:
+                    //1-14 mins
+                    startingAvailabilityMins = 30;
+                    break;
+              
+                case 1:
+                    //15-29 mins
+                    startingAvailabilityMins = 45;
+                    break;
+                    
+                case 2:
+                    //30-44 mins
+                    startingAvailabilityMins = 0;
+                    startingAvailabilityHrs++;
+                    break;
+               
+                case 3:
+                    //45-59 mins
+                    startingAvailabilityMins = 15;
+                    startingAvailabilityHrs++;
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
     
-    NSUInteger hrs = minHrs;
-    NSUInteger mins = 0;
-    NSUInteger nxtHrs = hrs;
+    NSLog(@"AFTER modularizing:: starting hrs %ld, starting mins %ld ******* ", (long)startingAvailabilityHrs, (long)startingAvailabilityMins);
+    
+    
+    //(5) creating ride availability time strings array
+    NSUInteger nxtHrs = startingAvailabilityHrs;
     NSUInteger nxtMins = 0;
 
-    
-    while ( hrs < maxHrs )
+    self.availableRideTimesLabel = nil;
+    self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
+
+    while ( startingAvailabilityHrs < endingAvailabilityHrs )
     {
-        if (mins == 45)
+        if (startingAvailabilityMins == 45)
         {
             nxtHrs ++;
             nxtMins = 0;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %ld:%02ld %@", (hrs > 12)? (hrs-12): hrs, (long)mins, (nxtHrs > 12)? (nxtHrs-12):nxtHrs , (long)nxtMins, (nxtHrs>12)?@"pm":@"am"]];
-        hrs = nxtHrs;
-        mins = nxtMins;
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %ld:%02ld %@",
+                                                 (startingAvailabilityHrs > 12)? (startingAvailabilityHrs-12): startingAvailabilityHrs,
+                                                 (long)startingAvailabilityMins,
+                                                 (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
+                                                 (long)nxtMins,
+                                                 (nxtHrs>12)?@"pm":@"am"]];
+        
+        startingAvailabilityHrs = nxtHrs;
+        startingAvailabilityMins = nxtMins;
     }
     
     NSLog(@" $$$ availableRideTimesLabel %@", self.availableRideTimesLabel);
     
-    self.currentRideTimeIndex = 0;
+    self.currentRideTimeIndex = 0;  //should be based on history
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     
     NSLog(@"+++++++++++++++++++++");

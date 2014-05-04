@@ -1153,15 +1153,15 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2W-u3-OiR" userLabel="decrease time button">
-                                        <rect key="frame" x="66" y="27" width="33" height="21"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2W-u3-OiR" userLabel="decrease time button">
+                                        <rect key="frame" x="66" y="21" width="33" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="33" id="GsU-nb-x5p"/>
-                                            <constraint firstAttribute="height" constant="21" id="xWH-gF-oCH"/>
+                                            <constraint firstAttribute="height" constant="27" id="xWH-gF-oCH"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <state key="normal" title="-">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1169,14 +1169,14 @@
                                             <action selector="decreaseRideTimeButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="ljQ-XV-bWw"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f4-T4-Cdd" userLabel="increase time button">
-                                        <rect key="frame" x="221" y="27" width="33" height="21"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f4-T4-Cdd" userLabel="increase time button">
+                                        <rect key="frame" x="221" y="21" width="33" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="33" id="dty-hy-hUx"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <state key="normal" title="+">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1210,11 +1210,11 @@
                                     <constraint firstItem="0HG-3c-m8L" firstAttribute="top" secondItem="7YZ-ZF-u99" secondAttribute="top" constant="3" id="ioC-nd-6hC"/>
                                     <constraint firstAttribute="bottom" secondItem="frw-e6-Ocr" secondAttribute="bottom" constant="16" id="kSq-Ac-SMW"/>
                                     <constraint firstItem="iyE-hO-kRY" firstAttribute="top" secondItem="frw-e6-Ocr" secondAttribute="top" id="ngW-Yc-Ays"/>
-                                    <constraint firstItem="g2W-u3-OiR" firstAttribute="top" secondItem="0HG-3c-m8L" secondAttribute="bottom" constant="3" id="qpt-kP-wJz"/>
+                                    <constraint firstItem="g2W-u3-OiR" firstAttribute="top" secondItem="0HG-3c-m8L" secondAttribute="bottom" constant="-2" id="qpt-kP-wJz"/>
                                     <constraint firstItem="frw-e6-Ocr" firstAttribute="bottom" secondItem="iyE-hO-kRY" secondAttribute="bottom" id="tPC-bJ-laz"/>
                                     <constraint firstItem="iyE-hO-kRY" firstAttribute="leading" secondItem="0HG-3c-m8L" secondAttribute="trailing" constant="9" id="vmt-5w-EkR"/>
                                     <constraint firstItem="0HG-3c-m8L" firstAttribute="leading" secondItem="frw-e6-Ocr" secondAttribute="trailing" constant="8" symbolic="YES" id="vtY-yz-rx3"/>
-                                    <constraint firstAttribute="bottom" secondItem="g2W-u3-OiR" secondAttribute="bottom" constant="3" id="xCA-rw-wEv"/>
+                                    <constraint firstAttribute="bottom" secondItem="g2W-u3-OiR" secondAttribute="bottom" constant="2" id="xCA-rw-wEv"/>
                                     <constraint firstItem="g2W-u3-OiR" firstAttribute="leading" secondItem="frw-e6-Ocr" secondAttribute="trailing" constant="30" id="xou-A4-b3e"/>
                                 </constraints>
                             </view>
@@ -1257,7 +1257,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="231" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="29CC2A6B-7C4D-45E0-AB11-66802D010C2A" colorSpace="pattern"/>
+                                <color key="color" patternImage="0E55F218-61EF-49A6-8CCC-C3D3CBBDE145" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find-crew-wood.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="512" width="320" height="56"/>
@@ -1533,7 +1533,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="153" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="5E90B98E-5354-479F-8692-E8038F6A4238" colorSpace="pattern"/>
+                                        <color key="color" patternImage="28D94376-F1F1-4D64-BA71-C210355394B4" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.99502558297574695" blue="0.92248104749216908" alpha="1" colorSpace="calibratedRGB"/>
@@ -1861,7 +1861,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="29CC2A6B-7C4D-45E0-AB11-66802D010C2A" width="320" height="460">
+        <image name="0E55F218-61EF-49A6-8CCC-C3D3CBBDE145" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11748,7 +11748,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="5E90B98E-5354-479F-8692-E8038F6A4238" width="320" height="460">
+        <image name="28D94376-F1F1-4D64-BA71-C210355394B4" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
