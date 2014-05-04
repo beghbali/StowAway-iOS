@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
+@property (weak, nonatomic) IBOutlet UILabel *rideInfoLabel;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
 //@property (strong, nonatomic) NSDate * timerExpiryDate;
@@ -63,7 +64,7 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
+//    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
@@ -81,6 +82,8 @@
                                                              selector:@selector(pollServer)
                                                              userInfo:nil
                                                               repeats:YES];
+    
+    self.rideInfoLabel.text = self.rideInfo;
 }
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
@@ -98,10 +101,10 @@
     NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
 
     //outlets are loaded, now arm the timer, this is only set once
-    [self armUpCountdownTimer];
+   // [self armUpCountdownTimer];
     
     //recalculate timer
-    [self reCalculateCDTimer];
+   // [self reCalculateCDTimer];
 
     //update the view - pics, names
     [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed

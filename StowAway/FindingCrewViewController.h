@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) NSDictionary * rideRequestResponse;
 
+@property (strong, nonatomic) NSString *rideInfo;
 
 @end

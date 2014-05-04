@@ -1179,6 +1179,10 @@ BOOL onBoardingStatusChecked = NO;
         {
             FindingCrewViewController * findingCrewVC = segue.destinationViewController;
             findingCrewVC.rideRequestResponse = self.rideRequestResponse;
+            NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
+            NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+            
+            findingCrewVC.rideInfo = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypes[choosenRideType], choosenTime];
         }
     }
 }
