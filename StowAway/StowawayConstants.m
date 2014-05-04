@@ -52,7 +52,9 @@ NSString *const kDropOffLong                    = @"dropoff_lng";
 NSString *const kRequestPublicId                = @"request_public_id";
 NSString *const kRequestedAt                    = @"requested_at";
 NSString *const kPickUpDefaultCurrentLocation   = @"Current Location";
-NSString *const kPublicId           = @"public_id";
+NSString *const kRequestedForDate               = @"requested_for";
+NSString *const kRequestDuration                = @"duration";
+NSString *const kPublicId                       = @"public_id";
 
 //ride result
 NSString *const kRidePublicId           = @"ride_public_id";
@@ -83,7 +85,7 @@ NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds        = 10;// (60*5); //5mins
+NSUInteger kCountdownTimerMaxSeconds        = (60*5); //5mins
 NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
 NSUInteger kServerPollingIntervalSeconds    = (30); //30secs
 

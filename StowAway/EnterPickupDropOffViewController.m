@@ -93,7 +93,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property NSInteger startingAvailabilityHrs;
 @property NSInteger startingAvailabilityMins;
 @property NSInteger endingAvailabilityHrs;
-@property (weak, nonatomic) NSDateComponents *nowDateComponents;
+@property (strong, nonatomic) NSDateComponents *nowDateComponents;
 
 @end
 
@@ -321,6 +321,7 @@ BOOL onBoardingStatusChecked = NO;
 #pragma mark - Ride Scheduling
 -(void)calculateCurrentHrsMins
 {
+    
     //(1) Get current hrs and mins
     NSDate * now = [NSDate date];
     
@@ -524,10 +525,10 @@ BOOL onBoardingStatusChecked = NO;
     NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
     NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
     
-    NSLog(@"%s: %@, %@", __func__, self.rideTypes[choosenRideType], choosenTime);
+    NSLog(@"%s: %@ [%lu], %@", __func__, self.rideTypes[choosenRideType], (unsigned long)choosenRideType, choosenTime);
     
     NSArray * tokens = [choosenTime componentsSeparatedByString:@" "];
-    NSLog(@"tokens: %@", tokens);
+   // NSLog(@"tokens: %@", tokens);
     NSString * startTime = [tokens firstObject];
     NSString * am_pm = [tokens objectAtIndex:3];
     BOOL isPM = [am_pm isEqualToString:@"pm"];
@@ -543,13 +544,19 @@ BOOL onBoardingStatusChecked = NO;
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     
-    NSLog(@"componenets : hours %ld, minutes %ld, year %ld, day %ld", (long)self.nowDateComponents.hour, (long)self.nowDateComponents.minute, (long)self.nowDateComponents.year, (long)self.nowDateComponents.day);
     self.nowDateComponents.hour = isPM? [choosenHrs intValue]+12: [choosenHrs intValue];
     self.nowDateComponents.minute = [choosenMins intValue];
-    if (choosenRideType < 1) //tomorrow
-        self.nowDateComponents.day++;
+    if (choosenRideType > 1)
+    {
+        //tomorrow
+        
+        self.nowDateComponents.day++;// = self.nowDateComponents.day + 1;
+    }
     
-    NSLog(@"choosen ride date: %@", [dateFormatter stringFromDate:[calendar dateFromComponents:self.nowDateComponents]]);
+    NSLog(@"choosen componenets : hours %ld, minutes %ld, month %ld, year %ld, day %ld", (long)self.nowDateComponents.hour, (long)self.nowDateComponents.minute, (long)self.nowDateComponents.month, (long)self.nowDateComponents.year, (long)self.nowDateComponents.day);
+    
+    choosenRideDate = [calendar dateFromComponents:self.nowDateComponents];
+    NSLog(@"choosen ride date: %@", [dateFormatter stringFromDate:choosenRideDate]);
 
     return choosenRideDate;
 }
@@ -1123,20 +1130,23 @@ BOOL onBoardingStatusChecked = NO;
     [self updateLocationHistory];
     
     NSDate * requestedRideDate = [self calculateRequestedRideDate];
-
+    NSTimeInterval requested_for = [requestedRideDate timeIntervalSinceReferenceDate];
+    NSLog(@"requestedRideDate %@, requested_for %f",requestedRideDate, requested_for);
     //prepare the ride request query
 
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
     NSString *url = [NSString stringWithFormat:@"%@%@/requests", kStowawayServerApiUrl_users, publicUserId];
     
-    NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f}}",
+    NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%d }}",
                              kPickUpAddress, self.pickUpAnnotation.title,
                              kDropOffUpAddress, self.dropOffAnnotation.title,
                              kPickUpLat, self.isUsingCurrentLoc? self.userLocation.latitude: self.pickUpAnnotation.coordinate.latitude,
                              kPickUpLong, self.isUsingCurrentLoc? self.userLocation.longitude: self.pickUpAnnotation.coordinate.longitude,
                              kDropOffLat, self.dropOffAnnotation.coordinate.latitude,
-                             kDropOffLong, self.dropOffAnnotation.coordinate.longitude];
+                             kDropOffLong, self.dropOffAnnotation.coordinate.longitude,
+                             kRequestedForDate, requested_for,
+                             kRequestDuration, (15*60)];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;

@@ -50,6 +50,9 @@ extern NSString *const kDropOffLat;
 extern NSString *const kDropOffLong;
 extern NSString *const kRequestPublicId;
 extern NSString *const kRequestedAt;
+extern NSString *const kRequestedForDate;
+extern NSString *const kRequestDuration;
+
 extern NSString *const kPublicId;
 
 //ride result
