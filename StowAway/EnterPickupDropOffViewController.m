@@ -479,11 +479,11 @@ BOOL onBoardingStatusChecked = NO;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %ld:%02ld %@",
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%d:%02d - %d:%02d %@",
                                                  (self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): self.startingAvailabilityHrs,
-                                                 (long)self.startingAvailabilityMins,
+                                                 self.startingAvailabilityMins,
                                                  (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
-                                                 (long)nxtMins,
+                                                 nxtMins,
                                                  (nxtHrs>12)?@"pm":@"am"]];
         
         self.startingAvailabilityHrs = nxtHrs;
@@ -498,7 +498,9 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)configureScheduledRidesOptions
 {
-    NSLog(@"+++++++++ isUsingNextRideType %d ++++++++++++", self.isUsingNextRideType);
+    NSLog(@"%s: +++++++++ isUsingNextRideType %d ++++++++++++", __func__, self.isUsingNextRideType);
+
+    self.decreaseRideTimeButton.enabled = NO;
 
     //(1)
     [self calculateCurrentHrsMins];
@@ -514,7 +516,9 @@ BOOL onBoardingStatusChecked = NO;
     //(5)
     [self calculateAvailableRideTimesStrings];
     
-    NSLog(@"+++++++++++++++++++++");
+    if (self.availableRideTimesLabel.count > 1)
+        self.increaseRideTimeButton.enabled = YES;
+    
 }
 
 -(NSDate *)calculateRequestedRideDate
