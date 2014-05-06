@@ -466,6 +466,22 @@ BOOL onBoardingStatusChecked = NO;
     //(5) creating ride availability time strings array
     NSUInteger nxtHrs = self.startingAvailabilityHrs;
     NSUInteger nxtMins = self.startingAvailabilityMins ;
+    NSUInteger historicalHrs = 0;
+    NSUInteger historicalMins = 0;
+    
+    //read the history
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    if ( nxtHrs > 12 )
+    {
+        historicalHrs = [[standardDefaults objectForKey: kLastRideToHomeHrs] intValue] + 12;
+        historicalMins = [[standardDefaults objectForKey: kLastRideToHomeMins] intValue];
+    }
+    else {
+        historicalHrs = [[standardDefaults objectForKey: kLastRideToWorkHrs] intValue];
+        historicalMins = [[standardDefaults objectForKey: kLastRideToWorkMins] intValue];
+    }
+    self.currentRideTimeIndex = 0;  //should be based on history
+    NSLog(@"%s: history: %lu:%lu", __func__, (unsigned long)historicalHrs, (unsigned long)historicalMins);
     
     self.availableRideTimesLabel = nil;
     self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
@@ -479,28 +495,32 @@ BOOL onBoardingStatusChecked = NO;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%d:%02d - %d:%02d %@",
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %lu:%02lu %@",
                                                  (self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): self.startingAvailabilityHrs,
-                                                 self.startingAvailabilityMins,
+                                                 (long)self.startingAvailabilityMins,
                                                  (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
-                                                 nxtMins,
+                                                 (unsigned long)nxtMins,
                                                  (nxtHrs>12)?@"pm":@"am"]];
         
+        if (self.startingAvailabilityHrs == historicalHrs && self.startingAvailabilityMins == historicalMins)
+            self.currentRideTimeIndex = self.availableRideTimesLabel.count -1;
+
         self.startingAvailabilityHrs = nxtHrs;
         self.startingAvailabilityMins = nxtMins;
     }
     
-    NSLog(@" $$$ availableRideTimesLabel %@", self.availableRideTimesLabel);
+    NSLog(@"%s: availableRideTimesLabel %@, self.currentRideTimeIndex %lu", __func__, self.availableRideTimesLabel, (unsigned long)self.currentRideTimeIndex);
     
-    self.currentRideTimeIndex = 0;  //should be based on history
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
+    
+    //enable/disable the +/- buttons
+    self.increaseRideTimeButton.enabled = (self.availableRideTimesLabel.count > 1)? YES: NO;
+    self.decreaseRideTimeButton.enabled = self.currentRideTimeIndex? YES: NO;
 }
 
 -(void)configureScheduledRidesOptions
 {
     NSLog(@"%s: +++++++++ isUsingNextRideType %d ++++++++++++", __func__, self.isUsingNextRideType);
-
-    self.decreaseRideTimeButton.enabled = NO;
 
     //(1)
     [self calculateCurrentHrsMins];
@@ -515,10 +535,6 @@ BOOL onBoardingStatusChecked = NO;
     
     //(5)
     [self calculateAvailableRideTimesStrings];
-    
-    if (self.availableRideTimesLabel.count > 1)
-        self.increaseRideTimeButton.enabled = YES;
-    
 }
 
 -(NSDate *)calculateRequestedRideDate
@@ -530,7 +546,6 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@"%s: %@ [%lu], %@", __func__, self.rideTypes[choosenRideType], (unsigned long)choosenRideType, choosenTime);
     
     NSArray * tokens = [choosenTime componentsSeparatedByString:@" "];
-   // NSLog(@"tokens: %@", tokens);
     NSString * startTime = [tokens firstObject];
     NSString * am_pm = [tokens objectAtIndex:3];
     BOOL isPM = [am_pm isEqualToString:@"pm"];
@@ -538,8 +553,14 @@ BOOL onBoardingStatusChecked = NO;
     NSString * choosenHrs = [tokens firstObject];
     NSString * choosenMins = [tokens lastObject];
     
-    NSLog(@"%@ %@ %@ %d", choosenHrs, choosenMins, am_pm, isPM);
-    
+    NSLog(@"%s: %@ %@ %@ %d", __func__, choosenHrs, choosenMins, am_pm, isPM);
+
+    //remember the ride time history
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    [standardDefaults setObject:choosenHrs forKey: isPM? kLastRideToHomeHrs: kLastRideToWorkHrs];
+    [standardDefaults setObject:choosenMins forKey: isPM? kLastRideToHomeMins: kLastRideToWorkMins];
+    [standardDefaults synchronize];
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterFullStyle];
     [dateFormatter setTimeStyle:NSDateFormatterFullStyle];
@@ -551,7 +572,6 @@ BOOL onBoardingStatusChecked = NO;
     if (choosenRideType > 1)
     {
         //tomorrow
-        
         self.nowDateComponents.day++;// = self.nowDateComponents.day + 1;
     }
     
@@ -1134,8 +1154,8 @@ BOOL onBoardingStatusChecked = NO;
     NSDate * requestedRideDate = [self calculateRequestedRideDate];
     NSTimeInterval requested_for = [requestedRideDate timeIntervalSince1970];
     NSLog(@"requestedRideDate %@, requested_for %f",requestedRideDate, requested_for);
+    
     //prepare the ride request query
-
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
     NSString *url = [NSString stringWithFormat:@"%@%@/requests", kStowawayServerApiUrl_users, publicUserId];

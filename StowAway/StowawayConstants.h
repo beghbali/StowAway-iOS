@@ -53,6 +53,11 @@ extern NSString *const kRequestedAt;
 extern NSString *const kRequestedForDate;
 extern NSString *const kRequestDuration;
 
+extern NSString *const kLastRideToWorkHrs;
+extern NSString *const kLastRideToWorkMins;
+extern NSString *const kLastRideToHomeHrs;
+extern NSString *const kLastRideToHomeMins;
+
 extern NSString *const kPublicId;
 
 //ride result

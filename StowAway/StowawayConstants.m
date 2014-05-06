@@ -54,6 +54,13 @@ NSString *const kRequestedAt                    = @"requested_at";
 NSString *const kPickUpDefaultCurrentLocation   = @"Current Location";
 NSString *const kRequestedForDate               = @"requested_for";
 NSString *const kRequestDuration                = @"duration";
+
+
+NSString *const kLastRideToWorkHrs              = @"LastRideToWorkHrs";
+NSString *const kLastRideToWorkMins             = @"LastRideToWorkMins";
+NSString *const kLastRideToHomeHrs              = @"LastRideToHomeHrs";
+NSString *const kLastRideToHomeMins             = @"LastRideToHomeMins";
+
 NSString *const kPublicId                       = @"public_id";
 
 //ride result
