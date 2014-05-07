@@ -13,8 +13,11 @@ NSString *const kStowawayServerApiUrl_pusher = @"https://staging.getstowaway.com
 NSString *const kStowawayServerApiUrl_users = @"http://staging.getstowaway.com/api/v1/users/";;
 
 //location history
-NSString *const kPickUpDropOffLocationHistory = @"PickUpDropOffLocationHistory";
-NSUInteger kPickUpDropOffLocationHistorySize = 10;
+NSString *const kPickUpLocationHistoryToWork = @"PickUpLocationHistoryToWork";
+NSString *const kPickUpLocationHistoryToHome = @"PickUpLocationHistoryToHome";
+NSString *const kDropOffLocationHistoryToWork = @"DropOffLocationHistoryToWork";
+NSString *const kDropOffLocationHistoryToHome = @"DropOffLocationHistoryToHome";
+NSUInteger kLocationHistorySize = 5;
 NSString *const kLocationHistoryName = @"LocationName";
 NSString *const kLocationHistoryLatitude = @"LocationLatitude";
 NSString *const kLocationHistoryLongitude = @"LocationLongitude";
@@ -95,7 +98,7 @@ NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 //countdown timer
 NSUInteger kCountdownTimerMaxSeconds        = (60*5); //5mins
 NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
-NSUInteger kServerPollingIntervalSeconds    = 10;//10*24*60;//(30); //30secs
+NSUInteger kServerPollingIntervalSeconds    = (30); //30secs
 
 //Pusher
 NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";

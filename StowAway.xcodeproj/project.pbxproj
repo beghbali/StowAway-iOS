@@ -44,6 +44,8 @@
 		F47C04321919EAAC00F9916E /* right_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C042A1919EAAC00F9916E /* right_new@2x.png */; };
 		F47C043D191A022C00F9916E /* from-to-v4.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C043B191A022C00F9916E /* from-to-v4.png */; };
 		F47C043E191A022C00F9916E /* from-to-v4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C043C191A022C00F9916E /* from-to-v4@2x.png */; };
+		F47C0445191A149300F9916E /* wood-grain-2.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C0443191A149300F9916E /* wood-grain-2.png */; };
+		F47C0446191A149300F9916E /* wood-grain-2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C0444191A149300F9916E /* wood-grain-2@2x.png */; };
 		F47CB6F118AAF84000FD8FB9 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6E818AAF84000FD8FB9 /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F47CB70718AAF84000FD8FB9 /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = F47CB6EA18AAF84000FD8FB9 /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -131,8 +133,6 @@
 		F4EEE72319062B3900A20886 /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6D719062B3900A20886 /* reveal-icon@2x.png */; };
 		F4EEE72419062B3900A20886 /* ride_credits.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6D819062B3900A20886 /* ride_credits.png */; };
 		F4EEE72519062B3900A20886 /* ride_credits@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6D919062B3900A20886 /* ride_credits@2x.png */; };
-		F4EEE72619062B3900A20886 /* find-crew-wood.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6DB19062B3900A20886 /* find-crew-wood.png */; };
-		F4EEE72719062B3900A20886 /* find-crew-wood@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6DC19062B3900A20886 /* find-crew-wood@2x.png */; };
 		F4EEE72A19062B3900A20886 /* tutorial_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6E019062B3900A20886 /* tutorial_1.png */; };
 		F4EEE72B19062B3900A20886 /* tutorial_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6E119062B3900A20886 /* tutorial_1@2x.png */; };
 		F4EEE72C19062B3900A20886 /* tutorial_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4EEE6E219062B3900A20886 /* tutorial_2.png */; };
@@ -203,6 +203,8 @@
 		F47C042A1919EAAC00F9916E /* right_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_new@2x.png"; sourceTree = "<group>"; };
 		F47C043B191A022C00F9916E /* from-to-v4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "from-to-v4.png"; sourceTree = "<group>"; };
 		F47C043C191A022C00F9916E /* from-to-v4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "from-to-v4@2x.png"; sourceTree = "<group>"; };
+		F47C0443191A149300F9916E /* wood-grain-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-grain-2.png"; sourceTree = "<group>"; };
+		F47C0444191A149300F9916E /* wood-grain-2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-grain-2@2x.png"; sourceTree = "<group>"; };
 		F47CB6BF18AAF84000FD8FB9 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
 		F47CB6C018AAF84000FD8FB9 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
 		F47CB6E718AAF84000FD8FB9 /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
@@ -308,8 +310,6 @@
 		F4EEE6D719062B3900A20886 /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon@2x.png"; sourceTree = "<group>"; };
 		F4EEE6D819062B3900A20886 /* ride_credits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ride_credits.png; sourceTree = "<group>"; };
 		F4EEE6D919062B3900A20886 /* ride_credits@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ride_credits@2x.png"; sourceTree = "<group>"; };
-		F4EEE6DB19062B3900A20886 /* find-crew-wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find-crew-wood.png"; sourceTree = "<group>"; };
-		F4EEE6DC19062B3900A20886 /* find-crew-wood@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find-crew-wood@2x.png"; sourceTree = "<group>"; };
 		F4EEE6E019062B3900A20886 /* tutorial_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_1.png; sourceTree = "<group>"; };
 		F4EEE6E119062B3900A20886 /* tutorial_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tutorial_1@2x.png"; sourceTree = "<group>"; };
 		F4EEE6E219062B3900A20886 /* tutorial_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_2.png; sourceTree = "<group>"; };
@@ -669,8 +669,8 @@
 		F4EEE6DA19062B3900A20886 /* ride_request_images */ = {
 			isa = PBXGroup;
 			children = (
-				F4EEE6DB19062B3900A20886 /* find-crew-wood.png */,
-				F4EEE6DC19062B3900A20886 /* find-crew-wood@2x.png */,
+				F47C0443191A149300F9916E /* wood-grain-2.png */,
+				F47C0444191A149300F9916E /* wood-grain-2@2x.png */,
 				F47C04231919EAAC00F9916E /* left_new.png */,
 				F47C04241919EAAC00F9916E /* left_new@2x.png */,
 				F47C04251919EAAC00F9916E /* minus_new.png */,
@@ -788,7 +788,6 @@
 				F4EEE6E819062B3900A20886 /* 1.png in Resources */,
 				68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */,
 				F47C042B1919EAAC00F9916E /* left_new.png in Resources */,
-				F4EEE72719062B3900A20886 /* find-crew-wood@2x.png in Resources */,
 				F4EEE70219062B3900A20886 /* 7.png in Resources */,
 				F47C042C1919EAAC00F9916E /* left_new@2x.png in Resources */,
 				F47C042F1919EAAC00F9916E /* plus_new.png in Resources */,
@@ -830,6 +829,7 @@
 				F4EEE71319062B3900A20886 /* off@2x.png in Resources */,
 				F4EEE72D19062B3900A20886 /* tutorial_2@2x.png in Resources */,
 				F4EEE6F019062B3900A20886 /* 13@2x.png in Resources */,
+				F47C0446191A149300F9916E /* wood-grain-2@2x.png in Resources */,
 				F4EEE6EE19062B3900A20886 /* 12@2x.png in Resources */,
 				F47C042D1919EAAC00F9916E /* minus_new.png in Resources */,
 				F47C04321919EAAC00F9916E /* right_new@2x.png in Resources */,
@@ -841,7 +841,7 @@
 				F4EEE70F19062B3900A20886 /* you-are-stowaway.wav in Resources */,
 				F4266DD518B5A87900A46BB1 /* VERSION in Resources */,
 				F47C04301919EAAC00F9916E /* plus_new@2x.png in Resources */,
-				F4EEE72619062B3900A20886 /* find-crew-wood.png in Resources */,
+				F47C0445191A149300F9916E /* wood-grain-2.png in Resources */,
 				F4EEE6F919062B3900A20886 /* 2@2x.png in Resources */,
 				F4EEE72B19062B3900A20886 /* tutorial_1@2x.png in Resources */,
 				F47C043D191A022C00F9916E /* from-to-v4.png in Resources */,
