@@ -349,7 +349,7 @@ BOOL onBoardingStatusChecked = NO;
         //morning time - 0~10:59am
         self.startingRideTypeIndex = hasTakenRideToWorkToday ? kRideType_ToHomeToday: kRideType_ToWorkToday;
     }
-    else if( (self.nowHrs < endingEveningHrs-1) || ( self.nowHrs < endingEveningHrs && self.nowMins < 46) )
+    else if( (self.nowHrs < endingEveningHrs-1) || ( self.nowHrs < endingEveningHrs && self.nowMins < 31) )
     {
         //day time -  after 11am and before 9:45pm
         self.startingRideTypeIndex = hasTakenRideToHomeToday ? kRideType_ToWorkTomorrow: kRideType_ToHomeToday;
@@ -360,7 +360,7 @@ BOOL onBoardingStatusChecked = NO;
     }
     
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
-    NSLog(@"startingRideTypeIndex %ld [%@].......", (long)self.startingRideTypeIndex, self.rideTypeLabel.text);
+    NSLog(@"%s: startingRideTypeIndex %ld [%@].......", __func__, (long)self.startingRideTypeIndex, self.rideTypeLabel.text);
 }
 
 -(void)calculateAvailableRideTimesRangeFor:(NSUInteger)rideTypeIndex
@@ -417,7 +417,6 @@ BOOL onBoardingStatusChecked = NO;
     }
     else
     {
-        
         if (self.startingAvailabilityMins == 0)
         {
             //0 mins
@@ -431,23 +430,23 @@ BOOL onBoardingStatusChecked = NO;
             switch (fraction)
             {
                 case 0:
-                    //1-14 mins
+                    //1-15 mins
                     self.startingAvailabilityMins = 30;
                     break;
                     
                 case 1:
-                    //15-29 mins
+                    //16-30 mins
                     self.startingAvailabilityMins = 45;
                     break;
                     
                 case 2:
-                    //30-44 mins
+                    //31-45 mins
                     self.startingAvailabilityMins = 0;
                     self.startingAvailabilityHrs++;
                     break;
                     
                 case 3:
-                    //45-59 mins
+                    //46-59 mins
                     self.startingAvailabilityMins = 15;
                     self.startingAvailabilityHrs++;
                     break;
