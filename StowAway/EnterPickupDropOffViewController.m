@@ -384,9 +384,6 @@ BOOL onBoardingStatusChecked = NO;
             
             break;
             
-            
-            break;
-            
         case kRideType_ToWorkTomorrow:
             
             self.startingAvailabilityHrs    = startingMorningHrs;
@@ -494,8 +491,8 @@ BOOL onBoardingStatusChecked = NO;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %lu:%02lu %@",
-                                                 (self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): self.startingAvailabilityHrs,
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %u:%02lu %@",
+                                                 (long)(self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): (long)self.startingAvailabilityHrs,
                                                  (long)self.startingAvailabilityMins,
                                                  (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
                                                  (unsigned long)nxtMins,
@@ -568,11 +565,9 @@ BOOL onBoardingStatusChecked = NO;
     
     self.nowDateComponents.hour = isPM? [choosenHrs intValue]+12: [choosenHrs intValue];
     self.nowDateComponents.minute = [choosenMins intValue];
-    if (choosenRideType > 1)
-    {
-        //tomorrow
-        self.nowDateComponents.day++;// = self.nowDateComponents.day + 1;
-    }
+   
+    if (choosenRideType > kRideType_ToHomeToday)        //tomorrow
+        self.nowDateComponents.day++;
     
     NSLog(@"choosen componenets : hours %ld, minutes %ld, month %ld, year %ld, day %ld", (long)self.nowDateComponents.hour, (long)self.nowDateComponents.minute, (long)self.nowDateComponents.month, (long)self.nowDateComponents.year, (long)self.nowDateComponents.day);
     
