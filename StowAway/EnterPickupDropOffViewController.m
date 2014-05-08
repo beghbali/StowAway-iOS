@@ -194,6 +194,7 @@ BOOL onBoardingStatusChecked = NO;
     self.isRideTimeConfigured = NO;
 }
 
+#pragma mark - onboarding check
 
 -(BOOL)isUserLoggedIn
 {
@@ -318,7 +319,9 @@ BOOL onBoardingStatusChecked = NO;
     
 }
 
+
 #pragma mark - Ride Scheduling
+
 -(void)calculateCurrentHrsMins
 {
     //(1) Get current hrs and mins
@@ -491,7 +494,7 @@ BOOL onBoardingStatusChecked = NO;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %u:%02lu %@",
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %lu:%02lu %@",
                                                  (long)(self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): (long)self.startingAvailabilityHrs,
                                                  (long)self.startingAvailabilityMins,
                                                  (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
@@ -526,6 +529,10 @@ BOOL onBoardingStatusChecked = NO;
         //(2, 3)
         [self calculateRideType];
     }
+    
+    //auto-fill the locations based on the history and ride type
+    [self autoFillLocationPoints];
+    
     //(4)
     [self calculateAvailableRideTimesRangeFor:self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex];
     
@@ -577,19 +584,79 @@ BOOL onBoardingStatusChecked = NO;
     return choosenRideDate;
 }
 
+-(void)autoFillLocationPoints
+{
+    BOOL isRideToWork = YES;
+    
+    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+
+    if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
+        isRideToWork = NO;
+    
+    id lastPickUpLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:isRideToWork? kPickUpLocationHistoryToWork: kPickUpLocationHistoryToHome] firstObject]; //first of array of mapitem
+    id lastDropOffLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:isRideToWork? kDropOffLocationHistoryToWork: kDropOffLocationHistoryToHome] firstObject]; //first of array of mapitem
+
+    NSLog(@"%s:isRideToWork %d lastPickUpLocation %@, lastDropOffLocation %@", __func__, isRideToWork, lastPickUpLocation, lastDropOffLocation);
+    
+    if (lastPickUpLocation)
+    {
+        self.pickUpLocItem = lastPickUpLocation;
+        [self setLocationPoint:YES];
+    }
+    
+    if (lastDropOffLocation)
+    {
+        self.dropOffLocItem = lastDropOffLocation;
+        [self setLocationPoint:NO];
+    }
+    [self updateFindCrewButtonEnabledState];
+}
+
+
 #pragma mark - location history
 
 -(BOOL)updateLocationHistoryWithLocItem:(id)locItem isForPickUp:(BOOL)isPickUp
 {
+    NSString * placeName = nil;
+    MKMapItem * mp = nil;
+    NSString * historyKey = nil;
+    
+    //TODO: code is too ugly here, fix it
+    
     if ( ![locItem isKindOfClass:[MKMapItem class]] )
-        return NO;
-    
-    MKMapItem * mp = (MKMapItem *)locItem;
-    
-    NSArray * existingHistoryMatch = [self getFilteredLocationHistoryFor:mp.name isForPickUp:isPickUp isExactMatchRequired:YES];
+    {
+        placeName = [locItem objectForKey:kLocationHistoryName];
+      //  return NO;
+    } else
+    {
+        mp = (MKMapItem *)locItem;
+        placeName = mp.name;
+    }
+    NSArray * existingHistoryMatch = [self getFilteredLocationHistoryFor:placeName isForPickUp:isPickUp isExactMatchRequired:YES];
     if( existingHistoryMatch && existingHistoryMatch.count )
+    {
+        NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+        if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
+            historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
+        else
+            historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
+        
+        NSMutableArray * locationHistory = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:historyKey]]; //array of mapitem
+NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMatch.firstObject];
+        //move this entry to the begining
+        NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu",__func__, existingHistoryMatch, indexFound);
+        
+        if (indexFound != NSNotFound)
+        {
+            NSLog(@"%s: put it at the begining of the array", __func__);
+            [locationHistory removeObjectAtIndex:indexFound];
+            
+            [locationHistory insertObject:existingHistoryMatch.firstObject atIndex:0];
+            [[NSUserDefaults standardUserDefaults] setObject:locationHistory forKey:historyKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
         return NO;
-    
+    }
     NSDictionary *locDict = @{kLocationHistoryName: mp.name,
                              kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
                              kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
@@ -597,7 +664,6 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@"adding loc to history !!!");
    
     //determine key based on ispickup and ride type to work/home
-    NSString * historyKey = nil;
     NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
     if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
         historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
@@ -621,16 +687,17 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)updateLocationHistory
 {
-    BOOL isHistoryUpdated = NO;
+    BOOL isDropOffHistoryUpdated = NO;
+    BOOL isPickUpHistoryUpdated = NO;
     
     //drop off loc
-    isHistoryUpdated = isHistoryUpdated || [self updateLocationHistoryWithLocItem:self.dropOffLocItem isForPickUp:NO];
+    isDropOffHistoryUpdated = [self updateLocationHistoryWithLocItem:self.dropOffLocItem isForPickUp:NO];
     
     //pick up loc
-    isHistoryUpdated = isHistoryUpdated || [self updateLocationHistoryWithLocItem:self.pickUpLocItem isForPickUp:YES];
+    isPickUpHistoryUpdated = [self updateLocationHistoryWithLocItem:self.pickUpLocItem isForPickUp:YES];
 
     //write it
-    if (isHistoryUpdated)
+    if (isPickUpHistoryUpdated || isDropOffHistoryUpdated)
     {
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSLog(@"%s: written to memory", __func__);
@@ -649,8 +716,18 @@ BOOL onBoardingStatusChecked = NO;
 -(CLLocationCoordinate2D)getLocationItemCoordinate:(id)locItem
 {
     if ( [locItem isKindOfClass:[NSDictionary class]])
+    {
+        if ([[locItem objectForKey:kLocationHistoryName] isEqualToString:kPickUpDefaultCurrentLocation])
+        {
+            NSLog(@"map item in history is current loc, use latest self lat long");
+
+            return self.userLocation;
+        }
+        
+        
         return CLLocationCoordinate2DMake([[locItem objectForKey:kLocationHistoryLatitude] doubleValue],
                                           [[locItem objectForKey:kLocationHistoryLongitude] doubleValue]);
+    }
 
     
     MKMapItem * mp = (MKMapItem *)locItem;
@@ -660,6 +737,39 @@ BOOL onBoardingStatusChecked = NO;
         return self.userLocation;
     }
     return mp.placemark.coordinate;
+}
+
+
+-(NSArray *)getFilteredLocationHistoryFor:(NSString *)searchString isForPickUp:(BOOL)isPickUp isExactMatchRequired:(BOOL)exactMatch
+{
+    NSArray * filteredLoc = nil;
+    NSPredicate *predicate = nil;
+    
+    //determine key based on ispickup and ride type to work/home
+    NSString * historyKey = nil;
+    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+    if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
+        historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
+    else
+        historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
+    
+    NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:historyKey]; //array of mapitem
+    NSLog(@"%s:looking for %@ in %@ of size %lu" , __func__, searchString, historyKey, (unsigned long)locationHistory.count);
+    
+    if (locationHistory)
+    {
+        if (exactMatch)
+            predicate = [NSPredicate predicateWithFormat:@"%K MATCHES[cd] %@", kLocationHistoryName, searchString];
+        else
+            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLocationHistoryName, searchString];
+        
+        filteredLoc = [locationHistory filteredArrayUsingPredicate:predicate];
+    }
+    
+    
+    NSLog(@"%s: found %lu %@", __func__, (unsigned long)filteredLoc.count, exactMatch?@"MATCHES":@"CONTAINS");
+    
+    return filteredLoc;
 }
 
 #pragma mark - Search Result
@@ -705,6 +815,38 @@ BOOL onBoardingStatusChecked = NO;
 	return cell;
 }
 
+-(void)setLocationPoint:(BOOL)isPickUpPoint
+{
+    MKPointAnnotation * mkPA;
+    if (isPickUpPoint)
+    {
+        if ( !self.pickUpAnnotation )
+        {
+            self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
+            self.pickUpAnnotation.subtitle = @"pick up location";
+        }
+        mkPA = self.pickUpAnnotation;
+        mkPA.coordinate = [self getLocationItemCoordinate:self.pickUpLocItem];
+        mkPA.title = self.pickUpSearchBar.text = [self getLocationItemName:self.pickUpLocItem];
+    }
+    else
+    {
+        if ( !self.dropOffAnnotation )
+        {
+            self.dropOffAnnotation = [[MKPointAnnotation alloc]init];
+            self.dropOffAnnotation.subtitle = @"drop off location";
+        }
+        mkPA = self.dropOffAnnotation;
+        mkPA.coordinate = [self getLocationItemCoordinate:self.dropOffLocItem];
+        mkPA.title = self.dropOffSearchBar.text = [self getLocationItemName:self.dropOffLocItem];
+    }
+    
+    [self.mapView addAnnotation:mkPA];
+    [self.mapView selectAnnotation:mkPA animated:YES];
+    
+    NSLog(@"isPickUpPoint %d, lat %f, long %f",isPickUpPoint, mkPA.coordinate.latitude, mkPA.coordinate.longitude);
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self isPickUpTableView:tableView] )
@@ -715,6 +857,8 @@ BOOL onBoardingStatusChecked = NO;
         //which one was selected
         self.pickUpLocItem = [self.pickUpPlaces objectAtIndex:indexPath.row];
         
+        //TODO: use -(void)setLocationPoint:(BOOL)isPickUpPoint
+
         if ( !self.pickUpAnnotation )
         {
             self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
@@ -728,7 +872,6 @@ BOOL onBoardingStatusChecked = NO;
         [self.mapView selectAnnotation:self.pickUpAnnotation animated:YES];
         
         NSLog(@"pick up location lat %f long %f", self.pickUpAnnotation.coordinate.latitude, self.pickUpAnnotation.coordinate.longitude);
-        locationInputCount++;
     } else
     {
         [self.dropOffSearchDisplayController setActive:NO animated:YES];
@@ -748,11 +891,9 @@ BOOL onBoardingStatusChecked = NO;
         [self.mapView selectAnnotation:self.dropOffAnnotation animated:YES];
         
         NSLog(@"drop off location lat %f long %f", self.dropOffAnnotation.coordinate.latitude, self.dropOffAnnotation.coordinate.longitude);
-        locationInputCount++;
     }
 
-    if (locationInputCount > 1)
-        self.findCrewButton.enabled = YES;
+    [self updateFindCrewButtonEnabledState];
 }
 
 
@@ -900,37 +1041,6 @@ BOOL onBoardingStatusChecked = NO;
     NSLog(@" searching ....");
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-}
-
--(NSArray *)getFilteredLocationHistoryFor:(NSString *)searchString isForPickUp:(BOOL)isPickUp isExactMatchRequired:(BOOL)exactMatch
-{
-    NSArray * filteredLoc = nil;
-    NSPredicate *predicate = nil;
-    
-    //determine key based on ispickup and ride type to work/home
-    NSString * historyKey = nil;
-    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
-    if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
-        historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
-    else
-        historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
-
-    NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:historyKey]; //array of mapitem
-    NSLog(@"%s:looking for %@ in %@ of size %lu" , __func__, searchString, historyKey, (unsigned long)locationHistory.count);
-    
-    if (locationHistory)
-    {
-        if (exactMatch)
-            predicate = [NSPredicate predicateWithFormat:@"%K MATCHES[cd] %@", kLocationHistoryName, searchString];
-        else
-            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLocationHistoryName, searchString];
-
-        filteredLoc = [locationHistory filteredArrayUsingPredicate:predicate];
-    }
-
-    NSLog(@"%s: found %lu %@", __func__, (unsigned long)filteredLoc.count, exactMatch?@"MATCHES":@"CONTAINS");
-    
-    return filteredLoc;
 }
 
 #pragma mark - Map View
