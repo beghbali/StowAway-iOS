@@ -13,7 +13,7 @@
 #import "FindingCrewViewController.h"
 #import "MeetCrewViewController.h"
 #import "EnterPickupDropOffViewController.h"
-
+#import "StowawayServerCommunicator.h"
 
 @implementation AppDelegate
 
@@ -231,6 +231,18 @@
     {
         [standardDefaults setObject:newToken forKey:kDeviceToken];
         [standardDefaults synchronize];
+        
+        //if user id exists, update its device token
+        NSString * userId = [standardDefaults objectForKey:kUserPublicId];
+        if (userId)
+        {
+            NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\"}",kDeviceToken, newToken];
+            NSString *url = [NSString stringWithFormat:@"%@%@",kStowawayServerApiUrl_users, userId];
+            
+            StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+            sscommunicator.sscDelegate = nil;//dont need the cb
+            [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
+        }
     }
     else
         NSLog(@"null standardUserDefaults ..ERROR !!");
