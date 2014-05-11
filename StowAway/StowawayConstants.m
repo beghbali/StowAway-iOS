@@ -90,6 +90,8 @@ NSString *const kSuggestedDropOffLong           = @"suggested_dropoff_lng";
 NSString *const kSuggestedDropOffLat            = @"suggested_dropoff_lat";
 NSString *const kSuggestedPickUpLong            = @"suggested_pickup_lng";
 NSString *const kSuggestedPickUpLat             = @"suggested_pickup_lat";
+NSString *const kSuggestedPickUpTime            = @"suggested_pickup_time";
+
 NSString *const kMKPointAnnotation              = @"mapPoint";
 NSString *const kIsRideFinalized                = @"isRideFinalized";
 NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";

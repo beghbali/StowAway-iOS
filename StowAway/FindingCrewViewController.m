@@ -45,6 +45,7 @@
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
+@property (strong, nonatomic) NSNumber *pickUpTime;
 
 @property BOOL isReadyToGoToMeetCrew;
 
@@ -341,6 +342,11 @@
                                     kSuggestedPickUpAddr: [response objectForKey:kSuggestedPickUpAddr],
                                     kSuggestedPickUpLong: [response objectForKey:kSuggestedPickUpLong],
                                     kSuggestedPickUpLat: [response objectForKey:kSuggestedPickUpLat]};
+        
+        //pick up time
+        self.pickUpTime = [response objectForKey:kSuggestedPickUpTime];
+        NSLog(@"%s: %@", __func__, self.pickUpTime);
+        
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
         
@@ -367,6 +373,22 @@
             meetCrewVC.crew     = self.crew;
             meetCrewVC.locationChannel  = self.locationChannel;
             meetCrewVC.suggestedLocations = self.suggestedLocations;
+            
+            NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
+            /*
+            NSLog(@"%s: %f.........", __func__, pickUpTimeDouble);
+            NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
+            NSDateFormatter * df2 = [[NSDateFormatter alloc]init];
+            [df2 setDateStyle:NSDateFormatterMediumStyle];
+            [df2 setTimeStyle:NSDateFormatterMediumStyle];
+            NSLog(@"%s: %@.........", __func__, [df2 stringFromDate:date]);
+            */
+            NSDateFormatter * df = [[NSDateFormatter alloc]init];
+            [df setDateStyle:NSDateFormatterNoStyle];
+            [df setTimeStyle:NSDateFormatterShortStyle];
+            meetCrewVC.rideTimeLabel = [df stringFromDate:date];
+            
+            NSLog(@"%s: %@", __func__, meetCrewVC.rideTimeLabel);
             
             [self.serverPollingTimer invalidate];
         }
