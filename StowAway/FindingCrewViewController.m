@@ -375,14 +375,13 @@
             meetCrewVC.suggestedLocations = self.suggestedLocations;
             
             NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
-            /*
-            NSLog(@"%s: %f.........", __func__, pickUpTimeDouble);
             NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
             NSDateFormatter * df2 = [[NSDateFormatter alloc]init];
             [df2 setDateStyle:NSDateFormatterMediumStyle];
             [df2 setTimeStyle:NSDateFormatterMediumStyle];
+            NSLog(@"%s: %f.........", __func__, pickUpTimeDouble);
             NSLog(@"%s: %@.........", __func__, [df2 stringFromDate:date]);
-            */
+
             NSDateFormatter * df = [[NSDateFormatter alloc]init];
             [df setDateStyle:NSDateFormatterNoStyle];
             [df setTimeStyle:NSDateFormatterShortStyle];
