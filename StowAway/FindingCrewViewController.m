@@ -732,27 +732,27 @@ void swap (NSUInteger *a, NSUInteger *b)
     NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
     UIImage *profilePic = [[UIImage alloc] initWithData:profilePicData] ;
 
-    NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/profile", fbUID]];
+    NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@", fbUID]];
     NSData *firstNameData = [NSData dataWithContentsOfURL:firstNameURL];
     NSDictionary* jsonDict = [NSJSONSerialization
                           JSONObjectWithData:firstNameData
                           options:kNilOptions
                           error:&error];
-    NSString * fbFullName = nil;
-   // NSLog(@"jsonDict %@", jsonDict);
-    
+    NSString * fbFirstName = nil;
+
     if (jsonDict && !error)
-        fbFullName = [[[jsonDict objectForKey:@"data"]objectAtIndex:0] objectForKey:@"name"];
+        fbFirstName = [jsonDict objectForKey:@"first_name"];
 
-    NSString * fbName = [[fbFullName componentsSeparatedByString: @" "] objectAtIndex:0];
-
+    if (!fbFirstName)
+        fbFirstName = @"!jack!";
+    
     switch (crewPostion)
     {
         case 1:
         {
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
-                NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbName);
+                NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbFirstName);
 
                 [self stopAnimatingImage:self.imageView1];
                 
@@ -762,7 +762,7 @@ void swap (NSUInteger *a, NSUInteger *b)
                 self.imageView1.layer.borderWidth = 1;
                 self.imageView1.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
                 
-                self.nameLabel1.text    = fbName;
+                self.nameLabel1.text    = fbFirstName;
             });
         }
             break;
@@ -779,7 +779,7 @@ void swap (NSUInteger *a, NSUInteger *b)
                 self.imageView2.layer.borderWidth = 1;
                 self.imageView2.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
                 
-                self.nameLabel2.text    = fbName;
+                self.nameLabel2.text    = fbFirstName;
             });
         }
             break;
@@ -796,7 +796,7 @@ void swap (NSUInteger *a, NSUInteger *b)
                 self.imageView3.layer.borderWidth = 1;
                 self.imageView3.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
                 
-                self.nameLabel3.text    = fbName;
+                self.nameLabel3.text    = fbFirstName;
             });
         }
             break;
@@ -810,7 +810,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     if (profilePic)
         [mutableDict setObject:profilePic forKey:kCrewFbImage];
     
-    [mutableDict setObject:fbName forKey:kCrewFbName];
+    [mutableDict setObject:fbFirstName forKey:kCrewFbName];
     [self.crew replaceObjectAtIndex:crewPostion withObject:mutableDict];
 }
 
