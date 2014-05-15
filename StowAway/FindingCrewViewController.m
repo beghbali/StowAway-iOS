@@ -89,9 +89,13 @@
     self.rideInfoLabel.text = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypeLabel, self.rideTimeLabel];;
     
     self.advertiseFooterLabel.text = [NSString stringWithFormat:@"%@\n%@",
-                                      @"This search can save you 50 to 75%",@" on your ride."];
+                                      @"Get there faster and comfortably,",
+                                      @"while  you save 50 to 75% on your ride using Stowaway !"];
+
     self.waitingLabel.text = [NSString stringWithFormat:@"%@\n%@",
-                              @"Rest easy and carry on...", @"We'll notify you when we find your crew."];
+                              @"Rest easy and carry on...",
+                              @"We'll send you a push notification, as we find people with similar requests"];
+                              //@"We'll notify you when we find your crew."];
 }
 
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
