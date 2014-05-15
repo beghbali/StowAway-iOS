@@ -72,7 +72,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 
-@property (weak, nonatomic) NSDictionary * rideRequestResponse;
+@property (strong, nonatomic) NSDictionary * rideRequestResponse;
 
 @property (nonatomic, strong) NSMutableArray * availableRideTimesLabel;
 @property (nonatomic, strong) NSMutableArray * availableRideTimesAbsoluteTime;
@@ -94,7 +94,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property NSInteger startingAvailabilityMins;
 @property NSInteger endingAvailabilityHrs;
 @property (strong, nonatomic) NSDateComponents *nowDateComponents;
-
+@property BOOL isPreviousAppStateValid;
 @end
 
 
@@ -172,6 +172,34 @@ BOOL onBoardingStatusChecked = NO;
         [self configureScheduledRidesOptions];
 }
 
+-(BOOL)isRestoringPreviousAppState
+{
+    NSNumber * requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+    NSNumber * userID = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    
+    NSLog(@"%s: requestID %@, userID %@", __func__, requestID, userID);
+    
+    if (requestID && userID)
+    {
+        NSNumber * requestedForNum = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestedForDate];
+        NSTimeInterval requestedFor = [requestedForNum doubleValue];
+        NSTimeInterval currentTimeInterval = [[NSDate date]timeIntervalSince1970];
+        NSLog(@"%s: requestedFor %f, currentTimeInterval %f", __func__, requestedFor, currentTimeInterval);
+
+        if ( currentTimeInterval < requestedFor)
+        {
+            //all conditions satify to restore previous ride request
+            self.isPreviousAppStateValid = YES;
+            self.rideRequestResponse = @{kPublicId: requestID, kUserPublicId: userID};
+            
+            //segue to finding crew
+            [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
+            return YES;
+        }
+    }
+    return NO;
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"%s......, onBoardingStatusChecked %d", __func__, onBoardingStatusChecked);
@@ -179,6 +207,9 @@ BOOL onBoardingStatusChecked = NO;
     [super viewDidAppear:YES];
     
     [self checkOnboardingStatus];
+
+    if ([self isRestoringPreviousAppState])
+        return;
     
     [self updateFindCrewButtonEnabledState];
 
@@ -347,7 +378,7 @@ BOOL onBoardingStatusChecked = NO;
     BOOL hasTakenRideToHomeToday = NO;
     
     //(3) get ride type
-    if ( self.nowHrs < endingMorningHrs )
+    if ( (self.nowHrs < endingMorningHrs-1) || (self.nowHrs < endingMorningHrs && self.nowMins < 31) )
     {
         //morning time - 0~10:59am
         self.startingRideTypeIndex = hasTakenRideToWorkToday ? kRideType_ToHomeToday: kRideType_ToWorkToday;
@@ -494,7 +525,7 @@ BOOL onBoardingStatusChecked = NO;
         } else
             nxtMins +=15;
         
-        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %lu:%02lu %@",
+        [self.availableRideTimesLabel addObject:[NSString stringWithFormat:@"%ld:%02ld - %u:%02lu %@",
                                                  (long)(self.startingAvailabilityHrs > 12)? (self.startingAvailabilityHrs-12): (long)self.startingAvailabilityHrs,
                                                  (long)self.startingAvailabilityMins,
                                                  (nxtHrs > 12)? (nxtHrs-12):nxtHrs ,
@@ -1181,6 +1212,7 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
     self.locationManager.activityType = CLActivityTypeFitness;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
 	[self.locationManager startUpdatingLocation];
+    self.userLocation = self.locationManager.location.coordinate; //get cached location first
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
@@ -1268,8 +1300,13 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
     
     NSDate * requestedRideDate = [self calculateRequestedRideDate];
     NSTimeInterval requested_for = [requestedRideDate timeIntervalSince1970];
+    NSNumber * requestForNum = [NSNumber numberWithFloat:requested_for];
     NSLog(@"requestedRideDate %@, requested_for %f",requestedRideDate, requested_for);
-    
+  
+    //save requested for time, will be used in app restoration
+    [[NSUserDefaults standardUserDefaults] setObject:requestForNum forKey:kRequestedForDate];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     //prepare the ride request query
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
@@ -1310,17 +1347,37 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"%s........", __func__);
+    
     if ( [segue.identifier isEqualToString:@"toFindingCrew"] )
     {
         if ([segue.destinationViewController class] == [FindingCrewViewController class])
         {
             FindingCrewViewController * findingCrewVC = segue.destinationViewController;
+           
             findingCrewVC.rideRequestResponse = self.rideRequestResponse;
-            NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
-            NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
-            
-            findingCrewVC.rideTypeLabel = self.rideTypes[choosenRideType];
-            findingCrewVC.rideTimeLabel = choosenTime;
+            NSNumber * requestID = [self.rideRequestResponse objectForKey:kPublicId];
+
+            if (!self.isPreviousAppStateValid)
+            {
+                //new request
+                NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
+                NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+                
+                findingCrewVC.rideTypeLabel = self.rideTypes[choosenRideType];
+                findingCrewVC.rideTimeLabel = choosenTime;
+
+                //remember the ride id, ride time label and ride type label -- so it can be used to restore the app
+                [[NSUserDefaults standardUserDefaults] setObject:requestID forKey:kRequestPublicId];
+                [[NSUserDefaults standardUserDefaults] setObject:findingCrewVC.rideTypeLabel forKey:@"rideTypeLabel"];
+                [[NSUserDefaults standardUserDefaults] setObject:findingCrewVC.rideTimeLabel forKey:@"rideTimeLabel"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            } else
+            {
+                //old request
+                findingCrewVC.rideTypeLabel = [[NSUserDefaults standardUserDefaults] objectForKey:@"rideTypeLabel"];
+                findingCrewVC.rideTimeLabel = [[NSUserDefaults standardUserDefaults] objectForKey:@"rideTimeLabel"];
+            }
         }
     }
 }

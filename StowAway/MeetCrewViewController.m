@@ -99,6 +99,11 @@
     if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
     {
         NSLog(@"go back to enter drop off pick up view");
+
+        //erase it from memory, so its not used in app restoration
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
         [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
         return;
     }
@@ -500,6 +505,11 @@
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];
     
     NSLog(@"go back to enter drop off pick up view");
+
+    //erase it from memory, so its not used in app restoration
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
@@ -547,6 +557,11 @@
 - (void)doneButtonTapped
 {
     NSLog(@"we are DONE here....go back to enter drop off pick up view");
+    
+    //erase it from memory, so its not used in app restoration
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 

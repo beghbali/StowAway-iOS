@@ -19,35 +19,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
     NSLog(@"app launched with launch options %@", launchOptions);
-/*
-    //set bar color - #7ac7cf
-    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:122.0/256.0 green:199.0/256.0 blue:207.0/256.0 alpha:1.0];
-    //bar tint color - white
-    [UINavigationBar appearance].tintColor = [UIColor whiteColor];
-*/
+
     if (launchOptions != nil)
 	{
 		NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 		if (dictionary != nil)
 		{
 			NSLog(@"Launched from remote push notification: %@", dictionary);
-			[self processStowawayPushNotification:dictionary isAppRunning:NO];
+		//	[self processStowawayPushNotification:dictionary isAppRunning:NO];
 		}
         
         NSDictionary *local_dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 		if (local_dictionary != nil)
 		{
 			NSLog(@"Launched from local push notification: %@", local_dictionary);
-			[self processUILocalNotification:local_dictionary isAppRunning:NO];
+		//	[self processUILocalNotification:local_dictionary isAppRunning:NO];
 		}
 	}
-	
-    
+
     // Let the device know we want to receive push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+                                            (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //facebook login
     [FBLoginView class];
@@ -56,7 +49,7 @@
     return YES;
 }
 
-#pragma mark remote notif
+#pragma mark - remote push notifications
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
@@ -70,11 +63,10 @@
 {
     NSLog(@"isAppRunning %d, processStowawayPushNotification........", isAppRunning);
     
-    NSString * status = [pushMsg valueForKey:kStatus];
-    NSNumber * ride_id = [pushMsg valueForKey:kPublicId];
+    NSString * status       = [pushMsg valueForKey:kStatus];
+    NSNumber * ride_id      = [pushMsg valueForKey:kPublicId];
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-    
-    BOOL isRideFinalized = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
+    BOOL isRideFinalized    = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
 
     NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
 

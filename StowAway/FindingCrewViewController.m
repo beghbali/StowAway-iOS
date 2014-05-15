@@ -98,6 +98,7 @@
                               //@"We'll notify you when we find your crew."];
 }
 
+//remote push notification
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
 {
     NSLog(@"%s:  %@", __func__, notification);
@@ -176,7 +177,9 @@
 {
     NSLog(@"processRequestObject........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
 
-    if (!response) {
+    if (!response)
+    {
+        //coming from remote push notification
         self.rideRequestResponse = response = ((AppDelegate *)[UIApplication sharedApplication].delegate).fakeRideRequestResponse;
     }
     
@@ -185,18 +188,14 @@
     id nsNullObj = (id)[NSNull null];
     
     if ( !self.crew )
-    { //this is the immediate ride request response
+    {
+        //this is the immediate ride request response
         NSLog(@"process immediate ride req response, create crew array");
         self.crew = [NSMutableArray arrayWithCapacity: 1];
         self.userID = [response objectForKey:kUserPublicId];
         self.requestID = [response objectForKey:kPublicId];
 
-        if (self.requestID)
-        {
-            //remember request id, incase app gets killed and is relaunced due to a match
-            [[NSUserDefaults standardUserDefaults] setObject:self.requestID forKey:kRequestPublicId];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        } else
+        if (!self.requestID)
             self.requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
         
         //parse the response to fill in SELF request_id, user_id
@@ -237,6 +236,8 @@
         
         [self cancelTimerExpiryNotificationSchedule];
     }
+    
+    [self pollServer];
 }
 
 #pragma mark - process RIDE
@@ -615,6 +616,10 @@ void swap (NSUInteger *a, NSUInteger *b)
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
     
+    //erase it from memory, so its not used in app restoration
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     //cancel local notif
     [self cancelTimerExpiryNotificationSchedule];
     
