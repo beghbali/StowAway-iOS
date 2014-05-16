@@ -160,13 +160,24 @@ BOOL onBoardingStatusChecked = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-
+    
+/*
+ [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillBecomeInActive:) name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+*/
 }
 
+- (void)appWillBecomeInActive:(NSNotification *)notification
+{
+    NSLog(@"--******--%s............", __func__);
+    [self destroyCoreLocationManager];
+
+}
 - (void)appReturnsActive:(NSNotification *)notification
 {
     NSLog(@"---------%s............", __func__);
- 
+    
     //dont recalculate immediately after VDL
     if (!self.isRideTimeConfigured)
         [self configureScheduledRidesOptions];
@@ -673,9 +684,9 @@ BOOL onBoardingStatusChecked = NO;
             historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
         
         NSMutableArray * locationHistory = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:historyKey]]; //array of mapitem
-NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMatch.firstObject];
+        NSUInteger indexFound = [locationHistory indexOfObject:existingHistoryMatch.firstObject];
         //move this entry to the begining
-        NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu",__func__, existingHistoryMatch, indexFound);
+        NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu",__func__, existingHistoryMatch, (unsigned long)indexFound);
         
         if (indexFound != NSNotFound)
         {
@@ -1209,7 +1220,7 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
 
 	self.locationManager = [[CLLocationManager alloc] init];
 	self.locationManager.delegate = self;
-    self.locationManager.activityType = CLActivityTypeFitness;
+    self.locationManager.activityType = CLActivityTypeOther;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
 	[self.locationManager startUpdatingLocation];
     self.userLocation = self.locationManager.location.coordinate; //get cached location first
@@ -1294,8 +1305,6 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
 
 - (IBAction)findCrewButtonTapped:(UIButton *)sender
 {
-	[self destroyCoreLocationManager]; //we don't need to update user's current location at this point
-    
     [self updateLocationHistory];
     
     NSDate * requestedRideDate = [self calculateRequestedRideDate];
@@ -1349,6 +1358,8 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
 {
     NSLog(@"%s........", __func__);
     
+    [self destroyCoreLocationManager]; //we don't need to update user's current location at this point
+
     if ( [segue.identifier isEqualToString:@"toFindingCrew"] )
     {
         if ([segue.destinationViewController class] == [FindingCrewViewController class])

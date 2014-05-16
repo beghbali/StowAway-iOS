@@ -79,7 +79,7 @@
     //process ride request reply from server -- also sets cd timer value
     [self processRequestObject:self.rideRequestResponse];
     
-    //schedule to poll the server every 30secs
+    //schedule to poll the server every 60secs
     self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
                                                                target:self
                                                              selector:@selector(pollServer)
@@ -95,7 +95,8 @@
     self.waitingLabel.text = [NSString stringWithFormat:@"%@\n%@",
                               @"Rest easy and carry on...",
                               @"We'll send you a push notification, as we find people with similar requests"];
-                              //@"We'll notify you when we find your crew."];
+    
+    [self pollServer]; //to take care of restoring app case, where server is queried for request object
 }
 
 //remote push notification
@@ -236,8 +237,6 @@
         
         [self cancelTimerExpiryNotificationSchedule];
     }
-    
-    [self pollServer];
 }
 
 #pragma mark - process RIDE
