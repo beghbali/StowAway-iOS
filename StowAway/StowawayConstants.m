@@ -7,6 +7,7 @@
 //
 
 #import "StowawayConstants.h"
+#import "Environment.h"
 
 //stowaway server
 NSString *const kStowawayServerApiUrl_pusher = @"https://staging.getstowaway.com/pusher/";

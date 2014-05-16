@@ -14,13 +14,17 @@
 #import "MeetCrewViewController.h"
 #import "EnterPickupDropOffViewController.h"
 #import "StowawayServerCommunicator.h"
+#import "Environment.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Crashlytics startWithAPIKey:@"780e5e925f514ea3d7583d573d7059e2ef4eadc1"];
+    NSString *environment = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
     
-    NSLog(@"app launched with launch options %@", launchOptions);
+    NSLog(@"app launched %@ environment with launch options %@", environment, launchOptions);
 /*
     //set bar color - #7ac7cf
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:122.0/256.0 green:199.0/256.0 blue:207.0/256.0 alpha:1.0];
@@ -237,7 +241,7 @@
         if (userId)
         {
             NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\"}",kDeviceToken, newToken];
-            NSString *url = [NSString stringWithFormat:@"%@%@",kStowawayServerApiUrl_users, userId];
+            NSString *url = [NSString stringWithFormat:@"%@%@",[ENV lookup:@"kStowawayServerApiUrl_users"], userId];
             
             StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
             sscommunicator.sscDelegate = nil;//dont need the cb

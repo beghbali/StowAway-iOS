@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AAC41B03ACA45D2B1CD5BB0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 347CED1860724CA9AAE54326 /* libPods.a */; };
+		68A3B77219267F0D00A2E4C4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */; };
 		68BAFEB0188DDBD3009738A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEAF188DDBD3009738A0 /* Foundation.framework */; };
 		68BAFEB2188DDBD3009738A0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */; };
 		68BAFEB4188DDBD3009738A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BAFEB3188DDBD3009738A0 /* UIKit.framework */; };
@@ -17,6 +18,8 @@
 		68BAFEC3188DDBD3009738A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFEC1188DDBD3009738A0 /* Main.storyboard */; };
 		68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAFEC5188DDBD3009738A0 /* LoginViewController.m */; };
 		68BAFEC8188DDBD3009738A0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68BAFEC7188DDBD3009738A0 /* Images.xcassets */; };
+		68DA1E59192366A8007FE352 /* Configurations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68DA1E58192366A8007FE352 /* Configurations.plist */; };
+		68DA1E5C19236A98007FE352 /* Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DA1E5B19236A98007FE352 /* Environment.m */; };
 		F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */; };
 		F4266D9E18B5A87900A46BB1 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4118B5A87900A46BB1 /* STPCard.m */; };
 		F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4266D4318B5A87900A46BB1 /* STPToken.m */; };
@@ -147,6 +150,7 @@
 
 /* Begin PBXFileReference section */
 		347CED1860724CA9AAE54326 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		68BAFEAC188DDBD3009738A0 /* Stowaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stowaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAF188DDBD3009738A0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -162,6 +166,9 @@
 		68BAFEC5188DDBD3009738A0 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		68BAFEC7188DDBD3009738A0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		68BAFECE188DDBD3009738A0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		68DA1E58192366A8007FE352 /* Configurations.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configurations.plist; sourceTree = "<group>"; };
+		68DA1E5A19236A98007FE352 /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
+		68DA1E5B19236A98007FE352 /* Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Environment.m; sourceTree = "<group>"; };
 		EBB5AAE28C6C411786386FFA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F4266D3B18B52D6600A46BB1 /* GoogleAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthenticator.h; sourceTree = "<group>"; };
 		F4266D3C18B52D6600A46BB1 /* GoogleAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthenticator.m; sourceTree = "<group>"; };
@@ -329,6 +336,7 @@
 			files = (
 				F4CB1FA918C7F4BA00A404D0 /* libicucore.dylib in Frameworks */,
 				F4CB1FA718C7F35C00A404D0 /* CFNetwork.framework in Frameworks */,
+				68A3B77219267F0D00A2E4C4 /* Crashlytics.framework in Frameworks */,
 				F4CB1F6318BDAEA600A404D0 /* QuartzCore.framework in Frameworks */,
 				F4CB1F6218BC759600A404D0 /* CoreLocation.framework in Frameworks */,
 				F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */,
@@ -368,6 +376,7 @@
 		68BAFEAE188DDBD3009738A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */,
 				F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */,
 				F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */,
 				F4CB1F6118BC759600A404D0 /* CoreLocation.framework */,
@@ -401,6 +410,7 @@
 		68BAFEB6188DDBD3009738A0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68DA1E58192366A8007FE352 /* Configurations.plist */,
 				68BAFEB7188DDBD3009738A0 /* StowAway-Info.plist */,
 				68BAFEB8188DDBD3009738A0 /* InfoPlist.strings */,
 				68BAFEBB188DDBD3009738A0 /* main.m */,
@@ -528,6 +538,8 @@
 				F4CB1F6818C3214500A404D0 /* CountdownTimer.m */,
 				F451B6C518B3333400CF59BA /* StowawayConstants.h */,
 				F451B6C618B3333400CF59BA /* StowawayConstants.m */,
+				68DA1E5A19236A98007FE352 /* Environment.h */,
+				68DA1E5B19236A98007FE352 /* Environment.m */,
 			);
 			name = "Helper Classes";
 			sourceTree = "<group>";
@@ -721,6 +733,7 @@
 				68BAFEA9188DDBD3009738A0 /* Frameworks */,
 				68BAFEAA188DDBD3009738A0 /* Resources */,
 				EF07BF46B73E4056A41E793C /* Copy Pods Resources */,
+				68DA1E5D1925E486007FE352 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -750,7 +763,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */;
+			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -834,6 +847,7 @@
 				F47C042D1919EAAC00F9916E /* minus_new.png in Resources */,
 				F47C04321919EAAC00F9916E /* right_new@2x.png in Resources */,
 				F4EEE71019062B3900A20886 /* 50.png in Resources */,
+				68DA1E59192366A8007FE352 /* Configurations.plist in Resources */,
 				F4EEE70419062B3900A20886 /* 8.png in Resources */,
 				F4EEE72019062B3900A20886 /* receipt.png in Resources */,
 				F4EEE71E19062B3900A20886 /* profile.png in Resources */,
@@ -870,6 +884,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		68DA1E5D1925E486007FE352 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 780e5e925f514ea3d7583d573d7059e2ef4eadc1 ba3c11c7e308bccc4db69f49465fdf63297232458af471ad20a144b57c86ff04";
+		};
 		B52D80BA131D40AD977EECAA /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -932,6 +959,7 @@
 				F4CB1F6918C3214500A404D0 /* CountdownTimer.m in Sources */,
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
 				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
+				68DA1E5C19236A98007FE352 /* Environment.m in Sources */,
 				F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F4EEE6841904C53F00A20886 /* UberSettingsGuideViewController.m in Sources */,
@@ -1048,6 +1076,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/otherFrameworks/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
@@ -1059,7 +1088,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
+				PROVISIONING_PROFILE = "58E27AB8-C3D8-4655-A10C-0D643F65518E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1075,6 +1104,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/otherFrameworks/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StowAway/StowAway-Prefix.pch";
@@ -1086,7 +1116,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
+				PROVISIONING_PROFILE = "58E27AB8-C3D8-4655-A10C-0D643F65518E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1094,7 +1124,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */ = {
+		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68BAFEDC188DDBD3009738A0 /* Debug */,

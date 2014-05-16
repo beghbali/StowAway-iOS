@@ -13,6 +13,7 @@
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
 #import "SWRevealViewController.h"
+#import "Environment.h"
 /*
 
 Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
@@ -518,7 +519,7 @@ char isReadyToSavePayment = 0;
     
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
-    NSString *url = [NSString stringWithFormat:@"%@%@", kStowawayServerApiUrl_users, publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@", [ENV lookup:@"kStowawayServerApiUrl_users"], publicUserId];
     
     NSString *userdata = [NSString stringWithFormat:@"{\"stripe_token\":\"%@\"}", token.tokenId];
     

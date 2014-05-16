@@ -16,7 +16,7 @@
 #import "PTPusherErrors.h"
 #import "PTPusherConnection.h"
 #import "StowawayServerCommunicator.h"
-
+#import "Environment.h"
 
 @interface MeetCrewMapViewManager ()<CLLocationManagerDelegate, MKMapViewDelegate, PTPusherDelegate>
 
@@ -115,7 +115,7 @@
     {
         NSLog(@"i am the captain, asking server to start auto-checkin");
         //checkin request - only captain sends
-        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/checkin", kStowawayServerApiUrl_users, self.userID, self.rideID];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/checkin", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = nil; //no response expected
@@ -389,11 +389,11 @@
 {
     NSLog(@"%s", __func__);
     //create pusher
-    self.pusher = [PTPusher pusherWithKey:kPusherApiKey delegate:self encrypted:YES];
+    self.pusher = [PTPusher pusherWithKey:[ENV lookup:@"kPusherApiKey"] delegate:self encrypted:YES];
     self.pusher.reconnectAutomatically = YES;
     
     //authentication endpoint
-    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@/auth", kStowawayServerApiUrl_pusher, self.userID]];
+    self.pusher.authorizationURL = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@/auth", [ENV lookup:@"kStowawayServerApiUrl_pusher"], self.userID]];
     
     self.isPusherConnected = NO;
     
@@ -402,7 +402,7 @@
     //subscribe to location channel created by server
     PTPusherChannel *channel = [self.pusher subscribeToPrivateChannelNamed:self.locationChannel];
     
-    [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
+    [channel bindToEventNamed:[ENV lookup:@"kPusherCrewLocationEvent"] target:self action:@selector(handleCrewLocationUpdate:)];
 }
 
 -(void)stopPusherUpdates
@@ -424,7 +424,7 @@
                                 @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
                                 kUserPublicId: self.userID,
                                 kRequestPublicId: self.requestID};
-    NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
+    NSDictionary * locationUpdate = @{@"event":[ENV lookup:@"kPusherCrewLocationEvent"],
                                       @"channel":[NSString stringWithFormat:@"private-%@", self.locationChannel],
                                       @"data": dataDict};
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);

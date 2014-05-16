@@ -11,6 +11,7 @@
 #import "ReceiptEmailViewController.h"
 #import "StowawayServerCommunicator.h"
 #import "StowawayConstants.h"
+#import "Environment.h"
 
 @interface LoginViewController () <StowawayServerCommunicatorDelegate>
 
@@ -148,7 +149,7 @@
 
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:post ForURL:kStowawayServerApiUrl_users usingHTTPMethod:@"POST"];
+    [sscommunicator sendServerRequest:post ForURL:[ENV lookup:@"kStowawayServerApiUrl_users"] usingHTTPMethod:@"POST"];
 }
 
 // Logged-in user experience

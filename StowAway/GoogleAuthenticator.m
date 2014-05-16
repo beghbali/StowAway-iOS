@@ -13,6 +13,7 @@
 #include "GTMOAuth2SignIn.h"
 #include "StowawayServerCommunicator.h"
 #include "StowawayConstants.h"
+#include "Environment.h"
 
 #define CLIENT_ID       @"91236755086-hnkvlu1h2ltagv3cjtkj37ohp2h51r90.apps.googleusercontent.com"
 #define CLIENT_SECRET   @"W7e1b6OQaJjWuTF-m5oDyDEQ"
@@ -152,7 +153,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
         //SUCCESS - move to the next screen - ie credit card
         NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
 
-        NSString *url = [NSString stringWithFormat:@"%@%@", kStowawayServerApiUrl_users, publicUserId];
+        NSString *url = [NSString stringWithFormat:@"%@%@", [ENV lookup:@"kStowawayServerApiUrl_users"], publicUserId];
         
         NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\", \"%@\":\"%@\"}",
                               kUserEmail, self.googleAuth.userEmail, kUserEmailProvider, @"gmail",

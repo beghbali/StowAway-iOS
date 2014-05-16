@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Debug</key>
+	<dict/>
+	<key>kStowawayServerApiUrl_users</key>
+	<string>http://staging.getstowaway.com/api/v1/users/</string>
+	<key>kStowawayServerApiUrl_pusher</key>
+	<string>https://staging.getstowaway.com/pusher/</string>
+	<key>kCountdownTimerMaxSeconds </key>
+	<integer>30</integer>
+	<key>kPusherApiKey</key>
+	<string>403b5fc6f392db2fe167</string>
+	<key>kBundlePlistPath</key>
+	<string>https://getstowaway.com/app/latest/Stowaway.plist</string>
+	<key>Release</key>
+	<dict>
+		<key>kStowawayServerApiUrl_users</key>
+		<string>http://api.getstowaway.com/api/v1/users/</string>
+		<key>kStowawayServerApiUrl_pusher</key>
+		<string>https://api.getstowaway.com/pusher/</string>
+		<key>kCountdownTimerMaxSeconds </key>
+		<integer>300</integer>
+		<key>kPusherApiKey</key>
+		<string>26f93bf27a0add755521</string>
+		<key>kBundlePlistPath</key>
+		<string>https://getstowaway.com/app/latest/Stowaway.plist</string>
+	</dict>
+</dict>
+</plist>
