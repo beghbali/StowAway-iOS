@@ -284,7 +284,7 @@
 {
     BOOL updateAvailable = NO;
     NSDictionary *updateDictionary = [NSDictionary dictionaryWithContentsOfURL:
-                                      [NSURL URLWithString: kBundlePlistPath]];
+                                      [NSURL URLWithString: [[Environment ENV] lookup:@"kBundlePlistPath"]]];
     
     if (updateDictionary)
     {
@@ -316,7 +316,7 @@
 {
     if (buttonIndex == 0)
     {
-        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", kBundlePlistPath];
+        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
         NSURL *url = [NSURL URLWithString:myURL];
         [[UIApplication sharedApplication] openURL: url];
     }

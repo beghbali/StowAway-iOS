@@ -9,9 +9,6 @@
 #import "StowawayConstants.h"
 #import "Environment.h"
 
-//stowaway server
-NSString *const kStowawayServerApiUrl_pusher = @"https://staging.getstowaway.com/pusher/";
-NSString *const kStowawayServerApiUrl_users = @"http://staging.getstowaway.com/api/v1/users/";
 
 //location history
 NSString *const kPickUpLocationHistoryToWork = @"PickUpLocationHistoryToWork";
@@ -99,12 +96,10 @@ NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
-NSUInteger kCountdownTimerMaxSeconds        = (60*5); //5mins
 NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
 NSUInteger kServerPollingIntervalSeconds    = (60); //60secs
 
 //Pusher
-NSString *const kPusherApiKey                                   = @"403b5fc6f392db2fe167";
 NSString *const kPusherCrewLocationEvent                        = @"client-location-update";
 double const kPusherCrewWalkingLocationUpdateThreshholdMeters   = 5; //5meters == 16feet
 
@@ -118,8 +113,6 @@ NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone
 //animation finding crew
 double const kFindingCrewFacesAnimationDelay    = 3; //time it takes to go through all the faces #16
 
-//app update bundle
-NSString *const kBundlePlistPath       = @"https://getstowaway.com/app/latest/Stowaway.plist";
 
 //coupon request
 NSString *const kCouponCodeKey                  = @"coupon_code";

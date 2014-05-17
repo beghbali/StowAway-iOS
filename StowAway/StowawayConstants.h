@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-//stowaway server
-extern NSString *const kStowawayServerApiUrl_pusher;
-extern NSString *const kStowawayServerApiUrl_users;
 
 //location history
 extern NSString *const kPickUpLocationHistoryToWork;
@@ -94,12 +91,10 @@ extern NSString *const kSuggestedDefaultDropOffAddr;
 extern NSString *const kSuggestedDefaultPickUpAddr;
 
 //crew and waiting constants
-extern NSUInteger kCountdownTimerMaxSeconds;
 extern NSUInteger kMaxCrewCount;
 extern NSUInteger kServerPollingIntervalSeconds;
 
 //Pusher
-extern NSString *const kPusherApiKey;
 extern NSString *const kPusherCrewLocationEvent;
 extern double const kPusherCrewWalkingLocationUpdateThreshholdMeters;
 
@@ -111,9 +106,6 @@ extern NSString *const kOnboardingStatusTutorialDone;
 
 //animation finding crew
 extern double const kFindingCrewFacesAnimationDelay;
-
-//app update bundle
-extern NSString *const kBundlePlistPath;
 
 //coupon request
 extern NSString *const kCouponCodeKey;
