@@ -519,7 +519,7 @@ char isReadyToSavePayment = 0;
     
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
-    NSString *url = [NSString stringWithFormat:@"%@%@", [ENV lookup:@"kStowawayServerApiUrl_users"], publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], publicUserId];
     
     NSString *userdata = [NSString stringWithFormat:@"{\"stripe_token\":\"%@\"}", token.tokenId];
     

@@ -9,7 +9,7 @@
 #import "Environment.h"
 
 @implementation Environment
-static Environment *ENV = nil;
+static Environment *_ENV = nil;
 NSDictionary* environment;
 
 - (id)init
@@ -25,7 +25,7 @@ NSDictionary* environment;
 
 - (void)initializeSharedInstance
 {
-    NSString* configuration = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Configuration"];
+    NSString* configuration = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
     NSBundle* bundle = [NSBundle mainBundle];
     NSString* envsPListPath = [bundle pathForResource:@
                                "Configurations" ofType:@"plist"];
@@ -43,11 +43,11 @@ NSDictionary* environment;
 + (Environment *)ENV
 {
     @synchronized(self) {
-        if (ENV == nil) {
-            ENV = [[self alloc] init];
-            [ENV initializeSharedInstance];
+        if (_ENV == nil) {
+            _ENV = [[self alloc] init];
+            [_ENV initializeSharedInstance];
         }
-        return ENV;
+        return _ENV;
     }
 }
 

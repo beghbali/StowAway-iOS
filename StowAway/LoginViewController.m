@@ -149,7 +149,7 @@
 
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:post ForURL:[ENV lookup:@"kStowawayServerApiUrl_users"] usingHTTPMethod:@"POST"];
+    [sscommunicator sendServerRequest:post ForURL:[[Environment ENV] lookup:@"kStowawayServerApiUrl_users"] usingHTTPMethod:@"POST"];
 }
 
 // Logged-in user experience

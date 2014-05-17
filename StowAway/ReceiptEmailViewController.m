@@ -253,7 +253,7 @@
     //SUCCESS - move to the next screen - ie credit card
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
-    NSString *url = [NSString stringWithFormat:@"%@%@", [ENV lookup:@"kStowawayServerApiUrl_users"], publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], publicUserId];
     
     NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\"}",
                                                       kUserEmail, self.email,

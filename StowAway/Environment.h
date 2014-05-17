@@ -10,5 +10,6 @@
 
 @interface Environment : NSObject
 - (NSString*)lookup:(NSString*)key;
++ (Environment *)ENV;
 @end
-static Environment *ENV;
+static Environment *_ENV;

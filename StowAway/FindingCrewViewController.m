@@ -141,7 +141,7 @@
     }
     
     //get fresh request object to see if there is a ride
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
@@ -212,7 +212,7 @@
     { // there is a match - GET RIDE result
         //TODO: stowaway server communicator should handle this -- getRideObject, also used in meet crew
         NSLog(@"there is a match - get ride result");
-        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, ride_id];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, ride_id];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = self;
@@ -530,7 +530,7 @@ void swap (NSUInteger *a, NSUInteger *b)
         return;
     }
     
-    NSTimeInterval secondsToExpire = (int)[ENV lookup:@"kCountdownTimerMaxSeconds"] - (rideRequestedAt - minRideRequestedAt);
+    NSTimeInterval secondsToExpire = (int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"] - (rideRequestedAt - minRideRequestedAt);
     
     self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
     
@@ -545,7 +545,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     self.cdt.cdTimerDelegate = self;
     
-    [self.cdt initializeWithSecondsRemaining: (int)[ENV lookup:@"kCountdownTimerMaxSeconds"]
+    [self.cdt initializeWithSecondsRemaining: (int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"]
                                     ForLabel:self.countDownTimer];
 
     [self setTimerExpiryNotification];
@@ -566,7 +566,7 @@ void swap (NSUInteger *a, NSUInteger *b)
         [self.serverPollingTimer invalidate];
         
         // ask server for roles
-        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/finalize", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
+        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/finalize", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
         
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = self;
@@ -607,7 +607,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 -(void)cancelRide
 {
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"DELETE"];    //don't need the callback, so no delegate
@@ -628,7 +628,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     [self cancelTimerExpiryNotificationSchedule];
 
     //send couponed request
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [ENV lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
     NSString *couponRequest = [NSString stringWithFormat:@"{\"%@\": \"%@\"}",
                                                      kCouponCodeKey, couponCode];

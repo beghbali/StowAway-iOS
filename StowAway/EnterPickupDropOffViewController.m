@@ -1274,7 +1274,7 @@ NSUInteger indexFound =        [locationHistory indexOfObject:existingHistoryMat
     //prepare the ride request query
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests", [ENV lookup:@"kStowawayServerApiUrl_users"], publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], publicUserId];
     
     NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%d }}",
                              kPickUpAddress, self.pickUpAnnotation.title,
