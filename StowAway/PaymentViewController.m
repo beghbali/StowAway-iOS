@@ -11,29 +11,13 @@
 #import "PaymentViewController.h"
 #import "Stripe.h"
 #import "StowawayServerCommunicator.h"
-#import "StowawayConstants.h"
 #import "SWRevealViewController.h"
-/*
-
-Test publishable key: pk_test_RKqdkvUwBndT8tf7t65ft2TV
-  @"pk_test_6pRNASCoBOKtIshFeQd4XMUh"
-*/
 
 #define STRIPE_TEST_PUBLIC_KEY @"pk_test_RKqdkvUwBndT8tf7t65ft2TV"
-#define STRIPE_TEST_POST_URL
 
 @interface PaymentViewController() <UITextFieldDelegate, StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic) STPCard* stripeCard;
-
-@property (weak, nonatomic) IBOutlet UIButton *saveButton;
-
-@property (weak, nonatomic) IBOutlet UITextField *nameField;
-@property (weak, nonatomic) IBOutlet UITextField *cardNumberField;
-@property (weak, nonatomic) IBOutlet UITextField *expiryField;
-@property (weak, nonatomic) IBOutlet UITextField *cvvField;
-@property (weak, nonatomic) IBOutlet UITextField *zipField;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
 
@@ -47,6 +31,7 @@ NSError * error = Nil;
 
 char isReadyToSavePayment = 0;
 
+#pragma mark - view initialization
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -75,11 +60,45 @@ char isReadyToSavePayment = 0;
     //prefil fb name
     self.nameField.text = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
     [self textFieldDidEndEditing:self.nameField];
-    [self.cardNumberField becomeFirstResponder];
+    NSLog(@"%s..........................self.isForMenu %d", __func__,self.isForMenu);
+
+    if (!self.isForMenu)
+        [self.cardNumberField becomeFirstResponder];
 }
 
-- (IBAction)skipButtonTapped:(id)sender {
 
+-(void) viewWillAppear: (BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self
+           selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    [nc addObserver:self
+           selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
+}
+
+- (void) viewWillDisappear: (BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self
+                  name:UIKeyboardWillShowNotification
+                object:nil];
+    [nc removeObserver:self
+                  name:UIKeyboardWillHideNotification
+                object:nil];
+}
+
+#pragma mark - button actions
+
+- (IBAction)skipButtonTapped:(id)sender
+{
     UIViewController * presentingVC = self.presentingViewController;
     
     NSLog(@"presenting vc %@ ", presentingVC);
@@ -95,6 +114,16 @@ char isReadyToSavePayment = 0;
 }
 
 
+- (IBAction)doneButtonTapped:(UIButton *)sender
+{
+    NSLog(@"%s.......................isForMenu %d...", __func__, self.isForMenu);
+    
+    //hide keyboard
+    [self.view endEditing:YES];
+}
+
+
+#pragma mark - textfield manipulation
 /*
  Removes non-digits from the string, decrementing `cursorPosition` as
  appropriate so that, for instance, if we pass in `@"1111 1123 1111"`
@@ -169,7 +198,6 @@ char isReadyToSavePayment = 0;
     // explicitly reposition it after we inject spaces into the text.
     // targetCursorPosition keeps track of where the cursor needs to end up as
     // we modify the string, and at the end we set the cursor position to it.
-   
     NSUInteger targetCursorPosition = [textField offsetFromPosition:textField.beginningOfDocument
                                                          toPosition:textField.selectedTextRange.start];
     
@@ -182,11 +210,7 @@ char isReadyToSavePayment = 0;
         // their change, leaving the text field in its previous state
         textField.text = __previousCardNumberTextFieldContent;
         textField.selectedTextRange = __previousCardNumberSelection;
-        
-        NSLog(@"todo / move to next field i.e. expiry / - card# %@", cardNumberWithoutSpaces);
-        
-        self.stripeCard.number = cardNumberWithoutSpaces;
-        
+       
         [self.expiryField becomeFirstResponder];
         
         return;
@@ -215,15 +239,9 @@ char isReadyToSavePayment = 0;
     
     if ( expiryDateWithoutSlash.length > 4 )
     {
-        // If the user is trying to enter more than 16 digits, we prevent
-        // their change, leaving the text field in its previous state
         textField.text = __previousExpiryTextFieldContent;
         
         textField.selectedTextRange = __previousExpirySelection;
-        
-        
-        //check for validity of the expiry date and move to next field i.e. cvv
-        NSLog(@"todo / move to next field i.e. CVV /");
         
         [self.cvvField becomeFirstResponder];
         
@@ -279,7 +297,7 @@ char isReadyToSavePayment = 0;
     return YES;
 }
 
-
+#pragma mark - textfield delegates
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
@@ -441,11 +459,6 @@ char isReadyToSavePayment = 0;
     
 }
 
-- (IBAction)doneButtonTapped:(UIButton *)sender {
-    //hide keyboard
-    [self.view endEditing:YES];
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ( textField.tag == 1 )
@@ -457,6 +470,7 @@ char isReadyToSavePayment = 0;
     return YES;
 }
 
+#pragma mark - keyboard manipulation
 -(void)keyboardWillShow:(NSNotification *)aNotification
 {
     self.doneButton.hidden = NO;
@@ -469,37 +483,7 @@ char isReadyToSavePayment = 0;
     
 }
 
--(void) viewWillAppear: (BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self
-           selector:@selector(keyboardWillShow:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    [nc addObserver:self
-           selector:@selector(keyboardWillHide:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-    
-    //TODO: prefill the name with facebook name
-    //[self.nameField becomeFirstResponder];
-}
-
-- (void) viewWillDisappear: (BOOL)animated{
-    
-    [super viewWillDisappear:animated];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self
-                  name:UIKeyboardWillShowNotification
-                object:nil];
-    [nc removeObserver:self
-                  name:UIKeyboardWillHideNotification
-                object:nil];
-}
-
+#pragma mark - stripe
 - (void)handleError:(NSError *)error
 {
     NSLog(@"Received error %@", error);
@@ -516,6 +500,8 @@ char isReadyToSavePayment = 0;
 {
     NSLog(@"Received token %@", token.tokenId);
     
+    self.saveButton.enabled = NO;
+    
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
     NSString *url = [NSString stringWithFormat:@"%@%@", kStowawayServerApiUrl_users, publicUserId];
@@ -529,14 +515,14 @@ char isReadyToSavePayment = 0;
     [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusPaymentDone];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    //move to terms view
-    [self performSegueWithIdentifier: @"go to terms" sender: self];
-
 }
 
 - (IBAction)saveButtonTapped:(UIButton *)sender
 {
-    NSLog(@"CARD:: %@, %@, %lu %lu, %@, %@", self.stripeCard.name, self.stripeCard.number, (unsigned long)self.stripeCard.expMonth, (unsigned long)self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip);
+    NSString * cardType = [self.stripeCard type];
+    NSString * lastFour = [self.stripeCard.number substringFromIndex:12];
+    
+    NSLog(@"CARD:: %@, %@, %lu %lu, %@, %@, %@, %@", self.stripeCard.name, self.stripeCard.number, (unsigned long)self.stripeCard.expMonth, (unsigned long)self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip, cardType, lastFour);
  
     [Stripe createTokenWithCard:self.stripeCard
                  publishableKey: STRIPE_TEST_PUBLIC_KEY
@@ -547,6 +533,12 @@ char isReadyToSavePayment = 0;
                              [self handleToken:token]; // Hooray!
                          }
                      }];
+    
+    //write credit card data to userdefaults to be used during menu edit
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    [standardDefaults setObject: cardType forKey:@"cardType"];
+    [standardDefaults setObject: lastFour forKey:@"lastFour"];
+    [standardDefaults synchronize];
 }
 
 
@@ -556,7 +548,8 @@ char isReadyToSavePayment = 0;
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
     
 //TODO: if it failed send credit card info again
-    
+    [self performSegueWithIdentifier: @"go to terms" sender: self];
+
 }
 
 

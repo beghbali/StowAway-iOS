@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PaymentViewController.h"
 
-@interface PaymentMenuViewController : UIViewController
+@interface PaymentMenuViewController : PaymentViewController
 
 @end
