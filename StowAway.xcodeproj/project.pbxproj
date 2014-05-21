@@ -150,7 +150,7 @@
 
 /* Begin PBXFileReference section */
 		347CED1860724CA9AAE54326 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = ../Crashlytics.framework; sourceTree = "<group>"; };
 		68BAFEAC188DDBD3009738A0 /* Stowaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stowaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68BAFEAF188DDBD3009738A0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68BAFEB1188DDBD3009738A0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -376,7 +376,6 @@
 		68BAFEAE188DDBD3009738A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */,
 				F4CB1FA818C7F4BA00A404D0 /* libicucore.dylib */,
 				F4CB1FA618C7F35C00A404D0 /* CFNetwork.framework */,
 				F4CB1F6118BC759600A404D0 /* CoreLocation.framework */,
@@ -557,6 +556,7 @@
 		F4EB90E518A8345C00C57BF2 /* otherFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68A3B77119267F0D00A2E4C4 /* Crashlytics.framework */,
 				F460822E18F5142800E3F059 /* SWRevealViewController */,
 				F4D65A5518D547A200FAF3D0 /* Reachability */,
 				F4266D3F18B5A87800A46BB1 /* Stripe */,

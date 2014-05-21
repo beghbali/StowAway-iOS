@@ -24,6 +24,7 @@
     if ([[Environment ENV] lookup:@"kCrashlyticsAPIKey"] != nil)
     {
         [Crashlytics startWithAPIKey:[[Environment ENV] lookup:@"kCrashlyticsAPIKey"]];
+        NSLog(@"Crashlytics Enabled");
     }
     NSString *environment = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
     
