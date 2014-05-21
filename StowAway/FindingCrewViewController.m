@@ -89,11 +89,9 @@
     
     self.advertiseFooterLabel.text = [NSString stringWithFormat:@"%@\n%@",
                                       @"Get there faster and comfortably,",
-                                      @"while  you save 50 to 75% on your ride using Stowaway !"];
+                                      @"while you save 50 to 75% on your ride using Stowaway !"];
 
-    self.waitingLabel.text = [NSString stringWithFormat:@"%@\n%@",
-                              @"Rest easy and carry on...",
-                              @"We'll send you a push notification, as we find people with similar requests"];
+//    self.waitingLabel.text = @"We'll send you push notification, as we find people with similar requests or finalize.";
     
     [self pollServer]; //to take care of restoring app case, where server is queried for request object
 }
