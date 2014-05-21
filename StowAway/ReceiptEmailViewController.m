@@ -12,7 +12,6 @@
 #import "LoginViewController.h"
 #import "GoogleAuthenticator.h"
 #import "StowawayServerCommunicator.h"
-#import "StowawayConstants.h"
 #import "SWRevealViewController.h"
 
 @interface ReceiptEmailViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate, StowawayServerCommunicatorDelegate>
@@ -252,7 +251,7 @@
     //SUCCESS - move to the next screen - ie credit card
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
-    NSString *url = [NSString stringWithFormat:@"%@%@", kStowawayServerApiUrl_users, publicUserId];
+    NSString *url = [NSString stringWithFormat:@"%@%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], publicUserId];
     
     NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\", \"%@\":\"%@\"}",
                                                       kUserEmail, self.email,

@@ -9,16 +9,26 @@
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "StowawayConstants.h"
 #import "FindingCrewViewController.h"
 #import "MeetCrewViewController.h"
 #import "EnterPickupDropOffViewController.h"
 #import "StowawayServerCommunicator.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    if ([[Environment ENV] lookup:@"kCrashlyticsAPIKey"] != nil)
+    {
+        [Crashlytics startWithAPIKey:[[Environment ENV] lookup:@"kCrashlyticsAPIKey"]];
+        NSLog(@"Crashlytics Enabled");
+    }
+    NSString *environment = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
+
+    NSLog(@"app launched %@ environment with launch options %@", environment, launchOptions);
+    NSLog(@"server url %@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"]);
+
     NSLog(@"app launched with launch options %@", launchOptions);
 
     if (launchOptions != nil)
@@ -229,7 +239,7 @@
         if (userId)
         {
             NSString *userdata = [NSString stringWithFormat:@"{\"%@\":\"%@\"}",kDeviceToken, newToken];
-            NSString *url = [NSString stringWithFormat:@"%@%@",kStowawayServerApiUrl_users, userId];
+            NSString *url = [NSString stringWithFormat:@"%@%@",[[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], userId];
             
             StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
             sscommunicator.sscDelegate = nil;//dont need the cb
@@ -268,7 +278,7 @@
 {
     BOOL updateAvailable = NO;
     NSDictionary *updateDictionary = [NSDictionary dictionaryWithContentsOfURL:
-                                      [NSURL URLWithString: kBundlePlistPath]];
+                                      [NSURL URLWithString: [[Environment ENV] lookup:@"kBundlePlistPath"]]];
     
     if (updateDictionary)
     {
@@ -300,7 +310,7 @@
 {
     if (buttonIndex == 0)
     {
-        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", kBundlePlistPath];
+        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
         NSURL *url = [NSURL URLWithString:myURL];
         [[UIApplication sharedApplication] openURL: url];
     }

@@ -10,7 +10,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "ReceiptEmailViewController.h"
 #import "StowawayServerCommunicator.h"
-#import "StowawayConstants.h"
 
 @interface LoginViewController () <StowawayServerCommunicatorDelegate>
 
@@ -148,7 +147,7 @@
 
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:post ForURL:kStowawayServerApiUrl_users usingHTTPMethod:@"POST"];
+    [sscommunicator sendServerRequest:post ForURL:[[Environment ENV] lookup:@"kStowawayServerApiUrl_users"] usingHTTPMethod:@"POST"];
 }
 
 // Logged-in user experience

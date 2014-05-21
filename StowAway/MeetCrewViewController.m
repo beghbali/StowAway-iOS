@@ -8,7 +8,6 @@
 
 #import "MeetCrewViewController.h"
 #import <MapKit/MapKit.h>
-#import "StowawayConstants.h"
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewMapViewManager.h"
 #import "CountdownTimer.h"
@@ -116,7 +115,7 @@
 -(void)getRideObject
 {
     NSLog(@"there is a ride update - get ride object from server..........");
-    NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", kStowawayServerApiUrl_users, self.userID, self.rideID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
@@ -463,7 +462,7 @@
     NSLog(@"armUpCountdownTimer");
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
-    [self.cdt initializeWithSecondsRemaining:kCountdownTimerMaxSeconds ForLabel:self.countDownTimer];
+    [self.cdt initializeWithSecondsRemaining:(int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"] ForLabel:self.countDownTimer];
 }
 
 - (void)countdownTimerExpired
@@ -498,7 +497,7 @@
     [self.meetCrewMapViewManager stopAutoCheckinMode];
     
     //DELETE ride request
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", kStowawayServerApiUrl_users, self.userID, self.requestID];
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = nil; //don't need to process the response
