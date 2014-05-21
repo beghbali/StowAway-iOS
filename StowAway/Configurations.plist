@@ -5,9 +5,9 @@
 	<key>Debug</key>
 	<dict>
 		<key>kStowawayServerApiUrl_users</key>
-		<string>https://staging.getstowaway.com/api/v1/users/</string>
+		<string>http://staging.getstowaway.com/api/v1/users/</string>
 		<key>kStowawayServerApiUrl_pusher</key>
-		<string>https://staging.getstowaway.com/pusher/</string>
+		<string>http://staging.getstowaway.com/pusher/</string>
 		<key>kCountdownTimerMaxSeconds</key>
 		<string>30</string>
 		<key>kPusherApiKey</key>
