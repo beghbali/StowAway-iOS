@@ -356,12 +356,12 @@
 		68BAFEA3188DDBD3009738A0 = {
 			isa = PBXGroup;
 			children = (
-				68BAFEB5188DDBD3009738A0 /* StowAway */,
+				EBB5AAE28C6C411786386FFA /* Pods.xcconfig */,
+				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				F4EEE69519062B3900A20886 /* images+sounds */,
 				F4EB90E518A8345C00C57BF2 /* otherFrameworks */,
-				68BAFEAE188DDBD3009738A0 /* Frameworks */,
 				68BAFEAD188DDBD3009738A0 /* Products */,
-				EBB5AAE28C6C411786386FFA /* Pods.xcconfig */,
+				68BAFEB5188DDBD3009738A0 /* StowAway */,
 			);
 			sourceTree = "<group>";
 		};
@@ -763,7 +763,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
+			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1088,7 +1088,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "58E27AB8-C3D8-4655-A10C-0D643F65518E";
+				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1116,7 +1116,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "58E27AB8-C3D8-4655-A10C-0D643F65518E";
+				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1124,7 +1124,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */ = {
+		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68BAFEDC188DDBD3009738A0 /* Debug */,

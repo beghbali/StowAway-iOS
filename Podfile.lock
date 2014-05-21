@@ -7,7 +7,7 @@ DEPENDENCIES:
   - libPusher (= 1.4)
 
 SPEC CHECKSUMS:
-  libPusher: ede9d70db138008e0054b0a3c9728eeeed341761
-  SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
+  libPusher: 1bdd05d6361ea25cb3b3c0f3c9f67c48744f0aaf
+  SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
 
 COCOAPODS: 0.32.1
