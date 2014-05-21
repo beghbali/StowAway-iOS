@@ -12,6 +12,9 @@
 #import "MeetCrewViewController.h"
 #import "AppDelegate.h"
 
+#define TOTAL_FACES_COUNT 34
+#define FACES_USED_FOR_ANIMATION 16
+
 @interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages1;
@@ -404,19 +407,16 @@ void swap (NSUInteger *a, NSUInteger *b)
 -(void) setupAnimationForImageNumber:(NSUInteger)imageNumber
 {
     // images to be circulated
-    NSArray *faces =      @[@"1.png", @"2.png",@"3.png", @"4.png",
-                            @"5.png", @"6.png",@"7.png", @"8.png",
-                            @"9.png", @"10.png",@"11.png", @"12.png",
-                            @"13.png", @"14.png",@"15.png", @"16.png"];
-   
-    NSUInteger facesCount = faces.count;
+    NSMutableArray * faces = [[NSMutableArray alloc] initWithCapacity:TOTAL_FACES_COUNT];
+    for (int i=1; i < TOTAL_FACES_COUNT; i++)
+        [faces addObject:[NSString stringWithFormat:@"%d.png",i] ];
     
     //non repeating random numbers
-    NSUInteger shuffledNumbers[facesCount];
-    for (NSUInteger i = 0 ; i < facesCount; i++)
+    NSUInteger shuffledNumbers[TOTAL_FACES_COUNT];
+    for (NSUInteger i = 0 ; i < TOTAL_FACES_COUNT; i++)
         shuffledNumbers[i] = i;
   
-    uint32_t randBoundary = (uint32_t)facesCount;
+    uint32_t randBoundary = (uint32_t)(TOTAL_FACES_COUNT-1);
     while ( randBoundary > 1)
     {
         NSUInteger randIndex = arc4random_uniform(randBoundary); // rand between 0 - (randboundary-1)
@@ -434,9 +434,9 @@ void swap (NSUInteger *a, NSUInteger *b)
             
             self.animationImages1 = [[NSMutableArray alloc] init];
             
-            for (int i = 0; i < facesCount; i++)
+            for (int i = 0; i < FACES_USED_FOR_ANIMATION; i++)
                 [self.animationImages1 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
-
+            
             break;
        
         case 2:
@@ -445,7 +445,7 @@ void swap (NSUInteger *a, NSUInteger *b)
             
             self.animationImages2 = [[NSMutableArray alloc] init];
             
-            for (int i = 0; i < facesCount; i++)
+            for (int i = 0; i < FACES_USED_FOR_ANIMATION; i++)
                 [self.animationImages2 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
 
             break;
@@ -456,7 +456,7 @@ void swap (NSUInteger *a, NSUInteger *b)
             
             self.animationImages3 = [[NSMutableArray alloc] init];
             
-            for (int i = 0; i < facesCount; i++)
+            for (int i = 0; i < FACES_USED_FOR_ANIMATION; i++)
                 [self.animationImages3 addObject:[UIImage imageNamed:[faces objectAtIndex:shuffledNumbers[i]]]];
 
             break;
