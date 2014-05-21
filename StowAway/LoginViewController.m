@@ -126,6 +126,7 @@
     //for the login UI
     self.profilePictureView.profileID = user.id;
     self.nameLabel.text = user.name;
+
     
     NSDate *fbAccessTokenExpirationDate = [[[FBSession activeSession] accessTokenData] expirationDate];
     NSString *fbAccessToken = [[[FBSession activeSession] accessTokenData] accessToken];
@@ -135,6 +136,11 @@
     //read device token from userdefaults
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     NSString * deviceToken = [standardDefaults objectForKey:kDeviceToken];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:user.name forKey:@"fullName"];
+    [defaults setObject:user.id forKey:@"fbProfileId"];
+    [defaults synchronize];
     
 //TODO: FIXIT fixIt - blocking the main Q
     self.fbImage = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString: fbImageURL]]];

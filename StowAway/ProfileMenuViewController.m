@@ -8,14 +8,15 @@
 
 #import "ProfileMenuViewController.h"
 #import "SWRevealViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface ProfileMenuViewController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
-
+@property (strong, nonatomic) IBOutlet UIImageView *fbProfileImageView;
+@property (strong, nonatomic) IBOutlet UILabel *userFullName;
 @end
 
 @implementation ProfileMenuViewController
-
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -44,6 +45,13 @@
     [super viewDidLoad];
     
     [self setUpRevealMenuButton];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *userImageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [defaults objectForKey:@"fbProfileId"]];
+    self.fbProfileImageView.image =  [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:userImageURL]]];
+    self.userFullName.text = [defaults objectForKey:@"fullName"];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,5 +70,6 @@
     // Pass the selected object to the new view controller.
 }
 */
+
 
 @end
