@@ -90,10 +90,8 @@
 		F482C70C192D143500B788D7 /* 19@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F482C6EA192D13DC00B788D7 /* 19@2x.png */; };
 		F482C70D192D143500B788D7 /* 18@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F482C6EB192D13DC00B788D7 /* 18@2x.png */; };
 		F482C70E192D143500B788D7 /* 17@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F482C6EC192D13DC00B788D7 /* 17@2x.png */; };
-		F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */; };
 		F4A4EC1E1900EB690087D438 /* PaymentMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */; };
 		F4A4EC211900EB970087D438 /* LinkReceiptsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */; };
-		F4A4EC241900EBB20087D438 /* RideCreditsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */; };
 		F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D65A5818D547A200FAF3D0 /* Reachability.m */; };
 		F4CB1F5818BC4BEC00A404D0 /* TermsAndAgreementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */; };
 		F4CB1F5A18BC5BC300A404D0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CB1F5918BC5BC300A404D0 /* MapKit.framework */; };
@@ -290,14 +288,10 @@
 		F482C6EA192D13DC00B788D7 /* 19@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "19@2x.png"; sourceTree = "<group>"; };
 		F482C6EB192D13DC00B788D7 /* 18@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18@2x.png"; sourceTree = "<group>"; };
 		F482C6EC192D13DC00B788D7 /* 17@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "17@2x.png"; sourceTree = "<group>"; };
-		F4A4EC191900E13E0087D438 /* ProfileMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileMenuViewController.h; sourceTree = "<group>"; };
-		F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileMenuViewController.m; sourceTree = "<group>"; };
 		F4A4EC1C1900EB690087D438 /* PaymentMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentMenuViewController.h; sourceTree = "<group>"; };
 		F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentMenuViewController.m; sourceTree = "<group>"; };
 		F4A4EC1F1900EB970087D438 /* LinkReceiptsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkReceiptsMenuViewController.h; sourceTree = "<group>"; };
 		F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkReceiptsMenuViewController.m; sourceTree = "<group>"; };
-		F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCreditsMenuViewController.h; sourceTree = "<group>"; };
-		F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideCreditsMenuViewController.m; sourceTree = "<group>"; };
 		F4CB1F5618BC4BEC00A404D0 /* TermsAndAgreementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndAgreementsViewController.h; sourceTree = "<group>"; };
 		F4CB1F5718BC4BEC00A404D0 /* TermsAndAgreementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndAgreementsViewController.m; sourceTree = "<group>"; };
 		F4CB1F5918BC5BC300A404D0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -578,14 +572,10 @@
 				F460824E18FA434A00E3F059 /* TutorialViewController.m */,
 				F42773EC18FE353A003AE6AD /* HelpMenuViewController.h */,
 				F42773ED18FE353A003AE6AD /* HelpMenuViewController.m */,
-				F4A4EC191900E13E0087D438 /* ProfileMenuViewController.h */,
-				F4A4EC1A1900E13E0087D438 /* ProfileMenuViewController.m */,
 				F4A4EC1C1900EB690087D438 /* PaymentMenuViewController.h */,
 				F4A4EC1D1900EB690087D438 /* PaymentMenuViewController.m */,
 				F4A4EC1F1900EB970087D438 /* LinkReceiptsMenuViewController.h */,
 				F4A4EC201900EB970087D438 /* LinkReceiptsMenuViewController.m */,
-				F4A4EC221900EBB20087D438 /* RideCreditsMenuViewController.h */,
-				F4A4EC231900EBB20087D438 /* RideCreditsMenuViewController.m */,
 				F4EEE6821904C53F00A20886 /* UberSettingsGuideViewController.h */,
 				F4EEE6831904C53F00A20886 /* UberSettingsGuideViewController.m */,
 			);
@@ -1070,7 +1060,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4A4EC241900EBB20087D438 /* RideCreditsMenuViewController.m in Sources */,
 				F4A4EC1E1900EB690087D438 /* PaymentMenuViewController.m in Sources */,
 				F4266D3D18B52D6600A46BB1 /* GoogleAuthenticator.m in Sources */,
 				F4D65A5D18D805DE00FAF3D0 /* MeetCrewMapViewManager.m in Sources */,
@@ -1096,7 +1085,6 @@
 				F4266DA118B5A87900A46BB1 /* Stripe.m in Sources */,
 				F4C7B36B18E5CBA900B4D9D8 /* Reachability.m in Sources */,
 				68DA1E5C19236A98007FE352 /* Environment.m in Sources */,
-				F4A4EC1B1900E13E0087D438 /* ProfileMenuViewController.m in Sources */,
 				F4266D9F18B5A87900A46BB1 /* STPToken.m in Sources */,
 				F4EEE6841904C53F00A20886 /* UberSettingsGuideViewController.m in Sources */,
 				F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */,

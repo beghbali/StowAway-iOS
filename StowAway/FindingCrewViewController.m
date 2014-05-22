@@ -94,7 +94,9 @@
                                       @"Get there faster and comfortably,",
                                       @"while you save 50 to 75% on your ride using Stowaway !"];
 
-//    self.waitingLabel.text = @"We'll send you push notification, as we find people with similar requests or finalize.";
+    self.waitingLabel.text =[NSString stringWithFormat:@"%@\n%@",
+                             @"We'll send you notifications as we match you with other riders.",
+                             @"Your ride will finalize 15 minutes before departure."];
     
     [self pollServer]; //to take care of restoring app case, where server is queried for request object
 }
