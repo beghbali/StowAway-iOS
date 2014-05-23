@@ -56,6 +56,8 @@
 {
     [super viewDidLoad];
     
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+
     //remember that ride has been finalized, to be used if app gets killed and relaunched
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -63,6 +65,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
                                                  name:@"updateMeetCrew"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedRideCreditsUpdate:)
+                                                 name:@"updateRideCredits"
                                                object:nil];
     
 
@@ -575,5 +582,35 @@
 }
 
 
+#pragma mark - ride credits
+- (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
+{
+    NSString * msg = nil;
+    
+    if(self.rideCredits)
+        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
+               self.rideCredits,
+               @"Your credit card would only be charged after this credit has been applied."];
+    else
+        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
+
+-(void)receivedRideCreditsUpdate:(NSNotification *)notification
+{
+    NSLog(@"%s..............data %@", __func__, notification);
+    
+    self.rideCredits = [[notification.userInfo objectForKey:@"credits"] doubleValue];
+    
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+}
 
 @end

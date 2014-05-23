@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages2;
 @property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages3;
 
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *getRideResultActivityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
@@ -70,12 +71,20 @@
 {
     [super viewDidLoad];
 //    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
+    
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
                                                  name:@"updateFindCrew"
                                                object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedRideCreditsUpdate:)
+                                                 name:@"updateRideCredits"
+                                               object:nil];
+
     [self.getRideResultActivityIndicator stopAnimating];
 
     //process ride request reply from server -- also sets cd timer value
@@ -112,6 +121,9 @@
 {
     [super viewDidAppear:animated];
     
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+
     self.viewDidLoadFinished = YES;
 
     NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
@@ -384,6 +396,8 @@
             meetCrewVC.locationChannel  = self.locationChannel;
             meetCrewVC.suggestedLocations = self.suggestedLocations;
             
+            meetCrewVC.rideCredits = self.rideCredits;
+
             NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
             NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
             
@@ -844,5 +858,39 @@ void swap (NSUInteger *a, NSUInteger *b)
     }
 
 }
+
+
+#pragma mark - ride credits
+- (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
+{
+    NSString * msg = nil;
+    
+    if(self.rideCredits)
+        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
+               self.rideCredits,
+               @"Your credit card would only be charged after this credit has been applied."];
+    else
+        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
+
+
+-(void)receivedRideCreditsUpdate:(NSNotification *)notification
+{
+    NSLog(@"%s..............data %@", __func__, notification);
+    
+    self.rideCredits = [[notification.userInfo objectForKey:@"credits"] doubleValue];
+    
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+}
+
 
 @end

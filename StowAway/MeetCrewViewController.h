@@ -27,5 +27,7 @@
 @property (strong, nonatomic) NSString *rideTypeLabel;
 @property (strong, nonatomic) NSString *rideTimeLabel;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rideCreditsBarButton;
+@property double rideCredits;
 
 @end

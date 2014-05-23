@@ -51,6 +51,8 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (weak, nonatomic) IBOutlet UIButton *findCrewButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rideRequestActivityIndicator;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rideCreditsBarButton;
+@property double rideCredits;
 
 @property (strong, nonatomic) CLLocationManager * locationManager;
 
@@ -94,6 +96,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property NSInteger endingAvailabilityHrs;
 @property (strong, nonatomic) NSDateComponents *nowDateComponents;
 @property BOOL isPreviousAppStateValid;
+@property BOOL isWaitingForRideCreditQueryToReturn;
 @end
 
 
@@ -218,9 +221,11 @@ BOOL onBoardingStatusChecked = NO;
     
     [self checkOnboardingStatus];
 
+    [self queryRideCredits];
+
     if ([self isRestoringPreviousAppState])
         return;
-    
+
     [self updateFindCrewButtonEnabledState];
 
     //forget that ride was finalized
@@ -1341,6 +1346,13 @@ BOOL onBoardingStatusChecked = NO;
 {
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
    
+    if (self.isWaitingForRideCreditQueryToReturn && !sError && [self processUserObject:data])
+    {
+        self.isWaitingForRideCreditQueryToReturn = NO;
+      
+        return;
+    }
+
     [self.rideRequestActivityIndicator stopAnimating];
     
     // set data to processed in the next view
@@ -1368,6 +1380,8 @@ BOOL onBoardingStatusChecked = NO;
             findingCrewVC.rideRequestResponse = self.rideRequestResponse;
             NSNumber * requestID = [self.rideRequestResponse objectForKey:kPublicId];
 
+            findingCrewVC.rideCredits = self.rideCredits; //for going to FC vc thru usual flow
+            
             if (!self.isPreviousAppStateValid)
             {
                 //new request
@@ -1390,6 +1404,59 @@ BOOL onBoardingStatusChecked = NO;
             }
         }
     }
+}
+
+#pragma mark - ride credits
+- (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
+{
+    NSString * msg = nil;
+   
+    if(self.rideCredits)
+        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
+               self.rideCredits,
+               @"Your credit card would only be charged after this credit has been applied."];
+    else
+        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
+
+-(void)queryRideCredits
+{
+    NSLog(@"%s........", __func__);
+    NSNumber * userID = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    
+    NSString *url = [NSString stringWithFormat:@"%@%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], userID];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    self.isWaitingForRideCreditQueryToReturn = YES;
+   [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
+}
+
+-(BOOL)processUserObject: (NSDictionary *)data
+{
+    NSNumber * rideCreditNum = [data objectForKey:@"credits"];
+    NSLog(@"%s: rideCreditNum %@", __func__, rideCreditNum);
+
+    if (!rideCreditNum)
+        return NO; //still waiting
+    
+    self.rideCredits = [rideCreditNum doubleValue];
+
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRideCredits"
+                                                        object:self
+                                                      userInfo:@{@"credits": rideCreditNum}]; //for going to FC immediately during app state restoration
+    
+    return YES;
+
 }
 
 @end

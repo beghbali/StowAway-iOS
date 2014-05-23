@@ -152,7 +152,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Link Receipts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TH3-yG-J2d">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Link Receipt" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TH3-yG-J2d">
                                                     <rect key="frame" x="47" y="0.0" width="258" height="49"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -1142,6 +1142,11 @@
                                 <items>
                                     <navigationItem title="STOWAWAY" id="m16-3J-xmU">
                                         <barButtonItem key="leftBarButtonItem" image="reveal-icon.png" id="Erd-j4-4HX"/>
+                                        <barButtonItem key="rightBarButtonItem" title="💰0.0" id="JYh-8y-F0L">
+                                            <connections>
+                                                <action selector="rideCreditsBarButtonTapped:" destination="gzB-dY-rge" id="L1D-eB-1rE"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -1280,7 +1285,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="945E63ED-D9E6-4082-AE3F-AB0B797EDC9F" colorSpace="pattern"/>
+                                <color key="color" patternImage="F6B0653F-7F91-4108-84EF-057610092DD5" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1336,6 +1341,7 @@
                         <outlet property="pickUpSearchBar" destination="bxD-02-fZW" id="ycz-fk-c4u"/>
                         <outlet property="pickUpSearchDisplayController" destination="SXn-6u-W8v" id="3Ke-UC-f7g"/>
                         <outlet property="revealButtonItem" destination="Erd-j4-4HX" id="Z4U-LF-Ptn"/>
+                        <outlet property="rideCreditsBarButton" destination="JYh-8y-F0L" id="3Nx-MG-RU5"/>
                         <outlet property="rideRequestActivityIndicator" destination="7XM-fk-vcd" id="xi8-f3-Zcq"/>
                         <outlet property="rideTimeLabel" destination="0bO-1R-ukM" id="XOO-OU-lVu"/>
                         <outlet property="rideTypeLabel" destination="0HG-3c-m8L" id="Hcq-jE-gwW"/>
@@ -1446,7 +1452,13 @@
                                     <color key="textColor" red="1" green="0.99502558299999999" blue="0.92248104750000004" alpha="1" colorSpace="calibratedRGB"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Finding Your Crew" id="vda-ol-g4y"/>
+                                    <navigationItem title="Finding Your Crew" id="vda-ol-g4y">
+                                        <barButtonItem key="rightBarButtonItem" title="💰 0.0" id="vyR-UG-TOw">
+                                            <connections>
+                                                <action selector="rideCreditsBarButtonTapped:" destination="ddu-Zc-dJg" id="7y8-Dg-VzS"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wood-with-portholes_v3.png" translatesAutoresizingMaskIntoConstraints="NO" id="PGh-ov-WUi">
@@ -1505,7 +1517,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="EE0B0D0B-7379-4E2E-9FC4-10F2EA4C0C0F" colorSpace="pattern"/>
+                                        <color key="color" patternImage="6D37435E-C33D-48B5-AA4F-96FB86A593A6" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Your Ride To Work Tomorrow between 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1615,6 +1627,7 @@ This will happen at least 15 minutes before your departure.</string>
                         <outlet property="nameLabel1" destination="5Md-wt-fRF" id="2ZD-cL-LPe"/>
                         <outlet property="nameLabel2" destination="YDx-8n-Kga" id="3VL-lh-nhc"/>
                         <outlet property="nameLabel3" destination="vn3-Ga-XJ3" id="khA-gM-bC7"/>
+                        <outlet property="rideCreditsBarButton" destination="vyR-UG-TOw" id="uZH-Jl-XgA"/>
                         <outlet property="rideInfoLabel" destination="3Me-33-mwi" id="AUQ-oW-XxM"/>
                         <outlet property="waitingLabel" destination="rVu-7r-i6Y" id="AEK-22-Ino"/>
                         <segue destination="adg-RW-m0r" kind="modal" identifier="toMeetCrew" id="SRO-DO-QCq"/>
@@ -1644,7 +1657,13 @@ This will happen at least 15 minutes before your departure.</string>
                                     <color key="textColor" red="1" green="0.99502558299999999" blue="0.92248104750000004" alpha="1" colorSpace="calibratedRGB"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Meet Your Crew" id="JNc-or-wIT"/>
+                                    <navigationItem title="Meet Your Crew" id="JNc-or-wIT">
+                                        <barButtonItem key="rightBarButtonItem" title="💰 0.0" id="M9I-Dc-gX9">
+                                            <connections>
+                                                <action selector="rideCreditsBarButtonTapped:" destination="adg-RW-m0r" id="s09-Df-RMa"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wood-with-portholes_v3.png" translatesAutoresizingMaskIntoConstraints="NO" id="ol9-xt-Gwj">
@@ -1840,6 +1859,7 @@ This will happen at least 15 minutes before your departure.</string>
                         <outlet property="nameLabel3" destination="peZ-RB-qzZ" id="EnP-qb-86h"/>
                         <outlet property="navigationBarItem" destination="JNc-or-wIT" id="yOX-EF-FYV"/>
                         <outlet property="requestUberButton" destination="5je-TY-sUW" id="Fwf-jR-hPk"/>
+                        <outlet property="rideCreditsBarButton" destination="M9I-Dc-gX9" id="WdB-gQ-gGn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DTG-KP-TIw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1848,7 +1868,7 @@ This will happen at least 15 minutes before your departure.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="945E63ED-D9E6-4082-AE3F-AB0B797EDC9F" width="320" height="460">
+        <image name="6D37435E-C33D-48B5-AA4F-96FB86A593A6" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11735,7 +11755,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="EE0B0D0B-7379-4E2E-9FC4-10F2EA4C0C0F" width="320" height="460">
+        <image name="F6B0653F-7F91-4108-84EF-057610092DD5" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -21644,9 +21664,9 @@ AAAAAAAAAAAJCvs
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="pAS-ik-Ig1"/>
+        <segue reference="nz4-w7-m9s"/>
         <segue reference="WTk-75-MPQ"/>
-        <segue reference="ojm-M0-nu7"/>
-        <segue reference="wbq-E7-Ekt"/>
-        <segue reference="D7o-TK-Kff"/>
+        <segue reference="R97-G3-Fuo"/>
+        <segue reference="ozj-xX-N4X"/>
     </inferredMetricsTieBreakers>
 </document>
