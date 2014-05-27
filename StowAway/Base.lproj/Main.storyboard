@@ -1276,7 +1276,7 @@
                                             <action selector="decreaseRideTimeButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="ljQ-XV-bWw"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f4-T4-Cdd" userLabel="increase time button">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f4-T4-Cdd" userLabel="increase time button">
                                         <rect key="frame" x="238" y="105" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="plus_new.png">
@@ -1286,7 +1286,7 @@
                                             <action selector="increaseRideTimeButtonTapped:" destination="gzB-dY-rge" eventType="touchUpInside" id="Gu5-aa-Alg"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00 - 10:15 pm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bO-1R-ukM" userLabel="rideTime">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="10:00 - 10:15 pm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bO-1R-ukM" userLabel="rideTime">
                                         <rect key="frame" x="91" y="103" width="139" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -1337,7 +1337,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="2DF73C54-6A5F-44AB-B667-1A72CF501C7B" colorSpace="pattern"/>
+                                <color key="color" patternImage="41D4F76C-B001-4DC5-99C8-3605EC6E4F53" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1569,7 +1569,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="887C6D17-F2FD-4654-8011-F2D6898FDBB5" colorSpace="pattern"/>
+                                        <color key="color" patternImage="7042F8F5-A13D-4101-BADE-53BB90F49579" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Your Ride To Work Tomorrow between 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1578,11 +1578,9 @@
                                         <color key="textColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="284" translatesAutoresizingMaskIntoConstraints="NO" id="rVu-7r-i6Y">
-                                        <rect key="frame" x="20" y="98" width="284" height="32"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="We'll send you notifications as we match you with other riders." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="rVu-7r-i6Y">
+                                        <rect key="frame" x="42" y="98" width="237" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">We'll send you push notifications as we match you with other riders and when the crew is finalized. 
-This will happen at least 15 minutes before your departure.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1605,15 +1603,33 @@ This will happen at least 15 minutes before your departure.</string>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N17-hG-a2K">
+                                        <rect key="frame" x="278" y="108" width="22" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="rideInfoDisclosureButtonTapped:" destination="ddu-Zc-dJg" eventType="touchUpInside" id="qS0-ZK-mC1"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.99502558297574695" blue="0.92248104749216908" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="rVu-7r-i6Y" secondAttribute="centerX" constant="-2" id="Gfa-u9-OHt"/>
+                                    <constraint firstAttribute="centerX" secondItem="rVu-7r-i6Y" secondAttribute="centerX" constant="-0.5" id="Gfa-u9-OHt"/>
                                     <constraint firstAttribute="centerY" secondItem="U5Q-XR-sJo" secondAttribute="centerY" constant="0.5" id="KBi-92-ffH"/>
+                                    <constraint firstItem="N17-hG-a2K" firstAttribute="leading" secondItem="rVu-7r-i6Y" secondAttribute="trailing" constant="1" id="Nd6-sg-NGW"/>
                                     <constraint firstItem="3Me-33-mwi" firstAttribute="top" secondItem="mnD-o7-NLO" secondAttribute="top" constant="35" id="OHy-qX-xSi"/>
                                     <constraint firstAttribute="centerX" secondItem="3Me-33-mwi" secondAttribute="centerX" id="dYX-jB-uPM"/>
                                     <constraint firstAttribute="bottom" secondItem="Nvp-gI-qSz" secondAttribute="bottom" constant="2" id="moU-Ok-TYl"/>
                                     <constraint firstAttribute="centerX" secondItem="Nvp-gI-qSz" secondAttribute="centerX" constant="6.5" id="ohS-Sa-NBY"/>
+                                    <constraint firstItem="N17-hG-a2K" firstAttribute="bottom" secondItem="rVu-7r-i6Y" secondAttribute="bottom" id="sHD-L3-jtS"/>
                                     <constraint firstAttribute="centerX" secondItem="U5Q-XR-sJo" secondAttribute="centerX" constant="6.5" id="sNj-ub-vOC"/>
                                     <constraint firstItem="Nvp-gI-qSz" firstAttribute="top" secondItem="rVu-7r-i6Y" secondAttribute="bottom" constant="8" id="wf1-ZI-UNv"/>
                                 </constraints>
@@ -1687,6 +1703,7 @@ This will happen at least 15 minutes before your departure.</string>
                         <outlet property="nameLabel2" destination="YDx-8n-Kga" id="3VL-lh-nhc"/>
                         <outlet property="nameLabel3" destination="vn3-Ga-XJ3" id="khA-gM-bC7"/>
                         <outlet property="rideCreditsBarButton" destination="vyR-UG-TOw" id="uZH-Jl-XgA"/>
+                        <outlet property="rideInfoDisclosureButton" destination="N17-hG-a2K" id="y1B-bg-7rk"/>
                         <outlet property="rideInfoLabel" destination="3Me-33-mwi" id="AUQ-oW-XxM"/>
                         <outlet property="waitingLabel" destination="rVu-7r-i6Y" id="AEK-22-Ino"/>
                         <segue destination="adg-RW-m0r" kind="modal" identifier="toMeetCrew" id="SRO-DO-QCq"/>
@@ -1927,7 +1944,7 @@ This will happen at least 15 minutes before your departure.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="2DF73C54-6A5F-44AB-B667-1A72CF501C7B" width="320" height="460">
+        <image name="41D4F76C-B001-4DC5-99C8-3605EC6E4F53" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11814,7 +11831,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="887C6D17-F2FD-4654-8011-F2D6898FDBB5" width="320" height="460">
+        <image name="7042F8F5-A13D-4101-BADE-53BB90F49579" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

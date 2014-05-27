@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *rideInfoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *advertiseFooterLabel;
 @property (weak, nonatomic) IBOutlet UILabel *waitingLabel;
+@property (weak, nonatomic) IBOutlet UIButton *rideInfoDisclosureButton;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
 //@property (strong, nonatomic) NSDate * timerExpiryDate;
@@ -66,11 +67,26 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (IBAction)rideInfoDisclosureButtonTapped:(UIButton *)sender
+{
+    NSString * msg = [NSString stringWithFormat:@"%@\n%@",
+               @"We'll try to fill this ride until 15 minutes before your departure time.",
+                      @"Usually your ride will finalize much sooner and you'll get pick up details."];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"More On Finding Crew"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
 
 -(void) viewDidLoad
 {
     [super viewDidLoad];
 //    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
+    
+    //self.rideInfoDisclosureButton.highlighted = YES;
     
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
