@@ -529,7 +529,7 @@ char isReadyToSavePayment = 0;
     NSLog(@"CARD:: %@, %@, %lu %lu, %@, %@, %@, %@", self.stripeCard.name, self.stripeCard.number, (unsigned long)self.stripeCard.expMonth, (unsigned long)self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip, cardType, lastFour);
  
     [Stripe createTokenWithCard:self.stripeCard
-                 publishableKey: STRIPE_TEST_PUBLIC_KEY
+                 publishableKey: [[Environment ENV] lookup:@"kStripePublicKey"]
                      completion:^(STPToken *token, NSError *error) {
                          if (error) {
                              [self handleError:error];

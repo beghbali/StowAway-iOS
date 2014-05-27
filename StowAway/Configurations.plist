@@ -12,6 +12,8 @@
 		<string>30</string>
 		<key>kPusherApiKey</key>
 		<string>403b5fc6f392db2fe167</string>
+		<key>kStripePublicKey</key>
+		<string>pk_test_RKqdkvUwBndT8tf7t65ft2TV</string>
 		<key>kBundlePlistPath</key>
 		<string>https://getstowaway.com/app/latest/Stowaway.plist</string>
 	</dict>
@@ -29,6 +31,8 @@
 		<string>https://getstowaway.com/app/latest/Stowaway.plist</string>
 		<key>kCrashlyticsAPIKey</key>
 		<string>780e5e925f514ea3d7583d573d7059e2ef4eadc1</string>
+		<key>kStripePublicKey</key>
+		<string>pk_live_mZvyfbv8G8k9UCDximFqNAUz</string>
 	</dict>
 </dict>
 </plist>
