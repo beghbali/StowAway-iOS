@@ -603,17 +603,21 @@
                                     <segue destination="ms8-Ut-zYU" kind="modal" id="wCj-tM-KXh"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Don't worry... you will also get uber receipts at pirate@yourdomain.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="xqe-Px-xST">
-                                <rect key="frame" x="16" y="299" width="279" height="30"/>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Don't worry... you will also get uber receipts at pirate@yourdomain.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="xqe-Px-xST">
+                                <rect key="frame" x="20" y="305" width="280" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="vfb-sc-ZIs">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="vfb-sc-ZIs">
                                 <rect key="frame" x="-4" y="352" width="329" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="2nU-vA-buW"/>
+                                    <constraint firstAttribute="width" constant="329" id="4x0-e3-tuU"/>
+                                </constraints>
                             </imageView>
-                            <button hidden="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ivt-VY-fis">
+                            <button hidden="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ivt-VY-fis">
                                 <rect key="frame" x="83" y="412" width="154" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -630,6 +634,12 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.47843137250000001" green="0.78039215689999997" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="iWS-F0-Rw7" firstAttribute="top" secondItem="Ivt-VY-fis" secondAttribute="bottom" constant="28" id="IcN-0V-Mwb"/>
+                            <constraint firstAttribute="centerX" secondItem="Ivt-VY-fis" secondAttribute="centerX" id="TyX-qW-x88"/>
+                            <constraint firstItem="vfb-sc-ZIs" firstAttribute="top" secondItem="xqe-Px-xST" secondAttribute="bottom" constant="21" id="oD4-f9-oaA"/>
+                            <constraint firstItem="iWS-F0-Rw7" firstAttribute="top" secondItem="vfb-sc-ZIs" secondAttribute="bottom" id="wTj-Qx-4en"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="changeUberEmailTextView" destination="bZN-ti-Ada" id="KHP-bg-8sI"/>
@@ -1380,7 +1390,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="A9F9921E-82BF-41A7-9CDB-E0E7093A2653" colorSpace="pattern"/>
+                                <color key="color" patternImage="44CBA754-76B4-40A6-9B99-6E037B639E75" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1612,7 +1622,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="3C859170-8509-4F46-8FBA-9E07F5EE6533" colorSpace="pattern"/>
+                                        <color key="color" patternImage="884CCC0D-76F0-4370-AA3A-FE219103979D" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Your Ride To Work Tomorrow between 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1963,7 +1973,7 @@ This will happen at least 15 minutes before your departure.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="3C859170-8509-4F46-8FBA-9E07F5EE6533" width="320" height="460">
+        <image name="44CBA754-76B4-40A6-9B99-6E037B639E75" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11850,7 +11860,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="A9F9921E-82BF-41A7-9CDB-E0E7093A2653" width="320" height="460">
+        <image name="884CCC0D-76F0-4370-AA3A-FE219103979D" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -21759,10 +21769,10 @@ AAAAAAAAAAAJCvs
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="pAS-ik-Ig1"/>
-        <segue reference="R97-G3-Fuo"/>
         <segue reference="WTk-75-MPQ"/>
+        <segue reference="R97-G3-Fuo"/>
+        <segue reference="VRx-oK-num"/>
         <segue reference="wbq-E7-Ekt"/>
         <segue reference="D7o-TK-Kff"/>
-        <segue reference="wCj-tM-KXh"/>
     </inferredMetricsTieBreakers>
 </document>
