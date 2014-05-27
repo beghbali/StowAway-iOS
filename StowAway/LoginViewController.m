@@ -30,7 +30,7 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
     
     if (sError)
     {

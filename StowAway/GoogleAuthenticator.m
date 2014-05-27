@@ -163,16 +163,17 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
         StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
         sscommunicator.sscDelegate = self;
         [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject: self.googleAuth.userEmail forKey:@"linkedReceiptEmail"];
+        
+        [self.googleAuthDelegate googleAuthenticatorResult: error];
+
     }
-    
-    [self.googleAuthDelegate googleAuthenticatorResult: error];
-    
 }
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
-    
+    NSLog(@"%s: -- %@ -- %@ --", __func__, data, sError);
 }
 
 @end

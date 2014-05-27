@@ -11,5 +11,18 @@
 @interface ReceiptEmailViewController : UIViewController
 
 
+
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+
+@property (weak, nonatomic) IBOutlet UILabel *changeUberEmailTextView;
+@property (weak, nonatomic) IBOutlet UIButton *showMeHowButton;
+@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *isUsingGmailLabel;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailYesButton;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailNoButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *finalActionButton;
+
 @end
 

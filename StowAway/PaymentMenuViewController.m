@@ -10,6 +10,7 @@
 #import "SWRevealViewController.h"
 #import "EnterPickupDropOffViewController.h"
 #import "StowawayServerCommunicator.h"
+
 @interface PaymentMenuViewController () <UITextFieldDelegate, StowawayServerCommunicatorDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;

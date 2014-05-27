@@ -19,18 +19,6 @@
 @property (strong, nonatomic)  NSString * email;
 @property (strong, nonatomic)  NSString * emailProvider;
 
-@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-
-@property (weak, nonatomic) IBOutlet UILabel *changeUberEmailTextView;
-@property (weak, nonatomic) IBOutlet UIButton *showMeHowButton;
-@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *isUsingGmailLabel;
-@property (weak, nonatomic) IBOutlet UIButton *isGmailYesButton;
-@property (weak, nonatomic) IBOutlet UIButton *isGmailNoButton;
-
-@property (weak, nonatomic) IBOutlet UIButton *finalActionButton;
-
 @end
 
 @implementation ReceiptEmailViewController
@@ -220,12 +208,12 @@
 - (void)googleAuthenticatorResult: (NSError *)error
 {
     NSLog(@"%s::: error %@", __func__, error);
-    if ( !error )
-    {
-        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self performSegueWithIdentifier: @"go to payment" sender: self];
-    }
+    if ( error )
+        return;
+
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self performSegueWithIdentifier: @"go to payment" sender: self];
 }
 
 
@@ -261,17 +249,22 @@
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:userdata ForURL:url usingHTTPMethod:@"PUT"];
 
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    // segue to payment screen
-    [self performSegueWithIdentifier: @"go to payment" sender: self];
 }
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
     
+    if (sError)
+        return;
+    
+    [[NSUserDefaults standardUserDefaults] setObject: self.email forKey:@"linkedReceiptEmail"];
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // segue to payment screen
+    [self performSegueWithIdentifier: @"go to payment" sender: self];
+
 }
 
 

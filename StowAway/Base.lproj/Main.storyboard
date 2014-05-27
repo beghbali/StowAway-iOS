@@ -93,7 +93,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Dock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZUi-ag-5ju">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Request Ride" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZUi-ag-5ju">
                                                     <rect key="frame" x="90" y="0.0" width="215" height="71"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -532,21 +532,116 @@
                                 <items>
                                     <navigationItem title="Link Receipts" id="lUd-Bf-mff">
                                         <barButtonItem key="leftBarButtonItem" image="reveal-icon.png" id="2dh-uH-l68"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Edit" id="ysj-p0-pEX">
+                                            <connections>
+                                                <action selector="editBarButtonTapped:" destination="lNF-Qk-6YL" id="Oyr-gO-I5F"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Coming Soon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDx-WA-T8W">
-                                <rect key="frame" x="108" y="229" width="105" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Currently your UBER receipts go to:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="282" translatesAutoresizingMaskIntoConstraints="NO" id="eef-DZ-TR7">
+                                <rect key="frame" x="17" y="64" width="282" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="pirate@gmail.com" borderStyle="roundedRect" placeholder="pirate@gmail.com" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Pp6-5a-5fd">
+                                <rect key="frame" x="17" y="93" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.47843137250000001" green="0.78039215689999997" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="lNF-Qk-6YL" id="8h4-2q-nBb"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We use receipts to reconcile payments between riders." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yC0-DT-qiI">
+                                <rect key="frame" x="18" y="131" width="278" height="12"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Do you use Gmail to check this inbox?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfb-eC-fhx">
+                                <rect key="frame" x="18" y="151" width="279" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Qg-8A-MA0">
+                                <rect key="frame" x="67" y="178" width="72" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Yes"/>
+                                <connections>
+                                    <action selector="mailProviderSelected:" destination="lNF-Qk-6YL" eventType="touchUpInside" id="Uk2-BB-OvL"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDQ-dJ-CWn">
+                                <rect key="frame" x="157" y="176" width="66" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="No"/>
+                                <connections>
+                                    <action selector="mailProviderSelected:" destination="lNF-Qk-6YL" eventType="touchUpInside" id="Maz-tX-7pJ"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To use Stowaway, you'll need to update your email in the Uber app to captain.jack.xxx@stowaway.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="bZN-ti-Ada">
+                                <rect key="frame" x="13" y="214" width="280" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HcP-bj-6NN">
+                                <rect key="frame" x="94" y="273" width="119" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Show Me How">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="ms8-Ut-zYU" kind="modal" id="wCj-tM-KXh"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Don't worry... you will also get uber receipts at pirate@yourdomain.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="xqe-Px-xST">
+                                <rect key="frame" x="16" y="299" width="279" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="footer.png" translatesAutoresizingMaskIntoConstraints="NO" id="vfb-sc-ZIs">
+                                <rect key="frame" x="-4" y="352" width="329" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button hidden="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ivt-VY-fis">
+                                <rect key="frame" x="83" y="412" width="154" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="Connect Inbox"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="authenticateWithGoogle:" destination="lNF-Qk-6YL" eventType="touchUpInside" id="Bsa-8h-ccC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.47843137250000001" green="0.78039215689999997" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
+                        <outlet property="changeUberEmailTextView" destination="bZN-ti-Ada" id="KHP-bg-8sI"/>
+                        <outlet property="editBarButton" destination="ysj-p0-pEX" id="Qei-6z-YBT"/>
+                        <outlet property="emailTextField" destination="Pp6-5a-5fd" id="VXM-iv-RXg"/>
+                        <outlet property="finalActionButton" destination="Ivt-VY-fis" id="tSK-HE-oDb"/>
+                        <outlet property="isGmailNoButton" destination="bDQ-dJ-CWn" id="KgP-ow-rfL"/>
+                        <outlet property="isGmailYesButton" destination="9Qg-8A-MA0" id="iWO-Qu-GRH"/>
+                        <outlet property="isUsingGmailLabel" destination="kfb-eC-fhx" id="ZHU-9i-vmC"/>
                         <outlet property="revealButtonItem" destination="2dh-uH-l68" id="AL4-37-eRa"/>
+                        <outlet property="showMeHowButton" destination="HcP-bj-6NN" id="pLR-sb-4M0"/>
+                        <outlet property="stowawayEmailFooterLabel" destination="xqe-Px-xST" id="6Ih-ad-lmi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tXa-Sk-DTc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -890,7 +985,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your credit card will only be charged for your share of ride." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="r4l-AW-ESE">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your credit card is only charged for your share of the ride." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="r4l-AW-ESE">
                                 <rect key="frame" x="20" y="60" width="280" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -1285,7 +1380,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="F6B0653F-7F91-4108-84EF-057610092DD5" colorSpace="pattern"/>
+                                <color key="color" patternImage="0A8E0662-9861-41A0-A683-ECE64851F925" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1393,7 +1488,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMK-dH-4l8">
-                                <rect key="frame" x="118" y="416" width="182" height="33"/>
+                                <rect key="frame" x="118" y="435" width="182" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1415,7 +1510,7 @@
                             <constraint firstItem="UOo-wz-ltX" firstAttribute="leading" secondItem="9R1-yX-RWb" secondAttribute="leading" id="FAR-hz-sOv"/>
                             <constraint firstAttribute="trailing" secondItem="UOo-wz-ltX" secondAttribute="trailing" id="T1d-TV-cKZ"/>
                             <constraint firstAttribute="bottom" secondItem="UOo-wz-ltX" secondAttribute="bottom" id="UO3-I8-MwX"/>
-                            <constraint firstItem="APb-TV-FZg" firstAttribute="top" secondItem="OMK-dH-4l8" secondAttribute="bottom" constant="31" id="dFS-NR-x4x"/>
+                            <constraint firstItem="APb-TV-FZg" firstAttribute="top" secondItem="OMK-dH-4l8" secondAttribute="bottom" constant="12" id="dFS-NR-x4x"/>
                             <constraint firstAttribute="trailing" secondItem="OMK-dH-4l8" secondAttribute="trailing" constant="20" id="pIH-Ag-DGC"/>
                         </constraints>
                     </view>
@@ -1517,7 +1612,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="6D37435E-C33D-48B5-AA4F-96FB86A593A6" colorSpace="pattern"/>
+                                        <color key="color" patternImage="EF2CFBAA-04F5-4BE1-9791-EBCF02BD9280" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Your Ride To Work Tomorrow between 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1868,7 +1963,7 @@ This will happen at least 15 minutes before your departure.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="6D37435E-C33D-48B5-AA4F-96FB86A593A6" width="320" height="460">
+        <image name="0A8E0662-9861-41A0-A683-ECE64851F925" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11755,7 +11850,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="F6B0653F-7F91-4108-84EF-057610092DD5" width="320" height="460">
+        <image name="EF2CFBAA-04F5-4BE1-9791-EBCF02BD9280" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -21664,9 +21759,10 @@ AAAAAAAAAAAJCvs
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="pAS-ik-Ig1"/>
-        <segue reference="nz4-w7-m9s"/>
-        <segue reference="WTk-75-MPQ"/>
         <segue reference="R97-G3-Fuo"/>
-        <segue reference="ozj-xX-N4X"/>
+        <segue reference="WTk-75-MPQ"/>
+        <segue reference="wbq-E7-Ekt"/>
+        <segue reference="D7o-TK-Kff"/>
+        <segue reference="wCj-tM-KXh"/>
     </inferredMetricsTieBreakers>
 </document>

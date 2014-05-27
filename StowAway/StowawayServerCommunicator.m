@@ -64,7 +64,7 @@
                                               
                                               NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
                                               
-                                              NSLog(@"httpResp.statusCode %ld, error %@",(long)httpResp.statusCode , error );
+                                              NSLog(@"%s: httpResp.statusCode %ld, error %@", __func__, (long)httpResp.statusCode , error );
                                               
                                               if (error ||
                                                   ([method isEqualToString: @"POST"] && (httpResp.statusCode != 201)) ||
@@ -81,6 +81,7 @@
                                                   [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
                                                   
                                                   dispatch_async(dispatch_get_main_queue(), ^{
+//                                                      NSLog(@"\n.........%@, %@...self.sscDelegate  %@\n", results, error, self.sscDelegate );
                                                       [self.sscDelegate stowawayServerCommunicatorResponse:results error:error];});
                                               }
                                           }];

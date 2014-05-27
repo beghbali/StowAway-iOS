@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 StowAway. All rights reserved.
 //
 
+#import "ReceiptEmailViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface LinkReceiptsMenuViewController : UIViewController
+@interface LinkReceiptsMenuViewController : ReceiptEmailViewController
 
 @end

@@ -8,9 +8,29 @@
 
 #import "LinkReceiptsMenuViewController.h"
 #import "SWRevealViewController.h"
+#import "StowawayServerCommunicator.h"
+#import "GoogleAuthenticator.h"
 
-@interface LinkReceiptsMenuViewController ()
+@interface LinkReceiptsMenuViewController () <UITextFieldDelegate, GoogleAuthenticatorDelegate, StowawayServerCommunicatorDelegate>
+
+@property (strong, nonatomic)  NSString * email;
+@property (strong, nonatomic)  NSString * emailProvider;
+
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+
+@property (weak, nonatomic) IBOutlet UILabel *changeUberEmailTextView;
+@property (weak, nonatomic) IBOutlet UIButton *showMeHowButton;
+@property (weak, nonatomic) IBOutlet UILabel *stowawayEmailFooterLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *isUsingGmailLabel;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailYesButton;
+@property (weak, nonatomic) IBOutlet UIButton *isGmailNoButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *finalActionButton;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editBarButton;
 
 @end
 
@@ -22,45 +42,85 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 -(void)setUpRevealMenuButton
-{  //set up the reveal button
+{
+    //set up the reveal button
     [self.revealButtonItem setTarget: self.revealViewController];
     [self.revealButtonItem setAction: @selector( revealToggle: )];
     [self.navigationController.navigationBar addGestureRecognizer: self.revealViewController.panGestureRecognizer];
 }
 
-
 - (void)viewDidLoad
 {
+    
+    
+    super.emailTextField = self.emailTextField;
+        
+    super.changeUberEmailTextView = self.changeUberEmailTextView;
+    super.showMeHowButton = self.showMeHowButton;
+    super.stowawayEmailFooterLabel = self.stowawayEmailFooterLabel;
+        
+    super.isUsingGmailLabel = self.isUsingGmailLabel;
+    super.isGmailYesButton = self.isGmailYesButton;
+    super.isGmailNoButton = self.isGmailNoButton;
+        
+    super.finalActionButton = self.finalActionButton;
+
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.emailTextField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"linkedReceiptEmail"];
+    
     [self setUpRevealMenuButton];
 }
 
-- (void)didReceiveMemoryWarning
+- (IBAction)editBarButtonTapped:(UIBarButtonItem *)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.emailTextField.userInteractionEnabled = YES;
+    [self.emailTextField becomeFirstResponder];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+
+- (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
+    
+    if (sError)
+        return;
+    
+    [[NSUserDefaults standardUserDefaults] setObject: self.email forKey:@"linkedReceiptEmail"];
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self doneEditing];
 }
-*/
+
+- (void)googleAuthenticatorResult: (NSError *)error
+{
+    NSLog(@"%s::: error %@", __func__, error);
+    if ( error )
+        return;
+    
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self doneEditing];
+}
+
+-(void)doneEditing
+{
+    self.emailTextField.userInteractionEnabled = NO;
+    
+    self.changeUberEmailTextView.hidden = YES;
+    self.showMeHowButton.hidden = YES;
+    self.stowawayEmailFooterLabel.hidden = YES;
+    
+    self.isUsingGmailLabel.hidden = YES;
+    self.isGmailYesButton.hidden = YES;
+    self.isGmailNoButton.hidden = YES;
+    
+    self.finalActionButton.hidden = YES;
+    
+}
 
 @end

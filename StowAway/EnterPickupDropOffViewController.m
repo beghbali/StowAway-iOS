@@ -244,12 +244,14 @@ BOOL onBoardingStatusChecked = NO;
 
 -(BOOL)isUserLoggedIn
 {
-    if ( [LoginViewController isFBLoggedIn] )
+    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+
+    if ( publicUserId && [LoginViewController isFBLoggedIn] )
     {
-        NSLog(@"%s: fb already logged in", __func__);
+        NSLog(@"%s: fb already logged in, publicUserId %@", __func__, publicUserId);
         return YES;
     } else {
-        NSLog(@"%s: fb NOT logged in", __func__);
+        NSLog(@"%s: fb NOT logged in, publicUserId %@", __func__, publicUserId);
         return NO;
     }
 }
