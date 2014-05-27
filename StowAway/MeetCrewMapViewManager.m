@@ -400,7 +400,7 @@
     //subscribe to location channel created by server
     PTPusherChannel *channel = [self.pusher subscribeToPrivateChannelNamed:self.locationChannel];
     
-    [channel bindToEventNamed:[[Environment ENV] lookup:@"kPusherCrewLocationEvent"] target:self action:@selector(handleCrewLocationUpdate:)];
+    [channel bindToEventNamed:kPusherCrewLocationEvent target:self action:@selector(handleCrewLocationUpdate:)];
 }
 
 -(void)stopPusherUpdates
@@ -422,7 +422,7 @@
                                 @"long": [NSNumber numberWithDouble:locationCoordinates.longitude],
                                 kUserPublicId: self.userID,
                                 kRequestPublicId: self.requestID};
-    NSDictionary * locationUpdate = @{@"event":[[Environment ENV] lookup:@"kPusherCrewLocationEvent"],
+    NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
                                       @"channel":[NSString stringWithFormat:@"private-%@", self.locationChannel],
                                       @"data": dataDict};
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);

@@ -309,10 +309,13 @@
             
         //new member in ride response, add this to crew
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:
-                                        @{kFbId: [request objectForKey:kFbId],
-                                        kUserPublicId: [request objectForKey:kUserPublicId],
-                                        kRequestedAt: [request objectForKey:kRequestedAt],
-                                        kIsCaptain: [NSNumber numberWithBool:isCaptain]}];
+                                        @{  kFbId:              [request objectForKey:kFbId],
+                                            kUserPublicId:      [request objectForKey:kUserPublicId],
+                                            kRequestedAt:       [request objectForKey:kRequestedAt],
+                                            kRequestPublicId:   [request objectForKey:kPublicId],
+                                            kIsCaptain:         [NSNumber numberWithBool:isCaptain]
+                                        }
+                                      ];
    
         [dontRemoveCrewIndexList addObject:[request objectForKey:kUserPublicId]]; //add the new member to dont remove list
         

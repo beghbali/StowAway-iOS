@@ -486,6 +486,8 @@ char isReadyToSavePayment = 0;
 #pragma mark - stripe
 - (void)handleError:(NSError *)error
 {
+    self.saveButton.enabled = YES;
+
     NSLog(@"Received error %@", error);
 
     UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Oops.."
@@ -519,6 +521,8 @@ char isReadyToSavePayment = 0;
 
 - (IBAction)saveButtonTapped:(UIButton *)sender
 {
+    self.saveButton.enabled = NO;
+    
     NSString * cardType = [self.stripeCard type];
     NSString * lastFour = [self.stripeCard.number substringFromIndex:12];
     
