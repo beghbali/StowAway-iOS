@@ -100,12 +100,12 @@
     self.rideInfoLabel.text = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypeLabel, self.rideTimeLabel];;
     
     self.advertiseFooterLabel.text = [NSString stringWithFormat:@"%@\n%@",
-                                      @"Get there faster and comfortably,",
-                                      @"while you save 50 to 75% on your ride using Stowaway !"];
+                                      @"Get there quickly and comfortably,",
+                                      @"while saving 50 to 75% on your ride !"];
 
-    self.waitingLabel.text =[NSString stringWithFormat:@"%@\n%@",
-                             @"We'll send you notifications as we match you with other riders.",
-                             @"Your ride will finalize 15 minutes before departure."];
+    self.waitingLabel.text =[NSString stringWithFormat:@"%@",
+                             @"We'll send you notifications as we match you with other riders."];/*,
+                             @"Your ride will finalize 15 minutes before departure."];*/
     
     [self pollServer]; //to take care of restoring app case, where server is queried for request object
 }

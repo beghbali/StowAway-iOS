@@ -153,16 +153,24 @@
     return YES;
 }
 
-
 -(void)setOtherMailTexts
 {
     //TODO: make the email bold - nsattributed text
     NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
     self.changeUberEmailTextView.text = [NSString stringWithFormat:
-                                              @"To use Stowaway, you'll need to update your email in the Uber app to %@", stowawayEmail];
+                                              @"To use Stowaway, you'll need to update your email in the Uber app to: %@", stowawayEmail];
 
+    self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:stowawayEmail
+                                                   ofFullString:self.changeUberEmailTextView.text
+                                                       withFont:[UIFont boldSystemFontOfSize:13]];
+    
     self.stowawayEmailFooterLabel.text = [NSString stringWithFormat:
-                                              @"Don't worry... you will also get uber receipts at %@", self.email];
+                                              @"Don't worry... you will also get Uber receipts at %@", self.email];
+    
+    self.stowawayEmailFooterLabel.attributedText = [StowawayConstants boldify:self.email
+                                                    ofFullString:self.stowawayEmailFooterLabel.text
+                                                        withFont:[UIFont boldSystemFontOfSize:10]];
+
 }
 
 - (IBAction)mailProviderSelected:(UIButton *)sender

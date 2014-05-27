@@ -75,6 +75,8 @@
 
 - (IBAction)editBarButtonTapped:(UIBarButtonItem *)sender
 {
+    self.changeUberEmailTextView.hidden = YES;
+
     self.emailTextField.userInteractionEnabled = YES;
     [self.emailTextField becomeFirstResponder];
 }
@@ -109,9 +111,13 @@
 
 -(void)doneEditing
 {
+    self.changeUberEmailTextView.text =  @"Your change has been saved,\nnow go Request Ride from menu option\nor Edit to change again.";
+    self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:@"Request Ride"
+                                                   ofFullString:self.changeUberEmailTextView.text
+                                                       withFont:[UIFont boldSystemFontOfSize:14]];
+    
     self.emailTextField.userInteractionEnabled = NO;
     
-    self.changeUberEmailTextView.hidden = YES;
     self.showMeHowButton.hidden = YES;
     self.stowawayEmailFooterLabel.hidden = YES;
     

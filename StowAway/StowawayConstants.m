@@ -116,4 +116,19 @@ double const kFindingCrewFacesAnimationDelay    = 3; //time it takes to go throu
 NSString *const kCouponCodeKey                  = @"coupon_code";
 NSString *const kCouponCodeLoneRider            = @"LONERIDER";
 
+@implementation StowawayConstants
+
++ (NSMutableAttributedString *) boldify:(NSString *)boldSubString ofFullString:(NSString *)fullString withFont:(UIFont *)font
+{
+    NSMutableAttributedString *attributedstr = [[NSMutableAttributedString alloc]initWithString:fullString];
+    
+    NSRange range = [fullString rangeOfString:boldSubString];
+    
+    [attributedstr addAttribute:NSFontAttributeName value:font range: range];
+    
+    return attributedstr;
+}
+
+
+@end
 
