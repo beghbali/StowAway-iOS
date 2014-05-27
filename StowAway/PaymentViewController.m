@@ -30,6 +30,7 @@ UITextRange * __previousExpirySelection;
 NSError * error = Nil;
 
 char isReadyToSavePayment = 0;
+BOOL __isAmex = NO;
 
 #pragma mark - view initialization
 
@@ -204,7 +205,19 @@ char isReadyToSavePayment = 0;
     NSString *cardNumberWithoutSpaces = [self removeNonDigits:textField.text
                                     andPreserveCursorPosition:&targetCursorPosition];
     
-    if ( cardNumberWithoutSpaces.length > 16 )
+    __isAmex = [self isAmexCard:cardNumberWithoutSpaces];
+    
+    NSUInteger maxCardDigits = 16;
+    NSUInteger spaceAfterDigitsCount = 4;
+
+    if (__isAmex)
+    {
+        maxCardDigits = 15;
+       // spaceAfterDigitsCount = cardNumberWithoutSpaces.length > 5 ? 5: 4;
+    }
+    
+    
+    if ( cardNumberWithoutSpaces.length > maxCardDigits )
     {
         // If the user is trying to enter more than 16 digits, we prevent
         // their change, leaving the text field in its previous state
@@ -216,7 +229,7 @@ char isReadyToSavePayment = 0;
         return;
     }
     
-    textField.text = [self insert:@" " afterEvery:4 intoString:cardNumberWithoutSpaces
+    textField.text = [self insert:@" " afterEvery:spaceAfterDigitsCount intoString:cardNumberWithoutSpaces
                         andPreserveCursorPosition:&targetCursorPosition];
     
     UITextPosition *targetPosition = [textField positionFromPosition:[textField beginningOfDocument] offset:targetCursorPosition];
@@ -268,6 +281,9 @@ char isReadyToSavePayment = 0;
 - (BOOL) isExpiryDateFieldValid:(NSString *)expiryTextField andExtractMonth:(NSInteger *) month andYear:(NSInteger *) year
 {
     NSArray *strings = [expiryTextField componentsSeparatedByString: @"/"];
+    
+    if (strings.count < 2)
+        return NO;
     
     *month = [(NSString *)[strings objectAtIndex:0] integerValue];
     
@@ -379,7 +395,7 @@ char isReadyToSavePayment = 0;
             
             //CARD NUMBER
         case 2:
-            if ( textField.text.length < 19 )
+            if ( textField.text.length < (__isAmex? 18: 19) )
             {
                 isReadyToSavePayment = isReadyToSavePayment & ~(1 << 1);
                 isTextFieldValueValid = NO;
