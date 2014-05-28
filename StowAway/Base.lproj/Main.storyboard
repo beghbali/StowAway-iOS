@@ -1337,7 +1337,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="FDFAB099-CA11-4211-96E0-56AA4EEB7505" colorSpace="pattern"/>
+                                <color key="color" patternImage="87733DD4-F25A-4A59-A1E5-C0DE4649FA2B" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1569,7 +1569,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="EA30941F-5090-4051-B1E9-2E6DC93484AE" colorSpace="pattern"/>
+                                        <color key="color" patternImage="53B90FDA-96D0-488D-BD23-EB4578ECE788" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Your Ride To Work Tomorrow between 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1750,7 +1750,7 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7oM-Fj-rnD" userLabel="uiimageview1">
-                                <rect key="frame" x="21" y="84" width="80" height="80"/>
+                                <rect key="frame" x="20" y="83" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="3oG-IE-qdU"/>
@@ -1817,7 +1817,7 @@
                                         <color key="textColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Captain saves 20% more than your crew members." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYW-6K-YxY" userLabel="designation benefits label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Captain saves 20% more than the crew members." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYW-6K-YxY" userLabel="designation benefits label">
                                         <rect key="frame" x="1" y="17" width="318" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
@@ -1853,10 +1853,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbI-CF-6jc">
-                                        <rect key="frame" x="123" y="96" width="75" height="23"/>
+                                        <rect key="frame" x="123" y="102" width="75" height="12"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="23" id="LFu-nf-re2"/>
+                                            <constraint firstAttribute="height" constant="12" id="LFu-nf-re2"/>
                                             <constraint firstAttribute="width" constant="75" id="fAs-Ik-Pwj"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1882,11 +1882,11 @@
                                     <constraint firstItem="h9f-xG-jNI" firstAttribute="centerX" secondItem="jTt-2d-ddP" secondAttribute="centerX" id="KBr-Tf-iM1"/>
                                     <constraint firstItem="h9f-xG-jNI" firstAttribute="centerX" secondItem="iYW-6K-YxY" secondAttribute="centerX" id="LJd-7s-07P"/>
                                     <constraint firstItem="iYW-6K-YxY" firstAttribute="top" secondItem="jTt-2d-ddP" secondAttribute="top" constant="17" id="g7E-Zh-O3i"/>
-                                    <constraint firstAttribute="bottom" secondItem="wbI-CF-6jc" secondAttribute="bottom" constant="-2" id="gPC-J1-8fz"/>
+                                    <constraint firstAttribute="bottom" secondItem="wbI-CF-6jc" secondAttribute="bottom" constant="3" id="gPC-J1-8fz"/>
                                     <constraint firstItem="JF3-IQ-JXm" firstAttribute="top" secondItem="h9f-xG-jNI" secondAttribute="bottom" constant="12" id="jVu-tH-4HR"/>
                                     <constraint firstItem="iYW-6K-YxY" firstAttribute="leading" secondItem="jTt-2d-ddP" secondAttribute="leading" constant="1" id="kyS-6s-uOi"/>
                                     <constraint firstItem="5je-TY-sUW" firstAttribute="centerX" secondItem="wbI-CF-6jc" secondAttribute="centerX" id="po4-Eq-1FU"/>
-                                    <constraint firstItem="wbI-CF-6jc" firstAttribute="top" secondItem="JF3-IQ-JXm" secondAttribute="bottom" constant="29" id="uUh-1G-8XI"/>
+                                    <constraint firstItem="wbI-CF-6jc" firstAttribute="top" secondItem="JF3-IQ-JXm" secondAttribute="bottom" constant="35" id="uUh-1G-8XI"/>
                                 </constraints>
                             </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgW-3p-ARV">
@@ -1904,7 +1904,7 @@
                             <constraint firstItem="tgW-3p-ARV" firstAttribute="top" secondItem="jTt-2d-ddP" secondAttribute="bottom" constant="-2" id="EV0-q2-Crq"/>
                             <constraint firstItem="afP-PJ-LW9" firstAttribute="leading" secondItem="HdJ-nX-eLV" secondAttribute="trailing" constant="1" id="FVS-md-mzS"/>
                             <constraint firstItem="afP-PJ-LW9" firstAttribute="top" secondItem="HdJ-nX-eLV" secondAttribute="top" id="KFG-3t-SgJ"/>
-                            <constraint firstItem="HdJ-nX-eLV" firstAttribute="top" secondItem="7oM-Fj-rnD" secondAttribute="bottom" constant="2" id="OqP-qy-gfw"/>
+                            <constraint firstItem="HdJ-nX-eLV" firstAttribute="top" secondItem="7oM-Fj-rnD" secondAttribute="bottom" constant="3" id="OqP-qy-gfw"/>
                             <constraint firstItem="ol9-xt-Gwj" firstAttribute="top" secondItem="jm9-xE-vMY" secondAttribute="bottom" id="Pzj-c2-Tu0"/>
                             <constraint firstItem="HdJ-nX-eLV" firstAttribute="leading" secondItem="Q4Z-iO-Ige" secondAttribute="leading" constant="8" id="QfM-uj-bwN"/>
                             <constraint firstItem="ol9-xt-Gwj" firstAttribute="trailing" secondItem="jm9-xE-vMY" secondAttribute="trailing" id="T2o-gh-rRL"/>
@@ -1944,7 +1944,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EA30941F-5090-4051-B1E9-2E6DC93484AE" width="320" height="460">
+        <image name="53B90FDA-96D0-488D-BD23-EB4578ECE788" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11831,7 +11831,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="FDFAB099-CA11-4211-96E0-56AA4EEB7505" width="320" height="460">
+        <image name="87733DD4-F25A-4A59-A1E5-C0DE4649FA2B" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
