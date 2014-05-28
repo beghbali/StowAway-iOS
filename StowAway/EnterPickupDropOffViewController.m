@@ -763,15 +763,14 @@ BOOL onBoardingStatusChecked = NO;
 
 -(CLLocationCoordinate2D)getLocationItemCoordinate:(id)locItem
 {
-    if ( [locItem isKindOfClass:[NSDictionary class]])
+    if ( [locItem isKindOfClass:[NSDictionary class]]) //from history
     {
         if ([[locItem objectForKey:kLocationHistoryName] isEqualToString:kPickUpDefaultCurrentLocation])
         {
             NSLog(@"map item in history is current loc, use latest self lat long");
-
+            self.isUsingCurrentLoc = YES;
             return self.userLocation;
         }
-        
         
         return CLLocationCoordinate2DMake([[locItem objectForKey:kLocationHistoryLatitude] doubleValue],
                                           [[locItem objectForKey:kLocationHistoryLongitude] doubleValue]);
@@ -779,9 +778,10 @@ BOOL onBoardingStatusChecked = NO;
 
     
     MKMapItem * mp = (MKMapItem *)locItem;
-    if ( mp.isCurrentLocation )
+    if ( mp.isCurrentLocation ) //from search result
     {
         NSLog(@"map item is current loc, update lat long manually");
+        self.isUsingCurrentLoc = YES;
         return self.userLocation;
     }
     return mp.placemark.coordinate;
@@ -905,14 +905,13 @@ BOOL onBoardingStatusChecked = NO;
         //which one was selected
         self.pickUpLocItem = [self.pickUpPlaces objectAtIndex:indexPath.row];
         
-        //TODO: use -(void)setLocationPoint:(BOOL)isPickUpPoint
-
         if ( !self.pickUpAnnotation )
         {
             self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
             self.pickUpAnnotation.subtitle = @"pick up location";
         }
         
+        self.isUsingCurrentLoc = NO; //get loc will set it to yes if needed
         self.pickUpAnnotation.coordinate = [self getLocationItemCoordinate:self.pickUpLocItem];
         self.pickUpAnnotation.title = self.pickUpSearchBar.text = [self getLocationItemName:self.pickUpLocItem];
 
@@ -1146,9 +1145,11 @@ BOOL onBoardingStatusChecked = NO;
     if ([annotation.subtitle isEqualToString:@"pick up location"])
     {
         result.pinColor = MKPinAnnotationColorGreen;
-        
-        if ( [annotation.title isEqualToString:kPickUpDefaultCurrentLocation]) {
-            NSLog(@"use the latest user location");
+        self.isUsingCurrentLoc = NO;
+
+        if ( [annotation.title isEqualToString:kPickUpDefaultCurrentLocation])
+        {
+            NSLog(@"%s: use the latest user location", __func__);
             resultPin.coordinate = self.userLocation;
             self.isUsingCurrentLoc = YES;
         }
@@ -1326,6 +1327,8 @@ BOOL onBoardingStatusChecked = NO;
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
         
     NSString *url = [NSString stringWithFormat:@"%@%@/requests", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], publicUserId];
+    
+    NSLog(@"%s: isUsingCurrentLoc %d", __func__, self.isUsingCurrentLoc);
     
     NSString *rideRequest = [NSString stringWithFormat:@"{\"request\": {\"%@\":\"%@\", \"%@\":\"%@\", \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%f, \"%@\":%d }}",
                              kPickUpAddress, self.pickUpAnnotation.title,
