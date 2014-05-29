@@ -665,59 +665,76 @@ BOOL onBoardingStatusChecked = NO;
 
 -(BOOL)updateLocationHistoryWithLocItem:(id)locItem isForPickUp:(BOOL)isPickUp
 {
-    NSString * placeName = nil;
-    MKMapItem * mp = nil;
-    NSString * historyKey = nil;
+    NSString *  placeName   = nil;
+    MKMapItem * mkMapItem   = nil;
+    NSString *  historyKey  = nil;
     
-    //TODO: code is too ugly here, fix it
-    
-    if ( ![locItem isKindOfClass:[MKMapItem class]] )
+    if ( ![locItem isKindOfClass:[MKMapItem class]] ) //an loc from history
     {
         placeName = [locItem objectForKey:kLocationHistoryName];
-      //  return NO;
+
     } else
-    {
-        mp = (MKMapItem *)locItem;
-        placeName = mp.name;
+    { //map searched item
+        mkMapItem = (MKMapItem *)locItem;
+        placeName = mkMapItem.name;
     }
+    
+    if (!placeName)
+    {
+        NSLog(@"%s: NIL place name", __func__);
+
+        return NO;
+    }
+    
+    
+    //determine key based on ispickup and ride type to work/home
+    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
+    if ( choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow )
+    {
+        historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
+    }
+    else
+    {
+        historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
+    }
+    NSLog(@"%s: historyKey[%@]", __func__, historyKey);
+
+    //if the place already exists in the history
     NSArray * existingHistoryMatch = [self getFilteredLocationHistoryFor:placeName isForPickUp:isPickUp isExactMatchRequired:YES];
     if( existingHistoryMatch && existingHistoryMatch.count )
     {
-        NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
-        if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
-            historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
-        else
-            historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
-        
         NSMutableArray * locationHistory = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:historyKey]]; //array of mapitem
+       
         NSUInteger indexFound = [locationHistory indexOfObject:existingHistoryMatch.firstObject];
         //move this entry to the begining
-        NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu",__func__, existingHistoryMatch, (unsigned long)indexFound);
+        NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu", __func__, existingHistoryMatch, (unsigned long)indexFound);
         
-        if (indexFound != NSNotFound)
+        if ( (indexFound != NSNotFound) && indexFound > 0)
         {
-            NSLog(@"%s: put it at the begining of the array", __func__);
+            NSLog(@"%s: move it to the begining of the history array", __func__);
             [locationHistory removeObjectAtIndex:indexFound];
-            
             [locationHistory insertObject:existingHistoryMatch.firstObject atIndex:0];
+            
             [[NSUserDefaults standardUserDefaults] setObject:locationHistory forKey:historyKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            return YES;
         }
         return NO;
     }
-    NSDictionary *locDict = @{kLocationHistoryName: mp.name,
-                             kLocationHistoryLatitude: [NSNumber numberWithDouble: mp.placemark.coordinate.latitude],
-                             kLocationHistoryLongitude: [NSNumber numberWithDouble: mp.placemark.coordinate.longitude]};
     
-    NSLog(@"adding loc to history !!!");
-   
-    //determine key based on ispickup and ride type to work/home
-    NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
-    if (choosenRideType == kRideType_ToHomeToday || choosenRideType == kRideType_ToHomeTomorrow)
-        historyKey = isPickUp ? kPickUpLocationHistoryToHome: kDropOffLocationHistoryToHome;
+    //a new loc, so add it to
+    NSDictionary *locDict = nil;
+    if (mkMapItem && mkMapItem.placemark.coordinate.latitude && mkMapItem.placemark.coordinate.longitude)
+        locDict = @{kLocationHistoryName: mkMapItem.name,
+                  kLocationHistoryLatitude: [NSNumber numberWithDouble: mkMapItem.placemark.coordinate.latitude],
+                  kLocationHistoryLongitude: [NSNumber numberWithDouble: mkMapItem.placemark.coordinate.longitude]};
     else
-        historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
+    {
+        NSLog(@"ERROR--- new loc to be added to history[%@] is nil !!!", historyKey);
 
+        return NO;
+    }
+    
+   
     NSMutableArray * locHistory     = [NSMutableArray arrayWithCapacity:1];
     NSArray * prevLocationHistory   = [[NSUserDefaults standardUserDefaults] objectForKey:historyKey];
     [locHistory addObjectsFromArray:prevLocationHistory];
@@ -802,7 +819,7 @@ BOOL onBoardingStatusChecked = NO;
         historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
     
     NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:historyKey]; //array of mapitem
-    NSLog(@"%s:looking for %@ in %@ of size %lu" , __func__, searchString, historyKey, (unsigned long)locationHistory.count);
+    NSLog(@"%s:looking for \"%@\" in [%@] of size %lu" , __func__, searchString, historyKey, (unsigned long)locationHistory.count);
     
     if (locationHistory)
     {
