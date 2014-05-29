@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
     
-    _pageImages = @[@"tutorial_1.png", @"tutorial_2.png", @"tutorial_3.png", @"tutorial_4.png"];
+    _pageImages = @[@"c2.png", @"c3.png", @"c4.png", @"c4a.png", @"c5.png"];
     
     // Create page view controller
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];

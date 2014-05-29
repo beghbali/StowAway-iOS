@@ -29,7 +29,7 @@
 
     self.backgroundImageView.image = [UIImage imageNamed:self.imageFile];
     
-    if (self.pageIndex == 3)
+    if (self.pageIndex == 4)
         self.letsRideButton.hidden = NO;
     else
         self.letsRideButton.hidden = YES;
