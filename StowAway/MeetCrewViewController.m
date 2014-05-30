@@ -99,6 +99,9 @@
     if (!self.isLoneRider)
         [self armUpCountdownTimer];
     */
+    
+    //get the ride object incase the app is relaunched, we need to get the ride-object
+    [self getRideObject];
 
 }
 
@@ -127,7 +130,7 @@
 
 -(void)getRideObject
 {
-    NSLog(@"there is a ride update - get ride object from server..........");
+    NSLog(@"ride update - get ride object from server..........");
     NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
