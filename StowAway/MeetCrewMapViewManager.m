@@ -49,17 +49,18 @@
 
 @implementation MeetCrewMapViewManager
 
-//called anytime a stowaways gets updated
+#pragma mark - initialization
+//called anytime crew gets updated
 -(void)initializeCrew:(NSMutableArray *)newCrew forRideID:(NSNumber *)rideID
 {
-    NSLog(@"MeetCrewMapViewManager:: new crew......... %@, rideID %@", newCrew, rideID);
+    NSLog(@"%s:: new crew......... %@, rideID %@", __func__, newCrew, rideID);
     
     self.rideID = rideID;
     
     //for the first time, just copy the crew
     if ( !self.crew )
     {
-        NSLog(@"initializeCrew......");
+        NSLog(@"%s: initializeCrew......", __func__);
 
         self.crew = [NSMutableArray arrayWithArray:newCrew];
         
@@ -90,7 +91,7 @@
         
         if ( !found )
         {
-            NSLog(@"<i=%d> delete %@", i, crewMember);
+            NSLog(@"%s: <i=%d> delete %@", __func__, i, crewMember);
             //delete this crew member and remove its annotation from map
             MKPointAnnotation * mapPoint = [crewMember objectForKey:kMKPointAnnotation];
             [self.mapView removeAnnotation:mapPoint];
@@ -100,7 +101,43 @@
     }
 }
 
-#pragma mark Auto-checkin
+//called once when meet your crew view is loaded
+-(void)startUpdatingMapView:(MKMapView *)mapView
+     withSuggestedLocations:(NSDictionary *)suggestedLocations
+           andPusherChannel:(NSString *)locationChannel
+                isLoneRider:(BOOL)isLoneRider
+{
+    NSLog(@"%s, isLoneRider %d",__func__, isLoneRider);
+    
+    //check loc is on
+    self.isLocationDisabled = ![self isLocationEnabled];
+    
+    //set class properties
+    self.mapView = mapView;
+    self.mapView.delegate = self;
+    self.suggestedLocations = [NSMutableDictionary dictionaryWithDictionary: suggestedLocations];
+    self.locationChannel = locationChannel;
+    
+    [self reverseGeocodeSuggestedPickUpAddresses];  //pick up first and only if it finishes go for drop off geocoding
+    
+    //show suggested locations map annotations, drop off first
+    [self showDropOffLocation];
+    [self showPickUpLocation];
+    [self zoomToFitMapAnnotations];
+    
+    /*
+     if (!isLoneRider)
+     {
+     //start location updates
+     [self startLocationUpdates];
+     
+     //subscribe to pusher channel
+     [self startPusherUpdates];
+     }
+     */
+}
+
+#pragma mark - Auto-checkin
 
 //called when 5mins timer expires
 -(void)startAutoCheckinMode
@@ -134,40 +171,7 @@
     [self stopPusherUpdates];
 }
 
-//called once when meet your crew view is loaded
--(void)startUpdatingMapView:(MKMapView *)mapView
-     withSuggestedLocations:(NSDictionary *)suggestedLocations
-           andPusherChannel:(NSString *)locationChannel
-                isLoneRider:(BOOL)isLoneRider
-{
-    NSLog(@"%s, isLoneRider %d",__func__, isLoneRider);
-   
-    //check loc is on
-    self.isLocationDisabled = ![self isLocationEnabled];
-
-    //set class properties
-    self.mapView = mapView;
-    self.mapView.delegate = self;
-    self.suggestedLocations = [NSMutableDictionary dictionaryWithDictionary: suggestedLocations];
-    self.locationChannel = locationChannel;
-    
-    [self reverseGeocodeSuggestedPickUpAddresses];  //pick up first and only if it finishes go for drop off geocoding
-   
-    //show suggested locations map annotations, drop off first
-    [self showDropOffLocation];
-    [self showPickUpLocation];
-    [self zoomToFitMapAnnotations];
-    
-    if (!isLoneRider)
-    {
-        //start location updates
-        [self startLocationUpdates];
-
-        //subscribe to pusher channel
-        [self startPusherUpdates];
-    }
-}
-
+#pragma mark - reverse geocoding
 -(void)reverseGeocodeDropOffSuggestedAddresses
 {
     CLLocation *dropOffLoc = nil;
@@ -291,6 +295,7 @@
     [self reverseGeocodeDropOffSuggestedAddresses];
 }
 
+
 #pragma mark - Core Location
 
 -(void) startLocationUpdates
@@ -381,7 +386,7 @@
     return YES;
 }
 
-#pragma mark Pusher
+#pragma mark - Pusher
 
 -(void)startPusherUpdates
 {
@@ -428,55 +433,6 @@
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);
     [connection send:locationUpdate];
 }
-
-
-- (void)handleCrewLocationUpdate:(PTPusherEvent *)event
-{
-    NSLog(@"\n %s, event %@ !!!!! \n", __func__, event);
-    NSDictionary * locationUpdate = event.data;
-    
-    NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
-    
-    //if one of the crew member id, match this one, update its location on the map
-    for (int i = 1; i < self.crew.count; i++)
-    {
-        NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
-        NSNumber * crewId = [crewMember objectForKey:kUserPublicId];
-        if ( [crewId compare:userID] == NSOrderedSame )
-        {
-            CLLocationCoordinate2D newCoordinates = CLLocationCoordinate2DMake([[locationUpdate objectForKey:@"lat"] doubleValue] , [[locationUpdate objectForKey:@"long"]doubleValue]);
-            
-            //we found the crew whose location needs to be updated
-            MKPointAnnotation * mapPoint = [crewMember objectForKey:kMKPointAnnotation];
-            if ( !mapPoint )
-            {
-                //this is the first time we have known about this crew members location
-                mapPoint = [[MKPointAnnotation alloc]init];
-                
-                mapPoint.title = [crewMember objectForKey:kCrewFbName];
-                
-                if ([[crewMember objectForKey:kIsCaptain] boolValue])
-                    mapPoint.subtitle = @"Captain";
-                else
-                    mapPoint.subtitle = @"Stowaway";
-                
-                mapPoint.coordinate = newCoordinates;
-                
-                [self.mapView addAnnotation:mapPoint];
-                [self.mapView selectAnnotation:mapPoint animated:YES];
-                
-                [crewMember setValue:mapPoint forKey:kMKPointAnnotation];
-            }
-            
-            mapPoint.coordinate = newCoordinates;
-            
-            break;
-        }
-    }
-    
-    [self zoomToFitMapAnnotations];
-}
-
 
 
 #pragma mark - PTPusher delegate
@@ -561,6 +517,56 @@
     }
 }
 
+#pragma mark - pusher on map
+
+- (void)handleCrewLocationUpdate:(PTPusherEvent *)event
+{
+    NSLog(@"%s:: pusher event %@ ", __func__, event);
+    
+    NSDictionary * locationUpdate = event.data;
+    
+    NSNumber * userID = [locationUpdate objectForKey:kUserPublicId];
+    
+    //if one of the crew member id, match this one, update its location on the map
+    for (int i = 1; i < self.crew.count; i++)
+    {
+        NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
+        NSNumber * crewId = [crewMember objectForKey:kUserPublicId];
+        if ( [crewId compare:userID] == NSOrderedSame )
+        {
+            CLLocationCoordinate2D newCoordinates = CLLocationCoordinate2DMake([[locationUpdate objectForKey:@"lat"] doubleValue] , [[locationUpdate objectForKey:@"long"]doubleValue]);
+            
+            //we found the crew whose location needs to be updated
+            MKPointAnnotation * mapPoint = [crewMember objectForKey:kMKPointAnnotation];
+            if ( !mapPoint )
+            {
+                //this is the first time we have known about this crew members location
+                mapPoint = [[MKPointAnnotation alloc]init];
+                
+                mapPoint.title = [crewMember objectForKey:kCrewFbName];
+                
+                if ([[crewMember objectForKey:kIsCaptain] boolValue])
+                    mapPoint.subtitle = @"Captain";
+                else
+                    mapPoint.subtitle = @"Stowaway";
+                
+                mapPoint.coordinate = newCoordinates;
+                
+                [self.mapView addAnnotation:mapPoint];
+                [self.mapView selectAnnotation:mapPoint animated:YES];
+                
+                [crewMember setValue:mapPoint forKey:kMKPointAnnotation];
+            }
+            
+            mapPoint.coordinate = newCoordinates;
+            
+            break;
+        }
+    }
+    
+    [self zoomToFitMapAnnotations];
+}
+
 #pragma mark - map annotations
 
 -(void)showDropOffLocation
@@ -642,7 +648,7 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    NSLog(@"viewForAnnotation::-- title %@, subtitle %@", annotation.title, annotation.subtitle);
+    NSLog(@"MC:: viewForAnnotation::-- title %@, subtitle %@", annotation.title, annotation.subtitle);
 
     //TODO: reuse kAnnotationIdentifier
     

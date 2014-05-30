@@ -8,7 +8,7 @@
 		<string>http://staging.getstowaway.com/api/v1/users/</string>
 		<key>kStowawayServerApiUrl_pusher</key>
 		<string>https://staging.getstowaway.com/pusher/</string>
-		<key>kCountdownTimerMaxSeconds</key>
+		<key>kCountdownTimerToDepartureInSecs</key>
 		<string>30</string>
 		<key>kPusherApiKey</key>
 		<string>403b5fc6f392db2fe167</string>
@@ -23,7 +23,7 @@
 		<string>http://api.getstowaway.com/api/v1/users/</string>
 		<key>kStowawayServerApiUrl_pusher</key>
 		<string>https://api.getstowaway.com/pusher/</string>
-		<key>kCountdownTimerMaxSeconds</key>
+		<key>kCountdownTimerToDepartureInSecs</key>
 		<integer>300</integer>
 		<key>kPusherApiKey</key>
 		<string>26f93bf27a0add755521</string>

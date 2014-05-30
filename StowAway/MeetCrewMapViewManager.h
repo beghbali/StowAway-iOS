@@ -24,4 +24,12 @@
 
 -(void)stopAutoCheckinMode;
 
+-(void)startPusherUpdates;
+
+-(void)stopPusherUpdates;
+
+-(void) stopLocationUpdates;
+
+-(void) startLocationUpdates;
+
 @end

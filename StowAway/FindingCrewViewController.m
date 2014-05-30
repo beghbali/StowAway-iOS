@@ -565,7 +565,7 @@ void swap (NSUInteger *a, NSUInteger *b)
         return;
     }
     
-    NSTimeInterval secondsToExpire = (int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"] - (rideRequestedAt - minRideRequestedAt);
+    NSTimeInterval secondsToExpire = (int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"] - (rideRequestedAt - minRideRequestedAt);
     
     self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
     
@@ -580,7 +580,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     self.cdt.cdTimerDelegate = self;
     
-    [self.cdt initializeWithSecondsRemaining: (int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"]
+    [self.cdt initializeWithSecondsRemaining: (int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"]
                                     ForLabel:self.countDownTimer];
 
     [self setTimerExpiryNotification];

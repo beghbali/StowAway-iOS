@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
+//@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (strong, nonatomic) CountdownTimer * cdt;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
@@ -42,6 +42,8 @@
 @property (strong, nonatomic) UIImage * crossMarkBadgeImage;
 
 @property BOOL isLoneRider;
+@property BOOL isAlreadyInitiated;
+
 
 @end
 
@@ -84,7 +86,9 @@
     
     //show the crew on map
     self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
+    
     [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
+    
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView
                                withSuggestedLocations:self.suggestedLocations
                                      andPusherChannel:self.locationChannel
@@ -98,13 +102,15 @@
 
 }
 
+#pragma mark - push notifications
+
 -(void)didReceiveRemoteNotification:(NSNotification *)notification
 {
     NSLog(@"%s: MC_vc  %@", __func__, notification);
     self.rideID = [notification.userInfo objectForKey:kPublicId];
     if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
     {
-        NSLog(@"go back to enter drop off pick up view");
+        NSLog(@"ride got CANCELED go back to enter drop off pick up view");
 
         //erase it from memory, so its not used in app restoration
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
@@ -130,11 +136,11 @@
 }
 
 
+#pragma mark - ride object processing
+
 -(void)processRideObject:(NSDictionary *)response
 {
-    NSLog(@"MC: processRideObject......................................");
-    
-    NSLog(@"MC: crew before processing: %@", self.crew);
+    NSLog(@"%s: crew before processing: %@", __func__, self.crew);
     
     NSArray * requests = [response objectForKey:@"requests"];
     
@@ -157,9 +163,11 @@
             {
                 removeIt = NO;
                 //update status
-                NSLog(@"%s: update status --- [response objectForKey:kStatus] %@",__func__, [response objectForKey:kStatus]);
+                NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, i, [response objectForKey:kStatus]);
+              
                 if ([[response objectForKey:kStatus] isEqualToString:kStatusCheckedin])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCheckedIn];
+                
                 if ([[response objectForKey:kStatus] isEqualToString:kStatusMissed])
                     [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCheckedIn];
   
@@ -178,6 +186,9 @@
         //remove the crew member
         NSLog(@"%s: remove the crew member  kUserPublicId = %@",__func__, [crewMember objectForKey:kUserPublicId]);
         [self.crew removeObjectAtIndex:j];
+        //update the map view
+        [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
+
         j--;
     }
     
@@ -189,10 +200,220 @@
     
 }
 
+#pragma mark - crew view 
+
+-(void)updateCrewInfoInView
+{
+    NSLog(@"%s......", __func__);
+    
+    NSString *  prevDesg        = nil;
+    UIImage *   badgedImage     = nil;
+    NSString *  couponCode      = nil;
+    NSString *  displayName     = nil;
+    BOOL        isCaptain       = NO;
+    BOOL        isInitiated     = NO;
+    
+    for (int i = 0; i < self.crew.count; i++)
+    {
+        NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
+        NSLog(@"%s: <%d> updateCrewInfoInView for crewMember %@", __func__, i, crewMember);
+        
+        prevDesg = nil;
+        badgedImage = nil;
+        isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+        displayName = isCaptain? [NSString stringWithFormat:@"CAPT. %@",[crewMember objectForKey:kCrewFbName]]: [crewMember objectForKey:kCrewFbName];
+        
+        if (i == 0 )
+        {
+            //process myself
+            
+            //check coupon code -- lone rider
+            couponCode = [crewMember objectForKey:kCouponCodeKey];
+            if (couponCode == (NSString *)[NSNull null])
+                couponCode = nil;
+            
+            self.isLoneRider = [couponCode isEqualToString:kCouponCodeLoneRider];
+            
+            prevDesg = self.designationLabel.text;
+            
+            //is ride initiated
+            isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
+            if (isInitiated && !self.isAlreadyInitiated)
+            {
+                NSLog(@"%s: ride got initiated, starting pusher updates now...", __func__);
+
+                self.isAlreadyInitiated = YES;
+                
+                //start location updates
+                [self.meetCrewMapViewManager startLocationUpdates];
+                
+                //start pusher updates
+                [self.meetCrewMapViewManager startPusherUpdates];
+                
+                //in 15mins tell server to start auto-checkin
+                [self armUpCountdownTimer];
+            }
+            
+            if ( isCaptain )
+            {
+                self.designationLabel.text = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
+                self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
+                self.loneRiderText.hidden = !self.isLoneRider;
+                //self.countDownTimer.hidden  =  self.isLoneRider;
+                self.requestUberButton.hidden = isInitiated? NO: YES;
+                self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
+                self.designationBenefitsLabel.text = @"A good captain takes the crew along...";
+            }
+            else
+            {
+                self.designationLabel.text = @"YOU ARE A STOWAWAY !";
+                self.instructionsLabel.text = [NSString stringWithFormat:@"%@ %@", @"Please get to the pick up point at",self.rideTimeLabel];
+                self.requestUberButton.hidden = YES;
+                self.navigationBarItem.title  = @"Meet Your Captain";
+                self.designationBenefitsLabel.text = @"A good stowaway cooperates with the captain...";
+            }
+            
+            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
+            {
+                //sound travels slower than light :)
+                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
+                    [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
+                /*
+                 //visual effect
+                 [self animateDesignationLabel:isCaptain withEffect:YES];
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                 [self animateDesignationLabel:isCaptain withEffect:NO];
+                 });
+                 
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                 [self animateDesignationLabel:isCaptain withEffect:YES];
+                 });
+                 */
+            }
+            
+            //check in status
+            int keepRunningAutoCheckinProcess = [self getCheckedInStatus:crewMember];
+            NSLog(@"%s: keepRunningAutoCheckinProcess %d", __func__, keepRunningAutoCheckinProcess);
+            switch (keepRunningAutoCheckinProcess)
+            {
+                case 1:
+                    //checked in
+                    self.cancelButton.titleLabel.text = @"   DONE  ";
+                    self.navigationBarItem.title  = @"Bon Voyage !!";
+                    break;
+                    
+                case -1:
+                    //missed the ride
+                    self.cancelButton.titleLabel.text = @"   DONE  ";
+                    self.navigationBarItem.title  = @"Missed Your Ship  :(";
+                    
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            if (keepRunningAutoCheckinProcess != 0)
+            {
+                NSLog(@"%s: checkin status determined, now stop auto-checkin mode....", __func__);
+                [self.meetCrewMapViewManager stopAutoCheckinMode];
+            }
+            
+            continue; //end of processing myself
+            
+        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
+        {   // if someone else is a captain
+            //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
+        }
+        
+        //process others now
+        switch (i)
+        {
+            case 1:
+                self.nameLabel1.text = displayName;
+                self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
+                self.imageView1.layer.masksToBounds = YES;
+                self.imageView1.layer.borderWidth = 1;
+                self.imageView1.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
+                if (badgedImage)
+                    self.imageView1.image = badgedImage;
+                
+                break;
+                
+            case 2:
+                self.nameLabel2.text = displayName;
+                self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
+                self.imageView2.layer.masksToBounds = YES;
+                self.imageView2.layer.borderWidth = 1;
+                self.imageView2.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
+                if (badgedImage)
+                    self.imageView2.image = badgedImage;
+                
+                break;
+                
+            case 3:
+                self.nameLabel3.text = displayName;
+                self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
+                self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
+                self.imageView3.layer.masksToBounds = YES;
+                self.imageView3.layer.borderWidth = 1;
+                self.imageView3.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
+                
+                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
+                if (badgedImage)
+                    self.imageView3.image = badgedImage;
+                
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    
+    //process empty crew spots
+    for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
+    {
+        NSLog(@"RESET image and name for crew #%lu ........isLoneRider %d", (unsigned long)i, self.isLoneRider);
+        
+        //reset the images to nil and also reset the name to nil....
+        switch (i)
+        {
+            case 1:
+                self.imageView1.image = self.isLoneRider? [UIImage imageNamed:@"50.png"]: nil;
+                self.nameLabel1.text = nil;
+                break;
+                
+            case 2:
+                self.imageView2.image = self.isLoneRider? [UIImage imageNamed:@"percent.png"]: nil;
+                self.nameLabel2.text = nil;
+                break;
+                
+            case 3:
+                self.imageView3.image = self.isLoneRider? [UIImage imageNamed:@"off.png"]: nil;
+                self.nameLabel3.text = nil;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    
+}
+
+#pragma mark - checkin badging
+
 -(UIImage *)drawImage:(UIImage*)profileImage withBadge:(UIImage *)badge
 {
-    NSLog(@"profileImage.size.width %f, profileImage.size.height %f", profileImage.size.width, profileImage.size.height);
-    NSLog(@"badge.size.width %f, badge.size.height %f", badge.size.width, badge.size.height);
+  //  NSLog(@"profileImage.size.width %f, profileImage.size.height %f", profileImage.size.width, profileImage.size.height);
+  //  NSLog(@"badge.size.width %f, badge.size.height %f", badge.size.width, badge.size.height);
     
     UIGraphicsBeginImageContextWithOptions(profileImage.size, NO, 0.0f);
     
@@ -259,6 +480,7 @@
     return badgedImage;
 }
 
+#pragma mark - sounds
 -(void) playSound:(NSString *)soundFile
 {
     NSString *soundPath = [[NSBundle mainBundle] pathForResource:soundFile ofType:@"wav"];
@@ -290,196 +512,34 @@
     self.designationLabel.attributedText = s;
 }
 
--(void)updateCrewInfoInView
-{
-    NSLog(@"%s......", __func__);
-    
-    NSString *  prevDesg        = nil;
-    UIImage *   badgedImage     = nil;
-    NSString *  couponCode      = nil;
-    NSString *  displayName     = nil;
-    BOOL        isCaptain       = NO;
-    BOOL        isInitiated     = NO;
-    
-    for (int i = 0; i < self.crew.count; i++)
-    {
-        NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
-        NSLog(@"updateCrewInfoInView for crewMember %@", crewMember);
-        
-        prevDesg = nil;
-        badgedImage = nil;
-        isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
-        displayName = isCaptain? [NSString stringWithFormat:@"CAPT. %@",[crewMember objectForKey:kCrewFbName]]: [crewMember objectForKey:kCrewFbName];
-        
-        if (i == 0 )
-        { //myself
-            couponCode = [crewMember objectForKey:kCouponCodeKey];
-            if (couponCode == (NSString *)[NSNull null])
-                couponCode = nil;
-            
-            self.isLoneRider = [couponCode isEqualToString:kCouponCodeLoneRider];
-
-            prevDesg = self.designationLabel.text;
-            isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
-            
-            if ( isCaptain )
-            {
-                self.designationLabel.text = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
-                self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
-                self.loneRiderText.hidden = !self.isLoneRider;
-                self.countDownTimer.hidden  =  self.isLoneRider;
-                self.requestUberButton.hidden = isInitiated? NO: YES;
-                self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
-            } else
-            {
-                self.designationLabel.text = @"YOU ARE A STOWAWAY !";
-                self.instructionsLabel.text = [NSString stringWithFormat:@"%@ %@", @"Please get to the pick up point at",self.rideTimeLabel];
-                self.requestUberButton.hidden = YES;
-                self.navigationBarItem.title  = @"Meet Your Captain";
-
-            }
-            
-            if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
-            {
-                //sound travels slower than light :)
-                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
-                    [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
-                /*
-                //visual effect
-                [self animateDesignationLabel:isCaptain withEffect:YES];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    [self animateDesignationLabel:isCaptain withEffect:NO];
-                });
-
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    [self animateDesignationLabel:isCaptain withEffect:YES];
-                });
-                 */
-            }
-            
-            
-            //check in status
-            switch ([self getCheckedInStatus:crewMember])
-            {
-                case 1:
-                    //checked in
-                    self.cancelButton.titleLabel.text = @"   DONE  ";
-                    self.navigationBarItem.title  = @"Bon Voyage !!";
-                    break;
-                    
-                case -1:
-                    //missed the ride
-                    self.cancelButton.titleLabel.text = @"   DONE  ";
-                    self.navigationBarItem.title  = @"Missed Your Ship  :(";
-                    
-                    break;
-                    
-                default:
-                    break;
-            }
-
-            continue;
-            
-        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
-        {   // if someone else is a captain
-         //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
-        }
-        
-        switch (i)
-        {
-            case 1:
-                self.nameLabel1.text = displayName;
-                self.imageView1.image = [crewMember objectForKey:kCrewFbImage];
-                self.imageView1.layer.cornerRadius = self.imageView1.frame.size.height /2;
-                self.imageView1.layer.masksToBounds = YES;
-                self.imageView1.layer.borderWidth = 1;
-                self.imageView1.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
-
-                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
-                if (badgedImage)
-                    self.imageView1.image = badgedImage;
-                
-                break;
-                
-            case 2:
-                self.nameLabel2.text = displayName;
-                self.imageView2.image = [crewMember objectForKey:kCrewFbImage];
-                self.imageView2.layer.cornerRadius = self.imageView2.frame.size.height /2;
-                self.imageView2.layer.masksToBounds = YES;
-                self.imageView2.layer.borderWidth = 1;
-                self.imageView2.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
-
-                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
-                if (badgedImage)
-                    self.imageView2.image = badgedImage;
-                
-                break;
-                
-            case 3:
-                self.nameLabel3.text = displayName;
-                self.imageView3.image = [crewMember objectForKey:kCrewFbImage];
-                self.imageView3.layer.cornerRadius = self.imageView3.frame.size.height /2;
-                self.imageView3.layer.masksToBounds = YES;
-                self.imageView3.layer.borderWidth = 1;
-                self.imageView3.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:82/256.0 green:65/256.0 blue:49/256.0 alpha:1.0]);
-
-                badgedImage = [self getBadgedCheckedInImageForCrewMember:crewMember];
-                if (badgedImage)
-                    self.imageView3.image = badgedImage;
-                
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
-    {
-        NSLog(@"RESET image and name for crew #%lu ........isLoneRider %d", (unsigned long)i, self.isLoneRider);
-
-        //reset the images to nil and also reset the name to nil....
-        switch (i) {
-            case 1:
-                self.imageView1.image = self.isLoneRider? [UIImage imageNamed:@"50.png"]: nil;
-                self.nameLabel1.text = nil;
-                break;
-                
-            case 2:
-                self.imageView2.image = self.isLoneRider? [UIImage imageNamed:@"percent.png"]: nil;
-                self.nameLabel2.text = nil;
-                break;
-                
-            case 3:
-                self.imageView3.image = self.isLoneRider? [UIImage imageNamed:@"off.png"]: nil;
-                self.nameLabel3.text = nil;
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-
-}
-
-#pragma mark countdown timer
+#pragma mark - countdown timer
 -(void) armUpCountdownTimer
 {
     NSLog(@"armUpCountdownTimer");
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
-    [self.cdt initializeWithSecondsRemaining:(int)[[Environment ENV] lookup:@"kCountdownTimerMaxSeconds"] ForLabel:self.countDownTimer];
+    [self.cdt initializeWithSecondsRemaining:(int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"] ForLabel:nil];
 }
 
 - (void)countdownTimerExpired
 {
-    NSLog(@"%s", __func__);
+    NSLog(@"%s, now stop auto checkin mode", __func__);
     //self.countDownTimer.text = @"00:00";
     [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
-#pragma mark cancel ride
+#pragma mark - end of ride
+
+- (void)doneButtonTapped
+{
+    NSLog(@"%s: we are DONE here....go back to enter drop off pick up view", __func__);
+    
+    //erase it from memory, so its not used in app restoration
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+}
 
 - (IBAction)cancelRideButtonTapped:(UIButton *)sender
 {
@@ -519,7 +579,7 @@
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
-#pragma mark alert delegates
+#pragma mark - alert delegates
 
 -(void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -533,7 +593,7 @@
     }
 }
 
-#pragma mark launch uber
+#pragma mark - launch uber
 
 - (IBAction)requestUberButtonTapped:(UIButton *)sender
 {
@@ -560,18 +620,8 @@
     }
 }
 
-- (void)doneButtonTapped
-{
-    NSLog(@"we are DONE here....go back to enter drop off pick up view");
-    
-    //erase it from memory, so its not used in app restoration
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
-}
-
-#pragma mark stowawayServer
+#pragma mark - stowawayServer
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
