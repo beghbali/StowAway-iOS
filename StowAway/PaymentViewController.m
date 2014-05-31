@@ -13,8 +13,6 @@
 #import "StowawayServerCommunicator.h"
 #import "SWRevealViewController.h"
 
-#define STRIPE_TEST_PUBLIC_KEY @"pk_test_RKqdkvUwBndT8tf7t65ft2TV"
-
 @interface PaymentViewController() <UITextFieldDelegate, StowawayServerCommunicatorDelegate>
 
 @property (strong, nonatomic) STPCard* stripeCard;
@@ -73,24 +71,28 @@ BOOL __isAmex = NO;
     [super viewWillAppear:animated];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
     [nc addObserver:self
            selector:@selector(keyboardWillShow:)
                name:UIKeyboardWillShowNotification
              object:nil];
+    
     [nc addObserver:self
            selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
 }
 
-- (void) viewWillDisappear: (BOOL)animated{
-    
+- (void) viewWillDisappear: (BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+ 
     [nc removeObserver:self
                   name:UIKeyboardWillShowNotification
                 object:nil];
+    
     [nc removeObserver:self
                   name:UIKeyboardWillHideNotification
                 object:nil];
@@ -109,6 +111,7 @@ BOOL __isAmex = NO;
         presentingVC = presentingVC.presentingViewController;
         NSLog(@"next presenting vc %@", presentingVC);
     }
+    
     NSLog(@" ======= return home =====");
     [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
@@ -117,7 +120,7 @@ BOOL __isAmex = NO;
 
 - (IBAction)doneButtonTapped:(UIButton *)sender
 {
-    NSLog(@"%s.......................isForMenu %d...", __func__, self.isForMenu);
+    NSLog(@"%s..........................", __func__);
     
     //hide keyboard
     [self.view endEditing:YES];
@@ -216,6 +219,14 @@ BOOL __isAmex = NO;
        // spaceAfterDigitsCount = cardNumberWithoutSpaces.length > 5 ? 5: 4;
     }
     
+    if ( cardNumberWithoutSpaces.length == maxCardDigits )
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            if ( self.cardNumberField.text.length == (maxCardDigits+3) )
+                [self.expiryField becomeFirstResponder];
+        });
+    }
     
     if ( cardNumberWithoutSpaces.length > maxCardDigits )
     {
@@ -250,6 +261,16 @@ BOOL __isAmex = NO;
     NSString *expiryDateWithoutSlash = [self removeNonDigits:textField.text
                                     andPreserveCursorPosition:&targetCursorPosition];
     
+    if ( expiryDateWithoutSlash.length == 4 )
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           if ( self.expiryField.text.length == 5 )
+                               [self.cvvField becomeFirstResponder];
+                       });
+    }
+
+    
     if ( expiryDateWithoutSlash.length > 4 )
     {
         textField.text = __previousExpiryTextFieldContent;
@@ -266,8 +287,8 @@ BOOL __isAmex = NO;
     
     UITextPosition *targetPosition = [textField positionFromPosition:[textField beginningOfDocument] offset:targetCursorPosition];
     
-    [textField setSelectedTextRange: [textField textRangeFromPosition:targetPosition toPosition:targetPosition]
-     ];
+    [textField setSelectedTextRange: [textField textRangeFromPosition:targetPosition toPosition:targetPosition]];
+    
 }
 
 - (BOOL) isAmexCard:(NSString *) cardNumber
@@ -340,12 +361,19 @@ BOOL __isAmex = NO;
         
         //CVC
         case 4:
-            if ( ((newLength > 3) && ![self isAmexCard:self.stripeCard.number]) || (newLength > 4) )
+            if ( ((newLength > 3) && ![self isAmexCard:self.stripeCard.number]) || ((newLength > 4) && [self isAmexCard:self.stripeCard.number]) )
             {
-                NSLog(@"its cvc");
-
                 [self.zipField becomeFirstResponder];
                 return NO;
+            }
+            
+            if ( ((newLength == 3) && ![self isAmexCard:self.stripeCard.number]) || ((newLength == 4) && [self isAmexCard:self.stripeCard.number]) )
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+               {
+                   if ( ((self.cvvField.text.length == 3) && ![self isAmexCard:self.stripeCard.number]) || ((self.cvvField.text.length == 4) && [self isAmexCard:self.stripeCard.number]) )
+                       [self.zipField becomeFirstResponder];
+               });
             }
             
             break;
@@ -354,11 +382,18 @@ BOOL __isAmex = NO;
         case 5:
             if ( newLength > 5 )
             {
-                NSLog(@"its zip");
-
-                self.stripeCard.addressZip = textField.text;
+                //self.stripeCard.addressZip = textField.text;
                 [self.zipField resignFirstResponder];
                 return NO;
+            }
+            
+            if ( newLength == 5 )
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+               {
+                   if ( self.zipField.text.length == 5 )
+                       [self.zipField resignFirstResponder];
+               });
             }
             
             break;
