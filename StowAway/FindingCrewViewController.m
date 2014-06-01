@@ -100,6 +100,38 @@
                                              selector:@selector(crewFindingTimedOut:)
                                                  name:@"crewFindingTimedOut"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appReturnsActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(appWillBecomeInActive:)
+                                                  name:UIApplicationWillResignActiveNotification
+                                                object:nil];
+}
+
+
+- (void)appReturnsActive:(NSNotification *)notification
+{
+    NSLog(@"%s............%@\n", __func__, self.serverPollingTimer);
+    //start the server polling
+    [self pollServer];
+    
+    //schedule to poll the server every 30secs
+    self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
+                                                               target:self
+                                                             selector:@selector(pollServer)
+                                                             userInfo:nil
+                                                              repeats:YES];
+}
+- (void)appWillBecomeInActive:(NSNotification *)notification
+{
+    NSLog(@"%s............%@\n", __func__, self.serverPollingTimer);
+    
+    //dont poll the server when in the background
+    [self.serverPollingTimer invalidate];
 }
 
 -(void) viewDidLoad
@@ -117,7 +149,7 @@
     //process ride request reply from server -- also sets cd timer value
     [self processRequestObject:self.rideRequestResponse];
     
-    //schedule to poll the server every 60secs
+    //schedule to poll the server every 30secs
     self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
                                                                target:self
                                                              selector:@selector(pollServer)

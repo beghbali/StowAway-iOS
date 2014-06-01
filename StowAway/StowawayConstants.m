@@ -95,7 +95,7 @@ NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
 //countdown timer
 NSUInteger kMaxCrewCount                    = 4; //1 captain + 3 stowaways
-NSUInteger kServerPollingIntervalSeconds    = (60); //60secs
+NSUInteger kServerPollingIntervalSeconds    = (30); //30secs
 
 //Pusher
 NSString *const kPusherCrewLocationEvent                        = @"client-location-update";
