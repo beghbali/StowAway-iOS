@@ -97,6 +97,9 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) NSDateComponents *nowDateComponents;
 @property BOOL isPreviousAppStateValid;
 @property BOOL isWaitingForRideCreditQueryToReturn;
+
+@property (strong, nonatomic) NSDate *rideDepartureDate;
+
 @end
 
 
@@ -1330,11 +1333,10 @@ BOOL onBoardingStatusChecked = NO;
 - (IBAction)findCrewButtonTapped:(UIButton *)sender
 {
     [self updateLocationHistory];
-    
-    NSDate * requestedRideDate = [self calculateRequestedRideDate];
-    NSTimeInterval requested_for = [requestedRideDate timeIntervalSince1970];
+    self.rideDepartureDate = [self calculateRequestedRideDate];
+    NSTimeInterval requested_for = [self.rideDepartureDate timeIntervalSince1970];
     NSNumber * requestForNum = [NSNumber numberWithFloat:requested_for];
-    NSLog(@"requestedRideDate %@, requested_for %f",requestedRideDate, requested_for);
+    NSLog(@"requestedRideDate %@, requested_for %f", self.rideDepartureDate, requested_for);
   
     //save requested for time, will be used in app restoration
     [[NSUserDefaults standardUserDefaults] setObject:requestForNum forKey:kRequestedForDate];
@@ -1413,6 +1415,8 @@ BOOL onBoardingStatusChecked = NO;
                 findingCrewVC.rideTypeLabel = self.rideTypes[choosenRideType];
                 findingCrewVC.rideTimeLabel = choosenTime;
 
+                findingCrewVC.rideDepartureDate = self.rideDepartureDate;
+                
                 //remember the ride id, ride time label and ride type label -- so it can be used to restore the app
                 [[NSUserDefaults standardUserDefaults] setObject:requestID forKey:kRequestPublicId];
                 [[NSUserDefaults standardUserDefaults] setObject:findingCrewVC.rideTypeLabel forKey:@"rideTypeLabel"];

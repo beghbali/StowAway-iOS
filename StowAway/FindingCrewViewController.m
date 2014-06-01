@@ -40,6 +40,9 @@
 @property (strong, nonatomic) CountdownTimer * cdt;
 //@property (strong, nonatomic) NSDate * timerExpiryDate;
 @property (strong, nonatomic) UILocalNotification *localNotification;
+
+@property (strong, nonatomic) UILocalNotification *crewFindingTimeoutLocalNotification;
+
 //dictionary contains user_id, fb_id, picture, name, iscaptain, requestedAt time, request_id
 @property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3
 
@@ -81,6 +84,24 @@
     [alert show];
 }
 
+-(void)subscribeToNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveRemoteNotification:)
+                                                 name:@"updateFindCrew"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedRideCreditsUpdate:)
+                                                 name:@"updateRideCredits"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(crewFindingTimedOut:)
+                                                 name:@"crewFindingTimedOut"
+                                               object:nil];
+}
+
 -(void) viewDidLoad
 {
     [super viewDidLoad];
@@ -90,16 +111,6 @@
     
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveRemoteNotification:)
-                                                 name:@"updateFindCrew"
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedRideCreditsUpdate:)
-                                                 name:@"updateRideCredits"
-                                               object:nil];
 
     [self.getRideResultActivityIndicator stopAnimating];
 
@@ -124,6 +135,10 @@
                              @"Your ride will finalize 15 minutes before departure."];*/
     
     [self pollServer]; //to take care of restoring app case, where server is queried for request object
+    
+    [self setCrewFindingTimeoutNotification];
+    
+    [self subscribeToNotifications];
 }
 
 //remote push notification
@@ -185,7 +200,37 @@
     [self.getRideResultActivityIndicator startAnimating];
 }
 
-#pragma mark stowawayServer
+#pragma mark - crewfinding timeout notification
+
+-(void)setCrewFindingTimeoutNotification
+{
+    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
+
+    if (!self.crewFindingTimeoutLocalNotification)
+        self.crewFindingTimeoutLocalNotification  = [[UILocalNotification alloc] init];
+    
+    self.crewFindingTimeoutLocalNotification.fireDate              = self.rideDepartureDate;
+    self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Sorry, couldn't find a crew for\n%@", self.rideInfoLabel.text];
+    self.crewFindingTimeoutLocalNotification.alertAction           = @"Ok";
+    self.crewFindingTimeoutLocalNotification.soundName             = @"ride_missed.wav";
+    self.crewFindingTimeoutLocalNotification.timeZone              = [NSTimeZone defaultTimeZone];
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:self.crewFindingTimeoutLocalNotification];
+}
+
+-(void)unSetCrewFindingTimeoutNotification
+{
+    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
+    
+    if (!self.crewFindingTimeoutLocalNotification)
+        return;
+    
+    [[UIApplication sharedApplication] cancelLocalNotification:self.crewFindingTimeoutLocalNotification];
+    self.crewFindingTimeoutLocalNotification = nil;
+}
+
+
+#pragma mark - stowawayServer
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
@@ -265,7 +310,9 @@
         
         [self updateFindingCrewView];
         
-        [self cancelTimerExpiryNotificationSchedule];
+        [self setCrewFindingTimeoutNotification];
+        
+        //[self cancelTimerExpiryNotificationSchedule];
     }
 }
 
@@ -275,6 +322,9 @@
 {
     NSLog(@"processRideObject......................................");
 
+    //no need for crew finding failed notifcation
+    [self unSetCrewFindingTimeoutNotification];
+    
     NSLog(@"crew before processing: %@", self.crew);
     
     //array of user_public_id
@@ -374,7 +424,7 @@
         self.isReadyToGoToMeetCrew = YES;
         
         //cancel timer expiry notif
-        [self cancelTimerExpiryNotificationSchedule];
+        //[self cancelTimerExpiryNotificationSchedule];
         
         // get suggested locn
         self.suggestedLocations = @{kSuggestedDropOffAddr: [response objectForKey:kSuggestedDropOffAddr],
@@ -426,6 +476,8 @@
             meetCrewVC.rideTimeLabel = [df stringFromDate:date];
             
             [self.serverPollingTimer invalidate];
+            
+            [self unSetCrewFindingTimeoutNotification];
         }
     }
 }
@@ -652,7 +704,9 @@ void swap (NSUInteger *a, NSUInteger *b)
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     //cancel local notif
-    [self cancelTimerExpiryNotificationSchedule];
+    //[self cancelTimerExpiryNotificationSchedule];
+    
+    [self unSetCrewFindingTimeoutNotification];
     
     //cancel server polling- going back to requests
     [self.serverPollingTimer invalidate];
@@ -664,7 +718,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 -(void)sendCoupon:(NSString *)couponCode
 {
     //cancel local notif
-    [self cancelTimerExpiryNotificationSchedule];
+    //[self cancelTimerExpiryNotificationSchedule];
 
     //send couponed request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
@@ -680,7 +734,15 @@ void swap (NSUInteger *a, NSUInteger *b)
     [sscommunicator sendServerRequest:couponRequest ForURL:url usingHTTPMethod:@"PUT"];    //don't need the callback, so no delegate
 }
 
+-(void)crewFindingTimedOut:(NSNotification *)notification
+{
+    NSLog(@"%s..............data %@", __func__, notification);
+    
+    [self cancelRide];
+}
+
 #pragma mark timer expiry localnotification
+
 - (void)setTimerExpiryNotification
 {
     NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.cdt.countDownEndDate);

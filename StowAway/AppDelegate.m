@@ -44,6 +44,10 @@
 		if (local_dictionary != nil)
 		{
 			NSLog(@"Launched from local push notification: %@", local_dictionary);
+            //timed out , failed to find a match --delete the request id
+            //erase it from memory, so its not used in app restoration
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 		//	[self processUILocalNotification:local_dictionary isAppRunning:NO];
 		}
 	}
@@ -206,6 +210,10 @@
 - (void)processUILocalNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
 {
     NSLog(@"processUILocalNotification: %@, isAppRunning %d", pushMsg, isAppRunning);
+    //crew matching timed out -- failed to find ::generate notif which finding crew will respond to by deleting the request
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"crewFindingTimedOut"
+                                                        object:self
+                                                      userInfo:nil];
 }
 
 #pragma mark device token apns
