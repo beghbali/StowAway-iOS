@@ -213,8 +213,8 @@
     {
         NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
 
-        [self cancelCrewFinding];
-
+        [self sendCoupon:kCouponCodeLoneRider];
+        
         return;
     }
     
@@ -762,7 +762,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     //cancel local notif
     //[self cancelTimerExpiryNotificationSchedule];
-
+    NSLog(@"%s:...........",__func__);
     //send couponed request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
@@ -781,7 +781,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSLog(@"%s..............data %@", __func__, notification);
     
-    [self cancelCrewFinding];
+    [self sendCoupon:kCouponCodeLoneRider];
 }
 
 #pragma mark timer expiry localnotification
