@@ -240,6 +240,8 @@
             prevDesg = self.designationLabel.text;
             
             //is ride initiated
+            NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d, isAlreadyInitiated %d", __func__, isCaptain, self.isLoneRider, isInitiated, self.isAlreadyInitiated);
+
             isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
             if (isInitiated && !self.isAlreadyInitiated)
             {
@@ -257,7 +259,7 @@
                     [self armUpCountdownTimer];
             }
             
-            NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d", __func__, isCaptain, self.isLoneRider, isInitiated);
+            NSLog(@"isInitiated %d",isInitiated);
             
             if ( isCaptain )
             {
@@ -267,7 +269,7 @@
                 //self.countDownTimer.hidden  =  self.isLoneRider;
                 self.requestUberButton.hidden = isInitiated? NO: YES;
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
-                self.designationBenefitsLabel.text = @"A good captain takes the crew along...";
+                self.designationBenefitsLabel.text = self.isLoneRider? @"Order Uber for yourself this time, you'll get 50% in ride credit.": @"A good captain takes the crew along...";
             }
             else
             {
@@ -617,7 +619,7 @@
         [[UIApplication sharedApplication] openURL:url];
     }
     
-    self.requestUberButton.hidden = YES;
+    self.requestUberButton.enabled = NO;
     if (self.isLoneRider)
     {
         self.cancelButton.titleLabel.text = @"   DONE  ";
