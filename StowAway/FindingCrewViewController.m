@@ -207,6 +207,17 @@
 
 - (void)pollServer
 {
+    //check to see if departure time has passed
+    NSDate * now = [NSDate date];
+    if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
+    {
+        NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
+
+        [self cancelCrewFinding];
+
+        return;
+    }
+    
     NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
     
     if (!self.requestID || !self.userID)
@@ -723,7 +734,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     [alert show];
 }
 
--(void)cancelRide
+-(void)cancelCrewFinding
 {
     //DELETE ride request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
@@ -770,7 +781,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSLog(@"%s..............data %@", __func__, notification);
     
-    [self cancelRide];
+    [self cancelCrewFinding];
 }
 
 #pragma mark timer expiry localnotification
@@ -959,7 +970,7 @@ void swap (NSUInteger *a, NSUInteger *b)
     if ([theAlert.title isEqualToString:@"Cancel Crew Finding !"])
     {
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"])
-            [self cancelRide];
+            [self cancelCrewFinding];
     }
     
     if ([theAlert.title isEqualToString:@"No Matches Yet !"])
