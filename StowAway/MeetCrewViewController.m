@@ -252,10 +252,12 @@
                 
                 //start pusher updates
                 [self.meetCrewMapViewManager startPusherUpdates];
-                
-                //in 5mins tell server to start auto-checkin
-                [self armUpCountdownTimer];
+
+                if (isCaptain) //in 5mins tell server to start auto-checkin
+                    [self armUpCountdownTimer];
             }
+            
+            NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d", __func__, isCaptain, self.isLoneRider, isInitiated);
             
             if ( isCaptain )
             {
@@ -521,7 +523,7 @@
     NSLog(@"%s: armUpCountdownTimer", __func__);
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
-    [self.cdt initializeWithSecondsRemaining:(int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"] ForLabel:nil];
+    [self.cdt initializeWithSecondsRemaining:300 ForLabel:nil]; //300=60*5, 5mins after the ride intializes, start auto-checkin
 }
 
 - (void)countdownTimerExpired
