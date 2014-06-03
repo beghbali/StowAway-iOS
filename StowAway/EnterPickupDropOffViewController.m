@@ -157,14 +157,12 @@ BOOL onBoardingStatusChecked = NO;
     
    // [self configureAvailableRideTimes];
     self.isRideTimeConfigured = YES;
+    
     self.rideTypes = @[@"Your Ride To Work Today",
                        @"Your Ride Home Today",
                        @"Your Ride To Work Tomorrow",
                        @"Your Ride Home Tomorrow"];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
     
 /*
  [[NSNotificationCenter defaultCenter] addObserver:self
@@ -218,7 +216,7 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"%s......, onBoardingStatusChecked %d", __func__, onBoardingStatusChecked);
+    NSLog(@"%s...... onBoardingStatusChecked %d", __func__, onBoardingStatusChecked);
     
     [super viewDidAppear:YES];
     
@@ -238,6 +236,10 @@ BOOL onBoardingStatusChecked = NO;
     if ( onBoardingStatusChecked )
         [self setUpLocationServices];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+
     [self configureScheduledRidesOptions];
     
     self.isRideTimeConfigured = NO;
@@ -1406,6 +1408,10 @@ BOOL onBoardingStatusChecked = NO;
 
             findingCrewVC.rideCredits = self.rideCredits; //for going to FC vc thru usual flow
             
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UIApplicationDidBecomeActiveNotification
+                                                          object:nil];
+
             if (!self.isPreviousAppStateValid)
             {
                 //new request

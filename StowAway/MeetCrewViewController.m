@@ -253,7 +253,7 @@
                 //start pusher updates
                 [self.meetCrewMapViewManager startPusherUpdates];
                 
-                //in 15mins tell server to start auto-checkin
+                //in 5mins tell server to start auto-checkin
                 [self armUpCountdownTimer];
             }
             
@@ -518,7 +518,7 @@
 #pragma mark - countdown timer
 -(void) armUpCountdownTimer
 {
-    NSLog(@"armUpCountdownTimer");
+    NSLog(@"%s: armUpCountdownTimer", __func__);
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:(int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"] ForLabel:nil];

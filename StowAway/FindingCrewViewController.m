@@ -86,6 +86,8 @@
 
 -(void)subscribeToNotifications
 {
+    NSLog(@"%s...........", __func__);
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveRemoteNotification:)
                                                  name:@"updateFindCrew"
@@ -110,6 +112,32 @@
                                               selector:@selector(appWillBecomeInActive:)
                                                   name:UIApplicationWillResignActiveNotification
                                                 object:nil];
+}
+
+-(void)unSubscribeToNotifications
+{
+    NSLog(@"%s...........", __func__);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"updateFindCrew"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:@"updateRideCredits"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:@"crewFindingTimedOut"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+
 }
 
 
@@ -521,6 +549,8 @@
             [self.serverPollingTimer invalidate];
             
             [self unSetCrewFindingTimeoutNotification];
+            
+            [self unSubscribeToNotifications];
         }
     }
 }
@@ -748,7 +778,8 @@ void swap (NSUInteger *a, NSUInteger *b)
 
     //cancel local notif
     //[self cancelTimerExpiryNotificationSchedule];
-    
+    [self unSubscribeToNotifications];
+
     [self unSetCrewFindingTimeoutNotification];
     
     //cancel server polling- going back to requests
