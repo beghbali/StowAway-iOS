@@ -849,7 +849,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */;
+			buildConfigurationList = 68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1187,7 +1187,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stowaway Group, Inc.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/otherFrameworks/**",
@@ -1204,7 +1204,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
+				PROVISIONING_PROFILE = "E9D5FDF8-111C-4D3F-ACF7-7333CC5F5AA7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1215,7 +1215,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Stowaway Group, Inc.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/otherFrameworks/**",
@@ -1232,7 +1232,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = Stowaway;
-				PROVISIONING_PROFILE = "F8060940-51DA-467B-8160-BF959416A49D";
+				PROVISIONING_PROFILE = "E9D5FDF8-111C-4D3F-ACF7-7333CC5F5AA7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1240,7 +1240,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "Stowaway" */ = {
+		68BAFEA7188DDBD3009738A0 /* Build configuration list for PBXProject "StowAway" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68BAFEDC188DDBD3009738A0 /* Debug */,
