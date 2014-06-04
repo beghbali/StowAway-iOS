@@ -54,6 +54,34 @@
     return UIStatusBarStyleLightContent;
 }
 
+-(void)subscribeToNotifications
+{
+    NSLog(@"%s:", __func__);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveRemoteNotification:)
+                                                 name:@"updateMeetCrew"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedRideCreditsUpdate:)
+                                                 name:@"updateRideCredits"
+                                               object:nil];
+}
+
+-(void)unSubscribeToNotifications
+{
+    NSLog(@"%s:", __func__);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"updateMeetCrew"
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"updateRideCredits"
+                                                  object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -64,19 +92,10 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveRemoteNotification:)
-                                                 name:@"updateMeetCrew"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedRideCreditsUpdate:)
-                                                 name:@"updateRideCredits"
-                                               object:nil];
-    
-
-    NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****", self.crew,
-                                                                self.suggestedLocations, self.locationChannel);
+    [self subscribeToNotifications];
+  
+    NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****",
+                                                    self.crew, self.suggestedLocations, self.locationChannel);
     
     self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
     self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
@@ -221,9 +240,9 @@
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
         NSLog(@"%s: <%d> updateCrewInfoInView for crewMember %@", __func__, i, crewMember);
         
-        prevDesg = nil;
+        prevDesg    = nil;
         badgedImage = nil;
-        isCaptain = [[crewMember objectForKey:kIsCaptain] boolValue];
+        isCaptain   = [[crewMember objectForKey:kIsCaptain] boolValue];
         displayName = isCaptain? [NSString stringWithFormat:@"CAPT. %@",[crewMember objectForKey:kCrewFbName]]: [crewMember objectForKey:kCrewFbName];
         
         if (i == 0 )
@@ -245,7 +264,7 @@
             isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
             if (isInitiated && !self.isAlreadyInitiated)
             {
-                NSLog(@"%s: ride got initiated, starting pusher updates now...", __func__);
+                NSLog(@"%s: ride got initiated, starting pusher & location updates now...", __func__);
 
                 self.isAlreadyInitiated = YES;
                 
@@ -256,7 +275,10 @@
                 [self.meetCrewMapViewManager startPusherUpdates];
 
                 if (isCaptain) //in 5mins tell server to start auto-checkin
-                    [self armUpCountdownTimer];
+                    [self armUpCountdownTimerFor:300];  //for captain ride initiates 5mins before departure
+                else
+                    [self armUpCountdownTimerFor:600];  //for stowaway ride initiates 10mins before departure
+
             }
             
             NSLog(@"isInitiated %d",isInitiated);
@@ -520,26 +542,27 @@
 }
 
 #pragma mark - countdown timer
--(void) armUpCountdownTimer
+-(void) armUpCountdownTimerFor:(NSUInteger)seconds
 {
     NSLog(@"%s: armUpCountdownTimer", __func__);
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
-    [self.cdt initializeWithSecondsRemaining:300 ForLabel:nil]; //300=60*5, 5mins after the ride intializes, start auto-checkin
+    [self.cdt initializeWithSecondsRemaining:seconds ForLabel:nil];
 }
 
 - (void)countdownTimerExpired
 {
-    NSLog(@"%s, now stop auto checkin mode", __func__);
-    //self.countDownTimer.text = @"00:00";
+    NSLog(@"%s, now start auto checkin mode", __func__);
     [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
 #pragma mark - end of ride
 
-- (void)doneButtonTapped
+- (void)doneWithTheRide
 {
     NSLog(@"%s: we are DONE here....go back to enter drop off pick up view", __func__);
+    
+    [self unSubscribeToNotifications];
     
     //erase it from memory, so its not used in app restoration
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
@@ -550,6 +573,8 @@
 
 - (IBAction)cancelRideButtonTapped:(UIButton *)sender
 {
+    NSLog(@"%s: sender %@ ", __func__, sender);
+    
     if ([sender.titleLabel.text isEqualToString:@"Cancel Ride"])
         {
         //warn user
@@ -562,7 +587,7 @@
     } else
     {
         //done button
-        [self doneButtonTapped];
+        [self doneWithTheRide];
     }
 }
 
@@ -579,11 +604,8 @@
     
     NSLog(@"go back to enter drop off pick up view");
 
-    //erase it from memory, so its not used in app restoration
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+    //erase it from memory, so its not used in app restoration and go back to home
+    [self doneWithTheRide];
 }
 
 #pragma mark - alert delegates

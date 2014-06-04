@@ -67,7 +67,7 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-	NSLog(@"didReceiveRemoteNotification: %@ ..........", userInfo);
+	NSLog(@"\n didReceiveRemoteNotification: %@ ..........\n", userInfo);
     
     [self processStowawayPushNotification:userInfo isAppRunning:YES];
 }
@@ -201,7 +201,7 @@
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"local notif: %@", notification);
+    NSLog(@"didReceiveLocalNotification: %@", notification);
     
     [self processUILocalNotification:notification.userInfo isAppRunning:YES];
 

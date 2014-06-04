@@ -799,7 +799,6 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     NSString *couponRequest = [NSString stringWithFormat:@"{\"%@\": \"%@\"}",
                                                      kCouponCodeKey, couponCode];
-    
 
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
 
