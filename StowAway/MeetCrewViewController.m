@@ -285,11 +285,11 @@
             
             if ( isCaptain )
             {
-                self.designationLabel.text = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
+                self.designationLabel.text  = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
                 self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
                 self.loneRiderText.hidden = !self.isLoneRider;
                 //self.countDownTimer.hidden  =  self.isLoneRider;
-                self.requestUberButton.hidden = isInitiated? NO: YES;
+                self.requestUberButton.hidden = (isInitiated || self.isLoneRider)? NO: YES;
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
                 self.designationBenefitsLabel.text = self.isLoneRider? @"Order Uber for yourself this time, you'll get 50% in ride credit.": @"A good captain takes the crew along...";
             }

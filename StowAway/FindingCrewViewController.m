@@ -322,7 +322,7 @@
 
 -(void)processRequestObject:(NSDictionary *)response
 {
-    NSLog(@"processRequestObject........................, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
+    NSLog(@"processRequestObject...............self.crew %@........., isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.crew, self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
 
     if (!response)
     {
@@ -529,14 +529,14 @@
         {
             MeetCrewViewController * meetCrewVC = segue.destinationViewController;
             
-            meetCrewVC.userID   = self.userID;
-            meetCrewVC.rideID   = self.rideID;
-            meetCrewVC.requestID   = self.requestID;
-            meetCrewVC.crew     = self.crew;
-            meetCrewVC.locationChannel  = self.locationChannel;
-            meetCrewVC.suggestedLocations = self.suggestedLocations;
+            meetCrewVC.userID               = self.userID;
+            meetCrewVC.rideID               = self.rideID;
+            meetCrewVC.requestID            = self.requestID;
+            meetCrewVC.crew                 = self.crew;
+            meetCrewVC.locationChannel      = self.locationChannel;
+            meetCrewVC.suggestedLocations   = self.suggestedLocations;
             
-            meetCrewVC.rideCredits = self.rideCredits;
+            meetCrewVC.rideCredits          = self.rideCredits;
 
             NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
             NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
@@ -904,16 +904,15 @@ void swap (NSUInteger *a, NSUInteger *b)
     NSLog(@"find out crew#%lu's image+name with FBUID %@", (unsigned long)crewPostion, fbUID);
    
     NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=160&height=160", fbUID]];
-    NSData *profilePicData = [NSData dataWithContentsOfURL:profilePicURL];
-    UIImage *profilePic = [[UIImage alloc] initWithData:profilePicData] ;
+    NSData *profilePicData  = [NSData dataWithContentsOfURL:profilePicURL];
+    UIImage *profilePic     = [[UIImage alloc] initWithData:profilePicData] ;
 
     NSURL *firstNameURL     = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@", fbUID]];
-    NSData *firstNameData = [NSData dataWithContentsOfURL:firstNameURL];
-    NSDictionary* jsonDict = [NSJSONSerialization
-                          JSONObjectWithData:firstNameData
-                          options:kNilOptions
-                          error:&error];
-    NSString * fbFirstName = nil;
+    NSData *firstNameData   = [NSData dataWithContentsOfURL:firstNameURL];
+    NSDictionary* jsonDict  = [NSJSONSerialization JSONObjectWithData:firstNameData
+                                                              options:kNilOptions
+                                                                error:&error];
+    NSString * fbFirstName  = nil;
 
     if (jsonDict && !error)
         fbFirstName = [jsonDict objectForKey:@"first_name"];
