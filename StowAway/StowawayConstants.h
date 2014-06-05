@@ -111,6 +111,9 @@ extern double const kFindingCrewFacesAnimationDelay;
 extern NSString *const kCouponCodeKey;
 extern NSString *const kCouponCodeLoneRider;
 
+//ride credits statement
+extern NSString * const kRideCreditsAlertMsgFormat;
+
 @interface StowawayConstants: NSObject
 
 +(NSMutableAttributedString *) boldify:(NSString *)boldSubString ofFullString:(NSString *)fullString withFont: (UIFont *)font;

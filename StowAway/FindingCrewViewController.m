@@ -184,14 +184,16 @@
                                                              userInfo:nil
                                                               repeats:YES];
     
-    self.rideInfoLabel.text = [NSString stringWithFormat:@"%@ \n between %@",self.rideTypeLabel, self.rideTimeLabel];;
-    
-    self.advertiseFooterLabel.text = [NSString stringWithFormat:@"%@\n%@",
-                                      @"Get there quickly and comfortably,",
-                                      @"while saving 50 to 75% on your ride !"];
+    self.rideInfoLabel.text = [NSString stringWithFormat:@"Finding %@, %@",self.rideTypeLabel, self.rideTimeLabel];;
 
+    self.advertiseFooterLabel.text = @"Get there quickly and comfortably\nfor nearly the cost of a bus fare !";
+    
+    /*[NSString stringWithFormat:@"%@\n%@",
+                                      @"Get there quickly and comfortably,",
+                                      @"for nearly the cost of a bus fare !"];
+*/
     self.waitingLabel.text =[NSString stringWithFormat:@"%@",
-                             @"We'll send you notifications as we match you with other riders."];/*,
+                             @"We'll send you notifications as\nwe match you with other riders."];/*,
                              @"Your ride will finalize 15 minutes before departure."];*/
     
     [self pollServer]; //to take care of restoring app case, where server is queried for request object
@@ -276,12 +278,14 @@
 -(void)setCrewFindingTimeoutNotification
 {
     NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
-
+    if (!self.rideDepartureDate)
+        return;
+    
     if (!self.crewFindingTimeoutLocalNotification)
         self.crewFindingTimeoutLocalNotification  = [[UILocalNotification alloc] init];
     
     self.crewFindingTimeoutLocalNotification.fireDate              = self.rideDepartureDate;
-    self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Sorry, couldn't find a crew for\n%@", self.rideInfoLabel.text];
+    self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Sorry, couldn't find crew for your %@ ride", self.rideTimeLabel];
     self.crewFindingTimeoutLocalNotification.alertAction           = @"Ok";
     self.crewFindingTimeoutLocalNotification.soundName             = @"ride_missed.wav";
     self.crewFindingTimeoutLocalNotification.timeZone              = [NSTimeZone defaultTimeZone];
@@ -766,6 +770,8 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void)cancelCrewFinding
 {
+    NSLog(@"%s...", __func__);
+    
     //DELETE ride request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
@@ -1016,15 +1022,15 @@ void swap (NSUInteger *a, NSUInteger *b)
 #pragma mark - ride credits
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
-    NSString * msg = nil;
-    
+    NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
+/*
     if(self.rideCredits)
         msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
                self.rideCredits,
                @"Your credit card would only be charged after this credit has been applied."];
     else
         msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-    
+  */
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self

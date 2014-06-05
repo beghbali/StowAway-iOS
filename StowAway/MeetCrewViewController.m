@@ -285,18 +285,21 @@
             
             if ( isCaptain )
             {
-                self.designationLabel.text  = self.isLoneRider? @"YOU ARE A LONE RIDER": @"YOU ARE THE CAPTAIN !";
-                self.instructionsLabel.text = self.isLoneRider? @"We couldn't find other riders this time !": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
+                self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO THIS TIME": @"YOU ARE THE CAPTAIN !";
+                self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and and get 50% in ride credit.": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
                 self.loneRiderText.hidden = !self.isLoneRider;
                 //self.countDownTimer.hidden  =  self.isLoneRider;
                 self.requestUberButton.hidden = (isInitiated || self.isLoneRider)? NO: YES;
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
                 self.designationBenefitsLabel.text = self.isLoneRider? @"Order Uber for yourself this time, you'll get 50% in ride credit.": @"A good captain takes the crew along...";
+                
+                if (self.isLoneRider)
+                    self.cancelButton.titleLabel.text = @" No Thanks ";
             }
             else
             {
                 self.designationLabel.text = @"YOU ARE A STOWAWAY !";
-                self.instructionsLabel.text = [NSString stringWithFormat:@"%@ %@", @"Please get to the pick up point at",self.rideTimeLabel];
+                self.instructionsLabel.text = [NSString stringWithFormat:@"Please be at the pick-up point by %@.\nDon't be late.", self.rideTimeLabel];
                 self.requestUberButton.hidden = YES;
                 self.navigationBarItem.title  = @"Meet Your Captain";
                 self.designationBenefitsLabel.text = @"A good stowaway cooperates with the captain...";
@@ -328,7 +331,7 @@
                 case 1:
                     //checked in
                     self.cancelButton.titleLabel.text = @"   DONE  ";
-                    self.navigationBarItem.title  = @"Bon Voyage !!";
+                    self.navigationBarItem.title  = @"Bon Voyage !";
                     break;
                     
                 case -1:
@@ -645,7 +648,7 @@
     if (self.isLoneRider)
     {
         self.cancelButton.titleLabel.text = @"   DONE  ";
-        self.navigationBarItem.title  = @"Bon Voyage !!";
+        self.navigationBarItem.title  = @"Bon Voyage !";
     }
 }
 
@@ -664,15 +667,15 @@
 #pragma mark - ride credits
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
-    NSString * msg = nil;
-    
+    NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
+/*
     if(self.rideCredits)
         msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
                self.rideCredits,
                @"Your credit card would only be charged after this credit has been applied."];
     else
         msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-    
+  */
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self

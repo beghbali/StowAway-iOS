@@ -193,7 +193,7 @@ BOOL onBoardingStatusChecked = NO;
     
     NSLog(@"%s: requestID %@, userID %@", __func__, requestID, userID);
     
-    if (requestID && userID)
+    if ((requestID != nil) && userID)
     {
         NSNumber * requestedForNum = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestedForDate];
         NSTimeInterval requestedFor = [requestedForNum doubleValue];
@@ -230,6 +230,8 @@ BOOL onBoardingStatusChecked = NO;
     [self updateFindCrewButtonEnabledState];
 
     //forget that ride was finalized
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
+
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -1393,7 +1395,7 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSLog(@"%s........", __func__);
+    NSLog(@"%s........credits %f, isPreviousAppStateValid %d", __func__, self.rideCredits, self.isPreviousAppStateValid);
     
     [self destroyCoreLocationManager]; //we don't need to update user's current location at this point
 
@@ -1441,15 +1443,16 @@ BOOL onBoardingStatusChecked = NO;
 #pragma mark - ride credits
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
-    NSString * msg = nil;
-   
+    NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
+    
+   /*
     if(self.rideCredits)
-        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
-               self.rideCredits,
-               @"Your credit card would only be charged after this credit has been applied."];
+        
+        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\nYour credit card would only be charged after this credit has been applied.",
+               self.rideCredits];
     else
         msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-    
+    */
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self

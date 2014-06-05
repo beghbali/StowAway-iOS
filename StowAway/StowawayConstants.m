@@ -116,6 +116,9 @@ double const kFindingCrewFacesAnimationDelay    = 3; //time it takes to go throu
 NSString *const kCouponCodeKey                  = @"coupon_code";
 NSString *const kCouponCodeLoneRider            = @"LONERIDER";
 
+//ride credits statement
+NSString * const kRideCreditsAlertMsgFormat = @"Your current credit balance is $%0.2f.\nCredits are automatically applied to pay for rides.";
+
 @implementation StowawayConstants
 
 + (NSMutableAttributedString *) boldify:(NSString *)boldSubString ofFullString:(NSString *)fullString withFont:(UIFont *)font
