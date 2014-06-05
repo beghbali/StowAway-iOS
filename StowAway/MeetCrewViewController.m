@@ -44,7 +44,6 @@
 @property BOOL isLoneRider;
 @property BOOL isAlreadyInitiated;
 
-
 @end
 
 @implementation MeetCrewViewController
@@ -67,6 +66,11 @@
                                              selector:@selector(receivedRideCreditsUpdate:)
                                                  name:@"updateRideCredits"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appReturnsActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 -(void)unSubscribeToNotifications
@@ -79,6 +83,10 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"updateRideCredits"
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationDidBecomeActiveNotification
                                                   object:nil];
 }
 
@@ -145,6 +153,13 @@
     [self getRideObject];
     //TODO: stowaway server communicator should handle this -- getRideObject
     
+}
+
+- (void)appReturnsActive:(NSNotification *)notification
+{
+    NSLog(@"%s............\n", __func__);
+    //get update on the riders
+    [self getRideObject];
 }
 
 -(void)getRideObject
