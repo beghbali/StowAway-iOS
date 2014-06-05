@@ -490,11 +490,13 @@
     //UPDATE VIEW with updated crew and new cd time
     [self updateFindingCrewView];
 
-    //save loc channel, suggested locn, if the ride is FULFILLED
+    //save loc channel, suggested locn, if the ride is FULFILLED/checkedin/initiated
     NSString * rideStatus = [response objectForKey:kStatus];
-    if ( [rideStatus isEqualToString:KStatusFulfilled] || [rideStatus isEqualToString:kStatusCheckedin] )//kStatusCheckedin in case of lonerider
+    NSLog(@"%s: ride status %@", __func__, rideStatus);
+    
+    if ( [rideStatus isEqualToString:KStatusFulfilled] || [rideStatus isEqualToString:kStatusCheckedin] || [rideStatus isEqualToString:kStatusInitiated] )//kStatusCheckedin in case of lonerider
     {
-        NSLog(@"ride status %@ (viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'",rideStatus, self.viewDidLoadFinished);
+        NSLog(@"(viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'", self.viewDidLoadFinished);
         
         self.isReadyToGoToMeetCrew = YES;
         
