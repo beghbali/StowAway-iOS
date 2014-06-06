@@ -346,6 +346,8 @@
                 case 1:
                     //checked in
                     self.navigationBarItem.title  = @"Bon Voyage !";
+                    if (!self.isLoneRider)
+                        self.instructionsLabel.text = @"Enjoy the ride,\nyou'll only be charged for your share of this ride.";
                     break;
                     
                 case -1:
@@ -561,7 +563,7 @@
 #pragma mark - countdown timer
 -(void) armUpCountdownTimerFor:(NSUInteger)seconds
 {
-    NSLog(@"%s: armUpCountdownTimer", __func__);
+    NSLog(@"%s: armUpCountdownTimer %d", __func__, seconds);
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:seconds ForLabel:nil];
