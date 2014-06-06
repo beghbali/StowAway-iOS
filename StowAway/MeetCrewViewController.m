@@ -583,6 +583,8 @@
     
     [self unSubscribeToNotifications];
     
+    [self.meetCrewMapViewManager stopAutoCheckinMode];
+
     //erase it from memory, so its not used in app restoration
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
     [[NSUserDefaults standardUserDefaults] synchronize];
