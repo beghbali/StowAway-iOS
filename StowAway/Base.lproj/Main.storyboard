@@ -1337,7 +1337,7 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7XM-fk-vcd">
                                 <rect key="frame" x="142" y="187" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" patternImage="8DD6D6E8-4DCD-4F44-BBFC-D7E7B743F6F4" colorSpace="pattern"/>
+                                <color key="color" patternImage="9138DA3B-B368-458D-8D51-BD09FF74C601" colorSpace="pattern"/>
                             </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="wood-grain-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="rIt-U9-bXz">
                                 <rect key="frame" x="0.0" y="434" width="320" height="46"/>
@@ -1569,7 +1569,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-XR-sJo">
                                         <rect key="frame" x="135" y="65" width="37" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="color" patternImage="F662A095-5B93-4EE0-AD8F-47AAF6385F92" colorSpace="pattern"/>
+                                        <color key="color" patternImage="0457EFC6-7AD8-4A0B-AEC9-813E0E6EDE0F" colorSpace="pattern"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Finding Your Ride To Work Tomorrow 10:30 - 10:45 am" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="3Me-33-mwi">
                                         <rect key="frame" x="20" y="35" width="280" height="55"/>
@@ -1803,21 +1803,18 @@
                                 <color key="textColor" red="0.47843137250000001" green="0.78039215689999997" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jTt-2d-ddP" userLabel="yellow background view">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jTt-2d-ddP" userLabel="yellow background view">
                                 <rect key="frame" x="0.0" y="187" width="320" height="117"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU ARE THE CAPTAIN !" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9f-xG-jNI" userLabel="designation label">
-                                        <rect key="frame" x="55" y="5" width="211" height="23"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="YOU'RE RIDING SOLO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9f-xG-jNI" userLabel="designation label">
+                                        <rect key="frame" x="10" y="5" width="301" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="23" id="7y9-jA-eEB"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your crew will meet you at the pick up point at 10:15am. Don't be late." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="319" translatesAutoresizingMaskIntoConstraints="NO" id="JF3-IQ-JXm" userLabel="instructions">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Your crew will meet you at the pick up point at 10:15am. Don't be late." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="319" translatesAutoresizingMaskIntoConstraints="NO" id="JF3-IQ-JXm" userLabel="instructions">
                                         <rect key="frame" x="0.0" y="26" width="319" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
@@ -1826,10 +1823,14 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5je-TY-sUW" userLabel="uber order button">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5je-TY-sUW" userLabel="uber order button">
                                         <rect key="frame" x="60" y="61" width="201" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.25882352939999997" green="0.62745098040000002" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="33" id="6hc-D8-L2X"/>
+                                            <constraint firstAttribute="width" constant="201" id="7jh-tc-BwJ"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Order UberX Now">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1843,7 +1844,7 @@
                                             <action selector="requestUberButtonTapped:" destination="adg-RW-m0r" eventType="touchUpInside" id="60P-az-yvZ"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbI-CF-6jc">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbI-CF-6jc">
                                         <rect key="frame" x="123" y="102" width="75" height="12"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
@@ -1862,22 +1863,19 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.99502558299999999" blue="0.92248104750000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="5je-TY-sUW" firstAttribute="centerX" secondItem="h9f-xG-jNI" secondAttribute="centerX" id="04Z-rD-QKi"/>
-                                    <constraint firstItem="h9f-xG-jNI" firstAttribute="leading" secondItem="jTt-2d-ddP" secondAttribute="leading" constant="55" id="09N-rQ-Kwz"/>
-                                    <constraint firstItem="h9f-xG-jNI" firstAttribute="top" secondItem="jTt-2d-ddP" secondAttribute="top" constant="5" id="19o-dE-5Fm"/>
                                     <constraint firstItem="JF3-IQ-JXm" firstAttribute="leading" secondItem="jTt-2d-ddP" secondAttribute="leading" id="6ew-QL-naU"/>
                                     <constraint firstAttribute="trailing" secondItem="JF3-IQ-JXm" secondAttribute="trailing" constant="1" id="CyB-C4-kBh"/>
                                     <constraint firstItem="wbI-CF-6jc" firstAttribute="top" secondItem="5je-TY-sUW" secondAttribute="bottom" constant="8" symbolic="YES" id="ONt-3y-nHY"/>
-                                    <constraint firstItem="5je-TY-sUW" firstAttribute="top" secondItem="h9f-xG-jNI" secondAttribute="bottom" constant="33" id="bVK-Og-VZG"/>
+                                    <constraint firstAttribute="centerX" secondItem="JF3-IQ-JXm" secondAttribute="centerX" constant="0.5" id="PXl-hd-2bI"/>
+                                    <constraint firstAttribute="centerX" secondItem="h9f-xG-jNI" secondAttribute="centerX" constant="-0.5" id="QQ3-f3-3Sm"/>
                                     <constraint firstAttribute="bottom" secondItem="wbI-CF-6jc" secondAttribute="bottom" constant="3" id="gPC-J1-8fz"/>
                                     <constraint firstItem="wbI-CF-6jc" firstAttribute="top" secondItem="JF3-IQ-JXm" secondAttribute="bottom" constant="44" id="lMN-OJ-GgQ"/>
                                     <constraint firstItem="5je-TY-sUW" firstAttribute="centerX" secondItem="wbI-CF-6jc" secondAttribute="centerX" id="pJG-bx-Qon"/>
-                                    <constraint firstItem="JF3-IQ-JXm" firstAttribute="top" secondItem="h9f-xG-jNI" secondAttribute="bottom" constant="-2" id="qHE-CN-IrG"/>
                                     <constraint firstItem="5je-TY-sUW" firstAttribute="centerX" secondItem="jTt-2d-ddP" secondAttribute="centerX" id="rz3-b8-56i"/>
                                     <constraint firstItem="5je-TY-sUW" firstAttribute="leading" secondItem="jTt-2d-ddP" secondAttribute="leading" constant="60" id="w7m-Fd-qYS"/>
                                 </constraints>
                             </view>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgW-3p-ARV">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgW-3p-ARV">
                                 <rect key="frame" x="0.0" y="302" width="320" height="178"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </mapView>
@@ -1931,7 +1929,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="8DD6D6E8-4DCD-4F44-BBFC-D7E7B743F6F4" width="320" height="460">
+        <image name="0457EFC6-7AD8-4A0B-AEC9-813E0E6EDE0F" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11818,7 +11816,7 @@ CQq/AAkKxAAJCswACQrPAAkK1AAJCtwACQrfAAkK8QAJCvQACQr5AAAAAAAABAEAAAAAAAAAQgAAAAAA
 AAAAAAAAAAAJCvs
 </mutableData>
         </image>
-        <image name="F662A095-5B93-4EE0-AD8F-47AAF6385F92" width="320" height="460">
+        <image name="9138DA3B-B368-458D-8D51-BD09FF74C601" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

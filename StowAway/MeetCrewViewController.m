@@ -300,8 +300,8 @@
             
             if ( isCaptain )
             {
-                self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO THIS TIME": @"YOU ARE THE CAPTAIN !";
-                self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and and get 50% in ride credit.": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
+                self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO TODAY": @"YOU ARE THE CAPTAIN !";
+                self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and get 50% in ride credit.": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
                 self.loneRiderText.hidden = !self.isLoneRider;
                 //self.countDownTimer.hidden  =  self.isLoneRider;
                 self.requestUberButton.hidden = (isInitiated || self.isLoneRider)? NO: YES;
@@ -345,15 +345,12 @@
             {
                 case 1:
                     //checked in
-                    self.cancelButton.titleLabel.text = @"   DONE  ";
                     self.navigationBarItem.title  = @"Bon Voyage !";
                     break;
                     
                 case -1:
                     //missed the ride
-                    self.cancelButton.titleLabel.text = @"   DONE  ";
                     self.navigationBarItem.title  = @"Missed Your Ship  :(";
-                    
                     break;
                     
                 default:
@@ -364,7 +361,9 @@
             {
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode....", __func__);
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
-            }
+            } else if ( !self.isLoneRider)
+                self.cancelButton.titleLabel.text = @"   DONE  ";
+
             
             continue; //end of processing myself
             
