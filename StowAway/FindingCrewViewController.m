@@ -285,7 +285,7 @@
         self.crewFindingTimeoutLocalNotification  = [[UILocalNotification alloc] init];
     
     self.crewFindingTimeoutLocalNotification.fireDate              = self.rideDepartureDate;
-    self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Sorry, couldn't find crew for your %@ ride", self.rideTimeLabel];
+    self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Your %@ ride is finalized.", self.rideTimeLabel];
     self.crewFindingTimeoutLocalNotification.alertAction           = @"Ok";
     self.crewFindingTimeoutLocalNotification.soundName             = @"ride_missed.wav";
     self.crewFindingTimeoutLocalNotification.timeZone              = [NSTimeZone defaultTimeZone];
