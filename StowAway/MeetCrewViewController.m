@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
-//@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (strong, nonatomic) CountdownTimer * cdt;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
@@ -30,9 +29,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *loneRiderText;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBarItem;
-@property (weak, nonatomic) IBOutlet UILabel *designationBenefitsLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -53,13 +50,54 @@
     return UIStatusBarStyleLightContent;
 }
 
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+    
+    //remember that ride has been finalized, to be used if app gets killed and relaunched
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self subscribeToNotifications];
+    
+    NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****",
+          self.crew, self.suggestedLocations, self.locationChannel);
+    
+    self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
+    self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
+    
+    //update the crew names and images and role
+    [self updateCrewInfoInView];
+    
+    //show the crew on map
+    self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
+    
+    [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
+    
+    [self.meetCrewMapViewManager startUpdatingMapView:self.mapView
+                               withSuggestedLocations:self.suggestedLocations
+                                     andPusherChannel:self.locationChannel
+                                          isLoneRider:self.isLoneRider];
+    
+    
+    //get the ride object incase the app is relaunched, we need to get the ride-object
+    [self getRideObject];
+    
+}
+
+
+#pragma mark - signals subscription
+
 -(void)subscribeToNotifications
 {
     NSLog(@"%s:", __func__);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveRemoteNotification:)
-                                                 name:@"updateMeetCrew"
+                                             selector:@selector(mcReceivedRideUpdateFromServer:)
+                                                 name:@"rideUpdateFromServer"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -78,7 +116,7 @@
     NSLog(@"%s:", __func__);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:@"updateMeetCrew"
+                                                    name:@"rideUpdateFromServer"
                                                   object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -90,53 +128,11 @@
                                                   object:nil];
 }
 
-- (void)viewDidLoad
+#pragma mark - process signals
+
+-(void)mcReceivedRideUpdateFromServer:(NSNotification *)notification
 {
-    [super viewDidLoad];
-    
-    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
-
-    //remember that ride has been finalized, to be used if app gets killed and relaunched
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    [self subscribeToNotifications];
-  
-    NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****",
-                                                    self.crew, self.suggestedLocations, self.locationChannel);
-    
-    self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
-    self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
-    
-    //update the crew names and images and role
-    [self updateCrewInfoInView];
-    
-    //show the crew on map
-    self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
-    
-    [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
-    
-    [self.meetCrewMapViewManager startUpdatingMapView:self.mapView
-                               withSuggestedLocations:self.suggestedLocations
-                                     andPusherChannel:self.locationChannel
-                                          isLoneRider:self.isLoneRider];
-    
-    //outlets are loaded, now arm the timer, this is only set once
-   /*
-    if (!self.isLoneRider)
-        [self armUpCountdownTimer];
-    */
-    
-    //get the ride object incase the app is relaunched, we need to get the ride-object
-    [self getRideObject];
-
-}
-
-#pragma mark - push notifications
-
--(void)didReceiveRemoteNotification:(NSNotification *)notification
-{
-    NSLog(@"%s: MC_vc  %@", __func__, notification);
+    NSLog(@"%s: %@", __func__, notification);
     self.rideID = [notification.userInfo objectForKey:kPublicId];
     if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
     {
@@ -151,8 +147,6 @@
     }
     //get the ride object and figure out who needs to be removed from the view, who needs to be checked-in
     [self getRideObject];
-    //TODO: stowaway server communicator should handle this -- getRideObject
-    
 }
 
 - (void)appReturnsActive:(NSNotification *)notification
@@ -171,7 +165,6 @@
     sscommunicator.sscDelegate = self;
     [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
 }
-
 
 #pragma mark - ride object processing
 
@@ -233,8 +226,6 @@
     
     //UPDATE VIEW with updated crew
     [self updateCrewInfoInView];
-    
-    
 }
 
 #pragma mark - crew view 
@@ -274,7 +265,8 @@
             prevDesg = self.designationLabel.text;
             
             //is ride initiated
-            NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d, isAlreadyInitiated %d", __func__, isCaptain, self.isLoneRider, isInitiated, self.isAlreadyInitiated);
+            NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d, isAlreadyInitiated %d", __func__,
+                  isCaptain, self.isLoneRider, isInitiated, self.isAlreadyInitiated);
 
             isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
             if (isInitiated && !self.isAlreadyInitiated)
@@ -289,24 +281,22 @@
                 //start pusher updates
                 [self.meetCrewMapViewManager startPusherUpdates];
 
-                if (isCaptain) //in 5mins tell server to start auto-checkin
-                    [self armUpCountdownTimerFor:300];  //for captain ride initiates 5mins before departure
-                else
-                    [self armUpCountdownTimerFor:600];  //for stowaway ride initiates 10mins before departure
+                //schedule auto checkin
+                NSTimeInterval secondsRemainingToDeparture = [self.rideDepartureDate timeIntervalSinceNow];
+                NSLog(@"%s: secondsRemainingToDeparture %f", __func__, secondsRemainingToDeparture);
+                [self armUpCountdownTimerFor:secondsRemainingToDeparture];
 
             }
-            
+
             NSLog(@"isInitiated %d",isInitiated);
             
             if ( isCaptain )
             {
                 self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO TODAY": @"YOU ARE THE CAPTAIN !";
-                self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and get 50% in ride credit.": [NSString stringWithFormat:@"%@ %@", @"Crew will be at the pick up point at",self.rideTimeLabel];
-                self.loneRiderText.hidden = !self.isLoneRider;
-                //self.countDownTimer.hidden  =  self.isLoneRider;
+                self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and get 50% in ride credit.":
+                [NSString stringWithFormat:@"Crew will be at the pick up point at %@", self.rideTimeLabel];
                 self.requestUberButton.hidden = (isInitiated || self.isLoneRider)? NO: YES;
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
-                self.designationBenefitsLabel.text = self.isLoneRider? @"Order Uber for yourself this time, you'll get 50% in ride credit.": @"A good captain takes the crew along...";
                 
                 if (self.isLoneRider)
                     self.cancelButton.titleLabel.text = @" No Thanks ";
@@ -317,26 +307,10 @@
                 self.instructionsLabel.text = [NSString stringWithFormat:@"Please be at the pick-up point by %@.\nDon't be late.", self.rideTimeLabel];
                 self.requestUberButton.hidden = YES;
                 self.navigationBarItem.title  = @"Meet Your Captain";
-                self.designationBenefitsLabel.text = @"A good stowaway cooperates with the captain...";
             }
             
             if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
-            {
-                //sound travels slower than light :)
-                if ( ![prevDesg isEqualToString:self.designationLabel.text] )
-                    [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
-                /*
-                 //visual effect
-                 [self animateDesignationLabel:isCaptain withEffect:YES];
-                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                 [self animateDesignationLabel:isCaptain withEffect:NO];
-                 });
-                 
-                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                 [self animateDesignationLabel:isCaptain withEffect:YES];
-                 });
-                 */
-            }
+                [self playSound:isCaptain? @"you-are-captain":@"you-are-stowaway"];
             
             //check in status
             int keepRunningAutoCheckinProcess = [self getCheckedInStatus:crewMember];
@@ -353,6 +327,8 @@
                 case -1:
                     //missed the ride
                     self.navigationBarItem.title  = @"Missed Your Ship  :(";
+                    if (!self.isLoneRider)
+                        self.instructionsLabel.text = @"Argh... the ride left without you,\nyou won't be charged for this.";
                     break;
                     
                 default:
@@ -363,15 +339,11 @@
             {
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode....", __func__);
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
+                
             } else if ( !self.isLoneRider)
                 self.cancelButton.titleLabel.text = @"   DONE  ";
 
-            
             continue; //end of processing myself
-            
-        } else if ([[crewMember objectForKey:kIsCaptain] boolValue])
-        {   // if someone else is a captain
-            //   self.uberOrderInstructionLabel.text = [NSString stringWithFormat:@"Captain \"%@\" will order uberX", [crewMember objectForKey:kCrewFbName]];
         }
         
         //process others now
@@ -452,17 +424,12 @@
                 break;
         }
     }
-    
-    
 }
 
-#pragma mark - checkin badging
+#pragma mark - checkin image badging
 
 -(UIImage *)drawImage:(UIImage*)profileImage withBadge:(UIImage *)badge
 {
-  //  NSLog(@"profileImage.size.width %f, profileImage.size.height %f", profileImage.size.width, profileImage.size.height);
-  //  NSLog(@"badge.size.width %f, badge.size.height %f", badge.size.width, badge.size.height);
-    
     UIGraphicsBeginImageContextWithOptions(profileImage.size, NO, 0.0f);
     
     [profileImage drawInRect:CGRectMake(0, 0, profileImage.size.width, profileImage.size.height)];
@@ -675,7 +642,7 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    NSLog(@"%s:\n-- %@ -- %@ -- \n", __func__, data, sError);
     
     //process the ride object to update the crew
     [self processRideObject:data];
@@ -686,14 +653,7 @@
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
     NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
-/*
-    if(self.rideCredits)
-        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
-               self.rideCredits,
-               @"Your credit card would only be charged after this credit has been applied."];
-    else
-        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-  */
+
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self

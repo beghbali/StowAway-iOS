@@ -41,10 +41,8 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @interface EnterPickupDropOffViewController () <CLLocationManagerDelegate,
                                                 MKMapViewDelegate,
                                                 StowawayServerCommunicatorDelegate,
-                                                UISearchBarDelegate, UISearchDisplayDelegate>/*,
-                                                UIPickerViewDelegate, UIPickerViewDataSource>*/
+                                                UISearchBarDelegate, UISearchDisplayDelegate>
 
-@property (weak, nonatomic) IBOutlet UIPickerView *timePickerView;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISearchBar *pickUpSearchBar;
@@ -53,52 +51,50 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rideRequestActivityIndicator;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revealButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rideCreditsBarButton;
-@property double rideCredits;
 
-@property (strong, nonatomic) CLLocationManager * locationManager;
-
-@property BOOL isUsingCurrentLoc;
-@property (nonatomic) CLLocationCoordinate2D userLocation;
-
-@property (nonatomic, strong) MKLocalSearch *localSearch;
-
-@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
-@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *dropOffPlaces;
-
-@property (nonatomic, strong) id pickUpLocItem;
-@property (nonatomic, strong) id dropOffLocItem;
-
-@property (nonatomic, strong) MKPointAnnotation * pickUpAnnotation;
-@property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
 
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *dropOffSearchDisplayController;
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *pickUpSearchDisplayController;
 
-@property (strong, nonatomic) NSDictionary * rideRequestResponse;
-
-@property (nonatomic, strong) NSMutableArray * availableRideTimesLabel;
-@property (nonatomic, strong) NSMutableArray * availableRideTimesAbsoluteTime;
-@property (nonatomic, strong) NSArray * rideTypes;
 @property (weak, nonatomic) IBOutlet UIButton *leftRideTypeButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightRideTypeButton;
 @property (weak, nonatomic) IBOutlet UILabel *rideTypeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rideTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *decreaseRideTimeButton;
 @property (weak, nonatomic) IBOutlet UIButton *increaseRideTimeButton;
+
+
+@property (strong, nonatomic) CLLocationManager * locationManager;
+@property BOOL isUsingCurrentLoc;
+@property (nonatomic) CLLocationCoordinate2D userLocation;
+@property BOOL isLocationDisabled;
+
+@property (nonatomic, strong) MKLocalSearch *localSearch;
+@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
+@property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *dropOffPlaces;
+@property (nonatomic, strong) id pickUpLocItem;
+@property (nonatomic, strong) id dropOffLocItem;
+@property (nonatomic, strong) MKPointAnnotation * pickUpAnnotation;
+@property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
+
+@property (nonatomic, strong) NSMutableArray * availableRideTimesLabel;
+@property (nonatomic, strong) NSMutableArray * availableRideTimesAbsoluteTime;
+@property (nonatomic, strong) NSArray * rideTypes;
 @property NSUInteger startingRideTypeIndex;
 @property BOOL isUsingNextRideType;
 @property NSUInteger currentRideTimeIndex;
 @property BOOL isRideTimeConfigured;
-
 @property NSInteger nowHrs;
 @property NSInteger nowMins;
 @property NSInteger startingAvailabilityHrs;
 @property NSInteger startingAvailabilityMins;
 @property NSInteger endingAvailabilityHrs;
 @property (strong, nonatomic) NSDateComponents *nowDateComponents;
+
+@property (strong, nonatomic) NSDictionary * rideRequestResponse;
+@property double rideCredits;
 @property BOOL isPreviousAppStateValid;
 @property BOOL isWaitingForRideCreditQueryToReturn;
-
 @property (strong, nonatomic) NSDate *rideDepartureDate;
 
 @end
@@ -106,8 +102,8 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 @implementation EnterPickupDropOffViewController
 
-int locationInputCount = 0;
-BOOL onBoardingStatusChecked = NO;
+int     __locationInputCount        = 0;
+BOOL    __onBoardingStatusChecked   = NO;
 
 #pragma mark - setup view
 
@@ -136,8 +132,9 @@ BOOL onBoardingStatusChecked = NO;
 -(void)addCurrentLocToPickUpPlaces
 {
     // first thing in serach table should be current location
-    MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
-    currentLoc.name = kPickUpDefaultCurrentLocation;
+    MKMapItem * currentLoc  = [MKMapItem mapItemForCurrentLocation];
+    currentLoc.name         = kPickUpDefaultCurrentLocation;
+    
     [self.pickUpPlaces insertObject: currentLoc atIndex:0];
 }
 
@@ -145,7 +142,7 @@ BOOL onBoardingStatusChecked = NO;
 {
     [super viewDidLoad];
     
-    NSLog(@"%s......", __func__);
+    NSLog(@"%s", __func__);
 
     //set text as white - looks better when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
@@ -156,41 +153,18 @@ BOOL onBoardingStatusChecked = NO;
     
     [self setUpPlacesSearch];
     
-   // [self configureAvailableRideTimes];
     self.isRideTimeConfigured = YES;
     
     self.rideTypes = @[@"Your Ride To Work Today",
                        @"Your Ride Home Today",
                        @"Your Ride To Work Tomorrow",
                        @"Your Ride Home Tomorrow"];
-    
-    
-/*
- [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(appWillBecomeInActive:) name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-*/
-}
-
-- (void)appWillBecomeInActive:(NSNotification *)notification
-{
-    NSLog(@"--******--%s............", __func__);
-    [self destroyCoreLocationManager];
-
-}
-- (void)appReturnsActive:(NSNotification *)notification
-{
-    NSLog(@"---------%s............", __func__);
-    
-    //dont recalculate immediately after VDL
-    if (!self.isRideTimeConfigured)
-        [self configureScheduledRidesOptions];
 }
 
 -(BOOL)isRestoringPreviousAppState
 {
-    NSNumber * requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
-    NSNumber * userID = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
+    NSNumber * requestID    = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+    NSNumber * userID       = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
     NSLog(@"%s: requestID %@, userID %@", __func__, requestID, userID);
     
@@ -217,7 +191,7 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"%s...... onBoardingStatusChecked %d", __func__, onBoardingStatusChecked);
+    NSLog(@"%s: __onBoardingStatusChecked %d", __func__, __onBoardingStatusChecked);
     
     [super viewDidAppear:YES];
     
@@ -230,23 +204,48 @@ BOOL onBoardingStatusChecked = NO;
 
     [self updateFindCrewButtonEnabledState];
 
-    //forget that ride was finalized
+    //forget the old request
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
-
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:kIsRideFinalized];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    if ( onBoardingStatusChecked )
+    if ( __onBoardingStatusChecked )
         [self setUpLocationServices];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(appReturnsActive:) name:UIApplicationDidBecomeActiveNotification
+                                             selector:@selector(appReturnsActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillBecomeInActive:)
+                                                 name:UIApplicationWillResignActiveNotification
                                                object:nil];
 
     [self configureScheduledRidesOptions];
     
     self.isRideTimeConfigured = NO;
 }
+
+#pragma mark - fg_bg action
+
+- (void)appWillBecomeInActive:(NSNotification *)notification
+{
+    NSLog(@"%s", __func__);
+    [self.locationManager stopUpdatingLocation];
+}
+
+- (void)appReturnsActive:(NSNotification *)notification
+{
+    NSLog(@"%s isRideTimeConfigured %d, __onBoardingStatusChecked %d", __func__, self.isRideTimeConfigured, __onBoardingStatusChecked);
+    
+    //dont recalculate immediately after VDL
+    if (!self.isRideTimeConfigured)
+        [self configureScheduledRidesOptions];
+    
+    if ( __onBoardingStatusChecked )
+        [self setUpLocationServices];
+}
+
 
 #pragma mark - onboarding check
 
@@ -266,9 +265,9 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)checkOnboardingStatus
 {
-    NSLog(@"%s...... onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
+    NSLog(@"%s...... __onBoardingStatusChecked %d ", __func__, __onBoardingStatusChecked);
 
-    if (onBoardingStatusChecked)
+    if (__onBoardingStatusChecked)
     {
         NSLog(@"has already checked onboarding status");
         return;
@@ -277,42 +276,42 @@ BOOL onBoardingStatusChecked = NO;
     //check ONBOARDING DONE ?
     NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
   
-    onBoardingStatusChecked = YES;
+    __onBoardingStatusChecked = YES;
 
     if ( ![self isUserLoggedIn] )
     {
-        onBoardingStatusChecked = NO;
+        __onBoardingStatusChecked = NO;
         [self performSegueWithIdentifier: @"onboarding_tutorial" sender: self];
     }
     else
     {
         if (![[userDefaults objectForKey:kOnboardingStatusReceiptsDone]boolValue] )
         {
-            onBoardingStatusChecked = NO;
+            __onBoardingStatusChecked = NO;
             [self performSegueWithIdentifier: @"onboarding_receipts" sender: self];
         }
         else
         {
             if (![[userDefaults objectForKey:kOnboardingStatusPaymentDone]boolValue] )
             {
-                onBoardingStatusChecked = NO;
+                __onBoardingStatusChecked = NO;
                 [self performSegueWithIdentifier: @"onboarding_payment" sender: self];
             }
             else if (![[userDefaults objectForKey:kOnboardingStatusTermsDone]boolValue] )
             {
-                onBoardingStatusChecked = NO;
+                __onBoardingStatusChecked = NO;
                 [self performSegueWithIdentifier: @"onboarding_terms" sender: self];
             }
         }
     }    
     
-    NSLog(@"%s......######## onBoardingStatusChecked %d ", __func__, onBoardingStatusChecked);
+    NSLog(@"%s: __onBoardingStatusChecked %d ", __func__, __onBoardingStatusChecked);
 }
 
 +(void)setOnBoardingStatusChecked:(BOOL)yesOrNo
 {
     NSLog(@"setOnBoardingStatusChecked %d", yesOrNo);
-    onBoardingStatusChecked = yesOrNo;
+    __onBoardingStatusChecked = yesOrNo;
 }
 
 #pragma mark - Ride Time Buttons
@@ -564,7 +563,7 @@ BOOL onBoardingStatusChecked = NO;
         self.startingAvailabilityMins = nxtMins;
     }
     
-    NSLog(@"%s: availableRideTimesLabel %@, self.currentRideTimeIndex %lu", __func__, self.availableRideTimesLabel, (unsigned long)self.currentRideTimeIndex);
+   // NSLog(@"%s: availableRideTimesLabel %@, self.currentRideTimeIndex %lu", __func__, self.availableRideTimesLabel, (unsigned long)self.currentRideTimeIndex);
     
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     
@@ -1041,14 +1040,6 @@ BOOL onBoardingStatusChecked = NO;
         {
             NSString *errorStr = [[error userInfo] valueForKey:NSLocalizedDescriptionKey];
             NSLog(@"%s: error %@", __func__, errorStr);
-           /* 
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not find places"
-                                                            message:errorStr
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-            */
         }
         else
         {
@@ -1222,7 +1213,8 @@ BOOL onBoardingStatusChecked = NO;
 {
     NSLog(@"%s", __func__);
 
-    [self isLocationEnabled];
+    //check loc is on
+    self.isLocationDisabled = ![self isLocationEnabled];
     
     self.mapView.showsUserLocation = YES;
     
@@ -1243,14 +1235,11 @@ BOOL onBoardingStatusChecked = NO;
 -(void) setupCoreLocationManager
 {
     // start by locating user's current position
-    if (self.locationManager) {
-        NSLog(@"%s: location manager is not null", __func__);
-        return;
-    }
+    if (!self.locationManager)
+        self.locationManager = [[CLLocationManager alloc] init];
 
     NSLog(@"%s", __func__);
 
-	self.locationManager = [[CLLocationManager alloc] init];
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeOther;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
@@ -1278,7 +1267,12 @@ BOOL onBoardingStatusChecked = NO;
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     
-//TODO: re-start loc services if needed
+    NSLog(@"%s, status %d",__func__, status);
+    
+    if ( (status == kCLAuthorizationStatusAuthorized) && self.isLocationDisabled )
+        [self.locationManager startUpdatingLocation];
+    else
+        self.isLocationDisabled = ![self isLocationEnabled];    //this would prompt user
     
 }
 
@@ -1317,21 +1311,21 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)updateFindCrewButtonEnabledState
 {
-    locationInputCount = 2;
+    __locationInputCount = 2;
     
     if ([self.pickUpSearchBar.text isEqualToString:@""]) {
         NSLog(@"no pickup, grey out find");
         self.findCrewButton.enabled = NO;
-        locationInputCount--;
+        __locationInputCount--;
     }
     
     if ([self.dropOffSearchBar.text isEqualToString:@""]) {
         NSLog(@"no dropoff, grey out find");
         self.findCrewButton.enabled = NO;
-        locationInputCount--;
+        __locationInputCount--;
     }
     
-    if (locationInputCount > 1)
+    if (__locationInputCount > 1)
         self.findCrewButton.enabled = YES;
 }
 
@@ -1396,7 +1390,7 @@ BOOL onBoardingStatusChecked = NO;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSLog(@"%s........credits %f, isPreviousAppStateValid %d", __func__, self.rideCredits, self.isPreviousAppStateValid);
+    NSLog(@"%s: credits %f, isPreviousAppStateValid %d", __func__, self.rideCredits, self.isPreviousAppStateValid);
     
     [self destroyCoreLocationManager]; //we don't need to update user's current location at this point
 
@@ -1413,6 +1407,10 @@ BOOL onBoardingStatusChecked = NO;
             
             [[NSNotificationCenter defaultCenter] removeObserver:self
                                                             name:UIApplicationDidBecomeActiveNotification
+                                                          object:nil];
+
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UIApplicationWillResignActiveNotification
                                                           object:nil];
 
             if (!self.isPreviousAppStateValid)
@@ -1445,15 +1443,7 @@ BOOL onBoardingStatusChecked = NO;
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
     NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
-    
-   /*
-    if(self.rideCredits)
-        
-        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\nYour credit card would only be charged after this credit has been applied.",
-               self.rideCredits];
-    else
-        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-    */
+  
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self

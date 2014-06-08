@@ -24,33 +24,10 @@
         [Crashlytics startWithAPIKey:[[Environment ENV] lookup:@"kCrashlyticsAPIKey"]];
         NSLog(@"Crashlytics Enabled");
     }
+    
     NSString *environment = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
 
-    NSLog(@"app launched %@ environment with launch options %@", environment, launchOptions);
-    NSLog(@"server url %@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"]);
-
-    NSLog(@"app launched with launch options %@", launchOptions);
-
-    if (launchOptions != nil)
-	{
-		NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-		if (dictionary != nil)
-		{
-			NSLog(@"Launched from remote push notification: %@", dictionary);
-		//	[self processStowawayPushNotification:dictionary isAppRunning:NO];
-		}
-        
-        NSDictionary *local_dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-		if (local_dictionary != nil)
-		{
-			NSLog(@"Launched from local push notification: %@", local_dictionary);
-            //timed out , failed to find a match --delete the request id
-            //erase it from memory, so its not used in app restoration
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-		//	[self processUILocalNotification:local_dictionary isAppRunning:NO];
-		}
-	}
+    NSLog(@"app launched in %@ environment with launch options %@", environment, launchOptions);
 
     // Let the device know we want to receive push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
@@ -67,149 +44,45 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-	NSLog(@"\n didReceiveRemoteNotification: %@ ..........\n", userInfo);
+	NSLog(@"\n didReceiveRemoteNotification: %@ \n", userInfo);
     
-    [self processStowawayPushNotification:userInfo isAppRunning:YES];
-}
-
-
-- (void)processStowawayPushNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
-{
-    NSLog(@"isAppRunning %d, processStowawayPushNotification........", isAppRunning);
-    
-    NSString * status       = [pushMsg valueForKey:kStatus];
-    NSNumber * ride_id      = [pushMsg valueForKey:kPublicId];
-    NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-    BOOL isRideFinalized    = [[[NSUserDefaults standardUserDefaults] objectForKey:kIsRideFinalized] boolValue];
-
-    NSLog(@"\n **** publicUserId %@, ride_id %@, status %@, isRideFinalized %d **** \n", publicUserId, ride_id, status, isRideFinalized);
-
-    if (ride_id && (ride_id != (id)[NSNull null]))
-        self.fakeRideRequestResponse =  @{kRidePublicId: ride_id, kUserPublicId: publicUserId};
-    else
-        self.fakeRideRequestResponse =  @{kUserPublicId: publicUserId};
-    
-    NSLog(@"fake ride req: %@", self.fakeRideRequestResponse);
-
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-/*
-   NSLog(@"\n ******* TEST: myc_vc window %@\n fc_vc window %@ \n ***********",
-         ((MeetCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"MeetCrewViewController"]).view.window,
-          ((FindingCrewViewController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"FindingCrewViewController"]).view.window);
-*/
-    //we have a update while finding crew - that means new crew joined or someone dropped out
-    if ( !isRideFinalized )
+    NSArray * allKeys = [userInfo allKeys];
+    if (!allKeys || !(allKeys.count) )
     {
-        //prepare find crew view to be launched
-        NSLog(@" **** prepare find crew view to be launched **** ");
-        
-        if (isAppRunning)
-        {
-            //send notification to the FC vc
-            NSLog(@" *** app was running so post a notification to FC_vc");
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFindCrew"
-                                                                object:self
-                                                              userInfo:self.fakeRideRequestResponse];
-        } else
-        {
-            /*
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"wasAppLaunchedDueToPush"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-*/
-              //NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
-            
-           // self.window.rootViewController = enterPickUpDropOffCrewVC;
-           // [self.window.rootViewController presentViewController:enterPickUpDropOffCrewVC animated:NO completion:Nil];
-            //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
-            //[self.window.rootViewController addS  presentViewController:findingCrewVC animated:NO completion:Nil];
-            UIViewController * rootViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-            NSLog(@"rootViewController %@", rootViewController);
-
-            NSLog(@"app was not running, so build view hierarchy and go to FC view");
-            EnterPickupDropOffViewController *enterPickUpDropOffCrewVC = (EnterPickupDropOffViewController *)[mainStoryboard
-                                                                                                              instantiateViewControllerWithIdentifier:@"EnterPickupDropOffViewController"];
-            NSLog(@"enterPickUpDropOffCrewVC %@", enterPickUpDropOffCrewVC);
-            
-            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
-                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
-            
-            NSLog(@"findingCrewVC %@", findingCrewVC);
-            
-            [rootViewController addChildViewController:enterPickUpDropOffCrewVC];
-            NSLog(@"enterpickup vc added as childviewcontroller $$$");
-          
-            [rootViewController addChildViewController:findingCrewVC];
-            NSLog(@"findingCrewVC vc added as childviewcontroller $$$");
-#warning fix the view to be presented modally here....
-//            [enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:NO completion:Nil];
-        }
+        NSLog(@"%s: empty push.......... ignoring \n", __func__);
         return;
     }
     
-    NSLog(@" **** prepare meet your crew view to be launched **** ");
-
-    //notification after we have been on meet your crew
+    /*
+     ride id valid:
+                    someone joined the ride
+                    someone dropped but there are more riders
+                    ride got initiated/checkedin/missed
+     
+     ride id null:
+                    someone dropped, ride got canceled
+     */
     
-    if (isAppRunning)
-    {
-        //send notification to the meet your crew vc
-        NSLog(@" *** updateMeetCrew");
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMeetCrew"
-                                                            object:self
-                                                          userInfo:pushMsg];
-    } else
-    {
-        if (ride_id && (ride_id != (id)[NSNull null]))
-        {
-            NSLog(@"ride canceled");
-            //captain canceled the ride, so cancel it for everyone, take them to FindingCrewViewController
-            
-            FindingCrewViewController *findingCrewVC = (FindingCrewViewController *)[mainStoryboard
-                                                                                     instantiateViewControllerWithIdentifier:@"FindingCrewViewController"];
-            
-            NSLog(@"findingCrewVC %@", findingCrewVC);
-            
-            
-            findingCrewVC.rideRequestResponse = self.fakeRideRequestResponse;
-            NSLog(@"self.window.rootViewController %@", self.window.rootViewController);
-            
-            // self.window.rootViewController = enterPickUpDropOffCrewVC;
-            // [self.window.rootViewController presentViewController:enterPickUpDropOffCrewVC animated:NO completion:Nil];
-            //[enterPickUpDropOffCrewVC presentViewController:findingCrewVC animated:YES completion:Nil];
-            [self.window.rootViewController presentViewController:findingCrewVC animated:NO completion:Nil];
-
-        }
-        //TODO:
-        //we have a update while crew is meeting -- either a stowaway dropped or captain dropped(ride_id==nil)
-        //need to fill the crew property before loading the VC - view did load calls initiatecrew and puts stuff on map
-        MeetCrewViewController *meetCrewVC = (MeetCrewViewController *)[mainStoryboard
-                                                                        instantiateViewControllerWithIdentifier:@"MeetCrewViewController"];
-        
-        NSLog(@"**** we have a update while crew is meeting %@ ***", meetCrewVC.view.window);
-
-        [self.window.rootViewController presentViewController:meetCrewVC animated:YES completion:NULL];
-    }
-
     
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"rideUpdateFromServer"
+                                                        object:self
+                                                      userInfo:userInfo];
     
+    /*
+     "finding crew" will get this if not on "meet crew" view and then poll the server
+     
+     otherwise
+     
+     "meet crew" will get latest ride object or go back home if ride is canceled
+     */
 }
 
 #pragma mark local notif
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"didReceiveLocalNotification: %@", notification);
+    NSLog(@"%s: %@", __func__, notification);
     
-    [self processUILocalNotification:notification.userInfo isAppRunning:YES];
-
-}
-
-- (void)processUILocalNotification:(NSDictionary*)pushMsg isAppRunning:(BOOL)isAppRunning
-{
-    NSLog(@"processUILocalNotification: %@, isAppRunning %d", pushMsg, isAppRunning);
     //crew matching timed out -- failed to find ::generate notif which finding crew will respond to by deleting the request
     [[NSNotificationCenter defaultCenter] postNotificationName:@"crewFindingTimedOut"
                                                         object:self
@@ -220,9 +93,6 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"My token is: %@",deviceToken.description);
-    // add it to nsuserdefaults, so we can send it along with FB login info
-
     if ( !deviceToken ) {
         NSLog(@"null token.. ERROR !!!");
         return;
@@ -236,7 +106,6 @@
     
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
-    //TODO: update the server with device token everytime
     if (standardDefaults)
     {
         [standardDefaults setObject:newToken forKey:kDeviceToken];
@@ -263,24 +132,6 @@
 	NSLog(@"Failed to get token, error: %@", error);
 }
 							
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    
-    //TODO: add code to check that notifcations are enabled otherwise prompt user to enable it
-}
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -311,7 +162,6 @@
                                               otherButtonTitles:@"Update", nil];
         [alert show];
     }
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex
@@ -319,7 +169,9 @@
     if (buttonIndex == 0)
     {
         NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
+        
         NSURL *url = [NSURL URLWithString:myURL];
+        
         [[UIApplication sharedApplication] openURL: url];
     }
 }

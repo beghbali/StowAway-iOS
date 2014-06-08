@@ -25,7 +25,8 @@
 
 @property (weak, nonatomic) MKMapView * mapView;
 
-@property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew; //index 0 being self and upto 3, this class will also add the MKPointAnnotation; this is copy of the original so we can compare when crew changes
+/* index 0 being self and upto 3, this class will also add the MKPointAnnotation; this is copy of the original so we can compare when crew changes */
+@property (strong, nonatomic) NSMutableArray * /*of NSMutableDictionary*/ crew;
 
 @property BOOL inAutoCheckinModeNow;
 
@@ -124,17 +125,6 @@
     [self showDropOffLocation];
     [self showPickUpLocation];
     [self zoomToFitMapAnnotations];
-    
-    /*
-     if (!isLoneRider)
-     {
-     //start location updates
-     [self startLocationUpdates];
-     
-     //subscribe to pusher channel
-     [self startPusherUpdates];
-     }
-     */
 }
 
 #pragma mark - Auto-checkin
@@ -161,12 +151,13 @@
 
     //change the location activity mode to give us auto navigation location updates
     self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
 }
 
 //called when server made a decision about auto-checkin
 -(void)stopAutoCheckinMode
 {
-    NSLog(@"stopAutoCheckinMode");
+    NSLog(@"%s", __func__);
     [self stopLocationUpdates];
     [self stopPusherUpdates];
 }
@@ -306,6 +297,7 @@
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeFitness;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = kPusherCrewWalkingLocationUpdateThreshholdMeters;
 	[self.locationManager startUpdatingLocation];
 }
 
@@ -317,12 +309,10 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"didUpdateLocations !");
-    //NSLog(@"Meet crew: loc update - %@", locations);
+    NSLog(@"%s", __func__);
     CLLocation * newLocation = [locations lastObject];
     
     CLLocationDistance change = [self.location   distanceFromLocation:newLocation];
-   // NSLog(@"prev loc %@, change %f", self.location, change);
     
     if ( self.location && (change < kPusherCrewWalkingLocationUpdateThreshholdMeters) ) {
         NSLog(@"change is less than %f, ignoring...", kPusherCrewWalkingLocationUpdateThreshholdMeters);
@@ -343,7 +333,6 @@
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    //TODO: re-start loc services if needed
     NSLog(@"%s, status %d",__func__, status);
     
     if ( (status == kCLAuthorizationStatusAuthorized) && self.isLocationDisabled )
@@ -430,6 +419,7 @@
     NSDictionary * locationUpdate = @{@"event":kPusherCrewLocationEvent,
                                       @"channel":[NSString stringWithFormat:@"private-%@", self.locationChannel],
                                       @"data": dataDict};
+    
     NSLog(@"*** sendDataToPusher:: %@", locationUpdate);
     [connection send:locationUpdate];
 }

@@ -7,7 +7,6 @@
 //
 
 #import "FindingCrewViewController.h"
-#import "CountdownTimer.h"
 #import "StowawayServerCommunicator.h"
 #import "MeetCrewViewController.h"
 #import "AppDelegate.h"
@@ -15,17 +14,10 @@
 #define TOTAL_FACES_COUNT 34
 #define FACES_USED_FOR_ANIMATION 16
 
-@interface FindingCrewViewController () <CountdownTimerDelegate, UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
-
-@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages1;
-@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages2;
-@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages3;
-
+@interface FindingCrewViewController () <UIAlertViewDelegate, StowawayServerCommunicatorDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *getRideResultActivityIndicator;
-@property (weak, nonatomic) IBOutlet UILabel *countDownTimer;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-
 @property (weak, nonatomic) IBOutlet UIImageView *imageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView2;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView3;
@@ -36,10 +28,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *advertiseFooterLabel;
 @property (weak, nonatomic) IBOutlet UILabel *waitingLabel;
 @property (weak, nonatomic) IBOutlet UIButton *rideInfoDisclosureButton;
-
-@property (strong, nonatomic) CountdownTimer * cdt;
-//@property (strong, nonatomic) NSDate * timerExpiryDate;
-@property (strong, nonatomic) UILocalNotification *localNotification;
 
 @property (strong, nonatomic) UILocalNotification *crewFindingTimeoutLocalNotification;
 
@@ -61,6 +49,10 @@
 
 @property (strong, nonatomic) NSTimer * serverPollingTimer;
 
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages1;
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages2;
+@property (strong, nonatomic) NSMutableArray * /*of UIImage*/ animationImages3;
+
 @end
 
 @implementation FindingCrewViewController
@@ -70,27 +62,69 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (IBAction)rideInfoDisclosureButtonTapped:(UIButton *)sender
+-(void) viewDidLoad
 {
-    NSString * msg = [NSString stringWithFormat:@"%@\n%@",
-               @"We'll try to fill this ride until 15 minutes before your departure time.",
-                      @"Usually your ride will finalize much sooner and you'll get pick up details."];
+    [super viewDidLoad];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"More On Finding Crew"
-                                                    message:msg
-                                                   delegate:self
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:@"Ok", nil];
-    [alert show];
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+    
+    [self.getRideResultActivityIndicator stopAnimating];
+    
+    //process ride request reply from server -- also sets cd timer value
+    [self processRequestObject:self.rideRequestResponse];
+    
+    //schedule to poll the server every 30secs
+    self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
+                                                               target:self
+                                                             selector:@selector(pollServer)
+                                                             userInfo:nil
+                                                              repeats:YES];
+    
+    self.rideInfoLabel.text = [NSString stringWithFormat:@"Finding %@, %@",self.rideTypeLabel, self.rideTimeLabel];;
+    
+    self.advertiseFooterLabel.text =
+    @"Get there quickly and comfortably\nfor nearly the cost of a bus fare !";
+    
+    self.waitingLabel.text =
+    @"We'll send you notifications as\nwe match you with other riders.";
+    
+    [self pollServer]; //to take care of restoring app case, where server is queried for request object
+    
+    [self setCrewFindingTimeoutNotification];
+    
+    [self subscribeToNotifications];
 }
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+    
+    self.viewDidLoadFinished = YES;
+    
+    NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
+    
+    //update the view - pics, names
+//    [self updateFindingCrewView];
+    
+    //go to "meet the crew" view
+    if ( self.isReadyToGoToMeetCrew && self.viewDidLoadFinished )
+        [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
+}
+
+#pragma mark - notification subscriptions
 
 -(void)subscribeToNotifications
 {
     NSLog(@"%s...........", __func__);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveRemoteNotification:)
-                                                 name:@"updateFindCrew"
+                                             selector:@selector(fcReceivedRideUpdateFromServer:)
+                                                 name:@"rideUpdateFromServer"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -119,7 +153,7 @@
     NSLog(@"%s...........", __func__);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:@"updateFindCrew"
+                                                    name:@"rideUpdateFromServer"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -140,11 +174,12 @@
 
 }
 
+#pragma mark - process signals
 
 - (void)appReturnsActive:(NSNotification *)notification
 {
-    NSLog(@"%s............%@\n", __func__, self.serverPollingTimer);
-    //start the server polling
+    NSLog(@"%s: ", __func__);
+
     [self pollServer];
     
     //schedule to poll the server every 30secs
@@ -154,124 +189,30 @@
                                                              userInfo:nil
                                                               repeats:YES];
 }
+
 - (void)appWillBecomeInActive:(NSNotification *)notification
 {
-    NSLog(@"%s............%@\n", __func__, self.serverPollingTimer);
+    NSLog(@"%s:", __func__);
     
     //dont poll the server when in the background
     [self.serverPollingTimer invalidate];
 }
 
--(void) viewDidLoad
-{
-    [super viewDidLoad];
-//    NSLog(@"viewdidload - FC_vc %@, rideRequestResponse %@", self, self.rideRequestResponse);
-    
-    //self.rideInfoDisclosureButton.highlighted = YES;
-    
-    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
-    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
-
-    [self.getRideResultActivityIndicator stopAnimating];
-
-    //process ride request reply from server -- also sets cd timer value
-    [self processRequestObject:self.rideRequestResponse];
-    
-    //schedule to poll the server every 30secs
-    self.serverPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kServerPollingIntervalSeconds
-                                                               target:self
-                                                             selector:@selector(pollServer)
-                                                             userInfo:nil
-                                                              repeats:YES];
-    
-    self.rideInfoLabel.text = [NSString stringWithFormat:@"Finding %@, %@",self.rideTypeLabel, self.rideTimeLabel];;
-
-    self.advertiseFooterLabel.text = @"Get there quickly and comfortably\nfor nearly the cost of a bus fare !";
-    
-    /*[NSString stringWithFormat:@"%@\n%@",
-                                      @"Get there quickly and comfortably,",
-                                      @"for nearly the cost of a bus fare !"];
-*/
-    self.waitingLabel.text =[NSString stringWithFormat:@"%@",
-                             @"We'll send you notifications as\nwe match you with other riders."];/*,
-                             @"Your ride will finalize 15 minutes before departure."];*/
-    
-    [self pollServer]; //to take care of restoring app case, where server is queried for request object
-    
-    [self setCrewFindingTimeoutNotification];
-    
-    [self subscribeToNotifications];
-}
-
 //remote push notification
--(void)didReceiveRemoteNotification:(NSNotification *)notification
+-(void)fcReceivedRideUpdateFromServer:(NSNotification *)notification
 {
     NSLog(@"%s:  %@", __func__, notification);
-    [self processRequestObject:notification.userInfo];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
-    self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
-
-    self.viewDidLoadFinished = YES;
-
-    NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
-
-    //outlets are loaded, now arm the timer, this is only set once
-   // [self armUpCountdownTimer];
-    
-    //recalculate timer
-   // [self reCalculateCDTimer];
-
-    //update the view - pics, names
-    [self updateFindingCrewView]; //?? verify that this is not requied -- since on launch due to push, it will be processed
-    
-    //go to "meet the crew" view
-    if ( self.isReadyToGoToMeetCrew && self.viewDidLoadFinished )
-        [self performSegueWithIdentifier: @"toMeetCrew" sender: self];
-}
-
-- (void)pollServer
-{
-    //check to see if departure time has passed
-    NSDate * now = [NSDate date];
-    if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
+    //query server to get the latest
+    self.rideID = [notification.userInfo objectForKey:kPublicId];
+    if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
     {
-        NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
-
-        [self sendCoupon:kCouponCodeLoneRider];
-        
-        return;
+        NSLog(@"ride got CANCELED go back to enter drop off pick up view");
+        self.rideID = nil;
     }
     
-    NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
-    
-    if (!self.requestID || !self.userID)
-        return;
-    
-    //if ride id is nil get request object
-    if ( self.rideID && (id)(self.rideID) != [NSNull null] )
-    {
-        NSDictionary * dict = @{kRidePublicId: self.rideID};
-
-        [self processRequestObject:dict];
-
-        return;
-    }
-    
-    //get fresh request object to see if there is a ride
-    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
-    
-    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
-    sscommunicator.sscDelegate = self;
-    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
-    
-    [self.getRideResultActivityIndicator startAnimating];
+    [self pollServer];
 }
+
 
 #pragma mark - crewfinding timeout notification
 
@@ -322,6 +263,46 @@
         [self processRequestObject:data];
 }
 
+#pragma mark - poll server
+
+- (void)pollServer
+{
+    //check to see if departure time has passed
+    NSDate * now = [NSDate date];
+    if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
+    {
+        NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
+        
+        [self sendCoupon:kCouponCodeLoneRider];
+        
+        return;
+    }
+    
+    NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
+    
+    if (!self.requestID || !self.userID)
+        return;
+    
+    //if ride id is nil get request object
+    if ( self.rideID && (id)(self.rideID) != [NSNull null] )
+    {
+        NSDictionary * dict = @{kRidePublicId: self.rideID};
+        
+        [self processRequestObject:dict];
+        
+        return;
+    }
+    
+    //get fresh request object to see if there is a ride
+    NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
+    
+    [self.getRideResultActivityIndicator startAnimating];
+}
+
 #pragma mark - process REQUEST
 
 -(void)processRequestObject:(NSDictionary *)response
@@ -330,8 +311,8 @@
 
     if (!response)
     {
-        //coming from remote push notification
-        self.rideRequestResponse = response = ((AppDelegate *)[UIApplication sharedApplication].delegate).fakeRideRequestResponse;
+        NSLog(@"%s: null response", __func__);
+        return;
     }
     
     self.isReadyToGoToMeetCrew = NO;
@@ -513,7 +494,7 @@
         
         //pick up time
         self.pickUpTime = [response objectForKey:kSuggestedPickUpTime];
-        NSLog(@"%s: %@", __func__, self.pickUpTime);
+        NSLog(@"%s: pickUpTime %@", __func__, self.pickUpTime);
         
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
@@ -541,9 +522,11 @@
             meetCrewVC.crew                 = self.crew;
             meetCrewVC.locationChannel      = self.locationChannel;
             meetCrewVC.suggestedLocations   = self.suggestedLocations;
-            
+        
             meetCrewVC.rideCredits          = self.rideCredits;
-
+        
+            meetCrewVC.rideDepartureDate    = self.rideDepartureDate;
+            
             NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
             NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
             
@@ -674,88 +657,6 @@ void swap (NSUInteger *a, NSUInteger *b)
     [imageView stopAnimating];
 }
 
-#pragma mark countdown timer
-
--(void)reCalculateCDTimer
-{
-    double rideRequestedAt = [[[self.crew objectAtIndex:0] objectForKey:kRequestedAt] doubleValue];
-    double minRideRequestedAt = rideRequestedAt;
-    
-    for (int i = 1; i < self.crew.count; i++)
-    {
-        double iRideRequestedAt = [[[self.crew objectAtIndex:i] objectForKey:kRequestedAt] doubleValue];
-        NSLog(@"iRide_req_at %f, minRideReq %f, i%d", iRideRequestedAt, minRideRequestedAt, i);
-        //compare self with the other crew members requested time, we want the minimum req time
-        if ( iRideRequestedAt < minRideRequestedAt )
-            minRideRequestedAt = iRideRequestedAt;
-    }
-    
-    if ( minRideRequestedAt == rideRequestedAt)
-    {
-        NSLog(@"%s: there was no ride requested before mine, so dont change CDT", __func__);
-        return;
-    }
-    
-    NSTimeInterval secondsToExpire = (int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"] - (rideRequestedAt - minRideRequestedAt);
-    
-    self.cdt.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:secondsToExpire];;
-    
-    NSLog(@"reCalculateCDTimer:secondsToExpire %f, expiry date %@ ***", secondsToExpire, self.cdt.countDownEndDate);
-}
-
--(void) armUpCountdownTimer
-{
-    NSLog(@"armUpCountdownTimer");
-   
-    self.cdt = [[CountdownTimer alloc] init];
-    
-    self.cdt.cdTimerDelegate = self;
-    
-    [self.cdt initializeWithSecondsRemaining: (int)[[Environment ENV] lookup:@"kCountdownTimerToDepartureInSecs"]
-                                    ForLabel:self.countDownTimer];
-
-    [self setTimerExpiryNotification];
-}
-
-- (void)countdownTimerExpired
-{
-    NSLog(@"%s, crew <%lu> %@", __func__, (unsigned long)self.crew.count, self.crew);
-
-    //self.countDownTimer.text = @"00:00";
-
-    //check if there is atleast one match
-    if ( self.crew.count > 1)
-    {
-        [self cancelTimerExpiryNotificationSchedule];
-        
-        //going to meet crew
-        [self.serverPollingTimer invalidate];
-        
-        // ask server for roles
-        NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@/finalize", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
-        
-        StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
-        sscommunicator.sscDelegate = self;
-        [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"PUT"];
-        
-        [self.getRideResultActivityIndicator startAnimating];
-        
-        return;
-    }
-    
-    /*
-    //if there are no matches, ask user if they want to wait more
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Matches Yet !"
-                                                    message:@"Do you want to wait a bit more ?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"No"
-                                          otherButtonTitles:@"Yes", nil];
-    [alert show];
-    */
-    
-    [self sendCoupon:kCouponCodeLoneRider];
-}
-
 
 #pragma mark ride cancel
 
@@ -784,8 +685,6 @@ void swap (NSUInteger *a, NSUInteger *b)
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    //cancel local notif
-    //[self cancelTimerExpiryNotificationSchedule];
     [self unSubscribeToNotifications];
 
     [self unSetCrewFindingTimeoutNotification];
@@ -797,11 +696,10 @@ void swap (NSUInteger *a, NSUInteger *b)
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
+#pragma mark - crew finding timed out
 -(void)sendCoupon:(NSString *)couponCode
 {
-    //cancel local notif
-    //[self cancelTimerExpiryNotificationSchedule];
-    NSLog(@"%s:...........",__func__);
+    NSLog(@"%s:",__func__);
     //send couponed request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
@@ -821,39 +719,6 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     [self sendCoupon:kCouponCodeLoneRider];
 }
-
-#pragma mark timer expiry localnotification
-
-- (void)setTimerExpiryNotification
-{
-    NSLog(@"%s:<self.localNotification %@> AT %@", __func__, self.localNotification, self.cdt.countDownEndDate);
-    
-    if ( self.localNotification )
-        [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
-    
-    self.localNotification = [[UILocalNotification alloc] init];
-    self.localNotification.fireDate = self.cdt.countDownEndDate;
-    self.localNotification.alertBody = @"Your Immediate Action Required !!";
-    self.localNotification.soundName = @"action_required.wav";
-    [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotification];
-
-    NSLog(@"%s:SET -- <self.localNotification %@> ", __func__, self.localNotification);
-
-}
-
-- (void)cancelTimerExpiryNotificationSchedule
-{
-    self.cdt.cdTimerDelegate = nil;
-
-    NSLog(@"cancelTimerExpiryNotificationSchedule %@ .....", self.localNotification);
-    
-    if ( !self.localNotification )
-        return;
-    
-    [[UIApplication sharedApplication] cancelLocalNotification:self.localNotification];
-    self.localNotification = nil;
-}
-
 
 #pragma mark update view
 
@@ -1010,29 +875,15 @@ void swap (NSUInteger *a, NSUInteger *b)
             [self cancelCrewFinding];
     }
     
-    if ([theAlert.title isEqualToString:@"No Matches Yet !"])
-    {
-        if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"No"])
-            [self sendCoupon:kCouponCodeLoneRider];
-        else
-            [self armUpCountdownTimer]; //re-start the 5mins timer
-    }
-
 }
 
 
 #pragma mark - ride credits
+
 - (IBAction)rideCreditsBarButtonTapped:(UIBarButtonItem *)sender
 {
     NSString * msg = [NSString stringWithFormat:kRideCreditsAlertMsgFormat, self.rideCredits];
-/*
-    if(self.rideCredits)
-        msg = [NSString stringWithFormat:@"You have $%0.2f to spend on stowaway rides.\n%@",
-               self.rideCredits,
-               @"Your credit card would only be charged after this credit has been applied."];
-    else
-        msg = @"Your current credit balance is $0. Credits can be applied to pay for rides.";
-  */
+
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self
@@ -1051,6 +902,22 @@ void swap (NSUInteger *a, NSUInteger *b)
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
     
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
+}
+
+
+#pragma mark - ride info disclosure
+
+- (IBAction)rideInfoDisclosureButtonTapped:(UIButton *)sender
+{
+    NSString * msg =
+    @"We'll try to fill this ride until 15 minutes before your departure time.\nUsually your ride will finalize much sooner and you'll get pick up details.";
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"More On Finding Crew"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"Ok", nil];
+    [alert show];
 }
 
 

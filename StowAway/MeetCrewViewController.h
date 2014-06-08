@@ -30,4 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rideCreditsBarButton;
 @property double rideCredits;
 
+@property (strong, nonatomic) NSDate *rideDepartureDate;
+
 @end
