@@ -562,20 +562,35 @@
 {
     NSLog(@"%s: sender %@ ", __func__, sender);
     
+    
     if ([sender.titleLabel.text isEqualToString:@"Cancel Ride"])
-        {
-        //warn user
+    {
+        //warn user that they are canceling a ride
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your crew would be disappointed !"
                                                         message:@"Do you really want cancel this ride ?"
                                                        delegate:self
                                               cancelButtonTitle:@"Yes"
                                               otherButtonTitles:@"No", nil];
         [alert show];
-    } else
-    {
-        //done button
-        [self doneWithTheRide];
+        return;
     }
+    
+    //lone rider - no thanks == dont give the ride credits
+    if ([sender.titleLabel.text isEqualToString:@" No Thanks "])
+    {
+        //warn user that they are canceling a ride
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Free ride credits !"
+                                                        message:@"Do you really want to forgo 50% ride credit ?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Yes"
+                                              otherButtonTitles:@"No", nil];
+        [alert show];
+        return;
+    }
+
+    //done button
+    [self doneWithTheRide];
+
 }
 
 -(void)cancelRide
@@ -602,7 +617,7 @@
     NSLog(@"For alert %@, The %@ button was tapped.", theAlert.title, [theAlert buttonTitleAtIndex:buttonIndex]);
     
     //TODO: change all the constant texts to constant keys in a string file, that can be used for localization as well
-    if ([theAlert.title isEqualToString:@"Your crew would be disappointed !"])
+   // if ([theAlert.title isEqualToString:@"Your crew would be disappointed !"])
     {
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"])
             [self cancelRide];
