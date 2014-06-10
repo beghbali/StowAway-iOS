@@ -400,6 +400,10 @@
 -(void)stopPusherUpdates
 {
     NSLog(@"%s", __func__);
+    
+    if (!(self.pusher && self.locationChannel))
+        return;
+    
     PTPusherChannel *channel = [self.pusher channelNamed:self.locationChannel];
     [channel unsubscribe];
 }

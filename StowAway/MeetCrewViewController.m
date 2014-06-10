@@ -337,8 +337,9 @@
             
             if (keepRunningAutoCheckinProcess != 0)
             {
-                NSLog(@"%s: checkin status determined, now stop auto-checkin mode....", __func__);
-                self.cancelButton.titleLabel.text = @"   DONE  ";
+                NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
+                if (!self.isLoneRider)
+                    self.cancelButton.titleLabel.text = @"   DONE  ";
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
             }
             continue; //end of processing myself
