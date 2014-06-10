@@ -151,9 +151,10 @@
 
 - (void)appReturnsActive:(NSNotification *)notification
 {
-    NSLog(@"%s............\n", __func__);
+    NSLog(@"%s............is lone rider %d\n", __func__, self.isLoneRider);
     //get update on the riders
-    [self getRideObject];
+    if (!self.isLoneRider)
+        [self getRideObject];
 }
 
 -(void)getRideObject
@@ -647,10 +648,10 @@
     
     self.requestUberButton.enabled = NO;
     
-    self.cancelButton.titleLabel.text = @"   DONE  ";
-
     if (self.isLoneRider)
     {
+        self.cancelButton.titleLabel.text = @"   DONE  ";
+
         self.navigationBarItem.title  = @"Bon Voyage !";
     }
 }
