@@ -916,6 +916,8 @@ BOOL    __onBoardingStatusChecked   = NO;
     [self.mapView addAnnotation:mkPA];
     [self.mapView selectAnnotation:mkPA animated:YES];
     
+    [self updateMapsViewArea];
+    
     NSLog(@"%s: lat %f, long %f", isPickUpPoint?"pick up loc":"drop off loc", mkPA.coordinate.latitude, mkPA.coordinate.longitude);
 }
 
@@ -963,6 +965,8 @@ BOOL    __onBoardingStatusChecked   = NO;
         
         NSLog(@"drop off location lat %f long %f", self.dropOffAnnotation.coordinate.latitude, self.dropOffAnnotation.coordinate.longitude);
     }
+
+    [self updateMapsViewArea];
 
     [self updateFindCrewButtonEnabledState];
 }
@@ -1169,12 +1173,6 @@ BOOL    __onBoardingStatusChecked   = NO;
             resultPin.coordinate = self.userLocation;
             self.isUsingCurrentLoc = YES;
         }
-        //else
-          //  resultPin.coordinate = self.pickUpAnnotation.coordinate;
-        
-        //resultPin.title = self.pickUpAnnotation.title;
-        //resultPin.subtitle = self.pickUpAnnotation.subtitle;
-        
         return result;
     }
     return nil;
@@ -1198,12 +1196,85 @@ BOOL    __onBoardingStatusChecked   = NO;
     return newRegion;
 }
 
+-(BOOL) didAnyAnnotationChange
+{
+    NSArray * annotationArray = self.mapView.annotations;
+    
+    if (annotationArray.count < 2 )
+    {
+        NSLog(@"%s: annotation array size %lu", __func__, (unsigned long)annotationArray.count);
+        return NO;
+    }
+        
+    NSUInteger pickUpIndex = [annotationArray indexOfObject:self.pickUpAnnotation];
+
+    NSUInteger dropOffIndex = [annotationArray indexOfObject:self.dropOffAnnotation];
+
+    if( dropOffIndex == NSNotFound )
+    {
+        NSLog(@"%s: no  known dropOffAnnotation on the map", __func__);
+        return YES;
+    }
+    
+    if( pickUpIndex == NSNotFound )
+    {
+        NSLog(@"%s: no  known pickUpAnnotation on the map", __func__);
+        return YES;
+    }
+
+    MKPointAnnotation * pickupMapAnnotation = [annotationArray objectAtIndex:pickUpIndex];
+    MKPointAnnotation * dropOffMapAnnotation = [annotationArray objectAtIndex:dropOffIndex];
+    
+    if ( pickupMapAnnotation.coordinate.latitude == self.pickUpAnnotation.coordinate.latitude &&
+         pickupMapAnnotation.coordinate.longitude == self.pickUpAnnotation.coordinate.longitude &&
+         dropOffMapAnnotation.coordinate.latitude == self.dropOffAnnotation.coordinate.latitude &&
+         dropOffMapAnnotation.coordinate.longitude == self.dropOffAnnotation.coordinate.longitude )
+    {
+        NSLog(@"%s: Annotation on the map has not changed", __func__);
+        return NO;
+    }
+    
+    return NO;
+}
+
 - (void) updateMapsViewArea
 {
-   // NSLog(@"%s", __func__);
-    MKCoordinateRegion viewRegion = [self getVisibleMapRegionForUserLocation];
+    NSArray * annotationArray = nil;
+    //NSLog(@"=============\n %s, %@, %@, %@ \n==============\n", __func__, self.mapView.annotations, self.pickUpAnnotation, self.dropOffAnnotation);
+ 
+    if (self.pickUpAnnotation && self.dropOffAnnotation)
+        annotationArray = @[self.pickUpAnnotation, self.dropOffAnnotation];
+    else
+        annotationArray = self.mapView.annotations;
     
-    [self.mapView setRegion:viewRegion animated:YES];
+    if (annotationArray.count ==0)
+        return;
+    
+    CLLocationCoordinate2D topLeftCoord;
+    topLeftCoord.latitude   = -90;
+    topLeftCoord.longitude  = 180;
+    
+    CLLocationCoordinate2D bottomRightCoord;
+    bottomRightCoord.latitude   = 90;
+    bottomRightCoord.longitude  = -180;
+    
+    for(MKPointAnnotation *annotation in annotationArray)
+    {
+        topLeftCoord.longitude  = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
+        topLeftCoord.latitude   = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
+        
+        bottomRightCoord.longitude  = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
+        bottomRightCoord.latitude   = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
+    }
+    
+    MKCoordinateRegion region;
+    region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
+    region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
+    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 2.1; // Add a little extra space on the sides
+    region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1; // Add a little extra space on the sides
+    
+    region = [self.mapView regionThatFits:region];
+    [self.mapView setRegion:region animated:YES];
 }
 
 
@@ -1220,7 +1291,7 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     [self setupCoreLocationManager];
     
-    [self updateMapsViewArea];
+   // [self updateMapsViewArea];
 }
 
 -(void) destroyCoreLocationManager
@@ -1243,6 +1314,7 @@ BOOL    __onBoardingStatusChecked   = NO;
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeOther;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    self.locationManager.distanceFilter = 10;
 	[self.locationManager startUpdatingLocation];
     self.userLocation = self.locationManager.location.coordinate; //get cached location first
 }
@@ -1255,7 +1327,7 @@ BOOL    __onBoardingStatusChecked   = NO;
     if( newLocation )
         self.userLocation = newLocation.coordinate;
     
-    [self updateMapsViewArea];
+   // [self updateMapsViewArea];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error

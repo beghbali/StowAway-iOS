@@ -328,7 +328,7 @@
                     //missed the ride
                     self.navigationBarItem.title  = @"Missed Your Ship  :(";
                     if (!self.isLoneRider)
-                        self.instructionsLabel.text = @"Argh... the ride left without you,\nyou won't be charged for this.";
+                        self.instructionsLabel.text = @"Argh... the crew left without you,\nyou won't be charged for this.";
                     break;
                     
                 default:
@@ -338,11 +338,9 @@
             if (keepRunningAutoCheckinProcess != 0)
             {
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode....", __func__);
-                [self.meetCrewMapViewManager stopAutoCheckinMode];
-                
-            } else if ( !self.isLoneRider)
                 self.cancelButton.titleLabel.text = @"   DONE  ";
-
+                [self.meetCrewMapViewManager stopAutoCheckinMode];
+            }
             continue; //end of processing myself
         }
         
@@ -614,6 +612,8 @@
 
 - (IBAction)requestUberButtonTapped:(UIButton *)sender
 {
+    NSLog(@"%s: isLoneRider %d", __func__, self.isLoneRider);
+    
     NSString *stringURL = @"uber://";
     NSURL *url = [NSURL URLWithString:stringURL];
     
@@ -630,9 +630,11 @@
     }
     
     self.requestUberButton.enabled = NO;
+    
+    self.cancelButton.titleLabel.text = @"   DONE  ";
+
     if (self.isLoneRider)
     {
-        self.cancelButton.titleLabel.text = @"   DONE  ";
         self.navigationBarItem.title  = @"Bon Voyage !";
     }
 }
