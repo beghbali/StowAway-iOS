@@ -109,7 +109,7 @@
     NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
     
     //update the view - pics, names
-//    [self updateFindingCrewView];
+    [self updateFindingCrewView];
     
     //go to "meet the crew" view
     if ( self.isReadyToGoToMeetCrew && self.viewDidLoadFinished )
@@ -555,6 +555,8 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void) setupAnimationForImageNumber:(NSUInteger)imageNumber
 {
+    NSLog(@"%s: imageNumber %lu", __func__, (unsigned long)imageNumber);
+    
     // images to be circulated
     NSMutableArray * faces = [[NSMutableArray alloc] initWithCapacity:TOTAL_FACES_COUNT];
     for (int i=1; i < TOTAL_FACES_COUNT; i++)
@@ -725,7 +727,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 //crew and timer
 -(void)updateFindingCrewView
 {
-    NSLog(@"updateFindingCrewView.................");
+    NSLog(@"updateFindingCrewView.................self.crew.count %lu", (unsigned long)self.crew.count);
     
     //go through the crew array, set fb pic, name, stop/start animation as required
     for (NSUInteger i = 1; i < self.crew.count; i++)
