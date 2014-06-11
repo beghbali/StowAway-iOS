@@ -252,7 +252,7 @@
 {
     [self.getRideResultActivityIndicator stopAnimating];
 
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    NSLog(@"\n %s: -- %@ -- %@ -- \n", __func__, data, sError);
 
     if (sError)
         return;

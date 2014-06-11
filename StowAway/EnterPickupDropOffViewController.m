@@ -77,6 +77,9 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (nonatomic, strong) MKPointAnnotation * pickUpAnnotation;
 @property (nonatomic, strong) MKPointAnnotation * dropOffAnnotation;
 
+@property (nonatomic) CLLocationCoordinate2D prevPickUpAnnotationCoordinates;
+@property (nonatomic) CLLocationCoordinate2D prevDropOffAnnotationCoordinates;
+
 @property (nonatomic, strong) NSMutableArray * availableRideTimesLabel;
 @property (nonatomic, strong) NSMutableArray * availableRideTimesAbsoluteTime;
 @property (nonatomic, strong) NSArray * rideTypes;
@@ -890,6 +893,7 @@ BOOL    __onBoardingStatusChecked   = NO;
 -(void)setLocationPoint:(BOOL)isPickUpPoint
 {
     MKPointAnnotation * mkPA;
+    
     if (isPickUpPoint)
     {
         if ( !self.pickUpAnnotation )
@@ -897,6 +901,7 @@ BOOL    __onBoardingStatusChecked   = NO;
             self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
             self.pickUpAnnotation.subtitle = @"pick up location";
         }
+        self.prevPickUpAnnotationCoordinates = self.pickUpAnnotation.coordinate;
         mkPA = self.pickUpAnnotation;
         mkPA.coordinate = [self getLocationItemCoordinate:self.pickUpLocItem];
         mkPA.title = self.pickUpSearchBar.text = [self getLocationItemName:self.pickUpLocItem];
@@ -908,6 +913,7 @@ BOOL    __onBoardingStatusChecked   = NO;
             self.dropOffAnnotation = [[MKPointAnnotation alloc]init];
             self.dropOffAnnotation.subtitle = @"drop off location";
         }
+        self.prevDropOffAnnotationCoordinates = self.dropOffAnnotation.coordinate;
         mkPA = self.dropOffAnnotation;
         mkPA.coordinate = [self getLocationItemCoordinate:self.dropOffLocItem];
         mkPA.title = self.dropOffSearchBar.text = [self getLocationItemName:self.dropOffLocItem];
@@ -916,9 +922,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     [self.mapView addAnnotation:mkPA];
     [self.mapView selectAnnotation:mkPA animated:YES];
     
-    [self updateMapsViewArea];
-    
     NSLog(@"%s: lat %f, long %f", isPickUpPoint?"pick up loc":"drop off loc", mkPA.coordinate.latitude, mkPA.coordinate.longitude);
+
+    [self updateMapsViewArea];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1097,7 +1103,7 @@ BOOL    __onBoardingStatusChecked   = NO;
  
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = searchString;
-    request.region = [self getVisibleMapRegionForUserLocation];
+    request.region = self.mapView.region;
     
     if (self.localSearch != nil)
         self.localSearch = nil;
@@ -1199,13 +1205,16 @@ BOOL    __onBoardingStatusChecked   = NO;
 -(BOOL) didAnyAnnotationChange
 {
     NSArray * annotationArray = self.mapView.annotations;
+   // NSLog(@"%s: %@", __func__, annotationArray);
     
-    if (annotationArray.count < 2 )
+    if (annotationArray.count < 3 )
     {
         NSLog(@"%s: annotation array size %lu", __func__, (unsigned long)annotationArray.count);
-        return NO;
+        return YES;
     }
-        
+    
+    //NSLog(@"%s: pickup %@, dropOff %@", __func__, self.pickUpAnnotation, self.dropOffAnnotation);
+    
     NSUInteger pickUpIndex = [annotationArray indexOfObject:self.pickUpAnnotation];
 
     NSUInteger dropOffIndex = [annotationArray indexOfObject:self.dropOffAnnotation];
@@ -1225,23 +1234,27 @@ BOOL    __onBoardingStatusChecked   = NO;
     MKPointAnnotation * pickupMapAnnotation = [annotationArray objectAtIndex:pickUpIndex];
     MKPointAnnotation * dropOffMapAnnotation = [annotationArray objectAtIndex:dropOffIndex];
     
-    if ( pickupMapAnnotation.coordinate.latitude == self.pickUpAnnotation.coordinate.latitude &&
-         pickupMapAnnotation.coordinate.longitude == self.pickUpAnnotation.coordinate.longitude &&
-         dropOffMapAnnotation.coordinate.latitude == self.dropOffAnnotation.coordinate.latitude &&
-         dropOffMapAnnotation.coordinate.longitude == self.dropOffAnnotation.coordinate.longitude )
+    if ( pickupMapAnnotation.coordinate.latitude == self.prevPickUpAnnotationCoordinates.latitude &&
+         pickupMapAnnotation.coordinate.longitude == self.prevPickUpAnnotationCoordinates.longitude &&
+         dropOffMapAnnotation.coordinate.latitude == self.prevDropOffAnnotationCoordinates.latitude &&
+         dropOffMapAnnotation.coordinate.longitude == self.prevDropOffAnnotationCoordinates.longitude )
     {
-        NSLog(@"%s: Annotation on the map has not changed", __func__);
+        NSLog(@"%s: Annotation coordinates on the map have not changed", __func__);
         return NO;
     }
     
-    return NO;
+    return YES;
 }
 
-- (void) updateMapsViewArea
+- (void)updateMapsViewArea
 {
+    NSLog(@"%s...", __func__);
+    
     NSArray * annotationArray = nil;
-    //NSLog(@"=============\n %s, %@, %@, %@ \n==============\n", __func__, self.mapView.annotations, self.pickUpAnnotation, self.dropOffAnnotation);
- 
+    
+    if (![self didAnyAnnotationChange])
+        return;
+    
     if (self.pickUpAnnotation && self.dropOffAnnotation)
         annotationArray = @[self.pickUpAnnotation, self.dropOffAnnotation];
     else
@@ -1270,7 +1283,7 @@ BOOL    __onBoardingStatusChecked   = NO;
     MKCoordinateRegion region;
     region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
     region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
-    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 2.1; // Add a little extra space on the sides
+    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 2.16; // Add a little extra space on the sides
     region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1; // Add a little extra space on the sides
     
     region = [self.mapView regionThatFits:region];
@@ -1321,13 +1334,15 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+    NSLog(@"%s......", __func__);
+    
     CLLocation * newLocation = [locations lastObject];
     
     // remember for later -  user's current location
     if( newLocation )
         self.userLocation = newLocation.coordinate;
     
-   // [self updateMapsViewArea];
+    [self updateMapsViewArea];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -1439,7 +1454,7 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
+    NSLog(@"\n%s: -- %@ -- %@ -- \n", __func__, data, sError);
    
     if (self.isWaitingForRideCreditQueryToReturn && !sError && [self processUserObject:data])
     {
