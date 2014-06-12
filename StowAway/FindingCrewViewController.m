@@ -84,9 +84,6 @@
     
     self.rideInfoLabel.text = [NSString stringWithFormat:@"Finding %@, %@",self.rideTypeLabel, self.rideTimeLabel];;
     
-    self.advertiseFooterLabel.text =
-    @"Get there quickly and comfortably\nfor nearly the cost of a bus fare !";
-    
     self.waitingLabel.text =
     @"We'll send you notifications as\nwe match you with other riders.";
     
@@ -544,6 +541,7 @@
             [df setTimeStyle:NSDateFormatterShortStyle];
             meetCrewVC.rideTimeLabel = [df stringFromDate:date];
             
+            
             [self.serverPollingTimer invalidate];
             
             [self unSetCrewFindingTimeoutNotification];
@@ -728,7 +726,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSLog(@"%s..............data %@", __func__, notification);
     
-    [self sendCoupon:kCouponCodeLoneRider];
+ //   [self sendCoupon:kCouponCodeLoneRider];
 }
 
 #pragma mark update view
@@ -777,6 +775,17 @@ void swap (NSUInteger *a, NSUInteger *b)
                 break;
         }
     }
+    
+   
+    if (self.crew.count < 3)
+        self.advertiseFooterLabel.text = @"You're saving 50%.\nFinding more riders to save you upto 75%.";
+    else
+        self.advertiseFooterLabel.text = @"You're saving 66%.\nFinding more riders to save you upto 75%.";
+    
+    
+    self.advertiseFooterLabel.attributedText = [StowawayConstants boldify:@"Finding more riders to save you upto 75%."
+                                                                ofFullString:self.advertiseFooterLabel.text
+                                                                    withFont:[UIFont systemFontOfSize:15]];
 }
 
 
