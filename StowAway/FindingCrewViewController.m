@@ -264,9 +264,10 @@
 }
 
 #pragma mark - poll server
-
-- (void)pollServer
+-(BOOL)didDepartureTimeExpire
 {
+    NSLog(@"%s", __func__);
+    
     //check to see if departure time has passed
     NSDate * now = [NSDate date];
     if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
@@ -275,15 +276,20 @@
         
         [self sendCoupon:kCouponCodeLoneRider];
         
-        return;
+        return YES;
     }
     
+    return NO;
+}
+
+- (void)pollServer
+{
     NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
     
     if (!self.requestID || !self.userID)
         return;
     
-    //if ride id is nil get request object
+    //if ride id is valid, get ride object object
     if ( self.rideID && (id)(self.rideID) != [NSNull null] )
     {
         NSDictionary * dict = @{kRidePublicId: self.rideID};
@@ -293,7 +299,7 @@
         return;
     }
     
-    //get fresh request object to see if there is a ride
+    //if ride id is nil, get fresh request object to see if there is a ride available now
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
@@ -340,11 +346,11 @@
     
     NSNumber * ride_id = [response objectForKey:kRidePublicId];
     self.rideID = ride_id;
-    NSLog(@"request ride result for ride_id %@", ride_id);
+    NSLog(@"%s: ride_id %@", __func__, ride_id);
     
     if ( ride_id && (ride_id != nsNullObj) )
-    { // there is a match - GET RIDE result
-        //TODO: stowaway server communicator should handle this -- getRideObject, also used in meet crew
+    {
+        // there is a match - GET RIDE result
         NSLog(@"there is a match - get ride result");
         NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, ride_id];
         
@@ -370,6 +376,9 @@
         
         //[self cancelTimerExpiryNotificationSchedule];
     }
+    
+    //check to see if the departure time expired
+    [self didDepartureTimeExpire];
 }
 
 #pragma mark - process RIDE
@@ -712,7 +721,7 @@ void swap (NSUInteger *a, NSUInteger *b)
 
     sscommunicator.sscDelegate = self;
 
-    [sscommunicator sendServerRequest:couponRequest ForURL:url usingHTTPMethod:@"PUT"];    //don't need the callback, so no delegate
+    [sscommunicator sendServerRequest:couponRequest ForURL:url usingHTTPMethod:@"PUT"];
 }
 
 -(void)crewFindingTimedOut:(NSNotification *)notification

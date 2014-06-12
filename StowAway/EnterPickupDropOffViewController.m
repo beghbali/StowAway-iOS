@@ -733,13 +733,13 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     //a new loc, so add it to
     NSDictionary *locDict = nil;
-    if (mkMapItem && mkMapItem.placemark.coordinate.latitude && mkMapItem.placemark.coordinate.longitude)
+    if ((mkMapItem.isCurrentLocation) || (mkMapItem && mkMapItem.placemark.coordinate.latitude && mkMapItem.placemark.coordinate.longitude))
         locDict = @{kLocationHistoryName: mkMapItem.name,
                   kLocationHistoryLatitude: [NSNumber numberWithDouble: mkMapItem.placemark.coordinate.latitude],
                   kLocationHistoryLongitude: [NSNumber numberWithDouble: mkMapItem.placemark.coordinate.longitude]};
     else
     {
-        NSLog(@"ERROR--- new loc to be added to history[%@] is nil !!!", historyKey);
+        NSLog(@"ERROR--- new loc to be added to history[%@] is mkMapItem %@ !!!", historyKey, mkMapItem);
 
         return NO;
     }
@@ -1311,6 +1311,8 @@ BOOL    __onBoardingStatusChecked   = NO;
 {
     NSLog(@"%s", __func__);
     
+    self.mapView.showsUserLocation = NO;
+
     [self.locationManager stopUpdatingLocation];
     
     self.locationManager = nil;
@@ -1326,10 +1328,12 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 	self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeOther;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = 10;
 	[self.locationManager startUpdatingLocation];
     self.userLocation = self.locationManager.location.coordinate; //get cached location first
+    
+    [self updateMapsViewArea];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
