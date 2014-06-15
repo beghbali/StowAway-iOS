@@ -310,7 +310,8 @@
 
 -(void)processRequestObject:(NSDictionary *)response
 {
-    NSLog(@"processRequestObject...............self.crew %@........., isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", self.crew, self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, self.rideRequestResponse);
+    NSLog(@"%s: self.crew %@, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", __func__,
+          self.crew, self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, response);
 
     if (!response)
     {
