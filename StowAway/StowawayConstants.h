@@ -86,7 +86,6 @@ extern NSString *const kSuggestedPickUpLong;
 extern NSString *const kSuggestedPickUpLat;
 extern NSString *const kSuggestedPickUpTime;
 extern NSString *const kMKPointAnnotation;
-extern NSString *const kIsRideFinalized;
 extern NSString *const kSuggestedDefaultDropOffAddr;
 extern NSString *const kSuggestedDefaultPickUpAddr;
 

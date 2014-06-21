@@ -57,10 +57,6 @@
     
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
     
-    //remember that ride has been finalized, to be used if app gets killed and relaunched
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:kIsRideFinalized];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     [self subscribeToNotifications];
     
     NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****",

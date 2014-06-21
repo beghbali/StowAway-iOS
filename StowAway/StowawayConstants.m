@@ -89,7 +89,6 @@ NSString *const kSuggestedPickUpLat             = @"suggested_pickup_lat";
 NSString *const kSuggestedPickUpTime            = @"suggested_pickup_time";
 
 NSString *const kMKPointAnnotation              = @"mapPoint";
-NSString *const kIsRideFinalized                = @"isRideFinalized";
 NSString *const kSuggestedDefaultDropOffAddr    = @"suggested dropoff location";
 NSString *const kSuggestedDefaultPickUpAddr     = @"suggested pickup location";
 
