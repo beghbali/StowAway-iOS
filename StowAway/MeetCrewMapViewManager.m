@@ -106,10 +106,7 @@
 -(void)startUpdatingMapView:(MKMapView *)mapView
      withSuggestedLocations:(NSDictionary *)suggestedLocations
            andPusherChannel:(NSString *)locationChannel
-                isLoneRider:(BOOL)isLoneRider
 {
-    NSLog(@"%s, isLoneRider %d",__func__, isLoneRider);
-    
     //check loc is on
     self.isLocationDisabled = ![self isLocationEnabled];
     

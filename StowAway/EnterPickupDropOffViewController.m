@@ -168,7 +168,8 @@ BOOL    __onBoardingStatusChecked   = NO;
 {
     NSNumber * requestID    = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
     NSNumber * userID       = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-    
+    self.isPreviousAppStateValid = NO;
+
     NSLog(@"%s: requestID %@, userID %@", __func__, requestID, userID);
     
     if ((requestID != nil) && userID)
@@ -176,16 +177,17 @@ BOOL    __onBoardingStatusChecked   = NO;
         NSNumber * requestedForNum = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestedForDate];
         NSTimeInterval requestedFor = [requestedForNum doubleValue];
         NSTimeInterval currentTimeInterval = [[NSDate date]timeIntervalSince1970];
+        
         NSLog(@"%s: requestedFor %f, currentTimeInterval %f", __func__, requestedFor, currentTimeInterval);
 
         if ( currentTimeInterval < requestedFor)
         {
             //all conditions satify to restore previous ride request
+            self.rideDepartureDate = [NSDate dateWithTimeIntervalSince1970:requestedFor];
+
             self.isPreviousAppStateValid = YES;
             self.rideRequestResponse = @{kPublicId: requestID, kUserPublicId: userID};
             
-            //segue to finding crew
-            [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
             return YES;
         }
     }
@@ -203,7 +205,11 @@ BOOL    __onBoardingStatusChecked   = NO;
     [self queryRideCredits];
 
     if ([self isRestoringPreviousAppState])
+    {
+        //segue to finding crew
+        [self performSegueWithIdentifier: @"toFindingCrew" sender: self];
         return;
+    }
 
     [self updateFindCrewButtonEnabledState];
 
@@ -1504,6 +1510,8 @@ BOOL    __onBoardingStatusChecked   = NO;
                                                             name:UIApplicationWillResignActiveNotification
                                                           object:nil];
 
+            findingCrewVC.rideDepartureDate = self.rideDepartureDate;
+
             if (!self.isPreviousAppStateValid)
             {
                 //new request
@@ -1512,8 +1520,6 @@ BOOL    __onBoardingStatusChecked   = NO;
                 
                 findingCrewVC.rideTypeLabel = self.rideTypes[choosenRideType];
                 findingCrewVC.rideTimeLabel = choosenTime;
-
-                findingCrewVC.rideDepartureDate = self.rideDepartureDate;
                 
                 //remember the ride id, ride time label and ride type label -- so it can be used to restore the app
                 [[NSUserDefaults standardUserDefaults] setObject:requestID forKey:kRequestPublicId];

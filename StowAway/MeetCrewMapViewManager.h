@@ -17,8 +17,7 @@
 
 -(void)startUpdatingMapView:(MKMapView *)mapView
      withSuggestedLocations:(NSDictionary *)suggestedLocations
-           andPusherChannel:(NSString *)locationChannel
-                isLoneRider:(BOOL)isLoneRider;
+           andPusherChannel:(NSString *)locationChannel;
 
 -(void)startAutoCheckinMode;
 

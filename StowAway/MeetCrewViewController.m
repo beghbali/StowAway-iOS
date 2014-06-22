@@ -65,9 +65,6 @@
     self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
     self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
     
-    //update the crew names and images and role
-    [self updateCrewInfoInView];
-    
     //show the crew on map
     self.meetCrewMapViewManager = [[MeetCrewMapViewManager alloc]init];
     
@@ -75,9 +72,10 @@
     
     [self.meetCrewMapViewManager startUpdatingMapView:self.mapView
                                withSuggestedLocations:self.suggestedLocations
-                                     andPusherChannel:self.locationChannel
-                                          isLoneRider:self.isLoneRider];
+                                     andPusherChannel:self.locationChannel];
     
+    //update the crew names and images and role
+    [self updateCrewInfoInView];
     
     //get the ride object incase the app is relaunched, we need to get the ride-object
     [self getRideObject];
@@ -190,7 +188,7 @@
             {
                 removeIt = NO;
                 //update status
-                NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, i, [response objectForKey:kStatus]);
+                NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, j, [response objectForKey:kStatus]);
               
                 if ([[response objectForKey:kStatus] isEqualToString:kStatusCheckedin])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCheckedIn];
@@ -266,7 +264,7 @@
                   isCaptain, self.isLoneRider, isInitiated, self.isAlreadyInitiated);
 
             isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
-            if (isInitiated && !self.isAlreadyInitiated)
+            if (isInitiated && !self.isAlreadyInitiated && !self.isLoneRider)
             {
                 NSLog(@"%s: ride got initiated, starting pusher & location updates now...", __func__);
 
@@ -335,8 +333,10 @@
             if (keepRunningAutoCheckinProcess != 0)
             {
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
-                if (!self.isLoneRider)
+                
+                if ( !self.isLoneRider )
                     self.cancelButton.titleLabel.text = @"   DONE  ";
+                
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
             }
             continue; //end of processing myself

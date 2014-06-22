@@ -263,14 +263,12 @@
 #pragma mark - poll server
 -(BOOL)didDepartureTimeExpire
 {
-    NSLog(@"%s", __func__);
-    
     //check to see if departure time has passed
     NSDate * now = [NSDate date];
+    NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
+
     if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
     {
-        NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
-        
         [self sendCoupon:kCouponCodeLoneRider];
         
         return YES;
@@ -473,7 +471,7 @@
         [self.crew removeObjectAtIndex:j];
         j--;
     }
-    NSLog(@"** crew after processing ** - %@", self.crew);
+    NSLog(@"** FC crew after processing ** - %@", self.crew);
     
     //UPDATE VIEW with updated crew and new cd time
     [self updateFindingCrewView];
@@ -517,6 +515,8 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"%s....", __func__);
+
     if ( [segue.identifier isEqualToString:@"toMeetCrew"] )
     {
         if ([segue.destinationViewController class] == [MeetCrewViewController class])
