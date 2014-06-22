@@ -561,7 +561,7 @@
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
-- (IBAction)cancelRideButtonTapped:(UIButton *)sender
+- (IBAction)finalActionButtonTapped:(UIButton *)sender
 {
     NSLog(@"%s: sender %@ ", __func__, sender);
     
