@@ -215,25 +215,28 @@
 
 -(void)setCrewFindingTimeoutNotification
 {
-    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
+    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> Departure is at %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
     if (!self.rideDepartureDate)
         return;
     
     if (!self.crewFindingTimeoutLocalNotification)
         self.crewFindingTimeoutLocalNotification  = [[UILocalNotification alloc] init];
     
-    self.crewFindingTimeoutLocalNotification.fireDate              = self.rideDepartureDate;
+    self.crewFindingTimeoutLocalNotification.fireDate              = [self.rideDepartureDate dateByAddingTimeInterval:(-15*60)];
     self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Your %@ ride is finalized.", self.rideTimeLabel];
     self.crewFindingTimeoutLocalNotification.alertAction           = @"Ok";
     self.crewFindingTimeoutLocalNotification.soundName             = @"ride_missed.wav";
     self.crewFindingTimeoutLocalNotification.timeZone              = [NSTimeZone defaultTimeZone];
     
     [[UIApplication sharedApplication] scheduleLocalNotification:self.crewFindingTimeoutLocalNotification];
+    
+    NSLog(@"%s: scheduled for %@", __func__, self.crewFindingTimeoutLocalNotification.fireDate);
+
 }
 
 -(void)unSetCrewFindingTimeoutNotification
 {
-    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
+    NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.crewFindingTimeoutLocalNotification.fireDate);
     
     if (!self.crewFindingTimeoutLocalNotification)
         return;

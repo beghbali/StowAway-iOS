@@ -16,7 +16,7 @@
 @interface MeetCrewViewController () <StowawayServerCommunicatorDelegate, CountdownTimerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *requestUberButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *finalActionButton;
 
 @property (strong, nonatomic) CountdownTimer * cdt;
 
@@ -146,6 +146,9 @@
 - (void)appReturnsActive:(NSNotification *)notification
 {
     NSLog(@"%s............is lone rider %d\n", __func__, self.isLoneRider);
+    
+    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
+
     //get update on the riders
     if (!self.isLoneRider)
         [self getRideObject];
@@ -294,7 +297,7 @@
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
                 
                 if (self.isLoneRider)
-                    self.cancelButton.titleLabel.text = @" No Thanks ";
+                    self.finalActionButton.titleLabel.text = @" No Thanks ";
             }
             else
             {
@@ -335,7 +338,7 @@
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
                 
                 if ( !self.isLoneRider )
-                    self.cancelButton.titleLabel.text = @"   DONE  ";
+                    self.finalActionButton.titleLabel.text = @"   DONE  ";
                 
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
             }
@@ -420,6 +423,9 @@
                 break;
         }
     }
+    
+    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
+
 }
 
 #pragma mark - checkin image badging
@@ -526,7 +532,7 @@
 #pragma mark - countdown timer
 -(void) armUpCountdownTimerFor:(NSUInteger)seconds
 {
-    NSLog(@"%s: armUpCountdownTimer %d", __func__, seconds);
+    NSLog(@"%s: armUpCountdownTimer %lu", __func__, (unsigned long)seconds);
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:seconds ForLabel:nil];
@@ -614,11 +620,15 @@
     NSLog(@"For alert %@, The %@ button was tapped.", theAlert.title, [theAlert buttonTitleAtIndex:buttonIndex]);
     
     //TODO: change all the constant texts to constant keys in a string file, that can be used for localization as well
-   // if ([theAlert.title isEqualToString:@"Your crew would be disappointed !"])
+    if ([theAlert.title isEqualToString:@"Your crew would be disappointed !"] ||
+        [theAlert.title isEqualToString:@"Free ride credits !"])
     {
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"])
             [self cancelRide];
     }
+    
+    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
+
 }
 
 #pragma mark - launch uber
@@ -646,10 +656,13 @@
     
     if (self.isLoneRider)
     {
-        self.cancelButton.titleLabel.text = @"   DONE  ";
+        self.finalActionButton.titleLabel.text = @"   DONE  ";
 
         self.navigationBarItem.title  = @"Bon Voyage !";
     }
+    
+    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
+
 }
 
 
@@ -674,6 +687,8 @@
                                                    delegate:self
                                           cancelButtonTitle:nil
                                           otherButtonTitles:@"Ok", nil];
+    
+    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
     [alert show];
 }
 

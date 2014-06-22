@@ -23,7 +23,7 @@
 NSInteger startingMorningHrs = 0;  //6:00 - 6:15 am can be the first slot
 NSInteger endingMorningHrs = 11; //10:45 - 11:00 am will be the last slot
 //ride to home, service time
-NSInteger startingEveningHrs = 15; //3:00 - 3:15 pm would be the first slot
+NSInteger startingEveningHrs = 13; //3:00 - 3:15 pm would be the first slot
 NSInteger endingEveningHrs = 24; //9:45 - 10pm would be the last slot
 
 
