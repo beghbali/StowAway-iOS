@@ -87,9 +87,9 @@
     self.waitingLabel.text =
     @"We'll send you notifications as\nwe match you with other riders.";
     
-    [self pollServer]; //to take care of restoring app case, where server is queried for request object
-    
     [self setCrewFindingTimeoutNotification];
+
+    [self pollServer]; //to take care of restoring app case, where server is queried for request object
     
     [self subscribeToNotifications];
 }
@@ -267,10 +267,15 @@
 -(BOOL)didDepartureTimeExpire
 {
     //check to see if departure time has passed
+    if (!self.crewFindingTimeoutLocalNotification)
+    {
+        NSLog(@"%s: null self.crewFindingTimeoutLocalNotification", __func__);
+        return NO;
+    }
     NSDate * now = [NSDate date];
-    NSLog(@"%s: now %@, departureDate %@", __func__, now, self.rideDepartureDate);
+    NSLog(@"%s: now %@, expiry date %@", __func__, now, self.crewFindingTimeoutLocalNotification.fireDate);
 
-    if ( [now compare:self.rideDepartureDate] == NSOrderedDescending)
+    if ( [now compare:self.crewFindingTimeoutLocalNotification.fireDate] == NSOrderedDescending)
     {
         [self sendCoupon:kCouponCodeLoneRider];
         
