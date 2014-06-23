@@ -42,6 +42,7 @@
 
 @property BOOL isPusherConnected;
 @property BOOL isLocationDisabled;
+@property BOOL isAllCrewMapped;
 
 @property (strong, nonatomic) CLGeocoder * geocoder;
 
@@ -602,11 +603,18 @@
 
 -(void)zoomToFitMapAnnotations
 {
-    NSLog(@"%s", __func__);
+    NSLog(@"%s, annotations# %d, crew# %d, hasMapBeenZoomedOut %d", __func__,
+          self.mapView.annotations.count, self.crew.count, self.isAllCrewMapped);
 
-    if([self.mapView.annotations count] == 0)
+    if(!self.mapView.annotations.count || self.isAllCrewMapped)
         return;
-    
+
+    if(self.mapView.annotations.count == (self.crew.count + 2)) //annotations for each crew, pick up, drop off
+    {
+        NSLog(@"%s: all crew mapped once, now dont zoom out anymore...", __func__);
+        self.isAllCrewMapped = YES;
+    }
+
     CLLocationCoordinate2D topLeftCoord;
     topLeftCoord.latitude = -90;
     topLeftCoord.longitude = 180;
@@ -627,7 +635,7 @@
     MKCoordinateRegion region;
     region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
     region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
-    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.2; // Add a little extra space on the sides
+    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 2.1; // Add a little extra space on the sides
     region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.2; // Add a little extra space on the sides
     
     region = [self.mapView regionThatFits:region];
