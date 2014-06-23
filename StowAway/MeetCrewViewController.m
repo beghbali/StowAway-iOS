@@ -147,8 +147,6 @@
 {
     NSLog(@"%s............is lone rider %d\n", __func__, self.isLoneRider);
     
-    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
-
     //get update on the riders
     if (!self.isLoneRider)
         [self getRideObject];
@@ -297,7 +295,7 @@
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
                 
                 if (self.isLoneRider)
-                    self.finalActionButton.titleLabel.text = @" No Thanks ";
+                    [self.finalActionButton setTitle:@" No Thanks " forState:UIControlStateNormal];
             }
             else
             {
@@ -338,7 +336,7 @@
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
                 
                 if ( !self.isLoneRider )
-                    self.finalActionButton.titleLabel.text = @"   DONE  ";
+                    [self.finalActionButton setTitle:@"   DONE  " forState:UIControlStateNormal];
                 
                 [self.meetCrewMapViewManager stopAutoCheckinMode];
             }
@@ -423,9 +421,6 @@
                 break;
         }
     }
-    
-    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
-
 }
 
 #pragma mark - checkin image badging
@@ -626,9 +621,6 @@
         if ([[theAlert buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"])
             [self cancelRide];
     }
-    
-    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
-
 }
 
 #pragma mark - launch uber
@@ -656,13 +648,10 @@
     
     if (self.isLoneRider)
     {
-        self.finalActionButton.titleLabel.text = @"   DONE  ";
+        [self.finalActionButton setTitle:@"   DONE  " forState:UIControlStateNormal];
 
         self.navigationBarItem.title  = @"Bon Voyage !";
     }
-    
-    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
-
 }
 
 
@@ -687,8 +676,6 @@
                                                    delegate:self
                                           cancelButtonTitle:nil
                                           otherButtonTitles:@"Ok", nil];
-    
-    NSLog(@"%s: finalActionButton %@", __func__, self.finalActionButton);
     [alert show];
 }
 

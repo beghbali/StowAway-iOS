@@ -127,7 +127,8 @@
         self.stowawayEmailFooterLabel.hidden = YES;
         
         //set final action button
-        self.finalActionButton.titleLabel.text = @"Connect Inbox";
+        [self.finalActionButton setTitle:@"Connect Inbox" forState:UIControlStateNormal];
+
         self.finalActionButton.hidden = NO;
     } else
     {
@@ -189,7 +190,7 @@
         self.stowawayEmailFooterLabel.hidden = YES;
         
         //set final action button
-        self.finalActionButton.titleLabel.text = @"Connect Inbox";
+        [self.finalActionButton setTitle:@"Connect Inbox" forState:UIControlStateNormal];
         self.finalActionButton.hidden = NO;
     } else
     {
@@ -208,7 +209,8 @@
         self.stowawayEmailFooterLabel.hidden = NO;
         
         //set final action button
-        self.finalActionButton.titleLabel.text = @"        Done     ";
+        [self.finalActionButton setTitle:@"        Done     " forState:UIControlStateNormal];
+
         self.finalActionButton.hidden = NO;
     }
 }
