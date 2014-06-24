@@ -84,8 +84,21 @@
     
     self.rideInfoLabel.text = [NSString stringWithFormat:@"Finding %@, %@",self.rideTypeLabel, self.rideTimeLabel];;
     
-    self.waitingLabel.text =
-    @"We'll send you notifications as\nwe match you with other riders.";
+    //We'll send notifications as we find other riders and finalize ride status by XX:XX pm.
+    NSArray * components = [self.rideTimeLabel componentsSeparatedByString:@" "];
+    NSString * ampm = [components objectAtIndex:3];
+    NSArray * components1 = [[components objectAtIndex:0] componentsSeparatedByString:@":"];
+    int hrs = [[components1 objectAtIndex:0] intValue];
+    int mins = [[components1 objectAtIndex:1] intValue]-15;
+    if (mins < 0)
+    {
+        hrs --;
+        mins = 45;
+    }
+    self.waitingLabel.text = [NSString stringWithFormat:
+                              @"You'll get notifications as we match riders and this ride will finalize by %d:%02d %@.", hrs, mins, ampm ];
+    //@"We'll send you notifications up till XX:XX as we match you with other riders.";
+//    @"We'll send you notifications as\nwe match you with other riders.";
     
     [self setCrewFindingTimeoutNotification];
 
