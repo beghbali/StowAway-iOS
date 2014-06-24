@@ -235,7 +235,7 @@
     if (!self.crewFindingTimeoutLocalNotification)
         self.crewFindingTimeoutLocalNotification  = [[UILocalNotification alloc] init];
     
-    self.crewFindingTimeoutLocalNotification.fireDate              = [self.rideDepartureDate dateByAddingTimeInterval:(-14*60)];
+    self.crewFindingTimeoutLocalNotification.fireDate              = [self.rideDepartureDate dateByAddingTimeInterval:(-14.5*60)];
     self.crewFindingTimeoutLocalNotification.alertBody             = [NSString stringWithFormat:@"Your %@ ride is finalized.", self.rideTimeLabel];
     self.crewFindingTimeoutLocalNotification.alertAction           = @"Ok";
     self.crewFindingTimeoutLocalNotification.soundName             = @"ride_missed.wav";
