@@ -221,7 +221,7 @@ BOOL __isAmex = NO;
     
     if ( cardNumberWithoutSpaces.length == maxCardDigits )
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
             if ( self.cardNumberField.text.length == (maxCardDigits+3) )
                 [self.expiryField becomeFirstResponder];
@@ -263,7 +263,7 @@ BOOL __isAmex = NO;
     
     if ( expiryDateWithoutSlash.length == 4 )
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
                            if ( self.expiryField.text.length == 5 )
                                [self.cvvField becomeFirstResponder];
@@ -369,7 +369,7 @@ BOOL __isAmex = NO;
             
             if ( ((newLength == 3) && ![self isAmexCard:self.stripeCard.number]) || ((newLength == 4) && [self isAmexCard:self.stripeCard.number]) )
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                {
                    if ( ((self.cvvField.text.length == 3) && ![self isAmexCard:self.stripeCard.number]) || ((self.cvvField.text.length == 4) && [self isAmexCard:self.stripeCard.number]) )
                        [self.zipField becomeFirstResponder];
@@ -389,7 +389,7 @@ BOOL __isAmex = NO;
             
             if ( newLength == 5 )
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                {
                    if ( self.zipField.text.length == 5 )
                        [self.zipField resignFirstResponder];
