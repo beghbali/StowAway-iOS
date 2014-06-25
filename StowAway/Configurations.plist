@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Debug</key>
+	<key>Debug_original</key>
 	<dict>
 		<key>kStowawayServerApiUrl_users</key>
 		<string>http://staging.getstowaway.com/api/v1/users/</string>
@@ -20,7 +20,7 @@
 	<key>Release</key>
 	<dict>
 		<key>kStowawayServerApiUrl_users</key>
-		<string>http://api.getstowaway.com/api/v1/users/</string>
+		<string>https://api.getstowaway.com/api/v1/users/</string>
 		<key>kStowawayServerApiUrl_pusher</key>
 		<string>https://api.getstowaway.com/pusher/</string>
 		<key>kCountdownTimerToDepartureInSecs</key>
@@ -33,6 +33,23 @@
 		<string>780e5e925f514ea3d7583d573d7059e2ef4eadc1</string>
 		<key>kStripePublicKey</key>
 		<string>pk_live_mZvyfbv8G8k9UCDximFqNAUz</string>
+	</dict>
+	<key>Debug</key>
+	<dict>
+		<key>kStowawayServerApiUrl_users</key>
+		<string>https://api.getstowaway.com/api/v1/users/</string>
+		<key>kStowawayServerApiUrl_pusher</key>
+		<string>https://api.getstowaway.com/pusher/</string>
+		<key>kCountdownTimerToDepartureInSecs</key>
+		<integer>300</integer>
+		<key>kPusherApiKey</key>
+		<string>26f93bf27a0add755521</string>
+		<key>kBundlePlistPath</key>
+		<string>https://getstowaway.com/app/latest/Stowaway.plist</string>
+		<key>kCrashlyticsAPIKey</key>
+		<string>780e5e925f514ea3d7583d573d7059e2ef4eadc1</string>
+		<key>kStripePublicKey</key>
+		<string>pk_test_RKqdkvUwBndT8tf7t65ft2TV</string>
 	</dict>
 </dict>
 </plist>

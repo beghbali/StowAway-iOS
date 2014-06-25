@@ -11,7 +11,7 @@
 #import "StowawayServerCommunicator.h"
 #import <Security/Security.h>
 
-@interface StowawayServerCommunicator() <NSURLSessionDelegate, NSURLSessionDataDelegate, NSURLAuthenticationChallengeSender>
+@interface StowawayServerCommunicator() <NSURLSessionDelegate, NSURLSessionDataDelegate>//, NSURLAuthenticationChallengeSender>
 
 @end
 
@@ -81,7 +81,7 @@
                                                   [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error]: nil;
                                                   
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-//                                                      NSLog(@"\n.........%@, %@...self.sscDelegate  %@\n", results, error, self.sscDelegate );
+                                                      //NSLog(@"\n.........%@, %@...self.sscDelegate  %@\n", results, error, self.sscDelegate );
                                                       [self.sscDelegate stowawayServerCommunicatorResponse:results error:error];});
                                               }
                                           }];
@@ -91,7 +91,7 @@
     return YES;
 }
 
-
+/*
 #pragma mark - SSL
 
 - (NSURLCredential *) getSSLCertificateCredentials
@@ -115,31 +115,35 @@
 
 - (void)useCredential:(NSURLCredential *)credential forAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    
+    NSLog(@"%s:", __func__);
 }
 
 - (void)continueWithoutCredentialForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    
+    NSLog(@"%s:", __func__);
 }
 
 - (void)cancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    
+    NSLog(@"%s:", __func__);
 }
 
 
-/* The task has received a request specific authentication challenge.
- * If this delegate is not implemented, the session specific authentication challenge
- * will *NOT* be called and the behavior will be the same as using the default handling
- * disposition.
- */
+- (void)URLSession:(NSURLSession *)session
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+{
+    NSLog(@"%s:......................", __func__);
+    
+}
+
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
                             didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                               completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
+    NSLog(@"%s:", __func__);
     
 }
-
+*/
 
 @end
