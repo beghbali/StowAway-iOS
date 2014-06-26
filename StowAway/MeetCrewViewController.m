@@ -280,6 +280,8 @@
                 //schedule auto checkin
                 NSTimeInterval secondsRemainingToDeparture = [self.rideDepartureDate timeIntervalSinceNow];
                 NSLog(@"%s: secondsRemainingToDeparture %f", __func__, secondsRemainingToDeparture);
+                if (secondsRemainingToDeparture < 0)
+                    secondsRemainingToDeparture = 5;
                 [self armUpCountdownTimerFor:secondsRemainingToDeparture];
 
             }
