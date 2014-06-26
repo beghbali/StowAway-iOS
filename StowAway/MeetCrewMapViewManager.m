@@ -43,6 +43,7 @@
 @property BOOL isPusherConnected;
 @property BOOL isLocationDisabled;
 @property BOOL isAllCrewMapped;
+@property BOOL isPickupDropOffPointMapped;
 
 @property (strong, nonatomic) CLGeocoder * geocoder;
 
@@ -603,12 +604,19 @@
 
 -(void)zoomToFitMapAnnotations
 {
-    NSLog(@"%s, annotations# %d, crew# %d, hasMapBeenZoomedOut %d", __func__,
-          self.mapView.annotations.count, self.crew.count, self.isAllCrewMapped);
+    NSLog(@"%s, annotations# %d, crew# %d, isAllCrewMapped %d, isPickupDropOffPointMapped %d", __func__,
+          self.mapView.annotations.count, self.crew.count, self.isAllCrewMapped, self.isPickupDropOffPointMapped);
 
-    if(!self.mapView.annotations.count || self.isAllCrewMapped)
+    if(!self.mapView.annotations.count || self.isAllCrewMapped || self.isPickupDropOffPointMapped)
         return;
 
+    
+    if(self.mapView.annotations.count == 3) //annotations for currentloction, pick up, drop off
+    {
+        NSLog(@"%s: pick up and drop off points mapped once, now dont zoom out anymore...", __func__);
+        self.isPickupDropOffPointMapped = YES;
+    }
+    
     if(self.mapView.annotations.count == (self.crew.count + 2)) //annotations for each crew, pick up, drop off
     {
         NSLog(@"%s: all crew mapped once, now dont zoom out anymore...", __func__);
