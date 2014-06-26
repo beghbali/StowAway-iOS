@@ -372,6 +372,10 @@ BOOL    __onBoardingStatusChecked   = NO;
 - (IBAction)increaseRideTimeButtonTapped:(UIButton *)sender
 {
     self.currentRideTimeIndex++;
+    
+    if (self.currentRideTimeIndex > (self.availableRideTimesLabel.count-1))
+        return;
+    
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
 
     if (self.currentRideTimeIndex == (self.availableRideTimesLabel.count -1) )
@@ -380,7 +384,6 @@ BOOL    __onBoardingStatusChecked   = NO;
     self.decreaseRideTimeButton.enabled = YES;
     
     NSLog(@"%s: currentRideTimeIndex %ld, %@", __func__, (long)self.currentRideTimeIndex, self.rideTimeLabel.text);
-    
 }
 
 
