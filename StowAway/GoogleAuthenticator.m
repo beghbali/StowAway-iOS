@@ -64,13 +64,36 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     }
 }
 
+- (void)authControllerWebViewStoppedLoading:(NSNotification *)notification
+{
+    // Assume emailAddress is a property that holds the email address you
+    // you want to pre-populate the Email entity with....
+    
+    NSString *javascript = [NSString stringWithFormat:
+                            @"var elem = document.getElementById(\"Email\");"
+                            @"elem.value = \"%@\";", self.email];
+    
+    NSLog(@"** %s:: %@ ***", __func__, self.gtmVC.webView);
+
+    [self.gtmVC.webView
+     stringByEvaluatingJavaScriptFromString:javascript];
+}
+
 - (NSError *)authenticateWithGoogle: (ReceiptEmailViewController *) receiptVC ForEmail:(NSString *)email
 {
+    NSLog(@"** %s ***", __func__);
+
     NSError * error = Nil;
     
     self.email = email;
     self.receiptVC = receiptVC;
     
+    //for some javascript magic, to autofill email address
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(authControllerWebViewStoppedLoading:)
+                                                 name:kGTMOAuth2WebViewStoppedLoading
+                                               object:nil];
+
     if ( [self isGoogleAuthInKeychain]) {
         NSLog(@"in keychain, lets move to payments...");
 
@@ -122,6 +145,12 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                  error:(NSError * )error
 {
     NSLog(@"** %s ***", __func__);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kGTMOAuth2WebViewStoppedLoading
+                                                  object:nil];
+    
+
     self.googleAuth = auth;
     
     [viewController dismissViewControllerAnimated:YES
