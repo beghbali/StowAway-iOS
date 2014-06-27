@@ -357,7 +357,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     if (self.currentRideTimeIndex)
     {
         self.currentRideTimeIndex--;
-        self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
+        
+        if ( self.currentRideTimeIndex < self.availableRideTimesLabel.count )
+            self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     }
     
     if (self.currentRideTimeIndex == 0)
