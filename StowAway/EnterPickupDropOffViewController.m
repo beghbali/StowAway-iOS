@@ -354,15 +354,17 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (IBAction)decreaseRideTimeButtonTapped:(UIButton *)sender
 {
-    if (self.currentRideTimeIndex)
+    if (self.currentRideTimeIndex > 0)
     {
         self.currentRideTimeIndex--;
         
-        if ( self.currentRideTimeIndex < self.availableRideTimesLabel.count )
+        if ( self.currentRideTimeIndex >= self.availableRideTimesLabel.count )
+            self.currentRideTimeIndex = 0;
+        
             self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     }
     
-    if (self.currentRideTimeIndex == 0)
+    if (self.currentRideTimeIndex <= 0)
         sender.enabled = NO;
     
     self.increaseRideTimeButton.enabled = YES;
@@ -375,14 +377,15 @@ BOOL    __onBoardingStatusChecked   = NO;
 {
     self.currentRideTimeIndex++;
     
-    if (self.currentRideTimeIndex > (self.availableRideTimesLabel.count-1))
-        return;
+    if (self.currentRideTimeIndex >= self.availableRideTimesLabel.count)
+    {
+        NSLog(@"%s: currentRideTimeIndex %d, reached the limit", __func__, self.currentRideTimeIndex);
+        self.currentRideTimeIndex = self.availableRideTimesLabel.count - 1;
+        sender.enabled = NO;
+    }
     
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
 
-    if (self.currentRideTimeIndex == (self.availableRideTimesLabel.count -1) )
-        sender.enabled = NO;
-    
     self.decreaseRideTimeButton.enabled = YES;
     
     NSLog(@"%s: currentRideTimeIndex %ld, %@", __func__, (long)self.currentRideTimeIndex, self.rideTimeLabel.text);
