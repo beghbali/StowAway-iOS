@@ -94,11 +94,13 @@
     {
         hrs --;
         mins = 45;
+        if (hrs < 0) {
+            hrs = 11;
+            ampm = @"pm";
+        }
     }
     self.waitingLabel.text = [NSString stringWithFormat:
                               @"You'll get notifications as we match riders and this ride will finalize by %d:%02d %@.", hrs, mins, ampm ];
-    //@"We'll send you notifications up till XX:XX as we match you with other riders.";
-//    @"We'll send you notifications as\nwe match you with other riders.";
     
     [self setCrewFindingTimeoutNotification];
 
