@@ -309,7 +309,7 @@
                 if (mins < 0)
                 {
                     hrs --;
-                    mins = 45;
+                    mins = 55;
                     if (hrs < 0) {
                         hrs = 11;
                         ampm = @"pm";
