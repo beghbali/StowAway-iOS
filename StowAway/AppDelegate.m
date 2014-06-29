@@ -154,7 +154,7 @@
             updateAvailable = [newversion compare:currentversion options:NSNumericSearch] == NSOrderedDescending;
         }
         
-        if (1||updateAvailable)
+        if (updateAvailable)
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"App Update Required"
                                                             message:@"You must update to the latest version of the app"
