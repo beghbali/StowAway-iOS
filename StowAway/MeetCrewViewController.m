@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel3;
+@property (weak, nonatomic) IBOutlet UILabel *additionalRideInfoLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *designationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
@@ -293,9 +294,29 @@
                 self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO TODAY": @"YOU ARE THE CAPTAIN !";
                 self.instructionsLabel.text = self.isLoneRider? @"Order Uber alone this time and get 50% in ride credit.":
                 [NSString stringWithFormat:@"Crew will be at the pick up point at %@", self.rideTimeLabel];
-                self.requestUberButton.hidden = (isInitiated || self.isLoneRider)? NO: YES;
+
+                self.additionalRideInfoLabel.hidden = (isInitiated || self.isLoneRider)? YES: NO;
+                self.requestUberButton.hidden = !self.additionalRideInfoLabel.hidden ;// (isInitiated || self.isLoneRider)? NO: YES;
+                
                 self.navigationBarItem.title  = self.isLoneRider? @"Lone Rider" : @"Meet Your Crew";
                 
+                //You'll be able order to  send notifications as we find other riders and finalize ride status by XX:XX pm.
+                NSArray * components = [self.rideTimeLabel componentsSeparatedByString:@" "];
+                NSString * ampm = [components objectAtIndex:1];
+                NSArray * components1 = [[components objectAtIndex:0] componentsSeparatedByString:@":"];
+                int hrs = [[components1 objectAtIndex:0] intValue];
+                int mins = [[components1 objectAtIndex:1] intValue]-5;
+                if (mins < 0)
+                {
+                    hrs --;
+                    mins = 45;
+                    if (hrs < 0) {
+                        hrs = 11;
+                        ampm = @"pm";
+                    }
+                }
+                self.additionalRideInfoLabel.text = [NSString stringWithFormat:@"You will be able to order an UberX at %d:%02d %@", hrs, mins, ampm];
+
                 if (self.isLoneRider)
                     [self.finalActionButton setTitle:@" No Thanks " forState:UIControlStateNormal];
             }
@@ -305,6 +326,7 @@
                 self.instructionsLabel.text = [NSString stringWithFormat:@"Please be at the pick-up point by %@.\nDon't be late.", self.rideTimeLabel];
                 self.requestUberButton.hidden = YES;
                 self.navigationBarItem.title  = @"Meet Your Captain";
+                self.additionalRideInfoLabel.text = @"Your captain will call the car.";
             }
             
             if ( ![prevDesg isEqualToString:self.designationLabel.text] )   //play sound based on my role
