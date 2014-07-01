@@ -259,6 +259,10 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     //check for app update availability
     [self checkForAppUpdateAvailability];
+    
+    //update ride credits
+    [self queryRideCredits];
+
 }
 
 #pragma mark - app update 
