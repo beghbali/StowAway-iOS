@@ -77,7 +77,7 @@
      */
 }
 
-#pragma mark local notif
+#pragma mark - local notif
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
@@ -130,60 +130,6 @@
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
-}
-							
--(void)checkForAppUpdateAvailability
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        BOOL updateAvailable = NO;
-        NSDictionary *updateDictionary = [NSDictionary dictionaryWithContentsOfURL:
-                                          [NSURL URLWithString: [[Environment ENV] lookup:@"kBundlePlistPath"]]];
-        
-        if (updateDictionary)
-        {
-            NSArray *items = [updateDictionary objectForKey:@"items"];
-            NSDictionary *itemDict = [items lastObject];
-            
-            NSDictionary *metaData = [itemDict objectForKey:@"metadata"];
-            NSString *newversion = [metaData valueForKey:@"bundle-version"];
-            
-            NSString *currentversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-            
-            NSLog(@"app version: current %@, new %@", currentversion, newversion);
-            updateAvailable = [newversion compare:currentversion options:NSNumericSearch] == NSOrderedDescending;
-        }
-        
-        if (updateAvailable)
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"App Update Required"
-                                                            message:@"You must update to the latest version of the app"
-                                                           delegate:self
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"Update", nil];
-            
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-                [alert show];
-            });
-        }
-    });
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [self checkForAppUpdateAvailability];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex
-{
-    if (buttonIndex == 0)
-    {
-        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
-        
-        NSURL *url = [NSURL URLWithString:myURL];
-        
-        [[UIApplication sharedApplication] openURL: url];
-    }
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

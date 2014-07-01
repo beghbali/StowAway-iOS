@@ -211,6 +211,9 @@ BOOL    __onBoardingStatusChecked   = NO;
         return;
     }
 
+    //check for app update availability
+    [self checkForAppUpdateAvailability];
+    
     [self updateFindCrewButtonEnabledState];
 
     //forget the old request
@@ -253,8 +256,62 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     if ( __onBoardingStatusChecked )
         [self setUpLocationServices];
+    
+    //check for app update availability
+    [self checkForAppUpdateAvailability];
 }
 
+#pragma mark - app update 
+
+-(void)checkForAppUpdateAvailability
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        BOOL updateAvailable = NO;
+        NSDictionary *updateDictionary = [NSDictionary dictionaryWithContentsOfURL:
+                                          [NSURL URLWithString: [[Environment ENV] lookup:@"kBundlePlistPath"]]];
+        
+        if (updateDictionary)
+        {
+            NSArray *items = [updateDictionary objectForKey:@"items"];
+            NSDictionary *itemDict = [items lastObject];
+            
+            NSDictionary *metaData = [itemDict objectForKey:@"metadata"];
+            NSString *newversion = [metaData valueForKey:@"bundle-version"];
+            
+            NSString *currentversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            
+            NSLog(@"app version: current %@, new %@", currentversion, newversion);
+            updateAvailable = [newversion compare:currentversion options:NSNumericSearch] == NSOrderedDescending;
+        }
+        
+        if (updateAvailable)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"App Update Required"
+                                                            message:@"You must update to the latest version of the app"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Update"
+                                                  otherButtonTitles:nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [alert show];
+            });
+        }
+    });
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex
+{
+    NSLog(@"%s.......", __func__);
+    if ( [alertView.title isEqualToString:@"App Update Required"] )
+    {
+        NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
+        
+        NSURL *url = [NSURL URLWithString:myURL];
+        
+        [[UIApplication sharedApplication] openURL: url];
+    }
+}
 
 #pragma mark - onboarding check
 
@@ -1552,8 +1609,8 @@ BOOL    __onBoardingStatusChecked   = NO;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ride Credits"
                                                     message:msg
                                                    delegate:self
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:@"Ok", nil];
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
