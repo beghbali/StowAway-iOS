@@ -72,7 +72,7 @@
     
     [self.getRideResultActivityIndicator stopAnimating];
     
-    //process ride request reply from server -- also sets cd timer value
+    //required to get the user and request id coming from the find ride request
     [self processRequestObject:self.rideRequestResponse];
     
     //schedule to poll the server every 30secs
@@ -348,15 +348,22 @@
     {
         //this is the immediate ride request response
         NSLog(@"process immediate ride req response, create crew array");
-        self.crew = [NSMutableArray arrayWithCapacity: 1];
-        self.userID = [response objectForKey:kUserPublicId];
-        self.requestID = [response objectForKey:kPublicId];
+        self.crew       = [NSMutableArray arrayWithCapacity: 1];
+        self.userID     = [response objectForKey:kUserPublicId];
+        self.requestID  = [response objectForKey:kPublicId];
 
         if (!self.requestID)
             self.requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
         
         //parse the response to fill in SELF request_id, user_id
         NSLog(@"self.requestID %@, self.userID %@", self.requestID, self.userID );
+        if (!(self.requestID && self.userID))
+        {
+            NSLog(@"%s: something really bad happened... go back to home....", __func__);
+            [self cancelCrewFinding];
+            return;
+        }
+        
         NSDictionary * dict = @{kRequestPublicId: self.requestID,
                                 kUserPublicId: self.userID};
         NSMutableDictionary * mutableDict = [NSMutableDictionary dictionaryWithDictionary:dict];

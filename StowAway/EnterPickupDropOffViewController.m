@@ -97,7 +97,6 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) NSDictionary * rideRequestResponse;
 @property double rideCredits;
 @property BOOL isPreviousAppStateValid;
-@property BOOL isWaitingForRideCreditQueryToReturn;
 @property (strong, nonatomic) NSDate *rideDepartureDate;
 
 @end
@@ -1535,9 +1534,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 {
     NSLog(@"\n%s: -- %@ -- %@ -- \n", __func__, data, sError);
    
-    if (self.isWaitingForRideCreditQueryToReturn && !sError && [self processUserObject:data])
+    if (!sError && [self processUserObject:data])
     {
-        self.isWaitingForRideCreditQueryToReturn = NO;
+        NSLog(@"%s: credits %f", __func__, self.rideCredits);
       
         return;
     }
@@ -1627,7 +1626,6 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
     sscommunicator.sscDelegate = self;
-    self.isWaitingForRideCreditQueryToReturn = YES;
    [sscommunicator sendServerRequest:nil ForURL:url usingHTTPMethod:@"GET"];
 }
 
@@ -1637,7 +1635,7 @@ BOOL    __onBoardingStatusChecked   = NO;
     NSLog(@"%s: rideCreditNum %@", __func__, rideCreditNum);
 
     if (!rideCreditNum)
-        return NO; //still waiting
+        return NO; //this is request response object
     
     self.rideCredits = [rideCreditNum doubleValue];
 
