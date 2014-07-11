@@ -41,7 +41,7 @@
 
 @property (strong, nonatomic) NSDictionary *suggestedLocations;
 @property (strong, nonatomic) NSString * locationChannel;
-@property (strong, nonatomic) NSNumber *pickUpTime;
+@property (strong, nonatomic) NSString * suggestedRideTimeString;
 
 @property BOOL isReadyToGoToMeetCrew;
 
@@ -89,7 +89,11 @@
     NSString * ampm = [components objectAtIndex:3];
     NSArray * components1 = [[components objectAtIndex:0] componentsSeparatedByString:@":"];
     int hrs = [[components1 objectAtIndex:0] intValue];
-    int mins = [[components1 objectAtIndex:1] intValue]-15;
+    int mins = [[components1 objectAtIndex:1] intValue];
+    self.suggestedRideTimeString = [NSString stringWithFormat: @"%d:%02d %@", hrs, mins, ampm ]; //init it to the ride time, need it until there is a ride
+    NSLog(@"%s:---------------suggestedRideTimeString %@", __func__, self.suggestedRideTimeString);
+
+    mins -= 15;
     if (mins < 0)
     {
         hrs --;
@@ -503,7 +507,21 @@
     }
     NSLog(@"** FC crew after processing ** - %@", self.crew);
     
-    //UPDATE VIEW with updated crew and new cd time
+    //pick up time from the ride object
+    NSNumber * pickUpTime = [response objectForKey:kSuggestedPickUpTime];
+    if ( pickUpTime && (pickUpTime != (id)[NSNull null]) )
+    {
+        NSTimeInterval pickUpTimeInterval = [pickUpTime doubleValue];
+        NSDate * pickUpDate = [NSDate dateWithTimeIntervalSince1970:pickUpTimeInterval];
+        
+        NSDateFormatter * df = [[NSDateFormatter alloc]init];
+        [df setDateStyle:NSDateFormatterNoStyle];
+        [df setTimeStyle:NSDateFormatterShortStyle];
+        self.suggestedRideTimeString = [df stringFromDate:pickUpDate];
+        NSLog(@"%s: pickUpTime %@,%f.....> pick up date %@, rideTimeString %@", __func__, pickUpTime, pickUpTimeInterval, pickUpDate, self.suggestedRideTimeString );
+    }
+    
+    //UPDATE VIEW with updated crew and new ride time
     [self updateFindingCrewView];
 
     //save loc channel, suggested locn, if the ride is FULFILLED/checkedin/initiated
@@ -526,10 +544,6 @@
                                     kSuggestedPickUpAddr: [response objectForKey:kSuggestedPickUpAddr],
                                     kSuggestedPickUpLong: [response objectForKey:kSuggestedPickUpLong],
                                     kSuggestedPickUpLat: [response objectForKey:kSuggestedPickUpLat]};
-        
-        //pick up time
-        self.pickUpTime = [response objectForKey:kSuggestedPickUpTime];
-        NSLog(@"%s: pickUpTime %@", __func__, self.pickUpTime);
         
         //get loc channel
         self.locationChannel = [response objectForKey:kLocationChannel];
@@ -564,13 +578,7 @@
         
             meetCrewVC.rideDepartureDate    = self.rideDepartureDate;
             
-            NSTimeInterval pickUpTimeDouble = [self.pickUpTime intValue];
-            NSDate * date = [NSDate dateWithTimeIntervalSince1970:pickUpTimeDouble];
-            
-            NSDateFormatter * df = [[NSDateFormatter alloc]init];
-            [df setDateStyle:NSDateFormatterNoStyle];
-            [df setTimeStyle:NSDateFormatterShortStyle];
-            meetCrewVC.rideTimeLabel = [df stringFromDate:date];
+            meetCrewVC.rideTimeLabel        = self.suggestedRideTimeString;
             
             
             [self.serverPollingTimer invalidate];
@@ -766,6 +774,26 @@ void swap (NSUInteger *a, NSUInteger *b)
 -(void)updateFindingCrewView
 {
     NSLog(@"updateFindingCrewView.................self.crew.count %lu", (unsigned long)self.crew.count);
+    
+    //We'll send notifications as we find other riders and finalize ride status by XX:XX pm.
+    NSLog(@"%s:---------------suggestedRideTimeString %@", __func__, self.suggestedRideTimeString);
+
+    NSArray * components = [self.suggestedRideTimeString componentsSeparatedByString:@" "];
+    NSString * ampm = [components objectAtIndex:1];
+    NSArray * components1 = [[components objectAtIndex:0] componentsSeparatedByString:@":"];
+    int hrs = [[components1 objectAtIndex:0] intValue];
+    int mins = [[components1 objectAtIndex:1] intValue]-15;
+    if (mins < 0)
+    {
+        hrs --;
+        mins = 45;
+        if (hrs < 0) {
+            hrs = 11;
+            ampm = @"pm";
+        }
+    }
+    self.waitingLabel.text = [NSString stringWithFormat:
+                              @"You'll get notifications as we match riders and this ride will finalize by %d:%02d %@.", hrs, mins, ampm ];
     
     //go through the crew array, set fb pic, name, stop/start animation as required
     for (NSUInteger i = 1; i < self.crew.count; i++)
