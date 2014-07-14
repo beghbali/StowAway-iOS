@@ -24,6 +24,7 @@ extern NSString *const kUserEmail;
 extern NSString *const kUserEmailProvider;
 extern NSString *const kSupportedEmailProviders[];
 extern NSString *const kStowawayEmail;
+extern NSString *const kIsUsingStowawayEmail;
 
 //gmail OAuth token
 extern NSString *const kGmailAccessToken;

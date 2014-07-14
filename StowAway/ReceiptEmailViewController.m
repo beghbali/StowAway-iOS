@@ -156,7 +156,6 @@
 
 -(void)setOtherMailTexts
 {
-    //TODO: make the email bold - nsattributed text
     NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
     self.changeUberEmailTextView.text = [NSString stringWithFormat:
                                               @"To use Stowaway, you'll need to update your email in the Uber app to: %@", stowawayEmail];
@@ -236,11 +235,17 @@
         googleAuthenticator.email = self.email;
         googleAuthenticator.emailProvider = self.emailProvider;
         
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:NO] forKey:kIsUsingStowawayEmail];
+
         //show gtm view
         [googleAuthenticator authenticateWithGoogle:self ForEmail:self.email];
     } else
+    {
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kIsUsingStowawayEmail];
+
         [self confirmedOtherEmailButtonTapped];
-        
+    }
+    
 }
 
 - (void)confirmedOtherEmailButtonTapped

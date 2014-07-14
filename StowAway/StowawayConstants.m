@@ -25,6 +25,7 @@ NSString *const kUserEmail          = @"email";
 NSString *const kUserEmailProvider  = @"email_provider";
 NSString *const kSupportedEmailProviders[] = { @"gmail" };
 NSString *const kStowawayEmail      = @"stowaway_email";
+NSString *const kIsUsingStowawayEmail      = @"isUsingStowawayEmail";
 
 //FB login
 NSString *const kFirstName          = @"first_name";

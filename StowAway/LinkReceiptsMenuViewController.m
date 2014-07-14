@@ -52,8 +52,6 @@
 
 - (void)viewDidLoad
 {
-    
-    
     super.emailTextField = self.emailTextField;
         
     super.changeUberEmailTextView = self.changeUberEmailTextView;
@@ -69,13 +67,42 @@
     [super viewDidLoad];
 
     self.emailTextField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"linkedReceiptEmail"];
-    
+
     [self setUpRevealMenuButton];
+
+    //show the change uber email text, as a reminder to user
+    NSNumber * isUsingStowawayEmailNum = [[NSUserDefaults standardUserDefaults] objectForKey:kIsUsingStowawayEmail];
+    if (isUsingStowawayEmailNum && [isUsingStowawayEmailNum boolValue])
+    {
+        self.changeUberEmailTextView.hidden = NO;
+        self.stowawayEmailFooterLabel.hidden = NO;
+
+        NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
+        self.changeUberEmailTextView.text = [NSString stringWithFormat:
+                                             @"To use Stowaway, you'll need to update your email in the Uber app to: %@", stowawayEmail];
+        
+        NSLog(@"%@", self.changeUberEmailTextView.text );
+        self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:stowawayEmail
+                                                                    ofFullString:self.changeUberEmailTextView.text
+                                                                        withFont:[UIFont boldSystemFontOfSize:13]];
+        
+        self.stowawayEmailFooterLabel.text = [NSString stringWithFormat:
+                                              @"Don't worry... you will also get Uber receipts at %@", self.emailTextField.text];
+        NSLog(@"%@", self.stowawayEmailFooterLabel.text);
+        self.stowawayEmailFooterLabel.attributedText = [StowawayConstants boldify:self.emailTextField.text
+                                                                     ofFullString:self.stowawayEmailFooterLabel.text
+                                                                         withFont:[UIFont boldSystemFontOfSize:10]];
+        self.showMeHowButton.hidden = NO;
+
+    }
+    
 }
 
 - (IBAction)editBarButtonTapped:(UIBarButtonItem *)sender
 {
     self.changeUberEmailTextView.hidden = YES;
+    self.stowawayEmailFooterLabel.hidden = YES;
+    self.showMeHowButton.hidden = YES;
 
     self.emailTextField.userInteractionEnabled = YES;
     [self.emailTextField becomeFirstResponder];
