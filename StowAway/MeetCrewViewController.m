@@ -133,11 +133,8 @@
     {
         NSLog(@"ride got CANCELED go back to enter drop off pick up view");
 
-        //erase it from memory, so its not used in app restoration
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kRequestPublicId];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+        [self doneWithTheRide];
+        
         return;
     }
     //get the ride object and figure out who needs to be removed from the view, who needs to be checked-in
@@ -229,7 +226,13 @@
 
 -(void)updateCrewInfoInView
 {
-    NSLog(@"%s......", __func__);
+    NSLog(@"%s......crew count %lu", __func__, (unsigned long)self.crew.count);
+    
+    if (self.crew.count == 0)
+    {
+        [self doneWithTheRide];
+        return;
+    }
     
     NSString *  prevDesg        = nil;
     UIImage *   badgedImage     = nil;
