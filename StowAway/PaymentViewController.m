@@ -30,6 +30,7 @@ NSError * error = Nil;
 char isReadyToSavePayment = 0;
 BOOL __isAmex = NO;
 
+
 #pragma mark - view initialization
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -62,7 +63,34 @@ BOOL __isAmex = NO;
     NSLog(@"%s..........................self.isForMenu %d", __func__,self.isForMenu);
 
     if (!self.isForMenu)
-        [self.cardNumberField becomeFirstResponder];
+    {
+        //[self.cardNumberField becomeFirstResponder];
+        
+        //TODO: VIN remove this after testing phase
+        self.nameField.text =  self.stripeCard.name        = @"Neej Gore";
+        self.stripeCard.number      = @"372741052892360";
+        self.cardNumberField.text = @"**** **** **** 2360";
+        self.stripeCard.expMonth    = 6;
+        self.stripeCard.expYear     = 22;
+        self.expiryField.text       = @"**/**";
+        self.stripeCard.cvc         = @"2996";
+        self.cvvField.text          = @"***";
+        self.zipField.text          = @"95014";
+        self.stripeCard.addressZip = @"94117";
+        
+        self.saveButton.enabled = YES;
+        
+        NSLog(@"%s: preset credit card", __func__);
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Lucky !! You get it all free, just tap continue to use our credit card."
+                                                          message:[error localizedDescription]
+                                                         delegate:nil
+                                                cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                otherButtonTitles:nil];
+        [message show];
+
+    }
+    
 }
 
 

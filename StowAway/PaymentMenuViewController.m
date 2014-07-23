@@ -99,12 +99,12 @@
     super.doneButton = self.doneButton;
     super.saveButton = self.saveButton;
     super.rightBarButton = self.rightBarButton;
+    super.isForMenu = YES;
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.cardNumberField resignFirstResponder];
     self.doneButton.hidden = YES;
-    super.isForMenu = YES;
     [self setUpRevealMenuButton];
 
     [self checkPreviousCard];
