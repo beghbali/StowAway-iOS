@@ -130,6 +130,10 @@
     if ( error )
         return;
     
+    NSString * gAuthEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"linkedReceiptEmail"];
+    if (gAuthEmail)
+        self.emailTextField.text = gAuthEmail;
+    
     [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool:YES] forKey:kOnboardingStatusReceiptsDone];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -142,6 +146,8 @@
     self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:@"Request Ride"
                                                    ofFullString:self.changeUberEmailTextView.text
                                                        withFont:[UIFont boldSystemFontOfSize:14]];
+    
+    self.changeUberEmailTextView.hidden = NO;
     
     self.emailTextField.userInteractionEnabled = NO;
     

@@ -64,6 +64,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     }
 }
 
+
 - (void)authControllerWebViewStoppedLoading:(NSNotification *)notification
 {
     // Assume emailAddress is a property that holds the email address you
@@ -73,8 +74,8 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                             @"var elem = document.getElementById(\"Email\");"
                             @"elem.value = \"%@\";", self.email];
     
-    NSLog(@"** %s:: %@ ***", __func__, self.gtmVC.webView);
-
+    NSLog(@"%s: prefil email add %@", __func__, self.email);
+    
     [self.gtmVC.webView
      stringByEvaluatingJavaScriptFromString:javascript];
 }
@@ -87,7 +88,7 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
     self.email = email;
     self.receiptVC = receiptVC;
-    
+   
     //for some javascript magic, to autofill email address
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authControllerWebViewStoppedLoading:)
@@ -132,9 +133,12 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                                                                      delegate:self
                                                              finishedSelector:@selector(viewController:finishedWithAuth:error:)];
     
-//TODO: prefill email field
-//https://groups.google.com/forum/#!msg/gtm-oauth2/5N_xjq8VAzI/8yHe-WTxGwMJ
+    //prefill email field
+    NSLog(@"%s: prefill email field with <%@>", __func__, self.email);
     
+    GTMOAuth2SignIn *signIn = self.gtmVC.signIn;
+    signIn.additionalAuthorizationParameters = @{@"login_hint" :self.email};
+
     //present it modally
     [self.gtmVC setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
     [self.receiptVC presentViewController:self.gtmVC animated:YES completion:nil];
