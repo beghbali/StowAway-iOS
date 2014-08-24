@@ -111,13 +111,16 @@ NSString *const kOnboardingStatusTutorialDone   = @"OnboardingStatusTutorialDone
 //animation finding crew
 double const kFindingCrewFacesAnimationDelay    = 3; //time it takes to go through all the faces #16
 
-
 //coupon request
 NSString *const kCouponCodeKey                  = @"coupon_code";
 NSString *const kCouponCodeLoneRider            = @"LONERIDER";
 
 //ride credits statement
-NSString * const kRideCreditsAlertMsgFormat = @"Your current credit balance is $%0.2f.\nCredits are automatically applied to pay for rides.";
+NSString * const kRideCreditsAlertMsgFormat     = @"Your current credit balance is $%0.2f.\nCredits are automatically applied to pay for rides.";
+
+//uber api keys
+NSString *const kUberApiServerToken             = @"i1PQK3z7yy4XftioV0NkRI7KHkvYsVyJntEmtKns";
+
 
 @implementation StowawayConstants
 

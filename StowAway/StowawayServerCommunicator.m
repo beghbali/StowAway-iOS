@@ -33,7 +33,18 @@
     [request setHTTPMethod  :method];
     [request setValue       :postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue       :@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody    :bodyData];
+
+    if ([bodyString isEqualToString:@"uber"])
+    {
+        NSString *authStr = [NSString stringWithFormat:@"Token %@", kUberApiServerToken];
+        [request setValue:authStr forHTTPHeaderField:@"Authorization"];
+    }
+    else
+    {
+        [request setHTTPBody    :bodyData];
+    }
+
+    
     
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfiguration.allowsCellularAccess = YES;

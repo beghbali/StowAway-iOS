@@ -114,6 +114,9 @@ extern NSString *const kCouponCodeLoneRider;
 //ride credits statement
 extern NSString * const kRideCreditsAlertMsgFormat;
 
+//uber api keys
+extern NSString *const kUberApiServerToken;
+
 @interface StowawayConstants: NSObject
 
 +(NSMutableAttributedString *) boldify:(NSString *)boldSubString ofFullString:(NSString *)fullString withFont: (UIFont *)font;

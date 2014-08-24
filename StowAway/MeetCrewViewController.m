@@ -652,6 +652,24 @@
 
 #pragma mark - launch uber
 
+-(void)getUberXProductId
+{
+    double pickupLat, pickupLong;
+    pickupLat   = [[self.suggestedLocations objectForKey:kSuggestedPickUpLat] doubleValue],
+    pickupLong  = [[self.suggestedLocations objectForKey:kSuggestedPickUpLong] doubleValue];
+    
+    //curl -H 'Authorization: Token kUberApiServerToken' 'https://api.uber.com/v1/products?latitude=37.7759792&longitude=-122.41823'
+    
+    NSLog(@"%s..........", __func__);
+    NSString *url = [NSString stringWithFormat:@"https://api.uber.com/v1/products?latitude=%f&longitude=%f",pickupLat, pickupLong];
+    
+    StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
+    sscommunicator.sscDelegate = self;
+    [sscommunicator sendServerRequest:@"uber" ForURL:url usingHTTPMethod:@"GET"];
+    
+    
+}
+
 - (IBAction)requestUberButtonTapped:(UIButton *)sender
 {
     NSLog(@"%s: isLoneRider %d", __func__, self.isLoneRider);
@@ -659,11 +677,31 @@
     NSString *stringURL = @"uber://";
     NSURL *url = [NSURL URLWithString:stringURL];
     
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        NSLog(@"uber installed, launch");
+    if ([[UIApplication sharedApplication] canOpenURL:url])
+    {
+        double pickupLat, pickupLong, dropOffLat, dropOffLong;
+        dropOffLat  = [[self.suggestedLocations objectForKey:kSuggestedDropOffLat] doubleValue],
+        dropOffLong = [[self.suggestedLocations objectForKey:kSuggestedDropOffLong] doubleValue];
+        
+        pickupLat   = [[self.suggestedLocations objectForKey:kSuggestedPickUpLat] doubleValue],
+        pickupLong  = [[self.suggestedLocations objectForKey:kSuggestedPickUpLong] doubleValue];
+        
+        /*
+         uber://?action=setPickup&pickup[latitude]=37.775818&pickup[longitude]=-122.418028&pickup[nickname]=UberHQ&pickup[formatted_address]=1455%20Market%20St%2C%20San%20Francisco%2C%20CA%2094103&dropoff[latitude]=37.802374&dropoff[longitude]=-122.405818&dropoff[nickname]=Coit%20Tower&dropoff[formatted_address]=1%20Telegraph%20Hill%20Blvd%2C%20San%20Francisco%2C%20CA%2094133&product_id=a1111c8c-c720-46c3-8534-2fcdd730040d
+         */
+        //TODO: don't hardcode uberx product id
+
+        NSString *stringURL = [NSString stringWithFormat:@"uber://?action=setPickup&pickup[latitude]=%f&pickup[longitude]=%f&pickup[nickname]=StowAwayPickUpPoint&dropoff[latitude]=%f&dropoff[longitude]=%f&dropoff[nickname]=StowAwayDropOffPoint&product_id=a1111c8c-c720-46c3-8534-2fcdd730040d",
+                               pickupLat, pickupLong,
+                               dropOffLat, dropOffLong];
+        NSURL *url = [NSURL URLWithString:stringURL];
+        
+        NSLog(@"launch uber:: %@", stringURL);
+
         [[UIApplication sharedApplication] openURL:url];
     }
-    else {
+    else
+    {
         NSLog(@"not installed, open app store");
         
         NSString *stringURL = @"https://appsto.re/us/4hz-v.i";
@@ -687,6 +725,15 @@
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"%s:\n-- %@ -- %@ -- \n", __func__, data, sError);
+    
+    NSArray * products = [data objectForKey:@"products"];
+    if ( products && products.count )
+    {
+        //uber api response
+        NSLog(@"%@", products);
+        
+        return;
+    }
     
     //process the ride object to update the crew
     [self processRideObject:data];
