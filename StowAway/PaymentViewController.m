@@ -82,7 +82,7 @@ BOOL __isAmex = NO;
         
         NSLog(@"%s: preset credit card", __func__);
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Lucky !! You get it all free, just tap continue to use our credit card."
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Hooray for your early participation! You won't pay any matching fee.\n Tap continue for free access."
                                                           message:[error localizedDescription]
                                                          delegate:nil
                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
