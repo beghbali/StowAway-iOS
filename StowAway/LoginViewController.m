@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property BOOL gotLogInUserInfo;
 @property UIImage * fbImage;
+@property UIActivityIndicatorView *activityView;
 @end
 
 @implementation LoginViewController
@@ -77,6 +78,10 @@
 -( void) moveToEmailRegistration
 {
     NSLog(@"%s: moveToEmailRegistration", __func__);
+    
+    //stop the activity indicator
+    [self.activityView stopAnimating];
+
     [self performSegueWithIdentifier: @"fbLoginToReceipt" sender: self];
 
 }
@@ -154,6 +159,14 @@
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
 {
     NSLog(@"fb: just logged in");
+    self.activityView=[[UIActivityIndicatorView alloc]     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    self.activityView.center=self.view.center;
+    
+    [self.activityView startAnimating];
+    
+    [self.view addSubview:self.activityView];
+    
     self.facebookLoginStatus = YES;
 
    // [self moveToEmailRegistration];
