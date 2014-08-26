@@ -117,6 +117,10 @@ extern NSString * const kRideCreditsAlertMsgFormat;
 //uber api keys
 extern NSString *const kUberApiServerToken;
 
+//map annotation
+extern NSString *const pickUpPointAnnotationTitle;
+extern NSString *const dropOffPointAnnotationTitle;
+
 @interface StowawayConstants: NSObject
 
 +(NSMutableAttributedString *) boldify:(NSString *)boldSubString ofFullString:(NSString *)fullString withFont: (UIFont *)font;

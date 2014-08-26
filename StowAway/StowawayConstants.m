@@ -121,6 +121,10 @@ NSString * const kRideCreditsAlertMsgFormat     = @"Your current credit balance 
 //uber api keys
 NSString *const kUberApiServerToken             = @"i1PQK3z7yy4XftioV0NkRI7KHkvYsVyJntEmtKns";
 
+//map annotation
+NSString *const pickUpPointAnnotationTitle      = @"Pick-Up point";
+NSString *const dropOffPointAnnotationTitle     = @"Drop-Off point";
+
 
 @implementation StowawayConstants
 

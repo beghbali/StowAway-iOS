@@ -189,7 +189,7 @@
         [self.geocoder reverseGeocodeLocation: dropOffLoc completionHandler:
          ^(NSArray *placemarks, NSError *error)
         {
-            NSLog(@"drop off -- %@, error %@", placemarks, error);
+            //NSLog(@"drop off -- %@, error %@", placemarks, error);
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
         
             NSString * streetAdd = nil;
@@ -250,7 +250,7 @@
         [self.geocoder reverseGeocodeLocation: pickUpLoc completionHandler:
          ^(NSArray *placemarks, NSError *error)
          {
-             NSLog(@"pick up -- %@, error %@", placemarks, error);
+             //NSLog(@"pick up -- %@, error %@", placemarks, error);
              CLPlacemark *placemark = [placemarks objectAtIndex:0];
              
              NSString * streetAdd = nil;
@@ -569,7 +569,7 @@
     if ( !self.dropOffAnnotation )
     {
         self.dropOffAnnotation = [[MKPointAnnotation alloc]init];
-        self.dropOffAnnotation.title = @"Drop-Off point";
+        self.dropOffAnnotation.title = dropOffPointAnnotationTitle;
     }
     
     self.dropOffAnnotation.coordinate = CLLocationCoordinate2DMake([[self.suggestedLocations objectForKey:kSuggestedDropOffLat] doubleValue],
@@ -589,7 +589,7 @@
     if ( !self.pickUpAnnotation )
     {
         self.pickUpAnnotation = [[MKPointAnnotation alloc]init];
-        self.pickUpAnnotation.title = @"Pick-Up point";
+        self.pickUpAnnotation.title = pickUpPointAnnotationTitle;
     }
     
     self.pickUpAnnotation.coordinate = CLLocationCoordinate2DMake([[self.suggestedLocations objectForKey:kSuggestedPickUpLat] doubleValue],
@@ -665,7 +665,7 @@
     result.animatesDrop = YES;
     result.canShowCallout = YES;
     
-    if ([annotation.title isEqualToString: @"Drop-Off point"])
+    if ([annotation.title isEqualToString: dropOffPointAnnotationTitle])
     {
         NSLog(@"color mp RED");
         result.pinColor = MKPinAnnotationColorRed;
@@ -673,7 +673,7 @@
         return result;
     }
     
-    if ([annotation.title isEqualToString:@"Pick-Up point"])
+    if ([annotation.title isEqualToString:pickUpPointAnnotationTitle])
     {
         NSLog(@"color mp GREEN");
 
