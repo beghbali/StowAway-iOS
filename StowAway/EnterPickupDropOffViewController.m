@@ -305,10 +305,11 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger) buttonIndex
 {
-    NSLog(@"%s.......", __func__);
     if ( [alertView.title isEqualToString:@"App Update Required"] )
     {
         NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
+        
+        NSLog(@"fetching update from: %@", myURL);
         
         NSURL *url = [NSURL URLWithString:myURL];
         
