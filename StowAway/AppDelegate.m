@@ -29,6 +29,8 @@
 
     NSLog(@"app launched in %@ environment with launch options %@", environment, launchOptions);
 
+#warning ios 8 remote notifications broken
+    //TODO: fix this for ios 8
     // Let the device know we want to receive push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
                                             (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];

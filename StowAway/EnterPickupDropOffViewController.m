@@ -67,7 +67,6 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 @property (strong, nonatomic) CLLocationManager * locationManager;
 @property BOOL isUsingCurrentLoc;
 @property (nonatomic) CLLocationCoordinate2D userLocation;
-@property BOOL isLocationDisabled;
 
 @property (nonatomic, strong) MKLocalSearch *localSearch;
 @property (nonatomic, strong) NSMutableArray /* of MKMapItem */ *pickUpPlaces;
@@ -106,6 +105,35 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 int     __locationInputCount        = 0;
 BOOL    __onBoardingStatusChecked   = NO;
+
+
+
+#pragma mark - fg_bg action
+
+- (void)appWillBecomeInActive:(NSNotification *)notification
+{
+    NSLog(@"%s", __func__);
+    [self.locationManager stopUpdatingLocation];
+}
+
+- (void)appReturnsActive:(NSNotification *)notification
+{
+    NSLog(@"%s isRideTimeConfigured %d, __onBoardingStatusChecked %d", __func__, self.isRideTimeConfigured, __onBoardingStatusChecked);
+    
+    //dont recalculate immediately after VDL
+    if (!self.isRideTimeConfigured)
+        [self configureScheduledRidesOptions];
+    
+    if ( __onBoardingStatusChecked )
+        [self setUpLocationServices];
+    
+    //check for app update availability
+    [self checkForAppUpdateAvailability];
+    
+    //update ride credits
+    [self queryRideCredits];
+    
+}
 
 #pragma mark - setup view
 
@@ -235,33 +263,6 @@ BOOL    __onBoardingStatusChecked   = NO;
     [self configureScheduledRidesOptions];
     
     self.isRideTimeConfigured = NO;
-}
-
-#pragma mark - fg_bg action
-
-- (void)appWillBecomeInActive:(NSNotification *)notification
-{
-    NSLog(@"%s", __func__);
-    [self.locationManager stopUpdatingLocation];
-}
-
-- (void)appReturnsActive:(NSNotification *)notification
-{
-    NSLog(@"%s isRideTimeConfigured %d, __onBoardingStatusChecked %d", __func__, self.isRideTimeConfigured, __onBoardingStatusChecked);
-    
-    //dont recalculate immediately after VDL
-    if (!self.isRideTimeConfigured)
-        [self configureScheduledRidesOptions];
-    
-    if ( __onBoardingStatusChecked )
-        [self setUpLocationServices];
-    
-    //check for app update availability
-    [self checkForAppUpdateAvailability];
-    
-    //update ride credits
-    [self queryRideCredits];
-
 }
 
 #pragma mark - app update 
@@ -1371,15 +1372,12 @@ BOOL    __onBoardingStatusChecked   = NO;
 -(void)setUpLocationServices
 {
     NSLog(@"%s", __func__);
+    
+    //prompt
+    if(![self alertIsLocationDisabled])
+        [self setupCoreLocationManager];
 
-    //check loc is on
-    self.isLocationDisabled = ![self isLocationEnabled];
-    
     self.mapView.showsUserLocation = YES;
-    
-    [self setupCoreLocationManager];
-    
-   // [self updateMapsViewArea];
 }
 
 -(void) destroyCoreLocationManager
@@ -1400,8 +1398,10 @@ BOOL    __onBoardingStatusChecked   = NO;
         self.locationManager = [[CLLocationManager alloc] init];
 
     NSLog(@"%s", __func__);
-
-	self.locationManager.delegate = self;
+    
+    [self.locationManager requestAlwaysAuthorization]; //if user has not decided about the app's location service usage permission
+    
+    self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeOther;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.distanceFilter = 10;
@@ -1430,36 +1430,15 @@ BOOL    __onBoardingStatusChecked   = NO;
     NSLog(@"loc manager failed - %@", error);
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+-(BOOL) alertIsLocationDisabled
 {
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     
-    NSLog(@"%s, status %d",__func__, status);
+    NSLog(@"%s: authorizationStatus %d", __func__, status);
     
-    if ( (status == kCLAuthorizationStatusAuthorized) && self.isLocationDisabled )
-        [self.locationManager startUpdatingLocation];
-    else
-        self.isLocationDisabled = ![self isLocationEnabled];    //this would prompt user
-    
-}
-
--(BOOL) isLocationEnabled
-{
-    NSString *causeStr = nil;
-    
-    // check whether location services are enabled on the device
-    if ([CLLocationManager locationServicesEnabled] == NO)
+    if ( status && status < kCLAuthorizationStatusAuthorized ) //user has explicitly disabled
     {
-        causeStr = @"this device";
-    }
-    // check the application’s explicit authorization status:
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
-    {
-        causeStr = @"Stowaway";
-    }
-    
-    if (causeStr != nil)
-    {
-        NSString *alertMessage = [NSString stringWithFormat:@"You have location services disabled for %@.\nPlease turn it on at \"Settings > Privacy > Location Services\"", causeStr];
+        NSString *alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease select 'Always' at \"Settings > Privacy > Location Services > Stowaway\""];
         
         UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
                                                                         message:alertMessage
@@ -1467,10 +1446,9 @@ BOOL    __onBoardingStatusChecked   = NO;
                                                               cancelButtonTitle:@"OK"
                                                               otherButtonTitles:nil];
         [servicesDisabledAlert show];
-        return NO;
+        return YES;
     }
-
-    return YES;
+    return NO;
 }
 
 #pragma mark - Find Crew

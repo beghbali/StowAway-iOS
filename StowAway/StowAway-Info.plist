@@ -28,9 +28,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.42</string>
+	<string>1.42.1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.42</string>
+	<string>1.42.1</string>
 	<key>Environment</key>
 	<string>${CONFIGURATION}</string>
 	<key>FacebookAppID</key>
@@ -40,7 +40,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationUsageDescription</key>
-	<string>Knowing your location will significantly improve the Stowaway experience</string>
+	<string>Knowing your location is required for few features of this app to work. We don&apos;t store your location and will use it sparingly.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Knowing your location is required for few features of this app to work. We don&apos;t store your location and will use it sparingly.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
