@@ -43,6 +43,7 @@
 		F460823418F515DE00E3F059 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823318F515DE00E3F059 /* MenuTableViewController.m */; };
 		F460823C18FA38E200E3F059 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460823B18FA38E200E3F059 /* PageContentViewController.m */; };
 		F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F460824E18FA434A00E3F059 /* TutorialViewController.m */; };
+		F460BF5319D3D3F6004DA25A /* STPAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = F460BF5219D3D3F6004DA25A /* STPAPIConnection.m */; };
 		F47A5E7618D00E2700182C0C /* MeetCrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */; };
 		F47C03F3190E207200F9916E /* wood-with-portholes_v3.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C03F1190E207200F9916E /* wood-with-portholes_v3.png */; };
 		F47C03F4190E207200F9916E /* wood-with-portholes_v3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F47C03F2190E207200F9916E /* wood-with-portholes_v3@2x.png */; };
@@ -235,6 +236,8 @@
 		F460823B18FA38E200E3F059 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
 		F460824D18FA434A00E3F059 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		F460824E18FA434A00E3F059 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		F460BF5119D3D3F6004DA25A /* STPAPIConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPAPIConnection.h; sourceTree = "<group>"; };
+		F460BF5219D3D3F6004DA25A /* STPAPIConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPAPIConnection.m; sourceTree = "<group>"; };
 		F47A5E7418D00E2600182C0C /* MeetCrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetCrewViewController.h; sourceTree = "<group>"; };
 		F47A5E7518D00E2700182C0C /* MeetCrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetCrewViewController.m; sourceTree = "<group>"; };
 		F47C03F1190E207200F9916E /* wood-with-portholes_v3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wood-with-portholes_v3.png"; sourceTree = "<group>"; };
@@ -479,6 +482,8 @@
 		F4266D3F18B5A87800A46BB1 /* Stripe */ = {
 			isa = PBXGroup;
 			children = (
+				F460BF5119D3D3F6004DA25A /* STPAPIConnection.h */,
+				F460BF5219D3D3F6004DA25A /* STPAPIConnection.m */,
 				F4266D4018B5A87800A46BB1 /* STPCard.h */,
 				F4266D4118B5A87900A46BB1 /* STPCard.m */,
 				F4266D4218B5A87900A46BB1 /* STPToken.h */,
@@ -1064,6 +1069,7 @@
 				68BAFEC6188DDBD3009738A0 /* LoginViewController.m in Sources */,
 				F47CB70918AAF84000FD8FB9 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				F47CB70618AAF84000FD8FB9 /* GTMOAuth2Authentication.m in Sources */,
+				F460BF5319D3D3F6004DA25A /* STPAPIConnection.m in Sources */,
 				F451B6C718B3333400CF59BA /* StowawayConstants.m in Sources */,
 				F42773EE18FE353A003AE6AD /* HelpMenuViewController.m in Sources */,
 				F460824F18FA434A00E3F059 /* TutorialViewController.m in Sources */,
