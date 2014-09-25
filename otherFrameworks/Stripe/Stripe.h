@@ -11,7 +11,9 @@
 #import "STPCard.h"
 #import "STPToken.h"
 
-typedef void (^STPCompletionBlock)(STPToken* token, NSError* error);
+FOUNDATION_EXPORT NSString *const kStripeiOSVersion; // Version of this library.
+
+typedef void (^STPCompletionBlock)(STPToken *token, NSError *error);
 
 // Stripe is a static class used to create and retrieve tokens.
 @interface Stripe : NSObject
