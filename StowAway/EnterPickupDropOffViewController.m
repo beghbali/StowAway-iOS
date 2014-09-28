@@ -1399,7 +1399,8 @@ BOOL    __onBoardingStatusChecked   = NO;
 
     NSLog(@"%s", __func__);
     
-    [self.locationManager requestAlwaysAuthorization]; //if user has not decided about the app's location service usage permission
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
+        [self.locationManager requestAlwaysAuthorization]; //if user has not decided about the app's location service usage permission
     
     self.locationManager.delegate = self;
     self.locationManager.activityType = CLActivityTypeOther;
@@ -1438,8 +1439,15 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     if ( status && status < kCLAuthorizationStatusAuthorized ) //user has explicitly disabled
     {
-        NSString *alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease select 'Always' at \"Settings > Privacy > Location Services > Stowaway\""];
+        NSString *alertMessage = nil;
         
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+            // iOS 7.1 or earlier
+            alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease turn ON \"Settings > Privacy > Location Services > Stowaway\""];
+        else
+            //ios 8
+            alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease select 'Always' at \"Settings > Privacy > Location Services > Stowaway\""];
+       
         UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
                                                                         message:alertMessage
                                                                        delegate:nil

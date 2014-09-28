@@ -110,7 +110,7 @@
            andPusherChannel:(NSString *)locationChannel
 {
     //check loc is on
-    self.isLocationDisabled = ![self isLocationEnabled];
+    self.isLocationDisabled = [self alertIsLocationDisabled];
     
     //set class properties
     self.mapView = mapView;
@@ -337,30 +337,26 @@
     if ( (status == kCLAuthorizationStatusAuthorized) && self.isLocationDisabled )
         [self startLocationUpdates];
     else
-        self.isLocationDisabled = ![self isLocationEnabled];    //this would prompt user
+        self.isLocationDisabled = [self alertIsLocationDisabled];    //this would prompt user
 }
 
 
--(BOOL) isLocationEnabled
+-(BOOL) alertIsLocationDisabled
 {
-    NSLog(@"%s",__func__);
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     
-    NSString *causeStr = nil;
+    NSLog(@"%s: authorizationStatus %d", __func__, status);
     
-    // check whether location services are enabled on the device
-    if ([CLLocationManager locationServicesEnabled] == NO)
+    if ( status && status < kCLAuthorizationStatusAuthorized ) //user has explicitly disabled
     {
-        causeStr = @"device";
-    }
-    // check the application’s explicit authorization status:
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
-    {
-        causeStr = @"app";
-    }
-    
-    if (causeStr != nil)
-    {
-        NSString *alertMessage = [NSString stringWithFormat:@"You currently have location services disabled for this %@. Please turn it on at \"Settings > Privacy > Location Services\"", causeStr];
+        NSString *alertMessage = nil;
+        
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+            // iOS 7.1 or earlier
+            alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease turn ON \"Settings > Privacy > Location Services > Stowaway\""];
+        else
+            //ios 8
+            alertMessage = [NSString stringWithFormat:@"We need location services to function. \nPlease select 'Always' at \"Settings > Privacy > Location Services > Stowaway\""];
         
         UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
                                                                         message:alertMessage
@@ -368,10 +364,9 @@
                                                               cancelButtonTitle:@"OK"
                                                               otherButtonTitles:nil];
         [servicesDisabledAlert show];
-        return NO;
+        return YES;
     }
-    
-    return YES;
+    return NO;
 }
 
 #pragma mark - Pusher
