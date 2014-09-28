@@ -30,15 +30,21 @@
     NSLog(@"app launched in %@ environment with launch options %@", environment, launchOptions);
 
     // Let the device know we want to receive push notifications
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-                                            (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 
-    //for ios 8
-    UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:
-                                                        UIUserNotificationTypeAlert | UIUserNotificationTypeSound categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+    {
+        // iOS 7.1 or earlier
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    } else
+    {
+        // iOS 8 and above
+        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:
+                                                            UIUserNotificationTypeAlert | UIUserNotificationTypeSound categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    
     //facebook login
     [FBLoginView class];
     [FBProfilePictureView class];
