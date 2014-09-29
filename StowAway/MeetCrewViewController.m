@@ -187,15 +187,15 @@
             {
                 removeIt = NO;
                 //update status
-                NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, j, [response objectForKey:kStatus]);
+                NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, j, [request objectForKey:kStatus]);
               
-                if ([[response objectForKey:kStatus] isEqualToString:kStatusCheckedin])
+                if ([[request objectForKey:kStatus] isEqualToString:kStatusCheckedin])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCheckedIn];
                 
-                if ([[response objectForKey:kStatus] isEqualToString:kStatusMissed])
+                if ([[request objectForKey:kStatus] isEqualToString:kStatusMissed])
                     [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kIsCheckedIn];
   
-                if ([[response objectForKey:kStatus] isEqualToString:kStatusInitiated])
+                if ([[request objectForKey:kStatus] isEqualToString:kStatusInitiated])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kStatusInitiated];
                 else
                     [crewMember setObject:[NSNumber numberWithBool:NO] forKey: kStatusInitiated];
@@ -360,6 +360,26 @@
             
             if (keepRunningAutoCheckinProcess != 0)
             {
+                //if i am captain, then i need to wait for stowaways to determine their checkin status
+                if (isCaptain)
+                {
+                    BOOL isWholeCrewCheckinStatusDetermined = YES;
+                    NSLog(@"%s: i'm a captain, checking crews checkin status", __func__);
+                    for (int k = 0; k < self.crew.count; k++)
+                    {
+                        NSMutableDictionary * crewMember = [self.crew objectAtIndex:k];
+                        int keepRunningAutoCheckinProcess = [self getCheckedInStatus:crewMember];
+                        NSLog(@"crew#%d, keepRunningAutoCheckinProcess %d", k, keepRunningAutoCheckinProcess);
+                        if (keepRunningAutoCheckinProcess==0)
+                        {
+                            isWholeCrewCheckinStatusDetermined = NO;
+                            break;
+                        }
+                    }
+                    if (!isWholeCrewCheckinStatusDetermined)
+                        continue;
+                }
+                
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
                 
                 if ( !self.isLoneRider )
@@ -741,6 +761,8 @@
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
     NSLog(@"%s:\n-- %@ -- %@ -- \n", __func__, data, sError);
+    if (sError)
+        return;
     
     NSArray * products = [data objectForKey:@"products"];
     if ( products && products.count )
