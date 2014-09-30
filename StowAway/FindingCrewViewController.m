@@ -116,6 +116,15 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    NSNumber *storedRequestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+    NSLog(@"FC VDA: storedRequestID %@", storedRequestID);
+    if (!storedRequestID)
+    {
+        NSLog(@"%s: go home....", __func__);
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+        return;
+    }
     
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
