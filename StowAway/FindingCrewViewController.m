@@ -524,6 +524,8 @@
         NSDate * pickUpDate = [NSDate dateWithTimeIntervalSince1970:pickUpTimeInterval];
         
         NSDateFormatter * df = [[NSDateFormatter alloc]init];
+        NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]; //to always have the time string in am pm format
+        [df setLocale:locale];
         [df setDateStyle:NSDateFormatterNoStyle];
         [df setTimeStyle:NSDateFormatterShortStyle];
         self.suggestedRideTimeString = [df stringFromDate:pickUpDate];
