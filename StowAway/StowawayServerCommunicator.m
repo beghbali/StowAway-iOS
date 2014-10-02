@@ -19,8 +19,9 @@
 
 -(BOOL) sendServerRequest:(NSString *)bodyString ForURL: (NSString * )url usingHTTPMethod: (NSString *)method;
 {
+#ifdef DEBUG
     NSLog(@"sendServerRequest:: \n url: ## %@ ## \n bodyData: ## %@ ## \n method ## %@ ##", url, bodyString, method);
-
+#endif
     if (!url || !method ) {
         return NO;
     }

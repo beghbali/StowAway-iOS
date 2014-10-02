@@ -21,7 +21,9 @@
 
 -(void) initializeWithSecondsRemaining:(NSUInteger)seconds ForLabel:(UILabel *)label
 {
+#ifdef DEBUG
     NSLog(@"init CountdownTimer:: %@, %lusecs", label.text, (unsigned long)seconds);
+#endif
     self.countdownTimerLabel = label;
     self.countDownEndDate = [NSDate dateWithTimeIntervalSinceNow:seconds];
     

@@ -132,15 +132,11 @@ BOOL __isAmex = NO;
 {
     UIViewController * presentingVC = self.presentingViewController;
     
-    NSLog(@"presenting vc %@ ", presentingVC);
-    
     while ( [presentingVC class] != [SWRevealViewController class] )
     {
         presentingVC = presentingVC.presentingViewController;
-        NSLog(@"next presenting vc %@", presentingVC);
     }
     
-    NSLog(@" ======= return home =====");
     [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
 }
@@ -148,8 +144,6 @@ BOOL __isAmex = NO;
 
 - (IBAction)doneButtonTapped:(UIButton *)sender
 {
-    NSLog(@"%s..........................", __func__);
-    
     //hide keyboard
     [self.view endEditing:YES];
 }
@@ -349,8 +343,9 @@ BOOL __isAmex = NO;
     NSInteger curMonth = [components month];
     NSInteger curYear = [components year];
     
+#ifdef DEBUG
     NSLog(@"cur %ld %ld, %ld %ld", (long)curMonth, (long)curYear, (long)*month, (long)*year);
-    
+#endif
     if ( *year < curYear ) {
         return NO;
     }
@@ -579,8 +574,9 @@ BOOL __isAmex = NO;
 
 - (void)handleToken:(STPToken *)token
 {
+#ifdef DEBUG
     NSLog(@"Received token %@", token.tokenId);
-    
+#endif
     self.saveButton.enabled = NO;
     
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
@@ -605,8 +601,9 @@ BOOL __isAmex = NO;
     NSString * cardType = [self.stripeCard type];
     NSString * lastFour = [self.stripeCard.number substringFromIndex:12];
     
+#ifdef DEBUG
     NSLog(@"CARD:: %@, %@, %lu %lu, %@, %@, %@, %@", self.stripeCard.name, self.stripeCard.number, (unsigned long)self.stripeCard.expMonth, (unsigned long)self.stripeCard.expYear, self.stripeCard.cvc, self.stripeCard.addressZip, cardType, lastFour);
- 
+#endif
     [Stripe createTokenWithCard:self.stripeCard
                  publishableKey: [[Environment ENV] lookup:@"kStripePublicKey"]
                      completion:^(STPToken *token, NSError *error) {
@@ -628,8 +625,9 @@ BOOL __isAmex = NO;
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"\n-- %@ -- %@ -- \n", data, sError);
-    
+#endif
 //TODO: if it failed send credit card info again
     [self performSegueWithIdentifier: @"go to terms" sender: self];
 

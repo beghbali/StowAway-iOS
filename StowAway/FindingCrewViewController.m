@@ -66,8 +66,9 @@
 {
     [super viewDidLoad];
     
+#ifdef DEBUG
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
-    
+#endif
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
     
     [self.getRideResultActivityIndicator stopAnimating];
@@ -91,8 +92,9 @@
     int hrs = [[components1 objectAtIndex:0] intValue];
     int mins = [[components1 objectAtIndex:1] intValue];
     self.suggestedRideTimeString = [NSString stringWithFormat: @"%d:%02d %@", hrs, mins, ampm ]; //init it to the ride time, need it until there is a ride
+#ifdef DEBUG
     NSLog(@"%s:---------------suggestedRideTimeString %@", __func__, self.suggestedRideTimeString);
-
+#endif
     mins -= 15;
     if (mins < 0)
     {
@@ -118,7 +120,9 @@
     [super viewDidAppear:animated];
 
     NSNumber *storedRequestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
+#ifdef DEBUG
     NSLog(@"FC VDA: storedRequestID %@", storedRequestID);
+#endif
     if (!storedRequestID)
     {
         NSLog(@"%s: go home....", __func__);
@@ -126,13 +130,16 @@
         return;
     }
     
+#ifdef DEBUG
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
+#endif
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
     
     self.viewDidLoadFinished = YES;
     
+#ifdef DEBUG
     NSLog(@"FindingCrewViewController::view did appear .............., isReadyToGoToMeetCrew %d", self.isReadyToGoToMeetCrew);
-    
+#endif
     //update the view - pics, names
     [self updateFindingCrewView];
     
@@ -145,8 +152,9 @@
 
 -(void)subscribeToNotifications
 {
+#ifdef DEBUG
     NSLog(@"%s...........", __func__);
-    
+#endif
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(fcReceivedRideUpdateFromServer:)
                                                  name:@"rideUpdateFromServer"
@@ -175,8 +183,9 @@
 
 -(void)unSubscribeToNotifications
 {
+#ifdef DEBUG
     NSLog(@"%s...........", __func__);
-    
+#endif
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"rideUpdateFromServer"
                                                object:nil];
@@ -203,8 +212,9 @@
 
 - (void)appReturnsActive:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s: ", __func__);
-
+#endif
     [self pollServer];
     
     //schedule to poll the server every 30secs
@@ -217,8 +227,9 @@
 
 - (void)appWillBecomeInActive:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s:", __func__);
-    
+#endif
     //dont poll the server when in the background
     [self.serverPollingTimer invalidate];
 }
@@ -226,7 +237,9 @@
 //remote push notification
 -(void)fcReceivedRideUpdateFromServer:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s:  %@", __func__, notification);
+#endif
     //query server to get the latest
     self.rideID = [notification.userInfo objectForKey:kPublicId];
     if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
@@ -243,7 +256,9 @@
 
 -(void)setCrewFindingTimeoutNotification
 {
+#ifdef DEBUG
     NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> Departure is at %@", __func__, self.crewFindingTimeoutLocalNotification, self.rideDepartureDate);
+#endif
     if (!self.rideDepartureDate)
         return;
     
@@ -258,14 +273,16 @@
     
     [[UIApplication sharedApplication] scheduleLocalNotification:self.crewFindingTimeoutLocalNotification];
     
+#ifdef DEBUG
     NSLog(@"%s: scheduled for %@", __func__, self.crewFindingTimeoutLocalNotification.fireDate);
-
+#endif
 }
 
 -(void)unSetCrewFindingTimeoutNotification
 {
+#ifdef DEBUG
     NSLog(@"%s:<crewFindingTimeoutLocalNotification %@> AT %@", __func__, self.crewFindingTimeoutLocalNotification, self.crewFindingTimeoutLocalNotification.fireDate);
-    
+#endif
     if (!self.crewFindingTimeoutLocalNotification)
         return;
     
@@ -280,8 +297,9 @@
 {
     [self.getRideResultActivityIndicator stopAnimating];
 
+#ifdef DEBUG
     NSLog(@"\n %s: -- %@ -- %@ -- \n", __func__, data, sError);
-
+#endif
     if (sError)
         return;
     
@@ -301,8 +319,9 @@
         return NO;
     }
     NSDate * now = [NSDate date];
+#ifdef DEBUG
     NSLog(@"%s: now %@, expiry date %@", __func__, now, self.crewFindingTimeoutLocalNotification.fireDate);
-
+#endif
     if ( [now compare:self.crewFindingTimeoutLocalNotification.fireDate] == NSOrderedDescending)
     {
         [self sendCoupon:kCouponCodeLoneRider];
@@ -315,8 +334,9 @@
 
 - (void)pollServer
 {
+#ifdef DEBUG
     NSLog(@"pollServer:: userid %@, request id %@, ride id %@", self.userID, self.requestID, self.rideID);
-    
+#endif
     if (!self.requestID || !self.userID)
         return;
     
@@ -344,9 +364,10 @@
 
 -(void)processRequestObject:(NSDictionary *)response
 {
+#ifdef DEBUG
     NSLog(@"%s: self.crew %@, isReadyToGoToMeetCrew %d, viewDidLoadFinished %d, rideRequestResponse %@", __func__,
           self.crew, self.isReadyToGoToMeetCrew, self.viewDidLoadFinished, response);
-
+#endif
     if (!response)
     {
         NSLog(@"%s: null response", __func__);
@@ -360,7 +381,9 @@
     if ( !self.crew )
     {
         //this is the immediate ride request response
+#ifdef DEBUG
         NSLog(@"process immediate ride req response, create crew array");
+#endif
         self.crew       = [NSMutableArray arrayWithCapacity: 1];
         self.userID     = [response objectForKey:kUserPublicId];
         self.requestID  = [response objectForKey:kPublicId];
@@ -369,7 +392,9 @@
             self.requestID = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestPublicId];
         
         //parse the response to fill in SELF request_id, user_id
+#ifdef DEBUG
         NSLog(@"self.requestID %@, self.userID %@", self.requestID, self.userID );
+#endif
         if (!(self.requestID && self.userID))
         {
             NSLog(@"%s: something really bad happened... go back to home....", __func__);
@@ -385,8 +410,9 @@
     
     NSNumber * ride_id = [response objectForKey:kRidePublicId];
     self.rideID = ride_id;
+#ifdef DEBUG
     NSLog(@"%s: ride_id %@", __func__, ride_id);
-    
+#endif
     if ( ride_id && (ride_id != nsNullObj) )
     {
         // there is a match - GET RIDE result
@@ -429,8 +455,9 @@
     //no need for crew finding failed notifcation
     [self unSetCrewFindingTimeoutNotification];
     
+#ifdef DEBUG
     NSLog(@"crew before processing: %@", self.crew);
-    
+#endif
     //array of user_public_id
     NSMutableArray * dontRemoveCrewIndexList = [NSMutableArray arrayWithCapacity:2];
     
@@ -439,8 +466,9 @@
     NSUInteger countRequests = requests.count;
     NSUInteger countCrew = self.crew.count;
     
+#ifdef DEBUG
     NSLog(@"crew# %lu, rideResult# %lu", (unsigned long)countCrew, (unsigned long)countRequests);
-    
+#endif
     //ADD NEW MEMBERS
     for ( NSUInteger i = 0; i < countRequests; i++)
     {
@@ -514,8 +542,9 @@
         [self.crew removeObjectAtIndex:j];
         j--;
     }
+#ifdef DEBUG
     NSLog(@"** FC crew after processing ** - %@", self.crew);
-    
+#endif
     //pick up time from the ride object
     NSNumber * pickUpTime = [response objectForKey:kSuggestedPickUpTime];
     if ( pickUpTime && (pickUpTime != (id)[NSNull null]) )
@@ -529,7 +558,9 @@
         [df setDateStyle:NSDateFormatterNoStyle];
         [df setTimeStyle:NSDateFormatterShortStyle];
         self.suggestedRideTimeString = [df stringFromDate:pickUpDate];
+#ifdef DEBUG
         NSLog(@"%s: pickUpTime %@,%f.....> pick up date %@, rideTimeString %@", __func__, pickUpTime, pickUpTimeInterval, pickUpDate, self.suggestedRideTimeString );
+#endif
     }
     
     //UPDATE VIEW with updated crew and new ride time
@@ -541,8 +572,9 @@
     
     if ( [rideStatus isEqualToString:KStatusFulfilled] || [rideStatus isEqualToString:kStatusCheckedin] || [rideStatus isEqualToString:kStatusInitiated] )//kStatusCheckedin in case of lonerider
     {
+#ifdef DEBUG
         NSLog(@"(viewDidLoadFinished %d)...... we are ready to go to 'meet your crew'", self.viewDidLoadFinished);
-        
+#endif
         self.isReadyToGoToMeetCrew = YES;
         
         //cancel timer expiry notif
@@ -570,8 +602,9 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+#ifdef DEBUG
     NSLog(@"%s....", __func__);
-
+#endif
     if ( [segue.identifier isEqualToString:@"toMeetCrew"] )
     {
         if ([segue.destinationViewController class] == [MeetCrewViewController class])
@@ -612,8 +645,9 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void) setupAnimationForImageNumber:(NSUInteger)imageNumber
 {
+#ifdef DEBUG
     NSLog(@"%s: imageNumber %lu", __func__, (unsigned long)imageNumber);
-    
+#endif
     // images to be circulated
     NSMutableArray * faces = [[NSMutableArray alloc] initWithCapacity:TOTAL_FACES_COUNT];
     for (int i=1; i < TOTAL_FACES_COUNT; i++)
@@ -758,7 +792,9 @@ void swap (NSUInteger *a, NSUInteger *b)
 #pragma mark - crew finding timed out
 -(void)sendCoupon:(NSString *)couponCode
 {
+#ifdef DEBUG
     NSLog(@"%s:",__func__);
+#endif
     //send couponed request
     NSString *url = [NSString stringWithFormat:@"%@%@/requests/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.requestID];
     
@@ -774,8 +810,9 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void)crewFindingTimedOut:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s..............data %@", __func__, notification);
-    
+#endif
  //   [self sendCoupon:kCouponCodeLoneRider];
 }
 
@@ -784,11 +821,13 @@ void swap (NSUInteger *a, NSUInteger *b)
 //crew and timer
 -(void)updateFindingCrewView
 {
+#ifdef DEBUG
     NSLog(@"updateFindingCrewView.................self.crew.count %lu", (unsigned long)self.crew.count);
-    
+#endif
     //We'll send notifications as we find other riders and finalize ride status by XX:XX pm.
+#ifdef DEBUG
     NSLog(@"%s:---------------suggestedRideTimeString %@", __func__, self.suggestedRideTimeString);
-
+#endif
     NSArray * components = [self.suggestedRideTimeString componentsSeparatedByString:@" "];
     NSString * ampm = [components objectAtIndex:1];
     NSArray * components1 = [[components objectAtIndex:0] componentsSeparatedByString:@":"];
@@ -813,7 +852,9 @@ void swap (NSUInteger *a, NSUInteger *b)
 
         if ([crewMember objectForKey:kCrewFbImage] && [crewMember objectForKey:kCrewFbName])
         {
+#ifdef DEBUG
             NSLog(@"we already have the fb image and name for crewMember %lu", (unsigned long)i);
+#endif
             continue;
         }
 
@@ -822,8 +863,9 @@ void swap (NSUInteger *a, NSUInteger *b)
     
     for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
     {
+#ifdef DEBUG
         NSLog(@"RESET crew#%lu ........", (unsigned long)i);
-
+#endif
         //reset the images to animate and also reset the name to finding....
         switch (i) {
             case 1:
@@ -864,8 +906,9 @@ void swap (NSUInteger *a, NSUInteger *b)
 {
     NSError* error;
 
+#ifdef DEBUG
     NSLog(@"find out crew#%lu's image+name with FBUID %@", (unsigned long)crewPostion, fbUID);
-   
+#endif
     NSURL *profilePicURL    = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?width=160&height=160", fbUID]];
     NSData *profilePicData  = [NSData dataWithContentsOfURL:profilePicURL];
     UIImage *profilePic     = [[UIImage alloc] initWithData:profilePicData] ;
@@ -889,8 +932,9 @@ void swap (NSUInteger *a, NSUInteger *b)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void){
                 //Run UI Updates
+#ifdef DEBUG
                 NSLog(@"set crew#%lu's image+name %@", (unsigned long)crewPostion, fbFirstName);
-
+#endif
                 [self stopAnimatingImage:self.imageView1];
                 
                 self.imageView1.image   = profilePic;
@@ -956,8 +1000,6 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"For alert %@, The %@ button was tapped.", theAlert.title, [theAlert buttonTitleAtIndex:buttonIndex]);
-    
     //TODO: change all the constant texts to constant keys in a string file, that can be used for localization as well
     if ([theAlert.title isEqualToString:@"Cancel Crew Finding !"])
     {
@@ -985,12 +1027,14 @@ void swap (NSUInteger *a, NSUInteger *b)
 
 -(void)receivedRideCreditsUpdate:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s..............data %@", __func__, notification);
-    
+#endif
     self.rideCredits = [[notification.userInfo objectForKey:@"credits"] doubleValue];
     
+#ifdef DEBUG
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
-    
+#endif
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
 }
 

@@ -112,13 +112,17 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)appWillBecomeInActive:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s", __func__);
+#endif
     [self.locationManager stopUpdatingLocation];
 }
 
 - (void)appReturnsActive:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s isRideTimeConfigured %d, __onBoardingStatusChecked %d", __func__, self.isRideTimeConfigured, __onBoardingStatusChecked);
+#endif
     
     //dont recalculate immediately after VDL
     if (!self.isRideTimeConfigured)
@@ -172,8 +176,6 @@ BOOL    __onBoardingStatusChecked   = NO;
 {
     [super viewDidLoad];
     
-    NSLog(@"%s", __func__);
-
     //set text as white - looks better when background is blue
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
@@ -197,15 +199,19 @@ BOOL    __onBoardingStatusChecked   = NO;
     NSNumber * userID       = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     self.isPreviousAppStateValid = NO;
 
+#ifdef DEBUG
     NSLog(@"%s: requestID %@, userID %@", __func__, requestID, userID);
+#endif
     
     if ((requestID != nil) && userID)
     {
         NSNumber * requestedForNum = [[NSUserDefaults standardUserDefaults] objectForKey:kRequestedForDate];
         NSTimeInterval requestedFor = [requestedForNum doubleValue];
         NSTimeInterval currentTimeInterval = [[NSDate date]timeIntervalSince1970];
-        
+       
+#ifdef DEBUG
         NSLog(@"%s: requestedFor %f, currentTimeInterval %f", __func__, requestedFor, currentTimeInterval);
+#endif
 
         if ( currentTimeInterval < requestedFor)
         {
@@ -223,7 +229,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+#ifdef DEBUG
     NSLog(@"%s: __onBoardingStatusChecked %d", __func__, __onBoardingStatusChecked);
+#endif
     
     [super viewDidAppear:YES];
     
@@ -310,7 +318,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     {
         NSString *myURL = [NSString stringWithFormat: @"%@%@", @"itms-services://?action=download-manifest&url=", [[Environment ENV] lookup:@"kBundlePlistPath"]];
         
+#ifdef DEBUG
         NSLog(@"fetching update from: %@", myURL);
+#endif
         
         NSURL *url = [NSURL URLWithString:myURL];
         
@@ -323,13 +333,17 @@ BOOL    __onBoardingStatusChecked   = NO;
 -(BOOL)isUserLoggedIn
 {
     NSNumber * publicUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
-
+    
+#ifdef DEBUG
+    NSLog(@"%s: publicUserId %@", __func__, publicUserId);
+#endif
+    
     if ( publicUserId && [LoginViewController isFBLoggedIn] )
     {
-        NSLog(@"%s: fb already logged in, publicUserId %@", __func__, publicUserId);
+        NSLog(@"%s: fb already logged in", __func__);
         return YES;
     } else {
-        NSLog(@"%s: fb NOT logged in, publicUserId %@", __func__, publicUserId);
+        NSLog(@"%s: fb NOT logged in", __func__);
         return NO;
     }
 }
@@ -375,21 +389,26 @@ BOOL    __onBoardingStatusChecked   = NO;
             }
         }
     }    
-    
+#ifdef DEBUG
     NSLog(@"%s: __onBoardingStatusChecked %d ", __func__, __onBoardingStatusChecked);
+#endif
 }
 
 +(void)setOnBoardingStatusChecked:(BOOL)yesOrNo
 {
+#ifdef DEBUG
     NSLog(@"setOnBoardingStatusChecked %d", yesOrNo);
+#endif
+
     __onBoardingStatusChecked = yesOrNo;
 }
 
 #pragma mark - Ride Time Buttons
 - (IBAction)leftRideTypeButtonTapped:(UIButton *)sender
 {
+#ifdef DEBUG
     NSLog(@"%s: startingRideTypeIndex %ld", __func__, (long)self.startingRideTypeIndex);
-    
+#endif
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
     self.isUsingNextRideType = NO;
     
@@ -402,8 +421,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (IBAction)rightRideTypeButtonTapped:(UIButton *)sender
 {
+#ifdef DEBUG
     NSLog(@"%s: startingRideTypeIndex %ld", __func__, (long)self.startingRideTypeIndex);
-
+#endif
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex + 1];
     self.isUsingNextRideType = YES;
     
@@ -431,8 +451,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     self.increaseRideTimeButton.enabled = YES;
 
+#ifdef DEBUG
     NSLog(@"%s: currentRideTimeIndex %ld, %@", __func__, (long)self.currentRideTimeIndex, self.rideTimeLabel.text);
-
+#endif
 }
 
 - (IBAction)increaseRideTimeButtonTapped:(UIButton *)sender
@@ -441,7 +462,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     if (self.currentRideTimeIndex >= self.availableRideTimesLabel.count)
     {
-        NSLog(@"%s: currentRideTimeIndex %d, reached the limit", __func__, self.currentRideTimeIndex);
+#ifdef DEBUG
+        NSLog(@"%s: currentRideTimeIndex %lu, reached the limit", __func__, (unsigned long)self.currentRideTimeIndex);
+#endif
         self.currentRideTimeIndex = self.availableRideTimesLabel.count - 1;
         sender.enabled = NO;
     }
@@ -449,8 +472,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
 
     self.decreaseRideTimeButton.enabled = YES;
-    
+#ifdef DEBUG
     NSLog(@"%s: currentRideTimeIndex %ld, %@", __func__, (long)self.currentRideTimeIndex, self.rideTimeLabel.text);
+#endif
 }
 
 
@@ -470,8 +494,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     self.nowHrs = self.nowDateComponents.hour;
     self.nowMins = self.nowDateComponents.minute;
-    
+#ifdef DEBUG
     NSLog(@"%s: now [%@], hrs %ld, mins %ld", __func__, [dateFormatter stringFromDate:now], (long)self.nowHrs, (long)self.nowMins);
+#endif
 }
 
 -(void)calculateRideType
@@ -497,7 +522,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     }
     
     self.rideTypeLabel.text = self.rideTypes[self.startingRideTypeIndex];
+#ifdef DEBUG
     NSLog(@"%s: startingRideTypeIndex %ld [%@].......", __func__, (long)self.startingRideTypeIndex, self.rideTypeLabel.text);
+#endif
 }
 
 -(void)calculateAvailableRideTimesRangeFor:(NSUInteger)rideTypeIndex
@@ -541,8 +568,10 @@ BOOL    __onBoardingStatusChecked   = NO;
             break;
     }
     
+#ifdef DEBUG
     NSLog(@"BEFORE modularizing:: starting hrs %ld, starting mins %ld, endingAvailabilityHrs %ld ******* ",
           (long)self.startingAvailabilityHrs, (long)self.startingAvailabilityMins, (long)self.endingAvailabilityHrs);
+#endif
     
     if (self.startingAvailabilityMins == -1)
     {
@@ -591,7 +620,9 @@ BOOL    __onBoardingStatusChecked   = NO;
         }
     }
     
+#ifdef DEBUG
     NSLog(@"AFTER modularizing:: starting hrs %ld, starting mins %ld ******* ", (long)self.startingAvailabilityHrs, (long)self.startingAvailabilityMins);
+#endif
 }
 
 -(void)calculateAvailableRideTimesStrings
@@ -614,7 +645,9 @@ BOOL    __onBoardingStatusChecked   = NO;
         historicalMins = [[standardDefaults objectForKey: kLastRideToWorkMins] intValue];
     }
     self.currentRideTimeIndex = 0;  //should be based on history
+#ifdef DEBUG
     NSLog(@"%s: history: %lu:%lu", __func__, (unsigned long)historicalHrs, (unsigned long)historicalMins);
+#endif
     
     self.availableRideTimesLabel = nil;
     self.availableRideTimesLabel = [NSMutableArray arrayWithCapacity:1];
@@ -642,8 +675,6 @@ BOOL    __onBoardingStatusChecked   = NO;
         self.startingAvailabilityMins = nxtMins;
     }
     
-   // NSLog(@"%s: availableRideTimesLabel %@, self.currentRideTimeIndex %lu", __func__, self.availableRideTimesLabel, (unsigned long)self.currentRideTimeIndex);
-    
     self.rideTimeLabel.text = self.availableRideTimesLabel[self.currentRideTimeIndex];
     
     //enable/disable the +/- buttons
@@ -653,8 +684,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)configureScheduledRidesOptions
 {
+#ifdef DEBUG
     NSLog(@"%s: +++++++++ isUsingNextRideType %d ++++++++++++", __func__, self.isUsingNextRideType);
-
+#endif
     //(1)
     [self calculateCurrentHrsMins];
 
@@ -680,8 +712,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     NSString * choosenTime = self.availableRideTimesLabel[self.currentRideTimeIndex];
     NSUInteger choosenRideType = self.isUsingNextRideType? (self.startingRideTypeIndex+1): self.startingRideTypeIndex;
     
+#ifdef DEBUG
     NSLog(@"%s: %@ [%lu], %@", __func__, self.rideTypes[choosenRideType], (unsigned long)choosenRideType, choosenTime);
-    
+#endif
     NSArray * tokens = [choosenTime componentsSeparatedByString:@" "];
     NSString * startTime = [tokens firstObject];
     NSString * am_pm = [tokens objectAtIndex:3];
@@ -690,8 +723,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     NSString * choosenHrs = [tokens firstObject];
     NSString * choosenMins = [tokens lastObject];
     
+#ifdef DEBUG
     NSLog(@"%s: %@ %@ %@ %d", __func__, choosenHrs, choosenMins, am_pm, isPM);
-
+#endif
     //remember the ride time history
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     [standardDefaults setObject:choosenHrs forKey: isPM? kLastRideToHomeHrs: kLastRideToWorkHrs];
@@ -710,11 +744,13 @@ BOOL    __onBoardingStatusChecked   = NO;
     if (choosenRideType > kRideType_ToHomeToday)        //tomorrow
         self.nowDateComponents.day++;
     
+#ifdef DEBUG
     NSLog(@"choosen componenets : hours %ld, minutes %ld, month %ld, year %ld, day %ld", (long)self.nowDateComponents.hour, (long)self.nowDateComponents.minute, (long)self.nowDateComponents.month, (long)self.nowDateComponents.year, (long)self.nowDateComponents.day);
-    
+#endif
     choosenRideDate = [calendar dateFromComponents:self.nowDateComponents];
+#ifdef DEBUG
     NSLog(@"choosen ride date: %@", [dateFormatter stringFromDate:choosenRideDate]);
-
+#endif
     return choosenRideDate;
 }
 
@@ -730,7 +766,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     id lastPickUpLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:isRideToWork? kPickUpLocationHistoryToWork: kPickUpLocationHistoryToHome] firstObject]; //first of array of mapitem
     id lastDropOffLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:isRideToWork? kDropOffLocationHistoryToWork: kDropOffLocationHistoryToHome] firstObject]; //first of array of mapitem
 
+#ifdef DEBUG
     NSLog(@"%s:isRideToWork %d lastPickUpLocation %@, lastDropOffLocation %@", __func__, isRideToWork, lastPickUpLocation, lastDropOffLocation);
+#endif
     
     if (lastPickUpLocation)
     {
@@ -783,7 +821,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     {
         historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
     }
+#ifdef DEBUG
     NSLog(@"%s: historyKey[%@]", __func__, historyKey);
+#endif
 
     //if the place already exists in the history
     NSArray * existingHistoryMatch = [self getFilteredLocationHistoryFor:placeName isForPickUp:isPickUp isExactMatchRequired:YES];
@@ -793,11 +833,15 @@ BOOL    __onBoardingStatusChecked   = NO;
        
         NSUInteger indexFound = [locationHistory indexOfObject:existingHistoryMatch.firstObject];
         //move this entry to the begining
+#ifdef DEBUG
         NSLog(@"%s: existingHistoryMatch %@.............indexFound %lu", __func__, existingHistoryMatch, (unsigned long)indexFound);
+#endif
         
         if ( (indexFound != NSNotFound) && indexFound > 0)
         {
+#ifdef DEBUG
             NSLog(@"%s: move it to the begining of the history array", __func__);
+#endif
             [locationHistory removeObjectAtIndex:indexFound];
             [locationHistory insertObject:existingHistoryMatch.firstObject atIndex:0];
             
@@ -815,8 +859,9 @@ BOOL    __onBoardingStatusChecked   = NO;
                   kLocationHistoryLongitude: [NSNumber numberWithDouble: mkMapItem.placemark.coordinate.longitude]};
     else
     {
+#ifdef DEBUG
         NSLog(@"ERROR--- new loc to be added to history[%@] is mkMapItem %@ !!!", historyKey, mkMapItem);
-
+#endif
         return NO;
     }
     
@@ -831,8 +876,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     [[NSUserDefaults standardUserDefaults] setObject:locHistory forKey:historyKey];
     
+#ifdef DEBUG
     NSLog(@"%s: '%@' --> %@", __func__, historyKey, locHistory);
-
+#endif
     return YES;
 }
 
@@ -870,7 +916,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     {
         if ([[locItem objectForKey:kLocationHistoryName] isEqualToString:kPickUpDefaultCurrentLocation])
         {
+#ifdef DEBUG
             NSLog(@"map item in history is current loc, use latest self lat long");
+#endif
             self.isUsingCurrentLoc = YES;
             return self.userLocation;
         }
@@ -883,7 +931,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     MKMapItem * mp = (MKMapItem *)locItem;
     if ( mp.isCurrentLocation ) //from search result
     {
+#ifdef DEBUG
         NSLog(@"map item is current loc, update lat long manually");
+#endif
         self.isUsingCurrentLoc = YES;
         return self.userLocation;
     }
@@ -905,8 +955,9 @@ BOOL    __onBoardingStatusChecked   = NO;
         historyKey = isPickUp ? kPickUpLocationHistoryToWork: kDropOffLocationHistoryToWork;
     
     NSArray * locationHistory = [[NSUserDefaults standardUserDefaults] objectForKey:historyKey]; //array of mapitem
+#ifdef DEBUG
     NSLog(@"%s:looking for \"%@\" in [%@] of size %lu" , __func__, searchString, historyKey, (unsigned long)locationHistory.count);
-    
+#endif
     if (locationHistory)
     {
         if (exactMatch)
@@ -918,8 +969,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     }
     
     
+#ifdef DEBUG
     NSLog(@"%s: found %lu %@", __func__, (unsigned long)filteredLoc.count, exactMatch?@"MATCHES":@"CONTAINS");
-    
+#endif
     return filteredLoc;
 }
 
@@ -998,8 +1050,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     [self.mapView addAnnotation:mkPA];
     [self.mapView selectAnnotation:mkPA animated:YES];
     
+#ifdef DEBUG
     NSLog(@"%s: lat %f, long %f", isPickUpPoint?"pick up loc":"drop off loc", mkPA.coordinate.latitude, mkPA.coordinate.longitude);
-
+#endif
     [self updateMapsViewArea];
 }
 
@@ -1076,7 +1129,6 @@ BOOL    __onBoardingStatusChecked   = NO;
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
     [searchBar resignFirstResponder];
-    NSLog(@"CANCEL:: pickup %@, dropoff %@", self.pickUpSearchBar.text, self.dropOffSearchBar.text);
     
     [self updateFindCrewButtonEnabledState];
 }
@@ -1120,8 +1172,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
+#ifdef DEBUG
         NSLog(@"SEARCH returned %lu results: error %@", (unsigned long)response.mapItems.count, error);
-        
+#endif
         if (error != nil)
         {
             NSString *errorStr = [[error userInfo] valueForKey:NSLocalizedDescriptionKey];
@@ -1146,8 +1199,9 @@ BOOL    __onBoardingStatusChecked   = NO;
         }
     };
     
-    NSLog(@"search: <%@>, is searching %d", searchString, self.localSearch.searching);
-    
+#ifdef DEBUG
+   NSLog(@"search: <%@>, is searching %d", searchString, self.localSearch.searching);
+#endif
     if ( searchBar == self.pickUpSearchBar)
     {
         //clear the array before adding new result
@@ -1285,7 +1339,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     
     if (annotationArray.count < 3 )
     {
+#ifdef DEBUG
         NSLog(@"%s: annotation array size %lu", __func__, (unsigned long)annotationArray.count);
+#endif
         return YES;
     }
     
@@ -1297,13 +1353,17 @@ BOOL    __onBoardingStatusChecked   = NO;
 
     if( dropOffIndex == NSNotFound )
     {
+#ifdef DEBUG
         NSLog(@"%s: no  known dropOffAnnotation on the map", __func__);
+#endif
         return YES;
     }
     
     if( pickUpIndex == NSNotFound )
     {
+#ifdef DEBUG
         NSLog(@"%s: no  known pickUpAnnotation on the map", __func__);
+#endif
         return YES;
     }
 
@@ -1315,7 +1375,9 @@ BOOL    __onBoardingStatusChecked   = NO;
          dropOffMapAnnotation.coordinate.latitude == self.prevDropOffAnnotationCoordinates.latitude &&
          dropOffMapAnnotation.coordinate.longitude == self.prevDropOffAnnotationCoordinates.longitude )
     {
+#ifdef DEBUG
         NSLog(@"%s: Annotation coordinates on the map have not changed", __func__);
+#endif
         return NO;
     }
     
@@ -1324,8 +1386,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)updateMapsViewArea
 {
+#ifdef DEBUG
     NSLog(@"%s...", __func__);
-    
+#endif
     NSArray * annotationArray = nil;
     
     if (![self didAnyAnnotationChange])
@@ -1371,8 +1434,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)setUpLocationServices
 {
+#ifdef DEBUG
     NSLog(@"%s", __func__);
-    
+#endif
     //prompt
     if(![self alertIsLocationDisabled])
         [self setupCoreLocationManager];
@@ -1382,8 +1446,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void) destroyCoreLocationManager
 {
+#ifdef DEBUG
     NSLog(@"%s", __func__);
-    
+#endif
     self.mapView.showsUserLocation = NO;
 
     [self.locationManager stopUpdatingLocation];
@@ -1397,8 +1462,9 @@ BOOL    __onBoardingStatusChecked   = NO;
     if (!self.locationManager)
         self.locationManager = [[CLLocationManager alloc] init];
 
+#ifdef DEBUG
     NSLog(@"%s", __func__);
-    
+#endif
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
         [self.locationManager requestAlwaysAuthorization]; //if user has not decided about the app's location service usage permission
     
@@ -1414,8 +1480,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+#ifdef DEBUG
     NSLog(@"%s......", __func__);
-    
+#endif
     CLLocation * newLocation = [locations lastObject];
     
     // remember for later -  user's current location
@@ -1519,12 +1586,14 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"\n%s: -- %@ -- %@ -- \n", __func__, data, sError);
-   
+#endif
     if (!sError && [self processUserObject:data])
     {
+#ifdef DEBUG
         NSLog(@"%s: credits %f", __func__, self.rideCredits);
-      
+#endif
         return;
     }
 
@@ -1542,8 +1611,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+#ifdef DEBUG
     NSLog(@"%s: credits %f, isPreviousAppStateValid %d", __func__, self.rideCredits, self.isPreviousAppStateValid);
-    
+#endif
     [self destroyCoreLocationManager]; //we don't need to update user's current location at this point
 
     if ( [segue.identifier isEqualToString:@"toFindingCrew"] )
@@ -1606,7 +1676,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)queryRideCredits
 {
+#ifdef DEBUG
     NSLog(@"%s........", __func__);
+#endif
     NSNumber * userID = [[NSUserDefaults standardUserDefaults] objectForKey:kUserPublicId];
     
     NSString *url = [NSString stringWithFormat:@"%@%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], userID];
@@ -1619,8 +1691,9 @@ BOOL    __onBoardingStatusChecked   = NO;
 -(BOOL)processUserObject: (NSDictionary *)data
 {
     NSNumber * rideCreditNum = [data objectForKey:@"credits"];
+#ifdef DEBUG
     NSLog(@"%s: rideCreditNum %@", __func__, rideCreditNum);
-
+#endif
     if (!rideCreditNum)
         return NO; //this is request response object
     

@@ -95,8 +95,9 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+#ifdef DEBUG
     NSLog(@"email entered <%@>",self.emailTextField.text);
-    
+#endif
     if ( ![self isEmailValid:self.emailTextField.text] )
     {
         NSLog(@"invalid email format");
@@ -110,12 +111,14 @@
 
     self.email = self.emailTextField.text;
     self.emailProvider = [self getEmailProvider:self.email];
+#ifdef DEBUG
     NSLog(@"provider -- %@",self.emailProvider);
-    
+#endif
     if ( [self.emailProvider caseInsensitiveCompare:@"gmail"] == NSOrderedSame )
     {
+#ifdef DEBUG
         NSLog(@"gmail = show auth button");
-        
+#endif
         //hide is gmail question and answer
         self.isUsingGmailLabel.hidden = YES;
         self.isGmailNoButton.hidden = YES;
@@ -132,8 +135,9 @@
         self.finalActionButton.hidden = NO;
     } else
     {
+#ifdef DEBUG
         NSLog(@"not gmail = ask provider");
-
+#endif
         //show is gmail question and answer
         self.isUsingGmailLabel.hidden = NO;
         self.isGmailNoButton.hidden = NO;
@@ -177,8 +181,9 @@
 {
     if ([sender.titleLabel.text isEqualToString:@"Yes"])
     {
+#ifdef DEBUG
         NSLog(@"google selected");
-        
+#endif
         //highlight yes button
         sender.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.isGmailNoButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
@@ -193,8 +198,9 @@
         self.finalActionButton.hidden = NO;
     } else
     {
+#ifdef DEBUG
         NSLog(@"other selected");
-        
+#endif
         //highlight no button
         sender.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.isGmailYesButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
@@ -216,7 +222,9 @@
 
 - (void)googleAuthenticatorResult: (NSError *)error
 {
+#ifdef DEBUG
     NSLog(@"%s::: error %@", __func__, error);
+#endif
     if ( error )
         return;
 
@@ -268,8 +276,9 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
-    
+#endif
     if (sError)
         return;
     
@@ -286,9 +295,7 @@
 -(void) viewDidDisappear:(BOOL)animated
 {
     if (self.isMovingFromParentViewController)
-    {
-        NSLog(@"isMovingFromParentViewController");
-        
+    {        
         if ([self.parentViewController class] == [LoginViewController class])
         {
             LoginViewController *loginVC = (LoginViewController *)self.parentViewController; // get results out of vc, which I presented

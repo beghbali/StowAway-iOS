@@ -46,7 +46,6 @@
 
 - (IBAction)skipButtonTapped:(id)sender
 {
-    NSLog(@"%s........EDIT.................. parent %@", __func__, self.parentViewController);
 
    // [self dismissViewControllerAnimated:YES completion:nil];
    // [self.navigationController pushViewController:self.parentViewController animated:YES];
@@ -122,7 +121,6 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
-    NSLog(@"%s........go back to DOCK now......................%@ ", __func__, self.parentViewController);
 //    [self.parentViewController performSegueWithIdentifier:@"sw_front" sender:self.parentViewController];
     self.saveButton.enabled = NO;
     [self checkPreviousCard];

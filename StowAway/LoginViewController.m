@@ -31,8 +31,9 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
-    
+#endif
     if (sError)
     {
         [self loginView:nil handleError:sError];
@@ -70,15 +71,9 @@
     [self moveToEmailRegistration];
 }
 
-- (void) setFacebookLoginStatus:(BOOL)facebookLoginStatus
-{
-    NSLog(@"enable next button %d", facebookLoginStatus);
-}
 
 -( void) moveToEmailRegistration
 {
-    NSLog(@"%s: moveToEmailRegistration", __func__);
-    
     //stop the activity indicator
     [self.activityView stopAnimating];
 
@@ -101,7 +96,6 @@
     if (FBSession.activeSession.isOpen)
     {
         NSLog(@"viewDidLoad: fb already logged in");
-        //[self moveToEmailRegistration];
     } else {
         NSLog(@"viewDidLoad: fb not logged in");
     }
@@ -121,8 +115,9 @@
 // This method will be called when the user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
 {
+#ifdef DEBUG
     NSLog(@"%s, gotLogInUserInfo %d", __func__, self.gotLogInUserInfo);
-    
+#endif
     if (self.gotLogInUserInfo)
         return;
     self.gotLogInUserInfo = YES;

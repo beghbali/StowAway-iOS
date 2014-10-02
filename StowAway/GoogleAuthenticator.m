@@ -35,8 +35,6 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 // check if the user is already google auth'ed
 - (BOOL)isGoogleAuthInKeychain
 {
-    NSLog(@"** %s HACK returns NO always ***", __func__);
-    
     return NO; //TODO: remove this hack
     
     // Check for authorization saved in keychain
@@ -47,8 +45,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     if ([authFromKeychain canAuthorize])
     {
         self.googleAuth = authFromKeychain;
+#ifdef DEBUG
         NSLog(@"authFromKeychain%@ got google auth in keychain already for %@, auth expires on %@",authFromKeychain, self.googleAuth.userEmail, self.googleAuth.expirationDate);
-
+#endif
 //TODO: revisit this check , it should never happen
         if ( ![self.email isEqualToString:self.googleAuth.userEmail] )
         {
@@ -74,15 +73,15 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                             @"var elem = document.getElementById(\"Email\");"
                             @"elem.value = \"%@\";", self.email];
     
+#ifdef DEBUG
     NSLog(@"%s: prefil email add %@", __func__, self.email);
-    
+#endif
     [self.gtmVC.webView
      stringByEvaluatingJavaScriptFromString:javascript];
 }
 
 - (NSError *)authenticateWithGoogle: (ReceiptEmailViewController *) receiptVC ForEmail:(NSString *)email
 {
-    NSLog(@"** %s ***", __func__);
 
     NSError * error = Nil;
     
@@ -111,7 +110,6 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
 - (void)signInToGoogle
 {
-    NSLog(@"** %s ***", __func__);
 
     GTMOAuth2Authentication * googleAuth = [GTMOAuth2Authentication
                                             authenticationWithServiceProvider:kGTMOAuth2ServiceProviderGoogle
@@ -134,8 +132,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
                                                              finishedSelector:@selector(viewController:finishedWithAuth:error:)];
     
     //prefill email field
+#ifdef DEBUG
     NSLog(@"%s: prefill email field with <%@>", __func__, self.email);
-    
+#endif
     GTMOAuth2SignIn *signIn = self.gtmVC.signIn;
     signIn.additionalAuthorizationParameters = @{@"login_hint" :self.email};
 
@@ -148,8 +147,6 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
       finishedWithAuth:(GTMOAuth2Authentication * )auth
                  error:(NSError * )error
 {
-    NSLog(@"** %s ***", __func__);
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kGTMOAuth2WebViewStoppedLoading
                                                   object:nil];
@@ -159,8 +156,10 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
     
     [viewController dismissViewControllerAnimated:YES
                                        completion:^{
+#ifdef DEBUG
                                         NSLog(@"finished google auth, error:%@, auth accessToken %@, refresh token %@, user email %@ ",
                                               error, [auth accessToken], [auth refreshToken], auth.userEmail);
+#endif
                                         [self performSelectorOnMainThread:@selector(authWithGoogleReturnedWithError:)
                                                                withObject:error waitUntilDone:NO];
                                        }];
@@ -170,7 +169,6 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 - (void) authWithGoogleReturnedWithError: (NSError *)error
 {
     //do all the UI stuff on the main thread
-    NSLog(@"** %s ***", __func__);
     if (error != nil)
     {
         //FAILURE - go back to receipts linking screen
@@ -206,7 +204,9 @@ static NSString *const kKeychainItemName = @"OAuth StowAway: Google";
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"%s: -- %@ -- %@ --", __func__, data, sError);
+#endif
 }
 
 @end

@@ -44,14 +44,10 @@
 {
     UIViewController * presentingVC = self.presentingViewController;
   
-    NSLog(@"presenting vc %@ ", presentingVC);
-
     while ( [presentingVC class] != [SWRevealViewController class] )
     {
         presentingVC = presentingVC.presentingViewController;
-        NSLog(@"next presenting vc %@", presentingVC);
     }
-    NSLog(@" ======= return home =====");
     [EnterPickupDropOffViewController setOnBoardingStatusChecked:YES];
 
     [presentingVC dismissViewControllerAnimated:YES completion:nil];
@@ -62,8 +58,6 @@
     [super viewDidLoad];
 
     NSString * enquiryurl = @"https://getstowaway.com/legal/terms.html";
-
-    NSLog(@"loading page from %@", enquiryurl);
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:enquiryurl]];
 

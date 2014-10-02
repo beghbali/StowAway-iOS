@@ -22,13 +22,13 @@
     if ([[Environment ENV] lookup:@"kCrashlyticsAPIKey"] != nil)
     {
         [Crashlytics startWithAPIKey:[[Environment ENV] lookup:@"kCrashlyticsAPIKey"]];
-        NSLog(@"Crashlytics Enabled");
     }
     
     NSString *environment = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Environment"];
-
+    
+#ifdef DEBUG
     NSLog(@"app launched in %@ environment with launch options %@", environment, launchOptions);
-
+#endif
     // Let the device know we want to receive push notifications
 
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
@@ -56,7 +56,10 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
+#ifdef DEBUG
 	NSLog(@"\n didReceiveRemoteNotification: %@ \n", userInfo);
+#endif
+
     
     NSArray * allKeys = [userInfo allKeys];
     if (!allKeys || !(allKeys.count) )
@@ -93,8 +96,9 @@
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s: %@", __func__, notification);
-    
+#endif
     //crew matching timed out -- failed to find ::generate notif which finding crew will respond to by deleting the request
     [[NSNotificationCenter defaultCenter] postNotificationName:@"crewFindingTimedOut"
                                                         object:self
@@ -114,7 +118,9 @@
 	newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
 	newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
+#ifdef DEBUG
     NSLog(@"parsed token %@", newToken);
+#endif
     
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     

@@ -60,9 +60,10 @@
     
     [self subscribeToNotifications];
     
+#ifdef DEBUG
     NSLog(@"MeetCrewViewController viewDidLoad: *** crew %@, \n suggLoc %@, locChannel %@ ****",
           self.crew, self.suggestedLocations, self.locationChannel);
-    
+#endif
     self.nameLabel1.text = self.nameLabel2.text = self.nameLabel3.text = nil;
     self.imageView1.image = self.imageView2.image = self.imageView3.image = nil;
     
@@ -88,8 +89,9 @@
 
 -(void)subscribeToNotifications
 {
+#ifdef DEBUG
     NSLog(@"%s:", __func__);
-    
+#endif
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(mcReceivedRideUpdateFromServer:)
                                                  name:@"rideUpdateFromServer"
@@ -108,8 +110,9 @@
 
 -(void)unSubscribeToNotifications
 {
+#ifdef DEBUG
     NSLog(@"%s:", __func__);
-    
+#endif
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"rideUpdateFromServer"
                                                   object:nil];
@@ -127,7 +130,9 @@
 
 -(void)mcReceivedRideUpdateFromServer:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s: %@", __func__, notification);
+#endif
     self.rideID = [notification.userInfo objectForKey:kPublicId];
     if ( !self.rideID || (self.rideID == (id)[NSNull null]) )
     {
@@ -143,8 +148,9 @@
 
 - (void)appReturnsActive:(NSNotification *)notification
 {
+#ifdef DEBUG
     NSLog(@"%s............is lone rider %d\n", __func__, self.isLoneRider);
-    
+#endif
     //get update on the riders
     if (!self.isLoneRider)
         [self getRideObject];
@@ -152,7 +158,9 @@
 
 -(void)getRideObject
 {
+#ifdef DEBUG
     NSLog(@"ride update - get ride object from server..........");
+#endif
     NSString *url = [NSString stringWithFormat:@"%@%@/rides/%@", [[Environment ENV] lookup:@"kStowawayServerApiUrl_users"], self.userID, self.rideID];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
@@ -164,14 +172,17 @@
 
 -(void)processRideObject:(NSDictionary *)response
 {
+#ifdef DEBUG
     NSLog(@"%s: crew before processing: %@", __func__, self.crew);
-    
+#endif
     NSArray * requests = [response objectForKey:@"requests"];
     
     NSUInteger countRequests = requests.count;
     NSUInteger countCrew = self.crew.count;
     
+#ifdef DEBUG
     NSLog(@"MC:: crew# %lu, rideResult# %lu", (unsigned long)countCrew, (unsigned long)countRequests);
+#endif
     
     //UPDATE CREW
     for (int j = 0; j < self.crew.count; j++)
@@ -187,8 +198,9 @@
             {
                 removeIt = NO;
                 //update status
+#ifdef DEBUG
                 NSLog(@"%s: update status for crew#%d --- STATUS %@",__func__, j, [request objectForKey:kStatus]);
-              
+#endif
                 if ([[request objectForKey:kStatus] isEqualToString:kStatusCheckedin])
                     [crewMember setObject:[NSNumber numberWithBool:YES] forKey: kIsCheckedIn];
                 
@@ -208,7 +220,9 @@
             continue;
         
         //remove the crew member
+#ifdef DEBUG
         NSLog(@"%s: remove the crew member  kUserPublicId = %@",__func__, [crewMember objectForKey:kUserPublicId]);
+#endif
         [self.crew removeObjectAtIndex:j];
         //update the map view
         [self.meetCrewMapViewManager initializeCrew: self.crew forRideID: self.rideID];
@@ -216,8 +230,9 @@
         j--;
     }
     
+#ifdef DEBUG
     NSLog(@"** MC crew after processing ** - %@", self.crew);
-    
+#endif
     //UPDATE VIEW with updated crew
     [self updateCrewInfoInView];
 }
@@ -226,8 +241,9 @@
 
 -(void)updateCrewInfoInView
 {
+#ifdef DEBUG
     NSLog(@"%s......crew count %lu", __func__, (unsigned long)self.crew.count);
-    
+#endif
     if (self.crew.count == 0)
     {
         [self doneWithTheRide];
@@ -244,8 +260,9 @@
     for (int i = 0; i < self.crew.count; i++)
     {
         NSMutableDictionary * crewMember = [self.crew objectAtIndex:i];
+#ifdef DEBUG
         NSLog(@"%s: <%d> updateCrewInfoInView for crewMember %@", __func__, i, crewMember);
-        
+#endif
         prevDesg    = nil;
         badgedImage = nil;
         isCaptain   = [[crewMember objectForKey:kIsCaptain] boolValue];
@@ -265,14 +282,16 @@
             prevDesg = self.designationLabel.text;
             
             //is ride initiated
+#ifdef DEBUG
             NSLog(@"%s: ME::  isCaptain %d,  isLoneRider %d, isInitiated %d, isAlreadyInitiated %d", __func__,
                   isCaptain, self.isLoneRider, isInitiated, self.isAlreadyInitiated);
-
+#endif
             isInitiated = [[crewMember objectForKey:kStatusInitiated] boolValue];
             if (isInitiated && !self.isAlreadyInitiated && !self.isLoneRider)
             {
+#ifdef DEBUG
                 NSLog(@"%s: ride got initiated, starting pusher & location updates now...", __func__);
-
+#endif
                 self.isAlreadyInitiated = YES;
                 
                 //start location updates
@@ -283,15 +302,18 @@
 
                 //schedule auto checkin
                 NSTimeInterval secondsRemainingToDeparture = [self.rideDepartureDate timeIntervalSinceNow];
+#ifdef DEBUG
                 NSLog(@"%s: secondsRemainingToDeparture %f", __func__, secondsRemainingToDeparture);
+#endif
                 if (secondsRemainingToDeparture < 0)
                     secondsRemainingToDeparture = 5;
                 [self armUpCountdownTimerFor:secondsRemainingToDeparture];
 
             }
 
+#ifdef DEBUG
             NSLog(@"isInitiated %d",isInitiated);
-            
+#endif
             if ( isCaptain )
             {
                 self.designationLabel.text  = self.isLoneRider? @"YOU'RE RIDING SOLO TODAY": @"YOU ARE THE CAPTAIN !";
@@ -337,7 +359,9 @@
             
             //check in status
             int keepRunningAutoCheckinProcess = [self getCheckedInStatus:crewMember];
+#ifdef DEBUG
             NSLog(@"%s: keepRunningAutoCheckinProcess %d", __func__, keepRunningAutoCheckinProcess);
+#endif
             switch (keepRunningAutoCheckinProcess)
             {
                 case 1:
@@ -364,7 +388,9 @@
                 if (isCaptain)
                 {
                     BOOL isWholeCrewCheckinStatusDetermined = YES;
+#ifdef DEBUG
                     NSLog(@"%s: i'm a captain, checking crews checkin status", __func__);
+#endif
                     for (int k = 0; k < self.crew.count; k++)
                     {
                         NSMutableDictionary * crewMember = [self.crew objectAtIndex:k];
@@ -380,8 +406,9 @@
                         continue;
                 }
                 
+#ifdef DEBUG
                 NSLog(@"%s: checkin status determined, now stop auto-checkin mode...., is lone rider %d", __func__, self.isLoneRider);
-                
+#endif
                 if ( !self.isLoneRider )
                     [self.finalActionButton setTitle:@"   DONE  " forState:UIControlStateNormal];
                 
@@ -444,8 +471,9 @@
     //process empty crew spots
     for (NSUInteger i = self.crew.count; i < kMaxCrewCount; i++)
     {
+#ifdef DEBUG
         NSLog(@"RESET image and name for crew #%lu ........isLoneRider %d", (unsigned long)i, self.isLoneRider);
-        
+#endif
         //reset the images to nil and also reset the name to nil....
         switch (i)
         {
@@ -512,24 +540,27 @@
     UIImage * crewImage = nil;
     
     status = [self getCheckedInStatus:crewMember];
+#ifdef DEBUG
     NSLog(@"updateCheckedInStatusForCrewMember %@, status %d", crewMember, status);
-    
+#endif
     if ( status == 0 )
         return badgedImage;
 
     crewImage = [crewMember objectForKey:kCrewFbImage];
     if (status == 1)
     {
+#ifdef DEBUG
         NSLog(@"check this one in !!!");
-        
+#endif
         if ( !self.checkMarkBadgeImage )
             self.checkMarkBadgeImage = [UIImage imageNamed: @"check-mark-256.png"];
         
         badgedImage = [self drawImage:crewImage withBadge:self.checkMarkBadgeImage];
     } else
     {
+#ifdef DEBUG
         NSLog(@"this one missed !!!");
-        
+#endif
         if ( !self.crossMarkBadgeImage )
             self.crossMarkBadgeImage = [UIImage imageNamed: @"cross-mark-256.png"];
         
@@ -574,7 +605,9 @@
 #pragma mark - countdown timer
 -(void) armUpCountdownTimerFor:(NSUInteger)seconds
 {
+#ifdef DEBUG
     NSLog(@"%s: armUpCountdownTimer %lu", __func__, (unsigned long)seconds);
+#endif
     self.cdt = [[CountdownTimer alloc] init];
     self.cdt.cdTimerDelegate = self;
     [self.cdt initializeWithSecondsRemaining:seconds ForLabel:nil];
@@ -582,7 +615,9 @@
 
 - (void)countdownTimerExpired
 {
+#ifdef DEBUG
     NSLog(@"%s, now start auto checkin mode", __func__);
+#endif
     [self.meetCrewMapViewManager startAutoCheckinMode];
 }
 
@@ -590,8 +625,9 @@
 
 - (void)doneWithTheRide
 {
+#ifdef DEBUG
     NSLog(@"%s: we are DONE here....go back to enter drop off pick up view", __func__);
-    
+#endif
     [self unSubscribeToNotifications];
     
     [self.meetCrewMapViewManager stopAutoCheckinMode];
@@ -605,9 +641,6 @@
 
 - (IBAction)finalActionButtonTapped:(UIButton *)sender
 {
-    NSLog(@"%s: sender %@ ", __func__, sender);
-    
-    
     if ([sender.titleLabel.text isEqualToString:@"Cancel Ride"])
     {
         //warn user that they are canceling a ride
@@ -659,8 +692,6 @@
 
 -(void)alertView:(UIAlertView *)theAlert clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"For alert %@, The %@ button was tapped.", theAlert.title, [theAlert buttonTitleAtIndex:buttonIndex]);
-    
     //TODO: change all the constant texts to constant keys in a string file, that can be used for localization as well
     if ([theAlert.title isEqualToString:@"Your crew would be disappointed !"] ||
         [theAlert.title isEqualToString:@"Free ride credits !"])
@@ -680,7 +711,6 @@
     
     //curl -H 'Authorization: Token kUberApiServerToken' 'https://api.uber.com/v1/products?latitude=37.7759792&longitude=-122.41823'
     
-    NSLog(@"%s..........", __func__);
     NSString *url = [NSString stringWithFormat:@"https://api.uber.com/v1/products?latitude=%f&longitude=%f",pickupLat, pickupLong];
     
     StowawayServerCommunicator * sscommunicator = [[StowawayServerCommunicator alloc]init];
@@ -692,8 +722,9 @@
 
 - (IBAction)requestUberButtonTapped:(UIButton *)sender
 {
+#ifdef DEBUG
     NSLog(@"%s: isLoneRider %d", __func__, self.isLoneRider);
-    
+#endif
     NSString *stringURL = @"uber://";
     NSURL *url = [NSURL URLWithString:stringURL];
     
@@ -732,8 +763,6 @@
                                dropOffAddress];
         NSURL *url = [NSURL URLWithString:stringURL];
         
-        NSLog(@"launch uber:: %@", stringURL);
-
         [[UIApplication sharedApplication] openURL:url];
     }
     else
@@ -760,7 +789,9 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"%s:\n-- %@ -- %@ -- \n", __func__, data, sError);
+#endif
     if (sError)
         return;
     
@@ -793,12 +824,14 @@
 
 -(void)receivedRideCreditsUpdate:(NSNotification *)notification
 {
-    NSLog(@"%s..............data %@", __func__, notification);
-    
+#ifdef DEBUG
+   NSLog(@"%s..............data %@", __func__, notification);
+#endif
     self.rideCredits = [[notification.userInfo objectForKey:@"credits"] doubleValue];
     
+#ifdef DEBUG
     NSLog(@"%s: ride creds %f, button %@", __func__, self.rideCredits,self.rideCreditsBarButton);
-    
+#endif
     self.rideCreditsBarButton.title = [NSString stringWithFormat:@"%@%0.2f",@"💰", self.rideCredits];
 }
 

@@ -40,8 +40,9 @@
     
     NSString * enquiryurl = @"https://getstowaway.com/legal/faq.html";
     
+#ifdef DEBUG
     NSLog(@"loading page from %@", enquiryurl);
-    
+#endif
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:enquiryurl]];
     
     [self.webView loadRequest: request];

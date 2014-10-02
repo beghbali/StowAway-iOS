@@ -81,14 +81,12 @@
         self.changeUberEmailTextView.text = [NSString stringWithFormat:
                                              @"To use Stowaway, you'll need to update your email in the Uber app to: %@", stowawayEmail];
         
-        NSLog(@"%@", self.changeUberEmailTextView.text );
         self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:stowawayEmail
                                                                     ofFullString:self.changeUberEmailTextView.text
                                                                         withFont:[UIFont boldSystemFontOfSize:13]];
         
         self.stowawayEmailFooterLabel.text = [NSString stringWithFormat:
                                               @"Don't worry... you will also get Uber receipts at %@", self.emailTextField.text];
-        NSLog(@"%@", self.stowawayEmailFooterLabel.text);
         self.stowawayEmailFooterLabel.attributedText = [StowawayConstants boldify:self.emailTextField.text
                                                                      ofFullString:self.stowawayEmailFooterLabel.text
                                                                          withFont:[UIFont boldSystemFontOfSize:10]];
@@ -112,8 +110,9 @@
 
 - (void)stowawayServerCommunicatorResponse:(NSDictionary *)data error:(NSError *)sError;
 {
+#ifdef DEBUG
     NSLog(@"%s: -- %@ -- %@ -- ", __func__, data, sError);
-    
+#endif
     if (sError)
         return;
     
