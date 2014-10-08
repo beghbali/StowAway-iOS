@@ -67,7 +67,7 @@ BOOL __isAmex = NO;
         //[self.cardNumberField becomeFirstResponder];
         
         //TODO: VIN remove this after testing phase
-        self.nameField.text =  self.stripeCard.name        = @"Neej Gore";
+        self.nameField.text =  self.stripeCard.name        = @"StowAway Inc.";
         self.stripeCard.number      = @"372741052892360";
         self.cardNumberField.text = @"**** **** **** 2360";
         self.stripeCard.expMonth    = 6;
@@ -76,13 +76,15 @@ BOOL __isAmex = NO;
         self.stripeCard.cvc         = @"2996";
         self.cvvField.text          = @"***";
         self.zipField.text          = @"95014";
+        
         self.stripeCard.addressZip = @"94117";
+        self.stripeCard.name = @"Neej Gore";
         
         self.saveButton.enabled = YES;
         
         NSLog(@"%s: preset credit card", __func__);
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Hooray for your early participation! You won't pay any matching fee.\n Tap continue for free access."
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle: @"Appreciate your early participation, we got you covered.\nWe prefilled payments with our credit card."
                                                           message:[error localizedDescription]
                                                          delegate:nil
                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
