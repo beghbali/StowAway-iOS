@@ -125,7 +125,7 @@
         self.isGmailYesButton.hidden = YES;
         
         //hide uber email change instructions
-        self.changeUberEmailTextView.hidden = YES;
+        self.changeUberEmailTextView.text = @"Stowaway parses your Uber receipt emails to determine your share of ride cost and save you money.";
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
@@ -146,7 +146,6 @@
         self.isGmailYesButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         
         //hide uber email change instructions
-        self.changeUberEmailTextView.hidden = YES;
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
@@ -162,7 +161,7 @@
 {
     NSString * stowawayEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStowawayEmail];
     self.changeUberEmailTextView.text = [NSString stringWithFormat:
-                                              @"To use Stowaway, you'll need to update your email in the Uber app to: %@", stowawayEmail];
+                                              @"For us to parse your Uber receipts, you'll need to update your email in the Uber app to: %@", stowawayEmail];
 
     self.changeUberEmailTextView.attributedText = [StowawayConstants boldify:stowawayEmail
                                                    ofFullString:self.changeUberEmailTextView.text
@@ -174,7 +173,6 @@
     self.stowawayEmailFooterLabel.attributedText = [StowawayConstants boldify:self.email
                                                     ofFullString:self.stowawayEmailFooterLabel.text
                                                         withFont:[UIFont boldSystemFontOfSize:10]];
-
 }
 
 - (IBAction)mailProviderSelected:(UIButton *)sender
@@ -189,7 +187,7 @@
         self.isGmailNoButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         
         //hide uber change email stuff
-        self.changeUberEmailTextView.hidden = YES;
+        self.changeUberEmailTextView.text = @"Stowaway parses your Uber receipt emails to determine your share of ride cost and save you money.";
         self.showMeHowButton.hidden =   YES;
         self.stowawayEmailFooterLabel.hidden = YES;
         
@@ -209,7 +207,6 @@
         [self setOtherMailTexts];
 
         //show uber change email stuff
-        self.changeUberEmailTextView.hidden = NO;
         self.showMeHowButton.hidden =   NO;
         self.stowawayEmailFooterLabel.hidden = NO;
         
