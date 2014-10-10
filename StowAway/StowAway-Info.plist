@@ -29,8 +29,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.43</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.43</string>
 	<key>Environment</key>
 	<string>${CONFIGURATION}</string>
 	<key>FacebookAppID</key>

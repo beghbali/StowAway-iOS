@@ -105,7 +105,7 @@ static NSString *kAnnotationIdentifier = @"annotationIdentifier";
 
 int     __locationInputCount        = 0;
 BOOL    __onBoardingStatusChecked   = NO;
-
+BOOL    __hasUpdatePromptBeenPresented = NO;
 
 
 #pragma mark - fg_bg action
@@ -277,6 +277,13 @@ BOOL    __onBoardingStatusChecked   = NO;
 
 -(void)checkForAppUpdateAvailability
 {
+    NSLog(@"%s: __hasUpdatePromptBeenPresented %d", __func__, __hasUpdatePromptBeenPresented);
+
+    if (__hasUpdatePromptBeenPresented)
+    {
+        NSLog(@"%s: app update prompt has already been presented", __func__);
+        return;
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         BOOL updateAvailable = NO;
@@ -325,6 +332,8 @@ BOOL    __onBoardingStatusChecked   = NO;
         NSURL *url = [NSURL URLWithString:myURL];
         
         [[UIApplication sharedApplication] openURL: url];
+        
+        __hasUpdatePromptBeenPresented = YES;
     }
 }
 
